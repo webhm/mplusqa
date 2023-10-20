@@ -17,12 +17,11 @@ class Pasaportes extends App {
     idFiltro = 1;
     constructor(_data) {
         super();
-        this.title = "Pasaportes de Pacientes";
-        this.isAuthenticated();
-        if (this.hasProfile('ADM_USUARIOS_METROPLUS')) {
+
+        if (App.isAuthenticated() && App.hasProfile('PERFIL_HOSPITALIZACION_METROPLUS')) {
+            App.setTitle("Pasaportes de Pacientes");
             this.view = this.page;
         }
-
     }
     oncreate(_data) {
         if (_data.attrs.idFiltro !== undefined) {
@@ -62,11 +61,11 @@ class Pasaportes extends App {
                             ]),
                         ),
                         m("li.breadcrumb-item.active[aria-current='page']",
-                            this.title
+                            App.title
                         )
                     ]),
                     m("h1.df-title.mg-t-20.mg-b-20",
-                        this.title + ":"
+                        App.title + ":"
                     ),
 
                     m("div", [

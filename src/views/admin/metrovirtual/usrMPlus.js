@@ -17,7 +17,7 @@ class usrMPlus extends App {
     idFiltro = 1;
     constructor(_data) {
         super();
-        if (App.isAuthenticated() && App.hasProfile('ADM_USUARIOS_METROPLUS')) {
+        if (App.isAuthenticated() && App.hasProfile('PERFIL_ADMINISTRACION_METROPLUS')) {
             App.setTitle("Usuarios MetroPlus");
             this.view = this.page;
         }
@@ -433,7 +433,7 @@ class usrMPlus extends App {
 
         return m.request({
             method: "GET",
-            url: ApiHTTP.apiUrl + "/v2/usuarios/metroplus" + _queryString,
+            url: ApiHTTP.apiUrl + "/v2/sso/usuarios/metroplus" + _queryString,
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
             },

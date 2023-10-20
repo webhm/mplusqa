@@ -137,6 +137,7 @@ class ProximasCitas {
                                 $('#calendar').fullCalendar('gotoDate', moment(_v.pn_inicio, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD'));
 
                                 // Initialize tooltip
+
                                 $('[data-toggle="tooltip"]').tooltip({
                                     template: '<div class=" tooltip tooltip-dark " role="tooltip">' +
                                         '<div class= "arrow" ></div>' +
@@ -620,6 +621,7 @@ class BadgeAgendas {
 
     }
 }
+
 // Cita
 class Cita {
 
@@ -648,6 +650,7 @@ class Cita {
         let nacimiento = moment(calEvent.pc_fecha_nacimiento);
         let hoy = moment();
         Cita.data.anios = hoy.diff(nacimiento, "years");
+        $('[data-toggle="tooltip"]').tooltip('hide');
         let modal = $('#modalCalendarEvent');
         modal.modal('show');
         modal.find('.modal-header').css('backgroundColor', (calEvent.borderColor) ? calEvent.borderColor : calEvent.borderColor);
@@ -937,8 +940,8 @@ class Calendario extends App {
             dateFormat: "yy-mm-dd",
             onSelect: function (dateText, inst) {
                 $('#calendar').fullCalendar('gotoDate', dateText);
-
                 // Initialize tooltip
+
                 $('[data-toggle="tooltip"]').tooltip({
                     template: '<div class=" tooltip tooltip-dark " role="tooltip">' +
                         '<div class= "arrow" ></div>' +
@@ -1155,6 +1158,7 @@ class Calendario extends App {
             eventDrop: function (calEvent) {
 
                 // Initialize tooltip
+
                 $('[data-toggle="tooltip"]').tooltip({
                     template: '<div class=" tooltip tooltip-dark " role="tooltip">' +
                         '<div class= "arrow" ></div>' +
@@ -1186,6 +1190,7 @@ class Calendario extends App {
             eventResize: function (calEvent) {
 
                 // Initialize tooltip
+
                 $('[data-toggle="tooltip"]').tooltip({
                     template: '<div class=" tooltip tooltip-dark " role="tooltip">' +
                         '<div class= "arrow" ></div>' +
@@ -1301,6 +1306,7 @@ class Calendario extends App {
         });
 
         // Initialize tooltip
+
         $('[data-toggle="tooltip"]').tooltip({
             template: '<div class=" tooltip tooltip-dark " role="tooltip">' +
                 '<div class= "arrow" ></div>' +
@@ -1430,47 +1436,43 @@ class Calendario extends App {
                             class: (Calendario.error != null ? '' : 'd-none')
                         }, [
 
-                            m(".alert.alert-danger.fade.show.mg-b-0[role='alert']",
-                                [
-                                    m("strong",
-                                        m('i.fas.fa-exclamation-triangle.mg-r-2'),
-                                        "Error: "
-                                    ),
-                                    Calendario.error,
-                                    m("button.close[type='button'][aria-label='Close']", {
-                                        onclick: () => {
-                                            Calendario.error = null;
-                                        }
-                                    },
-                                        m("span[aria-hidden='true']",
-                                            "×"
-                                        )
+                            m(".alert.alert-danger.fade.show.mg-b-0[role='alert']", [
+                                m("strong",
+                                    m('i.fas.fa-exclamation-triangle.mg-r-2'),
+                                    "Error: "
+                                ),
+                                Calendario.error,
+                                m("button.close[type='button'][aria-label='Close']", {
+                                    onclick: () => {
+                                        Calendario.error = null;
+                                    }
+                                },
+                                    m("span[aria-hidden='true']",
+                                        "×"
                                     )
-                                ]
-                            )
+                                )
+                            ])
 
                         ]),
                         m('div.pd-20', {
                             class: (Calendario.success != null ? '' : 'd-none')
                         }, [
-                            m(".alert.alert-success.fade.show.mg-b-0[role='alert']",
-                                [
-                                    m("strong",
-                                        m('i.fas.fa-check-circle.mg-r-2'),
-                                        "Anuncio: "
-                                    ),
-                                    Calendario.success,
-                                    m("button.close[type='button'][aria-label='Close']", {
-                                        onclick: () => {
-                                            Calendario.success = null;
-                                        }
-                                    },
-                                        m("span[aria-hidden='true']",
-                                            "×"
-                                        )
+                            m(".alert.alert-success.fade.show.mg-b-0[role='alert']", [
+                                m("strong",
+                                    m('i.fas.fa-check-circle.mg-r-2'),
+                                    "Anuncio: "
+                                ),
+                                Calendario.success,
+                                m("button.close[type='button'][aria-label='Close']", {
+                                    onclick: () => {
+                                        Calendario.success = null;
+                                    }
+                                },
+                                    m("span[aria-hidden='true']",
+                                        "×"
                                     )
-                                ]
-                            )
+                                )
+                            ])
 
                         ]),
 
@@ -1644,24 +1646,22 @@ class Calendario extends App {
                                     m('div.col-12.pd-0', {
                                         class: (Cita.data.error != undefined ? '' : 'd-none')
                                     }, [
-                                        m(".alert.alert-danger.fade.show[role='alert']",
-                                            [
-                                                m("strong",
-                                                    m('i.fas.fa-exclamation-triangle.mg-r-2'),
-                                                    "Error: "
-                                                ),
-                                                Cita.data.error,
-                                                m("button.close[type='button'][aria-label='Close']", {
-                                                    onclick: () => {
-                                                        Cita.data.error = undefined;
-                                                    }
-                                                },
-                                                    m("span[aria-hidden='true']",
-                                                        "×"
-                                                    )
+                                        m(".alert.alert-danger.fade.show[role='alert']", [
+                                            m("strong",
+                                                m('i.fas.fa-exclamation-triangle.mg-r-2'),
+                                                "Error: "
+                                            ),
+                                            Cita.data.error,
+                                            m("button.close[type='button'][aria-label='Close']", {
+                                                onclick: () => {
+                                                    Cita.data.error = undefined;
+                                                }
+                                            },
+                                                m("span[aria-hidden='true']",
+                                                    "×"
                                                 )
-                                            ]
-                                        )
+                                            )
+                                        ])
                                     ]),
                                     m("div.form-group.d-none",
                                         m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1",

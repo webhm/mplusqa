@@ -165,7 +165,7 @@ class ModulesAccess {
                     ])
                 ),
             ] : []),
-            (_data.attrs.profiles.includes('HOSPITALIZACION_METROPLUS') ? [
+            (_data.attrs.profiles.includes('PERFIL_HOSPITALIZACION_METROPLUS') ? [
                 m("div.col-sm-6.col-lg-3.mg-t-20.mg-sm-t-30.mg-lg-t-0.mg-b-10",
 
                     m("a[href='/hospitalizacion']", {
@@ -212,7 +212,7 @@ class ModulesAccess {
 
                 ),
             ] : []),
-            (_data.attrs.profiles.includes('ADM_USUARIOS_METROPLUS') ? [
+            (_data.attrs.profiles.includes('PERFIL_ADMINISTRACION_METROPLUS') ? [
                 m("div.col-sm-6.col-lg-3.mg-t-20.mg-sm-t-30.mg-lg-t-0.mg-b-10",
                     m("a[href='/administracion']", {
                         style: { 'color': "#325a98" }

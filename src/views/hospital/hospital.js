@@ -9,15 +9,14 @@ class Hospital extends App {
 
     constructor() {
         super();
-        this.title = "Hospitalización";
-        this.isAuthenticated();
-        if (this.hasProfile('ADM_USUARIOS_METROPLUS')) {
+        if (App.isAuthenticated() && App.hasProfile('PERFIL_HOSPITALIZACION_METROPLUS')) {
+            App.setTitle("Hospitalización");
             this.view = this.page;
         }
     }
 
     vHeader() {
-        return m(HeaderPrivate, { userName: this.userName });
+        return m(HeaderPrivate, { userName: App.userName });
     }
 
     vMain() {
@@ -38,11 +37,11 @@ class Hospital extends App {
 
                         ),
                         m("li.breadcrumb-item.active[aria-current='page']",
-                            this.title
+                            App.title
                         )
                     ]),
                     m("h1.df-title.mg-t-20.mg-b-10",
-                        this.title + ":"
+                        App.title + ":"
                     ),
 
                     m("div.row", [
