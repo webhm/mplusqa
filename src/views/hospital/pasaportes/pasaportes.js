@@ -1,49 +1,52 @@
 import m from "mithril";
 import App from "../../../models/App";
 import HeaderPrivate from "../../layout/headerPrivate";
-import SidebarHospital from "../sidebarHospital";
+import Sidebar from "../sidebarHospital";
 import Loader from "../../utils/loader";
 import Errors from "../../utils/errors";
 import Table from "../../utils/table";
 import { Stopwatch } from "../../utils/stopWatch";
 import ApiHTTP from "../../../models/ApiHTTP";
+import qrcode from "qrcode";
 
-// Pasaportes MV
+
+// Administración MV
 
 class Pasaportes extends App {
-    pasaportes = null;
-    dataPasaporte = null;
-    idPasaporte = null;
-    idFiltro = 1;
+    static usuarios = null;
+    static dataUser = null;
+    static idUsr = null;
+    static idFiltro = 1;
     constructor(_data) {
         super();
-
-        if (App.isAuthenticated() && App.hasProfile('PERFIL_HOSPITALIZACION_METROPLUS')) {
-            App.setTitle("Pasaportes de Pacientes");
-            this.view = this.page;
+        if (App.isAuthenticated() && App.hasProfile('PERFIL_ADMINISTRACION_METROPLUS')) {
+            App.setTitle("Pasaportes Pacientes");
+            this.view = Pasaportes.page;
         }
     }
     oncreate(_data) {
         if (_data.attrs.idFiltro !== undefined) {
-            this.idFiltro = _data.attrs.idFiltro;
+            Pasaportes.idFiltro = _data.attrs.idFiltro;
         }
-        this.fetchData().then((_data) => {
-            this.pasaportes = _data;
+        Pasaportes.fetchData().then((_data) => {
+            Pasaportes.usuarios = _data;
         });
     }
     onupdate(_data) {
 
-        if (_data.attrs.idPasaporte !== undefined) {
-            this.idPasaporte = _data.attrs.idPasaporte;
+        if (_data.attrs.idUsr !== undefined) {
+            Pasaportes.idUsr = _data.attrs.idUsr;
+            m.redraw();
         } else {
-            this.idPasaporte = null;
+            Pasaportes.idUsr = null;
+            m.redraw();
         }
-        m.redraw();
+
     }
-    vHeader() {
-        return m(HeaderPrivate, { userName: this.userName });
+    static vHeader() {
+        return m(HeaderPrivate, { userName: App.userName });
     }
-    vMain() {
+    static vMain() {
         return [
             m("div.content.content-components",
                 m("div.container.mg-l-0.mg-r-0", {
@@ -70,25 +73,49 @@ class Pasaportes extends App {
 
                     m("div", [
 
-                        (this.pasaportes !== null && this.pasaportes.status) ? [
+                        (Pasaportes.usuarios !== null && Pasaportes.usuarios.status) ? [
+                            m(".modal.calendar-modal-event[id='modalViewQR'][role='dialog'][aria-hidden='true']",
+                                m(".modal-dialog.modal-dialog-centered.modal-sm[role='document']",
+                                    m("div.modal-content", [
+                                        m("div.modal-header.bg-primary", [
+                                            m("h6.event-title.text-semibold", 'Pasaporte QR:'),
+                                            m("nav.nav.nav-modal-event", [
+                                                m("a.nav-link[href='#'][data-dismiss='modal']",
+                                                    m("i[data-feather='x']")
+                                                )
+                                            ])
+                                        ]),
+                                        m("div.modal-body", [
+                                            m("div.row.col-12", [
+                                                m("label.tx-11.tx-medium.tx-spacing-1.tx-color-03",
+                                                    "*Escanee con su teléfono para continuar."
+                                                ),
+                                                m("p.event-start-date.tx-center", [
+                                                    m('canvas.qr.wd-100p')
+                                                ])
+                                            ]),
+                                        ])
+                                    ])
+                                )
+                            ),
                             m("div.table-content.col-12.pd-r-0.pd-l-0", [
                                 m("div.d-flex.align-items-center.justify-content-between.mg-t-10", [
                                     m("h5.mg-b-0",
                                         "Todos los Pasaportes:",
                                         m("span.badge.bg-litecoin.tx-white.tx-semibold.pd-l-10.pd-r-10.mg-l-5.tx-15", {
                                             oncreate: (el) => {
-                                                if (this.idFiltro == 1) {
+                                                if (Pasaportes.idFiltro == 1) {
                                                     el.dom.innerHTML = 'Pasaportes Pendientes';
                                                 }
-                                                if (this.idFiltro == 2) {
+                                                if (Pasaportes.idFiltro == 2) {
                                                     el.dom.innerHTML = 'Pasaportes Generados';
                                                 }
                                             },
                                             onupdate: (el) => {
-                                                if (this.idFiltro == 1) {
+                                                if (Pasaportes.idFiltro == 1) {
                                                     el.dom.innerHTML = 'Pasaportes Pendientes';
                                                 }
-                                                if (this.idFiltro == 2) {
+                                                if (Pasaportes.idFiltro == 2) {
                                                     el.dom.innerHTML = 'Pasaportes Generados';
                                                 }
                                             }
@@ -115,9 +142,9 @@ class Pasaportes extends App {
                                                     class: 'dropdown-item',
                                                     href: "/hospitalizacion/pasaportes/?idFiltro=1",
                                                     onclick: (e) => {
-                                                        this.reloadData(1);
-                                                        this.fetchData().then((_data) => {
-                                                            this.pasaportes = _data;
+                                                        Pasaportes.reloadData(1);
+                                                        Pasaportes.fetchData().then((_data) => {
+                                                            Pasaportes.usuarios = _data;
                                                         });
                                                     }
                                                 }, [
@@ -127,9 +154,9 @@ class Pasaportes extends App {
                                                     class: 'dropdown-item',
                                                     href: "/hospitalizacion/pasaportes/?idFiltro=2",
                                                     onclick: (e) => {
-                                                        this.reloadData(2);
-                                                        this.fetchData().then((_data) => {
-                                                            this.pasaportes = _data;
+                                                        Pasaportes.reloadData(2);
+                                                        Pasaportes.fetchData().then((_data) => {
+                                                            Pasaportes.usuarios = _data;
                                                         });
                                                     }
                                                 }, [
@@ -143,9 +170,9 @@ class Pasaportes extends App {
                                 ]),
 
                             ]),
-                            this.vTableUsuarios('table-usr', this.pasaportes.data, this.arqTable())
-                        ] : (this.pasaportes !== null && (!this.pasaportes.status || this.pasaportes.status == null)) ? [
-                            m(Errors, { type: (!this.pasaportes.status ? 1 : 0), error: this.pasaportes })
+                            Pasaportes.vTableUsuarios('table-usr', Pasaportes.usuarios.data, Pasaportes.arqTable())
+                        ] : (Pasaportes.usuarios !== null && (!Pasaportes.usuarios.status || Pasaportes.usuarios.status == null)) ? [
+                            m(Errors, { type: (!Pasaportes.usuarios.status ? 1 : 0), error: Pasaportes.usuarios })
                         ] : [
                             m(Loader)
                         ]
@@ -156,10 +183,10 @@ class Pasaportes extends App {
                 ])
             ),
             m("div.section-nav", {
-                class: (this.pasaportes !== null ? '' : 'd-none')
+                class: (Pasaportes.usuarios !== null ? '' : 'd-none')
             }, [
                 m("label.nav-label",
-                    this.title + ":"
+                    Pasaportes.title + ":"
                 ),
                 m("div.mg-t-10.bg-white", {
 
@@ -175,7 +202,7 @@ class Pasaportes extends App {
                         m("div.card-body.pd-0", [
                             m("div.pd-t-10.pd-b-0.pd-x-20.d-flex.align-items-baseline", [
                                 m("h2.tx-normal.tx-rubik.mg-b-0.mg-r-5",
-                                    (this.pasaportes !== null ? this.pasaportes.data.length : 0)
+                                    (Pasaportes.usuarios !== null ? Pasaportes.usuarios.data.length : 0)
                                 ),
                                 m("div.tx-14", [
                                     m("divv.lh-0.tx-gray-300", 'Resultado(s)')
@@ -192,8 +219,8 @@ class Pasaportes extends App {
             ])
         ];
     }
-    vMainProfile() {
-        this.fetchProfile();
+    static vMainProfile() {
+        Pasaportes.fetchProfile();
         return [
             m("div.content.content-components",
                 m("div.container.mg-l-0.mg-r-0", {
@@ -211,20 +238,20 @@ class Pasaportes extends App {
                             ]),
                         ),
                         m("li.breadcrumb-item.active[aria-current='page']",
-                            this.title
+                            Pasaportes.title
                         )
                     ]),
                     m("h1.df-title.mg-t-20.mg-b-10",
-                        this.title + ":"
+                        Pasaportes.title + ":"
                     ),
-                    (this.dataPasaporte !== null ? [
+                    (Pasaportes.dataUser !== null ? [
                         m('div.table-responsive', [
                             m("table.table.table-bordered.table-sm.tx-14", [
                                 m("thead",
 
                                     m("tr.bg-litecoin.op-9.tx-white.tx-uppercase", [
                                         m("th[scope='col'][colspan='10']",
-                                            "DATOS DEL USUARIO: " + this.dataPasaporte.samaccountname
+                                            "DATOS DEL USUARIO: " + Pasaportes.dataUser.samaccountname
                                         ),
 
                                     ])
@@ -239,7 +266,7 @@ class Pasaportes extends App {
                                         m("td[colspan='4']", {
                                             style: { "background-color": "#eaeff5" }
 
-                                        }, this.dataPasaporte.sn + ' ' + this.dataPasaporte.cn),
+                                        }, Pasaportes.dataUser.sn + ' ' + Pasaportes.dataUser.cn),
                                         m("th", {
                                             style: { "background-color": "#a8bed6" }
                                         },
@@ -248,7 +275,7 @@ class Pasaportes extends App {
                                         m("td[colspan='4']", {
                                             style: { "background-color": "#eaeff5" }
 
-                                        }, this.dataPasaporte.grupo),
+                                        }, Pasaportes.dataUser.grupo),
 
                                     ]),
 
@@ -262,7 +289,7 @@ class Pasaportes extends App {
                                             style: { "background-color": "#eaeff5" }
 
                                         },
-                                            this.dataPasaporte.mail
+                                            Pasaportes.dataUser.mail
                                         ),
                                         m("th", {
                                             style: { "background-color": "#a8bed6" }
@@ -273,10 +300,10 @@ class Pasaportes extends App {
                                             style: { "background-color": "#eaeff5" }
 
                                         },
-                                            m('.tx-12.d-block', 'Creado: ' + this.dataPasaporte.whencreated),
-                                            m('.tx-12.d-block', 'Actualizado: ' + this.dataPasaporte.whenchanged),
-                                            m('.tx-12.d-block', 'Última Contraseña: ' + this.dataPasaporte.pwdlastset),
-                                            m('.tx-12.d-block', 'Último Acceso: ' + this.dataPasaporte.lastlogontimestamp),
+                                            m('.tx-12.d-block', 'Creado: ' + Pasaportes.dataUser.whencreated),
+                                            m('.tx-12.d-block', 'Actualizado: ' + Pasaportes.dataUser.whenchanged),
+                                            m('.tx-12.d-block', 'Última Contraseña: ' + Pasaportes.dataUser.pwdlastset),
+                                            m('.tx-12.d-block', 'Último Acceso: ' + Pasaportes.dataUser.lastlogontimestamp),
                                         ),
 
 
@@ -407,37 +434,35 @@ class Pasaportes extends App {
             ),
         ];
     }
-    vMenu() {
-        return m(SidebarHospital, { page: 'hospitalizacion/pasaportes' });
+    static vMenu() {
+        return m(Sidebar, { page: 'hospitalizacion/pasaportes' });
     }
-    reloadData(idFiltro) {
-        this.pasaportes = null;
-        this.idFiltro = idFiltro;
+    static reloadData(idFiltro) {
+        Pasaportes.usuarios = null;
+        Pasaportes.idFiltro = idFiltro;
     }
-    fetchProfile() {
+    static fetchProfile() {
 
-        let __this = this;
 
-        if (__this.pasaportes !== null && __this.pasaportes.status) {
-            return __this.pasaportes.data.map(function (_val, _i, _contentData) {
-                if (__this.idPasaporte == _val.NHC) {
-                    __this.dataPasaporte = _val;
+        if (Pasaportes.usuarios !== null && Pasaportes.usuarios.status) {
+            return Pasaportes.usuarios.data.map(function (_val, _i, _contentData) {
+                if (Pasaportes.idUsr == _val.samaccountname) {
+                    Pasaportes.dataUser = _val;
                 }
             })
         }
 
 
     }
-    fetchData() {
+    static fetchData() {
 
-        let _queryString = '?idFiltro=' + this.idFiltro;
+        let _queryString = '?idFiltro=' + Pasaportes.idFiltro;
 
         return m.request({
             method: "GET",
-            url: ApiHTTP.apiUrl + "/v2/pacientes/pasaportes" + _queryString,
+            url: ApiHTTP.apiUrl + "/v2/pasaportes/generados" + _queryString,
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
-                'Authorization': localStorage.getItem('userToken')
             },
         })
             .then(function (result) {
@@ -451,7 +476,7 @@ class Pasaportes extends App {
             });
 
     }
-    arqTable() {
+    static arqTable() {
         return {
             data: null,
             dom: 'ltp',
@@ -489,11 +514,16 @@ class Pasaportes extends App {
                 title: "NHC:",
             },
             {
-                title: "Paciente:",
+                title: "Fecha de Admisión:",
             },
             {
-                title: "Pasaporte:",
+                title: "Paciente:",
             },
+
+            {
+                title: "Especialidad:",
+            },
+
             {
                 title: "Opciones:",
             }
@@ -508,7 +538,7 @@ class Pasaportes extends App {
             },
             {
                 mRender: function (data, type, full) {
-                    return full.samaccountname;
+                    return full.HC;
                 },
                 visible: true,
                 aTargets: [1],
@@ -517,21 +547,32 @@ class Pasaportes extends App {
             },
             {
                 mRender: function (data, type, full) {
-                    return full.sn;
-
+                    return full.FECHA_ADMISION;
                 },
                 visible: true,
                 aTargets: [2],
                 orderable: true,
 
-            }, {
+            },
+            {
                 mRender: function (data, type, full) {
-                    return full.cn;
+                    return full.NOMBRE;
 
                 },
                 visible: true,
                 aTargets: [3],
                 orderable: true,
+                width: '40%'
+
+            }, {
+                mRender: function (data, type, full) {
+                    return full.ESPECIALIDAD;
+
+                },
+                visible: true,
+                aTargets: [4],
+                orderable: true,
+
 
             },
             {
@@ -540,7 +581,7 @@ class Pasaportes extends App {
 
                 },
                 visible: true,
-                aTargets: [4],
+                aTargets: [5],
                 orderable: true,
 
             }
@@ -556,31 +597,43 @@ class Pasaportes extends App {
                                 (iDisplayIndexFull + 1)
                             ]),
                             m("td", [
-                                aData.NHC
+                                aData.HC
                             ]),
-                            m("td", [
-                                aData.PTE
-                            ]),
-
-                            m("td.bg-warning", [
-                                m(".", [
-                                    m('.tx-14.d-block.tx-semibold', 'Status: Pendiente '),
-                                    m('.tx-12.d-block', 'Asignado a: ' + aData.NHC),
-                                    m('.tx-12.d-block', 'Fecha Asignación: ' + aData.NHC),
-                                ])
-
-                            ]),
-
 
                             m("td", [
-                                m('button.btn.btn-xs.btn-block.tx-semibold.tx-white', {
+                                aData.FECHA_ADMISION
+                            ]),
+                            m("td", [
+                                aData.NOMBRE
+                            ]),
+                            m("td", [
+                                aData.ESPECIALIDAD,
+
+                            ]),
+
+
+                            m("td", [
+
+                                m('button.btn.btn-block.btn-secondary.tx-12', {
                                     style: { "background-color": "#185b98" },
                                     onclick: () => {
-                                        m.route.set('/hospitalizacion/pasaporte/', {
-                                            idPasaporte: aData.NHC
-                                        });
+
+                                        let modal = $('#modalViewQR');
+                                        modal.modal('show');
+
+                                        let canvasElement = document.querySelector('canvas.qr');
+                                        qrcode.toCanvas(
+                                            canvasElement,
+                                            'https://pasaportes.hospitalmetropolitano.org/step-passport/?NHC=' + aData.HC + '&PTE=' + encodeURIComponent(aData.NOMBRE) + '&HAB=' + encodeURIComponent(aData.HABITACION) + '&MED=' + encodeURIComponent(aData.NOMBRE_MEDICO) + '&ESP=' + encodeURIComponent(aData.ESPECIALIDAD), {
+                                            width: 250
+                                        }
+                                        );
+
                                     }
-                                }, 'Ver Pasaporte')
+
+                                }, [
+                                    " Ver QR "
+                                ]),
                             ])
 
 
@@ -597,19 +650,19 @@ class Pasaportes extends App {
             },
         };
     }
-    vTableUsuarios(idTable, dataTable, arqTable) {
+    static vTableUsuarios(idTable, dataTable, arqTable) {
         return [
             m(Table, { idTable: idTable, dataTable: dataTable, arqTable: arqTable })
         ]
     }
-    page() {
+    static page() {
         return [
-            this.vHeader(),
-            this.vMenu(),
-            (this.idPasaporte == null ? [
-                this.vMain()
+            Pasaportes.vHeader(),
+            Pasaportes.vMenu(),
+            (Pasaportes.idUsr == null ? [
+                Pasaportes.vMain()
             ] : [
-                this.vMainProfile()
+                Pasaportes.vMainProfile()
             ])
         ];
     }
