@@ -435,7 +435,7 @@ class usrMV extends App {
 
         return m.request({
             method: "GET",
-            url: ApiHTTP.apiUrl + "/v2/usuarios/metroplus" + _queryString,
+            url: ApiHTTP.apiUrl + "/v2/sso/usuarios/metroplus" + _queryString,
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
                 'Authorization': localStorage.getItem('userToken')

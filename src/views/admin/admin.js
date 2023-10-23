@@ -67,6 +67,27 @@ class Administracion extends App {
                                 ])
                             ])
                         ),
+                        m("div.col-sm-6.col-lg-3.mg-t-20.mg-sm-t-30.mg-lg-t-0.mg-b-10",
+
+                            m("a[href='/administracion/metroplus']", {
+                                style: { 'color': "#325a98" }
+                            }, [
+                                m("div.card.card-help", [
+                                    m("div.card-body.tx-13", [
+                                        m("div.tx-60.lh-0.mg-b-15", {
+                                            style: { 'color': "#325a98" }
+                                        },
+                                            m("i.fas.fa-users")
+                                        ),
+
+                                        m("p.tx-color-03.mg-b-0.tx-semibold",
+                                            "Usuarios MetroPlus"
+                                        )
+                                    ])
+
+                                ])
+                            ])
+                        ),
 
 
 
