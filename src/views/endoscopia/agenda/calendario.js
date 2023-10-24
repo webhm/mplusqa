@@ -116,13 +116,12 @@ class ProximasCitas {
     static citas = null;
 
     onupdate() {
-        ProximasCitas.citas = Calendario.citas.data.events;
-
+        ProximasCitas.citas = Calendario.citas.data.events.sort((a, b) => moment(a.pn_inicio, 'DD/MM/YYYY HH:mm').unix() > moment(b.pn_inicio, 'DD/MM/YYYY HH:mm').unix());
         m.redraw();
     }
 
     oninit() {
-        ProximasCitas.citas = Calendario.citas.data.events;
+        ProximasCitas.citas = Calendario.citas.data.events.sort((a, b) => moment(a.pn_inicio, 'DD/MM/YYYY HH:mm').unix() > moment(b.pn_inicio, 'DD/MM/YYYY HH:mm').unix());
     }
 
     view() {

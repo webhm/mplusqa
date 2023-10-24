@@ -17,23 +17,37 @@ class Pasaportes extends App {
     static dataUser = null;
     static idUsr = null;
     static idFiltro = 1;
+    static fechaHasta = null;
+    static fechaDesde = null;
     constructor(_data) {
         super();
         if (App.isAuthenticated() && App.hasProfile('PERFIL_ADMINISTRACION_METROPLUS')) {
-            App.setTitle("Pasaportes Pacientes");
+            App.setTitle("Pasaportes de Pacientes");
             this.view = Pasaportes.page;
         }
+
     }
     oncreate(_data) {
         if (_data.attrs.idFiltro !== undefined) {
             Pasaportes.idFiltro = _data.attrs.idFiltro;
+            if (Pasaportes.idFiltro == 2) {
+                Pasaportes.fechaHasta = moment().format('DD-MM-YYYY');
+                Pasaportes.fechaDesde = moment().subtract(1, 'd').format('DD-MM-YYYY');
+                m.route.set('/hospitalizacion/pasaportes/', {
+                    idFiltro: Pasaportes.idFiltro,
+                    fechaDesde: Pasaportes.fechaDesde,
+                    fechaHasta: Pasaportes.fechaHasta
+                })
+            }
         }
+
         Pasaportes.fetchData().then((_data) => {
             Pasaportes.usuarios = _data;
         });
     }
     onupdate(_data) {
 
+        // Para vista de idUSR
         if (_data.attrs.idUsr !== undefined) {
             Pasaportes.idUsr = _data.attrs.idUsr;
             m.redraw();
@@ -41,6 +55,8 @@ class Pasaportes extends App {
             Pasaportes.idUsr = null;
             m.redraw();
         }
+
+
 
     }
     static vHeader() {
@@ -105,26 +121,80 @@ class Pasaportes extends App {
                                         m("span.badge.bg-litecoin.tx-white.tx-semibold.pd-l-10.pd-r-10.mg-l-5.tx-15", {
                                             oncreate: (el) => {
                                                 if (Pasaportes.idFiltro == 1) {
-                                                    el.dom.innerHTML = 'Pasaportes Pendientes';
+                                                    el.dom.innerHTML = 'Admisiones de Hoy';
                                                 }
                                                 if (Pasaportes.idFiltro == 2) {
-                                                    el.dom.innerHTML = 'Pasaportes Generados';
+                                                    el.dom.innerHTML = 'Admisiones Anteriores';
                                                 }
                                             },
-                                            onupdate: (el) => {
-                                                if (Pasaportes.idFiltro == 1) {
-                                                    el.dom.innerHTML = 'Pasaportes Pendientes';
-                                                }
-                                                if (Pasaportes.idFiltro == 2) {
-                                                    el.dom.innerHTML = 'Pasaportes Generados';
-                                                }
-                                            }
+
                                         }
 
                                         )
 
                                     ),
                                     m("div.d-flex.tx-14", [
+                                        m('.', {
+                                            class: (Pasaportes.idFiltro == 1 ? 'd-none' : 'd-flex')
+                                        }, [
+                                            m("div.link-03", {
+                                                title: "Desde"
+                                            },
+                                                m(".tx-10.pd-r-0", {
+                                                    style: { "padding-top": "10px" }
+                                                }, 'Desde:')
+                                            ),
+                                            m("div.link-03", {
+                                                style: { "cursor": "pointer" },
+                                                title: "Desde"
+                                            },
+
+                                                m("input.tx-light.pd-4[type='date'][id='desde']", {
+                                                    oncreate: (el) => {
+                                                        el.dom.value = (Pasaportes.idFiltro !== 1 ? moment(moment(Pasaportes.fechaDesde, 'DD-MM-YYYY')).format('YYYY-MM-DD') : '');
+                                                    },
+                                                    onchange: (el) => {
+                                                        Pasaportes.fechaDesde = moment(moment(el.target.value, 'YYYY-MM-DD')).format('DD-MM-YYYY');
+                                                        m.route.set("/hospitalizacion/pasaportes?idFiltro=" + Pasaportes.idFiltro + "&fechaDesde=" + Pasaportes.fechaDesde + "&fechaHasta=" + Pasaportes.fechaHasta);
+                                                        Pasaportes.reloadData(2);
+                                                        Pasaportes.fetchData().then((_data) => {
+                                                            Pasaportes.usuarios = _data;
+                                                        });
+                                                    },
+                                                    style: {
+                                                        "border": "transparent"
+                                                    }
+                                                })
+                                            ),
+                                            m("div.link-03", {
+                                                title: "Hasta"
+                                            },
+                                                m(".tx-10.pd-r-0", {
+                                                    style: { "padding-top": "10px" }
+                                                }, 'Hasta:')
+                                            ),
+                                            m("div.link-03", {
+                                                style: { "cursor": "pointer" },
+                                                title: "Hasta"
+                                            },
+                                                m("input.tx-light.pd-4[type='date'][id='hasta']", {
+                                                    oncreate: (el) => {
+                                                        el.dom.value = (Pasaportes.idFiltro !== 1 ? moment(moment(Pasaportes.fechaHasta, 'DD-MM-YYYY')).format('YYYY-MM-DD') : '');
+                                                    },
+                                                    onchange: (el) => {
+                                                        Pasaportes.fechaHasta = moment(moment(el.target.value, 'YYYY-MM-DD')).format('DD-MM-YYYY');
+                                                        m.route.set("/hospitalizacion/pasaportes?idFiltro=" + Pasaportes.idFiltro + "&fechaDesde=" + Pasaportes.fechaDesde + "&fechaHasta=" + Pasaportes.fechaHasta);
+                                                        Pasaportes.reloadData(2);
+                                                        Pasaportes.fetchData().then((_data) => {
+                                                            Pasaportes.usuarios = _data;
+                                                        });
+                                                    },
+                                                    style: {
+                                                        "border": "transparent"
+                                                    }
+                                                })
+                                            )
+                                        ]),
 
                                         m("div.dropdown.dropleft", [
 
@@ -148,11 +218,24 @@ class Pasaportes extends App {
                                                         });
                                                     }
                                                 }, [
-                                                    "Pasaportes Pendientes"
+                                                    "Admisiones de Hoy"
                                                 ]),
                                                 m(m.route.Link, {
                                                     class: 'dropdown-item',
-                                                    href: "/hospitalizacion/pasaportes/?idFiltro=2",
+                                                    href: "/hospitalizacion/pasaportes/",
+                                                    params: {
+                                                        idFiltro: 2,
+                                                        fechaDesde: Pasaportes.fechaDesde,
+                                                        fechaHasta: Pasaportes.fechaHasta
+                                                    },
+                                                    oncreate: () => {
+
+                                                        if (Pasaportes.idFiltro == 1) {
+                                                            Pasaportes.fechaHasta = moment().format('DD-MM-YYYY');
+                                                            Pasaportes.fechaDesde = moment().subtract(1, 'd').format('DD-MM-YYYY');
+                                                        }
+
+                                                    },
                                                     onclick: (e) => {
                                                         Pasaportes.reloadData(2);
                                                         Pasaportes.fetchData().then((_data) => {
@@ -160,7 +243,7 @@ class Pasaportes extends App {
                                                         });
                                                     }
                                                 }, [
-                                                    "Pasaportes Generados"
+                                                    "Admisiones Anteriores"
                                                 ]),
 
 
@@ -457,6 +540,10 @@ class Pasaportes extends App {
     static fetchData() {
 
         let _queryString = '?idFiltro=' + Pasaportes.idFiltro;
+
+        if (Pasaportes.idFiltro == 2 && Pasaportes.fechaDesde !== null) {
+            _queryString += '&FechaDesde=' + Pasaportes.fechaDesde + '&fechaHasta=' + Pasaportes.fechaHasta;
+        }
 
         return m.request({
             method: "GET",
