@@ -128,21 +128,17 @@ class ProximasCitas {
         if (OptionSelect.idFilter !== '' && !Calendario.loader && ProximasCitas.citas !== null && ProximasCitas.citas.length > 0) {
 
             return ProximasCitas.citas.map((_v, _i) => {
-                if (_v.tipo == 1 && _i <= 4) {
+                if (_v.tipo == 1 && moment(_v.pn_inicio, 'DD/MM/YYYY HH:mm').unix() > moment().unix() && _i <= 4) {
                     return [
                         m("a.schedule-item.bd-l.bd-2", {
                             onclick: (e) => {
                                 e.preventDefault();
                                 $('#calendar').fullCalendar('gotoDate', moment(_v.pn_inicio, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD'));
-
-                                // Initialize tooltip
-
                                 $('[data-toggle="tooltip"]').tooltip({
                                     template: '<div class=" tooltip tooltip-dark " role="tooltip">' +
                                         '<div class= "arrow" ></div>' +
                                         '<div class="tooltip-inner"></div>' +
                                         '</div > ',
-
                                 });
                             }
                         }, [
@@ -638,14 +634,14 @@ class Cita {
         Cita.data.end = calEvent.end;
         Cita.data.paciente = calEvent.title;
         Cita.data.estudio = calEvent.estudio;
-        Cita.data.prestador = calEvent.prestador;
         Cita.data.editable = calEvent.editable;
         Cita.data.comentarios = calEvent.comentarios;
         Cita.data.calendarios = calEvent.calendarios;
         Cita.data.pn_inicio = calEvent.pn_inicio;
         Cita.data.pn_fin = calEvent.pn_fin;
         Cita.data.sexType = calEvent.sexType;
-        Cita.data.email = calEvent.email;
+        Cita.data.email = calEvent.pc_email;
+        Cita.data.pc_email = calEvent.email;
         let nacimiento = moment(calEvent.pc_fecha_nacimiento);
         let hoy = moment();
         Cita.data.anios = hoy.diff(nacimiento, "years");
@@ -676,6 +672,76 @@ class Cita {
         $('#eventStartTime').val(moment(startDate).format('LT')).trigger('change');
         $('#eventEndTime').val(moment(endDate).format('LT')).trigger('change');
         m.redraw();
+    }
+
+    static reagendarHttp() {
+
+
+
+        Cita.data.error = undefined;
+
+        Calendario.validarAgendamiento();
+
+        Cita.loader = true;
+        Cita.data.calendarios = Calendario.calendarios;
+
+        m.request({
+            method: "POST",
+            url: "https://api.hospitalmetropolitano.org/v2/date/citas/upcall",
+            body: Cita.data,
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+            },
+        })
+            .then(function (res) {
+                Cita.loader = false;
+                if (res.status) {
+                    Cita.reAgendarCita();
+                } else {
+                    $('#modalUpdateEvent').animate({ scrollTop: 0 }, 'slow');
+                    Cita.data.error = res.message;
+                    throw res.message;
+                }
+            })
+            .catch(function (e) {
+                $('#modalUpdateEvent').animate({ scrollTop: 0 }, 'slow');
+                Cita.data.error = e;
+                throw e;
+            });
+
+    }
+
+    static cancelarHttp() {
+
+        Cita.data.error = undefined;
+        Cita.loader = true;
+        Cita.data.idCalendar = Calendario.idCalendar;
+        Cita.data.calendarios = Calendario.calendarios;
+
+        m.request({
+            method: "POST",
+            url: "https://api.hospitalmetropolitano.org/v2/date/citas/delcall",
+            body: Cita.data,
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+            },
+        })
+            .then(function (res) {
+                Cita.loader = false;
+                if (res.status) {
+                    Cita.cancelarCita();
+                } else {
+                    $('#modalCreateEvent').animate({ scrollTop: 0 }, 'slow');
+                    Cita.data.error = res.message;
+                    throw res.message;
+                }
+            })
+            .catch(function (e) {
+                $('#modalCreateEvent').animate({ scrollTop: 0 }, 'slow');
+                Cita.data.error = e;
+                throw e;
+            });
+
     }
 
     static agendarCitaHttp() {
@@ -826,7 +892,6 @@ class Cita {
     static reAgendarCita() {
 
 
-        Calendario.validarAgendamiento();
 
         Cita.loader = true;
         m.request({
@@ -1156,61 +1221,47 @@ class Calendario extends App {
             },
             eventDrop: function (calEvent) {
 
-                // Initialize tooltip
-
-                $('[data-toggle="tooltip"]').tooltip({
-                    template: '<div class=" tooltip tooltip-dark " role="tooltip">' +
-                        '<div class= "arrow" ></div>' +
-                        '<div class="tooltip-inner"></div>' +
-                        '</div > ',
-
-                });
 
 
                 Cita.data.id = calEvent.id;
                 Cita.data.start = calEvent.start.format('dddd, DD-MM-YYYY HH:mm');
                 Cita.data.end = calEvent.end.format('dddd, DD-MM-YYYY HH:mm');
                 Cita.data.paciente = calEvent.paciente;
-                Cita.data.prestador = calEvent.prestador;
                 Cita.data.nhc = calEvent.nhc;
-                Cita.data.codMedico = calEvent.codMedico;
                 Cita.data.codItem = calEvent.codItem;
                 Cita.data.estudio = calEvent.estudio;
                 Cita.data.comentarios = calEvent.comentarios;
                 Cita.data.idCalendar = calEvent.idCalendar;
                 Cita.data.ubicacion = calEvent.ubicacion;
+                Cita.data.email = calEvent.pc_email;
+
+
+
                 Cita.data.tipo = 1;
                 Cita.data.hashCita = calEvent.hashCita;
                 Cita.data.newHashCita = calEvent.start.format('YYYY-MM-DD HH:mm') + '.' + calEvent.end.format('YYYY-MM-DD HH:mm')
+
+                console.log(Cita.data)
+
                 Cita.verUpdate(calEvent);
                 Calendario.validarAgendamiento();
 
             },
             eventResize: function (calEvent) {
 
-                // Initialize tooltip
-
-                $('[data-toggle="tooltip"]').tooltip({
-                    template: '<div class=" tooltip tooltip-dark " role="tooltip">' +
-                        '<div class= "arrow" ></div>' +
-                        '<div class="tooltip-inner"></div>' +
-                        '</div > ',
-
-                });
 
 
                 Cita.data.id = calEvent.id;
                 Cita.data.start = calEvent.start.format('dddd, DD-MM-YYYY HH:mm');
                 Cita.data.end = calEvent.end.format('dddd, DD-MM-YYYY HH:mm');
                 Cita.data.paciente = calEvent.paciente;
-                Cita.data.prestador = calEvent.prestador;
                 Cita.data.nhc = calEvent.nhc;
-                Cita.data.codMedico = calEvent.codMedico;
                 Cita.data.codItem = calEvent.codItem;
                 Cita.data.estudio = calEvent.estudio;
                 Cita.data.comentarios = calEvent.comentarios;
                 Cita.data.idCalendar = calEvent.idCalendar;
                 Cita.data.ubicacion = calEvent.ubicacion;
+                Cita.data.email = calEvent.pc_email;
                 Cita.data.tipo = 1;
                 Cita.data.hashCita = calEvent.hashCita;
                 Cita.data.newHashCita = calEvent.start.format('YYYY-MM-DD HH:mm') + '.' + calEvent.end.format('YYYY-MM-DD HH:mm')
@@ -2083,24 +2134,26 @@ class Calendario extends App {
                                                                 m('span.tx-light.tx-5', "*Se enviará una notificación de correo a la(s) siguiente(s) direccione(s).")
                                                             ),
                                                             m("div",
-                                                                m("input.form-control[id='correoCita'][type='text'][data-role='tagsinput']", {
+                                                                m("input.form-control[id='correoCreaCita'][type='text'][data-role='tagsinput']", {
                                                                     onchange: (e) => {
                                                                         console.log(e)
 
                                                                     },
                                                                     oncreate: (el) => {
-                                                                        let elt = $('#correoCita');
+
+                                                                        let elt = $('#correoCreaCita');
                                                                         elt.tagsinput({
-                                                                            itemValue: 'value',
-                                                                            itemText: 'text',
-                                                                            typeaheadjs: {
-                                                                                name: 'correoCita',
-                                                                                displayKey: 'text',
-                                                                                source: []
-                                                                            }
+                                                                            allowDuplicates: true
                                                                         });
 
-                                                                        elt.tagsinput('add', { "value": Cita.data.email, "text": Cita.data.email });
+                                                                        elt.on('itemAdded', function (event) {
+                                                                            console.log('item added : ' + event.item);
+                                                                        });
+
+                                                                        if (Cita.data.email !== undefined) {
+                                                                            elt.tagsinput('add', Cita.data.email);
+                                                                        }
+
                                                                     }
                                                                 })
                                                             )
@@ -2579,7 +2632,7 @@ class Calendario extends App {
                                                             m('span.tx-light.tx-5', "*Se enviará una notificación de correo a la(s) siguiente(s) direccione(s).")
                                                         ),
                                                         m("div",
-                                                            m("input.form-control[id='correoCita'][type='text'][data-role='tagsinput']", {
+                                                            m("input.form-control[id='correoCitaUpdate'][type='text'][data-role='tagsinput']", {
                                                                 onchange: (e) => {
                                                                     console.log(e)
 
@@ -2587,18 +2640,19 @@ class Calendario extends App {
 
                                                                 oncreate: (el) => {
 
-                                                                    let elt = $('#correoCita');
+
+                                                                    let elt = $('#correoCitaUpdate');
                                                                     elt.tagsinput({
-                                                                        itemValue: 'value',
-                                                                        itemText: 'text',
-                                                                        typeaheadjs: {
-                                                                            name: 'correoCita',
-                                                                            displayKey: 'text',
-                                                                            source: []
-                                                                        }
+                                                                        allowDuplicates: true
                                                                     });
 
-                                                                    elt.tagsinput('add', { "value": Cita.data.email, "text": Cita.data.email });
+                                                                    elt.on('itemAdded', function (event) {
+                                                                        console.log('item added : ' + event.item);
+                                                                    });
+
+                                                                    if (Cita.data.email !== undefined) {
+                                                                        elt.tagsinput('add', Cita.data.email);
+                                                                    }
 
 
 
@@ -2623,7 +2677,7 @@ class Calendario extends App {
                             m("button.btn.btn-primary.mg-r-5", {
                                 onclick: () => {
 
-                                    Cita.reAgendarCita();
+                                    Cita.reagendarHttp();
 
                                 }
                             },
