@@ -304,6 +304,8 @@ class BuscadorItems {
                                         Cita.data.estudio = _i._aData.DS_ITEM_AGENDAMENTO;
                                         Cita.data.pn_item_agendamento = _i._aData.CD_ITEM_AGENDAMENTO;
                                         Cita.buscarItems = !Cita.buscarItems;
+                                        Cita.data.error = undefined;
+
                                         Calendario.validarAgendamiento();
                                     }
                                 },
@@ -529,6 +531,10 @@ class BuscadorPacientes {
                                         Cita.data.pc_email = Cita.data.email;
                                         Cita.data.pc_fecha_nacimiento = Cita.data.dateBirth;
                                         Cita.buscarPacientes = !Cita.buscarPacientes;
+
+                                        Cita.data.error = undefined;
+
+
                                     }
                                 },
                                     "Seleccionar"
@@ -659,6 +665,7 @@ class Cita {
     }
 
     static verUpdate(calEvent) {
+        $('[data-toggle="tooltip"]').tooltip('hide');
         let modal = $('#modalUpdateEvent');
         modal.modal('show');
         modal.find('.modal-header').css('backgroundColor', (calEvent.borderColor) ? calEvent.borderColor : calEvent.borderColor);
@@ -666,6 +673,7 @@ class Cita {
     }
 
     static crearCita(startDate, endDate) {
+        $('[data-toggle="tooltip"]').tooltip('hide');
         this.data.hashCita = startDate.format('YYYY-MM-DD HH:mm') + '.' + endDate.format('YYYY-MM-DD HH:mm')
         this.data.start = startDate.format('dddd, DD-MM-YYYY HH:mm');
         this.data.end = endDate.format('dddd, DD-MM-YYYY HH:mm');
@@ -1246,10 +1254,10 @@ class Calendario extends App {
                 Cita.data.hashCita = calEvent.hashCita;
                 Cita.data.newHashCita = calEvent.start.format('YYYY-MM-DD HH:mm') + '.' + calEvent.end.format('YYYY-MM-DD HH:mm')
 
-                console.log(Cita.data)
+
+                Calendario.validarAgendamiento();
 
                 Cita.verUpdate(calEvent);
-                Calendario.validarAgendamiento();
 
             },
             eventResize: function (calEvent) {
@@ -1270,8 +1278,9 @@ class Calendario extends App {
                 Cita.data.tipo = 1;
                 Cita.data.hashCita = calEvent.hashCita;
                 Cita.data.newHashCita = calEvent.start.format('YYYY-MM-DD HH:mm') + '.' + calEvent.end.format('YYYY-MM-DD HH:mm')
-                Cita.verUpdate(calEvent);
                 Calendario.validarAgendamiento();
+                Cita.verUpdate(calEvent);
+
 
 
 
@@ -1341,12 +1350,9 @@ class Calendario extends App {
         var dateNow = calendar.getDate();
         calendar.option('select', function (startDate, endDate) {
 
-            let fecha = moment(startDate);
-            let hoy = moment();
-            let dias = hoy.diff(fecha, "days");
+            let fecha = moment(startDate).format('DD/MM/YYYY HH:mm');
 
-            console.log(1111, dias)
-            if (dias < 1) {
+            if (moment(fecha, 'DD/MM/YYYY HH:mm').unix() > moment().unix()) {
                 Cita.data = {};
                 Cita.data.tipo = 1;
                 Cita.crearCita(startDate, endDate);
@@ -2865,6 +2871,15 @@ class Calendario extends App {
 
     static validarAgendamiento() {
 
+        let fecha = moment(Cita.data.pn_inicio).format('DD/MM/YYYY HH:mm');
+
+        if (moment(fecha, 'DD/MM/YYYY HH:mm').unix() < moment().unix()) {
+            $('#modalUpdateEvent').modal('hide');
+            $('#modalCreateEvent').modal('hide');
+            Calendario.error = 'No se puede reagendar. Una cita en fecha anterior.';
+            throw 'Error de Validación';
+        }
+
         let _track = true;
         let _timeInicio = '';
         let _timeFin = '';
@@ -2890,6 +2905,8 @@ class Calendario extends App {
         })
 
         if (!_track) {
+
+            $('#modalUpdateEvent').modal('hide');
             $('#modalCreateEvent').modal('hide');
             Calendario.error = 'No se puede reagendar. Ya existe una cita agendada desde: ' + _timeInicio + ' hasta: ' + _timeFin;
             throw 'Error de Validación';
