@@ -116,30 +116,32 @@ class ProximasCitas {
     static citas = null;
 
     onupdate() {
-        ProximasCitas.citas = Calendario.citas.data.events.sort((a, b) => moment(a.pn_inicio, 'DD/MM/YYYY HH:mm').unix() > moment(b.pn_inicio, 'DD/MM/YYYY HH:mm').unix());
+        ProximasCitas.citas = Calendario.citas.data.events.sort((a, b) => moment(a.pn_inicio, 'DD/MM/YYYY HH:mm').unix() > moment().unix());
         m.redraw();
     }
 
     oninit() {
-        ProximasCitas.citas = Calendario.citas.data.events.sort((a, b) => moment(a.pn_inicio, 'DD/MM/YYYY HH:mm').unix() > moment(b.pn_inicio, 'DD/MM/YYYY HH:mm').unix());
+
+
+        ProximasCitas.citas = Calendario.citas.data.events.sort((a, b) => moment(a.pn_inicio, 'DD/MM/YYYY HH:mm').unix() > moment().unix());
     }
 
+
+
     view() {
+
         if (OptionSelect.idFilter !== '' && !Calendario.loader && ProximasCitas.citas !== null && ProximasCitas.citas.length > 0) {
 
             return ProximasCitas.citas.map((_v, _i) => {
+
                 if (_v.tipo == 1 && moment(_v.pn_inicio, 'DD/MM/YYYY HH:mm').unix() > moment().unix() && _i <= 4) {
+
                     return [
                         m("a.schedule-item.bd-l.bd-2", {
                             onclick: (e) => {
                                 e.preventDefault();
                                 $('#calendar').fullCalendar('gotoDate', moment(_v.pn_inicio, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD'));
-                                $('[data-toggle="tooltip"]').tooltip({
-                                    template: '<div class=" tooltip tooltip-dark " role="tooltip">' +
-                                        '<div class= "arrow" ></div>' +
-                                        '<div class="tooltip-inner"></div>' +
-                                        '</div > ',
-                                });
+
                             }
                         }, [
                             m("span.tx-5.wd-100p.pd-1.pd-r-2.pd-l-5.mg-b-5.tx-semibold", {
@@ -153,6 +155,9 @@ class ProximasCitas {
                             )
                         ]),
                     ]
+
+                } else {
+                    ProximasCitas.citas.splice(_i, 1);
                 }
 
 
