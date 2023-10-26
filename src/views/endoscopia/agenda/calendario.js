@@ -141,7 +141,13 @@ class ProximasCitas {
                             onclick: (e) => {
                                 e.preventDefault();
                                 $('#calendar').fullCalendar('gotoDate', moment(_v.pn_inicio, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD'));
+                                $('[data-toggle="tooltip"]').tooltip({
+                                    template: '<div class=" tooltip tooltip-dark " role="tooltip">' +
+                                        '<div class= "arrow" ></div>' +
+                                        '<div class="tooltip-inner"></div>' +
+                                        '</div > ',
 
+                                });
                             }
                         }, [
                             m("span.tx-5.wd-100p.pd-1.pd-r-2.pd-l-5.mg-b-5.tx-semibold", {
@@ -637,7 +643,7 @@ class Cita {
     static data = {};
 
     static verCita(calEvent) {
-        Cita.data.track = 0;
+
         Cita.data.id = calEvent.id;
         Cita.data.hashCita = calEvent.id;
         Cita.data.idCalendar = calEvent.idCalendar;
@@ -665,16 +671,36 @@ class Cita {
     }
 
     static verUpdate(calEvent) {
-        Cita.data.track = 1;
+        Cita.data = calEvent;
+        Cita.data.id = calEvent.id;
+        Cita.data.hashCita = calEvent.id;
+        Cita.data.idCalendar = calEvent.idCalendar;
+        Cita.data.start = calEvent.start;
+        Cita.data.end = calEvent.end;
+        Cita.data.paciente = calEvent.title;
+        Cita.data.estudio = calEvent.estudio;
+        Cita.data.editable = calEvent.editable;
+        Cita.data.comentarios = calEvent.comentarios;
+        Cita.data.calendarios = calEvent.calendarios;
+        Cita.data.pn_inicio = calEvent.pn_inicio;
+        Cita.data.pn_fin = calEvent.pn_fin;
+        Cita.data.sexType = calEvent.sexType;
+        Cita.data.email = calEvent.pc_email;
+        Cita.data.pc_email = calEvent.email;
+        let nacimiento = moment(calEvent.pc_fecha_nacimiento);
+        let hoy = moment();
+        Cita.data.anios = hoy.diff(nacimiento, "years");
+
         $('[data-toggle="tooltip"]').tooltip('hide');
         let modal = $('#modalUpdateEvent');
         modal.modal('show');
         modal.find('.modal-header').css('backgroundColor', (calEvent.borderColor) ? calEvent.borderColor : calEvent.borderColor);
         m.redraw();
+
+
     }
 
     static crearCita(startDate, endDate) {
-        Cita.data.track = 0;
         $('[data-toggle="tooltip"]').tooltip('hide');
         this.data.hashCita = startDate.format('YYYY-MM-DD HH:mm') + '.' + endDate.format('YYYY-MM-DD HH:mm')
         this.data.start = startDate.format('dddd, DD-MM-YYYY HH:mm');
@@ -1236,7 +1262,13 @@ class Calendario extends App {
             },
             eventDrop: function (calEvent) {
 
+                $('[data-toggle="tooltip"]').tooltip({
+                    template: '<div class=" tooltip tooltip-dark " role="tooltip">' +
+                        '<div class= "arrow" ></div>' +
+                        '<div class="tooltip-inner"></div>' +
+                        '</div > ',
 
+                });
 
                 Cita.data.id = calEvent.id;
                 Cita.data.start = calEvent.start.format('dddd, DD-MM-YYYY HH:mm');
@@ -1249,22 +1281,21 @@ class Calendario extends App {
                 Cita.data.idCalendar = calEvent.idCalendar;
                 Cita.data.ubicacion = calEvent.ubicacion;
                 Cita.data.email = calEvent.pc_email;
-
-
-
                 Cita.data.tipo = 1;
                 Cita.data.hashCita = calEvent.hashCita;
                 Cita.data.newHashCita = calEvent.start.format('YYYY-MM-DD HH:mm') + '.' + calEvent.end.format('YYYY-MM-DD HH:mm')
-
-
-                Calendario.validarAgendamiento();
-
                 Cita.verUpdate(calEvent);
 
             },
             eventResize: function (calEvent) {
 
+                $('[data-toggle="tooltip"]').tooltip({
+                    template: '<div class=" tooltip tooltip-dark " role="tooltip">' +
+                        '<div class= "arrow" ></div>' +
+                        '<div class="tooltip-inner"></div>' +
+                        '</div > ',
 
+                });
 
                 Cita.data.id = calEvent.id;
                 Cita.data.start = calEvent.start.format('dddd, DD-MM-YYYY HH:mm');
@@ -1280,9 +1311,7 @@ class Calendario extends App {
                 Cita.data.tipo = 1;
                 Cita.data.hashCita = calEvent.hashCita;
                 Cita.data.newHashCita = calEvent.start.format('YYYY-MM-DD HH:mm') + '.' + calEvent.end.format('YYYY-MM-DD HH:mm')
-                Calendario.validarAgendamiento();
                 Cita.verUpdate(calEvent);
-
 
 
 
@@ -2424,6 +2453,7 @@ class Calendario extends App {
 
 
                                 ]),
+
                                 m("div", {
                                     class: (!Cita.buscarItems ? 'd-none' : '')
                                 }, [
@@ -2530,15 +2560,16 @@ class Calendario extends App {
                                                 m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1",
                                                     "Fecha y Hora de Inicio:"
                                                 ),
-                                                m("input.form-control[id='eventStartDate'][type='text'][disabled='disabled']", {
+                                                m("input.form-control.text-capitalize[id='eventStartDate'][type='text'][disabled='disabled']", {
                                                     value: Cita.data.start
+
                                                 })
                                             ),
                                             m("div.col-6",
                                                 m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1",
                                                     "Fecha y Hora de Fin"
                                                 ),
-                                                m("input.form-control[type='text'][value=''][disabled='disabled']", {
+                                                m("input.form-control.text-capitalize[type='text'][disabled='disabled']", {
                                                     value: Cita.data.end
 
                                                 })
@@ -2605,21 +2636,21 @@ class Calendario extends App {
                                     m("div.form-group",
                                         m("ul.nav.nav-tabs[id='myTab'][role='tablist']", [
                                             m("li.nav-item",
-                                                m("a.nav-link.active[id='home-tab'][data-toggle='tab'][href='#home'][role='tab'][aria-controls='home'][aria-selected='true']",
+                                                m("a.nav-link.active[id='homeUpdate-tab'][data-toggle='tab'][href='#homeUpdate'][role='tab'][aria-controls='homeUpdate'][aria-selected='true']",
                                                     "Comentarios"
                                                 )
                                             ),
                                             m("li.nav-item", {
                                                 class: (Cita.data.tipo == 1 && Cita.data.email !== undefined ? '' : 'd-none')
                                             },
-                                                m("a.nav-link[id='profile-tab'][data-toggle='tab'][href='#profile'][role='tab'][aria-controls='profile'][aria-selected='false']",
+                                                m("a.nav-link[id='profile-tab'][data-toggle='tab'][href='#profileUpdate'][role='tab'][aria-controls='profileUpdate'][aria-selected='false']",
                                                     "Notificación al Correo"
                                                 )
                                             ),
 
                                         ]),
                                         m(".tab-content.bd.bd-gray-300.bd-t-0.pd-20[id='myTabContent']", [
-                                            m(".tab-pane.fade.show.active[id='home'][role='tabpanel'][aria-labelledby='home-tab']", [
+                                            m(".tab-pane.fade.show.active[id='homeUpdate'][role='tabpanel'][aria-labelledby='homeUpdate-tab']", [
                                                 m('div.form-group', [
                                                     m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1",
                                                         "Comentarios: ",
@@ -2633,10 +2664,10 @@ class Calendario extends App {
 
 
                                             ]),
-                                            m(".tab-pane.fade[id='profile'][role='tabpanel'][aria-labelledby='profile-tab']", {
+                                            m(".tab-pane.fade[id='profileUpdate'][role='tabpanel'][aria-labelledby='profileUpdate-tab']", {
                                                 class: (Cita.data.tipo == 1 && Cita.data.email !== undefined ? '' : 'd-none')
                                             }, [
-                                                (Cita.data.tipo == 1 && Cita.data.track == 1 && Cita.data.email !== undefined ? [
+                                                (Cita.data.tipo == 1 && Cita.data.email !== undefined ? [
                                                     m("div.form-group",
                                                         m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1",
                                                             "Correo electrónico: ",
