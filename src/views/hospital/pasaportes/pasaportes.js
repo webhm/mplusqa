@@ -542,7 +542,7 @@ class Pasaportes extends App {
         let _queryString = '?idFiltro=' + Pasaportes.idFiltro;
 
         if (Pasaportes.idFiltro == 2 && Pasaportes.fechaDesde !== null) {
-            _queryString += '&FechaDesde=' + Pasaportes.fechaDesde + '&fechaHasta=' + Pasaportes.fechaHasta;
+            _queryString += '&fechaDesde=' + Pasaportes.fechaDesde + '&fechaHasta=' + Pasaportes.fechaHasta;
         }
 
         return m.request({

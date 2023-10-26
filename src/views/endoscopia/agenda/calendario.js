@@ -637,7 +637,7 @@ class Cita {
     static data = {};
 
     static verCita(calEvent) {
-
+        Cita.data.track = 0;
         Cita.data.id = calEvent.id;
         Cita.data.hashCita = calEvent.id;
         Cita.data.idCalendar = calEvent.idCalendar;
@@ -665,6 +665,7 @@ class Cita {
     }
 
     static verUpdate(calEvent) {
+        Cita.data.track = 1;
         $('[data-toggle="tooltip"]').tooltip('hide');
         let modal = $('#modalUpdateEvent');
         modal.modal('show');
@@ -673,6 +674,7 @@ class Cita {
     }
 
     static crearCita(startDate, endDate) {
+        Cita.data.track = 0;
         $('[data-toggle="tooltip"]').tooltip('hide');
         this.data.hashCita = startDate.format('YYYY-MM-DD HH:mm') + '.' + endDate.format('YYYY-MM-DD HH:mm')
         this.data.start = startDate.format('dddd, DD-MM-YYYY HH:mm');
@@ -2422,7 +2424,6 @@ class Calendario extends App {
 
 
                                 ]),
-
                                 m("div", {
                                     class: (!Cita.buscarItems ? 'd-none' : '')
                                 }, [
@@ -2635,7 +2636,7 @@ class Calendario extends App {
                                             m(".tab-pane.fade[id='profile'][role='tabpanel'][aria-labelledby='profile-tab']", {
                                                 class: (Cita.data.tipo == 1 && Cita.data.email !== undefined ? '' : 'd-none')
                                             }, [
-                                                (Cita.data.tipo == 1 && Cita.data.email !== undefined ? [
+                                                (Cita.data.tipo == 1 && Cita.data.track == 1 && Cita.data.email !== undefined ? [
                                                     m("div.form-group",
                                                         m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1",
                                                             "Correo electrónico: ",
