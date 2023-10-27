@@ -293,7 +293,8 @@ class MenuFlebot {
 
                             m("div.d-flex.bg-gray-200", [
                                 m("div.pd-10.bg-gray-300.flex-grow-1",
-                                    "Usuario: " + Flebotomista.getUsrToma()
+                                    // "Usuario: " + Flebotomista.getUsrToma()
+                                    "Usuario: MCHANG"
                                 ),
 
                                 m("div.pd-10.bg-gray-500", {
@@ -365,7 +366,8 @@ class MenuFlebot {
                                         class: (localStorage.authTokenFlebotomista == undefined ? 'd-none' : ''),
                                     }, [
                                         m('div.d-inline',
-                                            "Usuario: " + Flebotomista.getUsrToma()
+                                            //  "Usuario: " + Flebotomista.getUsrToma()
+                                            "Usuario: MCHANG"
                                         ),
                                         m("i.fas.fa-edit.tx-40.tx-light.mg-l-15", {
                                             title: " Editar ",
@@ -431,6 +433,26 @@ class Flebotomista extends App {
         } else {
             return localStorage.peerId;
         }
+    }
+
+    static fetchLlamada() {
+
+        return m.request({
+            method: "POST",
+            url: "http://api.hospitalmetropolitano.org/t/v1/procesos/call-toma",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+            },
+        })
+            .then(function (result) {
+                alert('Proceso realizado con éxito.');
+            })
+            .catch(function (e) {
+                return {
+                    'status': null,
+                    'message': e
+                };
+            });
     }
 
     static fetchPendientes() {
@@ -526,6 +548,9 @@ class Flebotomista extends App {
                         view: () => {
                             return [
                                 m("button.btn-xs[type='button']", {
+                                    onclick: () => {
+                                        Flebotomista.fetchLlamada();
+                                    },
                                     class: 'bg-warning',
                                 },
                                     m('i.fas.fa-bell.tx-22'),
@@ -612,7 +637,9 @@ class Flebotomista extends App {
                     return m.mount(nTd, {
                         view: () => {
                             return [
-                                m("button.btn-xs.btn-block.tx-white[type='button']", {
+                                m("a.btn-xs.btn-block.tx-white.text-center[role='button']", {
+                                    href: "https://metroplus.hospitalmetropolitano.org/laboratorio/flebotomista/pedido?numeroHistoriaClinica=" + oData.numeroHistoriaClinica + "&numeroAtencion=" + oData.cdAtendimento + "&numeroPedido=" + oData.codigoPedido + "&idTimeRecord=0&track=view",
+                                    target: "_blank",
                                     style: { "background-color": "#185b98" },
                                 },
                                     m('i.fas.fa-folder-open.tx-22'),
