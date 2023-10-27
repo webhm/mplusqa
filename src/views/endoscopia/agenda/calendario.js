@@ -181,7 +181,7 @@ class ProximasCitas {
     view() {
         if (ProximasCitas.citas !== null && ProximasCitas.citas.length > 0) {
             return ProximasCitas.citas.map((_v, _i) => {
-                if (_v.tipo == 1 && _i <= 4) {
+                if (_v.tipo == 1 && _i <= 5) {
                     return [
                         m("a.schedule-item.bd-l.bd-2", {
                             onclick: (e) => {
@@ -222,7 +222,7 @@ class ProximosEventos {
     view() {
         if (ProximosEventos.citas !== null && ProximosEventos.citas.length > 0) {
             return ProximosEventos.citas.map((_v, _i) => {
-                if (_v.tipo == 2 && _i <= 4) {
+                if (_v.tipo == 2 && _i <= 5) {
                     return [
                         m("a.schedule-item.bd-l.bd-2", {
                             onclick: (e) => {
@@ -616,6 +616,8 @@ class Cita {
     static data = {};
 
     static verCita(calEvent) {
+        Cita.data = {};
+        Cita.data.tipo = calEvent.tipo;
         Cita.data.id = calEvent.id;
         Cita.data.hashCita = calEvent.id;
         Cita.data.idCalendar = calEvent.idCalendar;
@@ -634,6 +636,36 @@ class Cita {
         let nacimiento = moment(calEvent.pc_fecha_nacimiento);
         let hoy = moment();
         Cita.data.anios = hoy.diff(nacimiento, "years");
+        if (Cita.data.tipo == 2) {
+            Cita.data.evento = calEvent.title;
+        }
+        if (Cita.data.tipo == 3) {
+            Cita.data.nota = calEvent.title;
+        }
+
+
+        $('[data-toggle="tooltip"]').tooltip("hide");
+        let modal = $("#modalCalendarEvent");
+        modal.modal("show");
+        modal.find(".modal-header").css("backgroundColor", calEvent.borderColor ? calEvent.borderColor : calEvent.borderColor);
+        m.redraw();
+    }
+
+    static verEvento(calEvent) {
+        Cita.data = {};
+        Cita.data.tipo = calEvent.tipo;
+        Cita.data.id = calEvent.id;
+        Cita.data.hashCita = calEvent.id;
+        Cita.data.idCalendar = calEvent.idCalendar;
+        Cita.data.start = calEvent.start.format("dddd, DD-MM-YYYY HH:mm");
+        Cita.data.end = calEvent.end.format("dddd, DD-MM-YYYY HH:mm");
+        Cita.data.comentarios = calEvent.description;
+        Cita.data.calendarios = calEvent.calendarios;
+        Cita.data.pn_inicio = calEvent.pn_inicio;
+        Cita.data.pn_fin = calEvent.pn_fin;
+        Cita.data.paciente = calEvent.title;
+        Cita.data.editable = calEvent.editable;
+
         $('[data-toggle="tooltip"]').tooltip("hide");
         let modal = $("#modalCalendarEvent");
         modal.modal("show");
@@ -642,25 +674,53 @@ class Cita {
     }
 
     static verUpdate(calEvent) {
-        Cita.data.id = calEvent.id;
-        Cita.data.hashCita = calEvent.id;
-        Cita.data.idCalendar = calEvent.idCalendar;
-        Cita.data.start = calEvent.start.format("dddd, DD-MM-YYYY HH:mm");
-        Cita.data.end = calEvent.end.format("dddd, DD-MM-YYYY HH:mm");
-        Cita.data.paciente = calEvent.title;
-        Cita.data.estudio = calEvent.estudio;
-        Cita.data.editable = calEvent.editable;
-        Cita.data.comentarios = calEvent.comentarios;
-        Cita.data.calendarios = calEvent.calendarios;
-        Cita.data.pn_inicio = calEvent.pn_inicio;
-        Cita.data.pn_fin = calEvent.pn_fin;
-        Cita.data.sexType = calEvent.sexType;
-        Cita.data.email = calEvent.email;
-        Cita.data.pc_email = calEvent.pc_email;
-        Cita.data.pc_fecha_nacimiento = calEvent.pc_fecha_nacimiento;
-        let nacimiento = moment(calEvent.pc_fecha_nacimiento);
-        let hoy = moment();
-        Cita.data.anios = hoy.diff(nacimiento, "years");
+
+        if (calEvent.tipo == 1) {
+            Cita.data.tipo = calEvent.tipo;
+            Cita.data.id = calEvent.id;
+            Cita.data.hashCita = calEvent.id;
+            Cita.data.idCalendar = calEvent.idCalendar;
+            Cita.data.start = calEvent.start.format("dddd, DD-MM-YYYY HH:mm");
+            Cita.data.end = calEvent.end.format("dddd, DD-MM-YYYY HH:mm");
+            Cita.data.paciente = calEvent.title;
+            Cita.data.estudio = calEvent.estudio;
+            Cita.data.editable = calEvent.editable;
+            Cita.data.comentarios = calEvent.comentarios;
+            Cita.data.calendarios = calEvent.calendarios;
+            Cita.data.pn_inicio = calEvent.pn_inicio;
+            Cita.data.pn_fin = calEvent.pn_fin;
+            Cita.data.sexType = calEvent.sexType;
+            Cita.data.email = calEvent.email;
+            Cita.data.pc_email = calEvent.pc_email;
+            Cita.data.pc_fecha_nacimiento = calEvent.pc_fecha_nacimiento;
+            let nacimiento = moment(calEvent.pc_fecha_nacimiento);
+            let hoy = moment();
+            Cita.data.anios = hoy.diff(nacimiento, "years");
+            Cita.data.newHashCita = calEvent.start.format("YYYY-MM-DD HH:mm") + "." + calEvent.end.format("YYYY-MM-DD HH:mm");
+
+        } else {
+            Cita.data.tipo = calEvent.tipo;
+            Cita.data.id = calEvent.id;
+            Cita.data.hashCita = calEvent.id;
+            Cita.data.idCalendar = calEvent.idCalendar;
+            Cita.data.start = calEvent.start.format("dddd, DD-MM-YYYY HH:mm");
+            Cita.data.end = calEvent.end.format("dddd, DD-MM-YYYY HH:mm");
+            Cita.data.comentarios = calEvent.description;
+            Cita.data.calendarios = calEvent.calendarios;
+            Cita.data.paciente = calEvent.title;
+            Cita.data.editable = calEvent.editable;
+            Cita.data.newHashCita = calEvent.start.format("YYYY-MM-DD HH:mm") + "." + calEvent.end.format("YYYY-MM-DD HH:mm");
+
+            if (Cita.data.tipo == 2) {
+                Cita.data.evento = calEvent.title;
+            }
+            if (Cita.data.tipo == 3) {
+                Cita.data.nota = calEvent.title;
+            }
+        }
+
+
+
         $('[data-toggle="tooltip"]').tooltip("hide");
         let modal = $("#modalUpdateEvent");
         modal.modal("show");
@@ -685,12 +745,13 @@ class Cita {
 
         Cita.data.error = undefined;
 
-        if (Cita.data.email != document.getElementById('correoCitaUpdate').value) {
-            Cita.data.email = document.getElementById('correoCitaUpdate').value;
+        if (Cita.data.tipo == 1) {
+            if (Cita.data.email != document.getElementById('correoCitaUpdate').value) {
+                Cita.data.email = document.getElementById('correoCitaUpdate').value;
+            }
         }
 
         Calendario.validarAgendamiento();
-
         Cita.loader = true;
         Cita.data.calendarios = Calendario.calendarios;
 
@@ -811,6 +872,8 @@ class Cita {
     }
 
     static trackReAgendar() {
+        console.log(Cita.data)
+
         Cita.loader = true;
 
         m.request({
@@ -924,8 +987,6 @@ class Cita {
             }
         }).then(function (res) {
             Cita.loader = false;
-
-            console.log(res);
 
             if (res.status) {
                 Calendario.success = res.message;
@@ -1167,7 +1228,7 @@ class Calendario extends App {
                 Cita.data.idCalendar = calEvent.idCalendar;
                 Cita.data.ubicacion = calEvent.ubicacion;
                 Cita.data.email = calEvent.pc_email;
-                Cita.data.tipo = 1;
+                Cita.data.tipo = calEvent.tipo;
                 Cita.data.hashCita = calEvent.hashCita;
                 Cita.data.newHashCita = calEvent.start.format("YYYY-MM-DD HH:mm") + "." + calEvent.end.format("YYYY-MM-DD HH:mm");
                 Cita.verUpdate(calEvent);
@@ -1186,7 +1247,7 @@ class Calendario extends App {
                 Cita.data.idCalendar = calEvent.idCalendar;
                 Cita.data.ubicacion = calEvent.ubicacion;
                 Cita.data.email = calEvent.pc_email;
-                Cita.data.tipo = 1;
+                Cita.data.tipo = calEvent.tipo;
                 Cita.data.hashCita = calEvent.hashCita;
                 Cita.data.newHashCita = calEvent.start.format("YYYY-MM-DD HH:mm") + "." + calEvent.end.format("YYYY-MM-DD HH:mm");
                 Cita.verUpdate(calEvent);
@@ -1238,10 +1299,11 @@ class Calendario extends App {
         calendar.on("eventClick", function (calEvent, jsEvent, view) {
             if (calEvent.tipo == 1) {
                 Cita.verCita(calEvent);
-            } else if (calEvent.tipo == 3) {
-                Cita.data = {};
-                Cita.data.tipo = 1;
-                Cita.crearCita(calEvent.start, calEvent.end);
+            } else {
+                Cita.verEvento(calEvent);
+                // Cita.data = {};
+                // Cita.data.tipo = 1;
+                // Cita.crearCita(calEvent.start, calEvent.end);
             }
         });
 
@@ -1775,7 +1837,7 @@ class Calendario extends App {
                                 Cita.agendarCita();
                             }
                         }
-                    }, "Agendar Cita"),
+                    }, "Agendar"),
                     m("a.btn.btn-secondary[href=''][data-dismiss='modal']", "Cerrar"),
                 ]),
             ]))),
@@ -1787,69 +1849,109 @@ class Calendario extends App {
                     ]),
                 ]),
                 m("div.modal-body", [
-                    m("div.row", [
-                        m("div.col-12", [
-                            m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Agenda(s):"),
-                            m("p", [
-                                Cita.data.calendarios !== undefined ? [m(BadgeAgendas)] : [],
+                    m("div.mg-t-10.pd-10.wd-100p", {
+                        class: Cita.loader ? "" : "d-none"
+                    }, m("div.placeholder-paragraph", [m("div.line"), m("div.line")])),
+                    m('div', {
+                        class: Cita.loader ? "d-none" : ""
+                    }, [
+                        m("div.row", [
+                            m("div.col-12", [
+                                m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Agenda(s):"),
+                                m("p", [
+                                    Cita.data.calendarios !== undefined ? [m(BadgeAgendas)] : [],
+                                ]),
                             ]),
                         ]),
-                    ]),
-                    m("div.row", [
-                        m("div.col-sm-6", [
-                            m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Fecha y Hora de Inicio:"),
-                            m("p.event-start-date.text-capitalize", Cita.data.start),
-                        ]),
-                        m("div.col-sm-6", [
-                            m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Fecha y Hora de Fin:"),
-                            m("p.event-end-date.text-capitalize", Cita.data.end),
-                        ]),
-                    ]),
-                    m("div.row.mg-b-50", [
-                        m("div.col-6", [
-                            m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Paciente:"),
-                            m("p.mg-b-0", [Cita.data.paciente]),
-                            m("p", [
-                                Cita.data.anios + " Años - " + (
-                                    Cita.data.sexType == "M" ? "Masculino" : "Femenino"
-                                ),
+                        m("div.row", [
+                            m("div.col-sm-6", [
+                                m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Fecha y Hora de Inicio:"),
+                                m("p.event-start-date.text-capitalize", Cita.data.start),
+                            ]),
+                            m("div.col-sm-6", [
+                                m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Fecha y Hora de Fin:"),
+                                m("p.event-end-date.text-capitalize", Cita.data.end),
                             ]),
                         ]),
-                        m("div.col-6", [
-                            m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Correo(s) electrónico(s):"),
-                            m("p.mg-b-0", [Cita.data.email]),
-                        ]),
-                        m("div.col-6", [
-                            m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Estudio:"),
-                            m("p", [Cita.data.estudio]),
-                        ]),
-                        m("div.col-6", [
-                            m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Comentarios:"),
-                            m("p", [
-                                Cita.data.comentarios !== undefined && Cita.data.comentarios.length > 0 ? Cita.data.comentarios : "N/D",
-                            ]),
-                        ]),
+                        (Cita.data.tipo == 1 ? [
+
+                            m("div.row.mg-b-50", [
+                                m("div.col-6", [
+                                    m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Paciente:"),
+                                    m("p.mg-b-0", [Cita.data.paciente]),
+                                    m("p", [
+                                        Cita.data.anios + " Años - " + (
+                                            Cita.data.sexType == "M" ? "Masculino" : "Femenino"
+                                        ),
+                                    ]),
+                                ]),
+                                m("div.col-6", [
+                                    m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Correo(s) electrónico(s):"),
+                                    m("p.mg-b-0", [Cita.data.email]),
+                                ]),
+                                m("div.col-6", [
+                                    m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Estudio:"),
+                                    m("p", [Cita.data.estudio]),
+                                ]),
+                                m("div.col-6", [
+                                    m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Comentarios:"),
+                                    m("p", [
+                                        Cita.data.comentarios !== undefined && Cita.data.comentarios.length > 0 ? Cita.data.comentarios : "N/D",
+                                    ]),
+                                ]),
+                            ])
+                        ] : [
+                            m("div.row.mg-b-50", [
+                                m("div.col-6", [
+                                    m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Evento/Nota:"),
+                                    m("p.mg-b-0", Cita.data.paciente),
+
+                                ]),
+
+                                m("div.col-6", [
+                                    m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Comentarios:"),
+                                    m("p", [
+                                        Cita.data.comentarios !== undefined && Cita.data.comentarios.length > 0 ? Cita.data.comentarios : "N/D",
+                                    ]),
+                                ]),
+                            ])
+                        ])
                     ]),
                     m("hr"),
-                    m("div.text-right", [!Cita.data.editable ? [
-                        m("button.btn.btn-xs.btn-primary.mg-r-5[data-dismiss='modal']", {
+                    m("div.text-right", [
+                        (Cita.data.tipo !== 3 ? [!Cita.data.editable ? [
+                            m("button.btn.btn-xs.btn-primary.mg-r-5[data-dismiss='modal']", {
+                                onclick: () => {
+                                    Cita.trackReAgendar();
+                                }
+                            }, "Reagendar"),
+                        ] : [
+                            m("button.btn.btn-xs.btn-secondary.mg-r-5[data-dismiss='modal']", {
+                                onclick: () => {
+                                    Cita.trackCancelReAgendar();
+                                }
+                            }, "Cancelar Reagendamiento"),
+                        ],
+
+                        m("button.btn.btn-xs.btn-danger.mg-r-5", {
                             onclick: () => {
-                                Cita.trackReAgendar();
+                                Cita.cancelarHttp();
                             }
-                        }, "Reagendar Cita"),
-                    ] : [
-                        m("button.btn.btn-xs.btn-secondary.mg-r-5[data-dismiss='modal']", {
-                            onclick: () => {
-                                Cita.trackCancelReAgendar();
-                            }
-                        }, "Cancelar Reagendamiento"),
-                    ],
-                    m("button.btn.btn-xs.btn-danger.mg-r-5", {
-                        onclick: () => {
-                            Cita.cancelarCita();
-                        }
-                    }, "Cancelar Cita"),
-                    m("a.btn.btn-xs.btn-secondary.pd-x-20[href=''][data-dismiss='modal']", "Cerrar"),
+                        }, "Cancelar"),
+
+                        ] : [
+                            m("button.btn.btn-xs.btn-danger.mg-r-5", {
+                                onclick: () => {
+                                    Cita.cancelarHttp();
+                                }
+                            }, "Cancelar"),
+
+                        ]),
+
+
+
+
+                        m("a.btn.btn-xs.btn-secondary.pd-x-20[href=''][data-dismiss='modal']", "Cerrar"),
                     ]),
                 ]),
             ]))),
@@ -1868,194 +1970,231 @@ class Calendario extends App {
                     m("div", {
                         class: Cita.loader ? "d-none" : ""
                     }, [
-                        m("div", {
-                            class: !Cita.buscarPacientes ? "d-none" : ""
-                        }, [
-                            m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Buscar Pacientes:"),
-                            m("div.form-group", m("form", {
-                                onsubmit: (e) => {
-                                    e.preventDefault();
-                                    if (BuscadorPacientes.searchField.length !== 0) {
-                                        BuscadorPacientes.fetchSearch();
-                                    } else {
-                                        alert("Ingrese Apellidos y Nombres para continuar.");
-                                    }
-                                }
+                        (Cita.data.tipo == 1 ? [
+                            m("div", {
+                                class: !Cita.buscarPacientes ? "d-none" : ""
                             }, [
-                                m("div.input-group", [
-                                    m("input.form-control[type='text'][placeholder='Apellidos y Nombres']", {
-                                        oninput: (e) => {
-                                            BuscadorPacientes.searchField = e.target.value;
+                                m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Buscar Pacientes:"),
+                                m("div.form-group", m("form", {
+                                    onsubmit: (e) => {
+                                        e.preventDefault();
+                                        if (BuscadorPacientes.searchField.length !== 0) {
+                                            BuscadorPacientes.fetchSearch();
+                                        } else {
+                                            alert("Ingrese Apellidos y Nombres para continuar.");
                                         }
-                                    }),
-                                    m("div.input-group-append", m("button.btn.btn-outline-light[type='button']", {
-                                        onclick: (e) => {
-                                            if (BuscadorPacientes.searchField.length !== 0) {
-                                                BuscadorPacientes.fetchSearch();
-                                            } else {
-                                                alert("Ingrese Apellidos y Nombres para continuar.");
+                                    }
+                                }, [
+                                    m("div.input-group", [
+                                        m("input.form-control[type='text'][placeholder='Apellidos y Nombres']", {
+                                            oninput: (e) => {
+                                                BuscadorPacientes.searchField = e.target.value;
                                             }
+                                        }),
+                                        m("div.input-group-append", m("button.btn.btn-outline-light[type='button']", {
+                                            onclick: (e) => {
+                                                if (BuscadorPacientes.searchField.length !== 0) {
+                                                    BuscadorPacientes.fetchSearch();
+                                                } else {
+                                                    alert("Ingrese Apellidos y Nombres para continuar.");
+                                                }
+                                            }
+                                        }, "Buscar"), m("button.btn.btn-outline-light[type='button']", {
+                                            onclick: (e) => {
+                                                Cita.buscarPacientes = !Cita.buscarPacientes;
+                                            }
+                                        }, m("i.fas.fa-times-circle"))),
+                                    ]),
+                                ]), m("div.row", [m("div.col-12", m(BuscadorPacientes))])),
+                            ]),
+
+                            m("div", {
+                                class: !Cita.buscarItems ? "d-none" : ""
+                            }, [
+                                m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Buscar Items:"),
+                                m("div.form-group", m("form", {
+                                    onsubmit: (e) => {
+                                        e.preventDefault();
+                                        if (BuscadorItems.searchField.length !== 0) {
+                                            BuscadorItems.fetchSearch();
+                                        } else {
+                                            alert("Ingrese algún valor para continuar.");
                                         }
-                                    }, "Buscar"), m("button.btn.btn-outline-light[type='button']", {
+                                    }
+                                }, [
+                                    m("div.input-group", [
+                                        m("input.form-control[type='text'][placeholder='Buscar Items']", {
+                                            oninput: (e) => {
+                                                BuscadorItems.searchField = e.target.value;
+                                            }
+                                        }),
+                                        m("div.input-group-append", m("button.btn.btn-outline-light[type='button']", {
+                                            onclick: (e) => {
+                                                if (BuscadorItems.searchField.length !== 0) {
+                                                    BuscadorItems.fetchSearch();
+                                                } else {
+                                                    alert("Ingrese algún valor para continuar.");
+                                                }
+                                            }
+                                        }, "Buscar"), m("button.btn.btn-outline-light[type='button']", {
+                                            onclick: (e) => {
+                                                Cita.buscarItems = !Cita.buscarItems;
+                                            }
+                                        }, m("i.fas.fa-times-circle"))),
+                                    ]),
+                                ]), m("div.row", [m("div.col-12", m(BuscadorItems))])),
+                            ]),
+                            m("div", {
+                                class: Cita.buscarPacientes || Cita.buscarItems ? "d-none" : ""
+                            }, [
+                                m("div.form-group.d-none", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Tipo:"), m("div.input-group", [
+                                    m("div.custom-control.custom-radio", [
+                                        m("input.custom-control-input[type='radio'][id='tipoCitaUpdate1'][name='tipoCitaUpdate']", {
+                                            onclick: (e) => {
+                                                Cita.data.tipo = 1;
+                                            },
+                                            onupdate: (el) => {
+                                                if (Cita.data.tipo == 1) {
+                                                    el.dom.checked = true;
+                                                }
+                                            }
+                                        }),
+                                        m("label.custom-control-label[for='tipoCitaUpdate1']", "Cita Médica"),
+                                    ]),
+                                    m("div.custom-control.custom-radio.mg-l-20", [
+                                        m("input.custom-control-input[type='radio'][id='tipoCitaUpdate2'][name='tipoCitaUpdate']", {
+                                            onclick: (e) => {
+                                                Cita.data.tipo = 2;
+                                            },
+                                            onupdate: (el) => {
+                                                if (Cita.data.tipo == 2) {
+                                                    el.dom.checked = true;
+                                                }
+                                            }
+                                        }),
+                                        m("label.custom-control-label[for='tipoCitaUpdate2']", "Evento"),
+                                    ]),
+                                ])),
+                                m("div.form-group", [
+                                    m("div.row.row-xs", [
+                                        m("div.col-6", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha y Hora de Inicio:"), m("input.form-control.text-capitalize[id='eventStartDate'][type='text'][disabled='disabled']", { value: Cita.data.start })),
+                                        m("div.col-6", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha y Hora de Fin"), m("input.form-control.text-capitalize[type='text'][disabled='disabled']", { value: Cita.data.end })),
+                                    ]),
+                                ]),
+                                m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Historia Clínica Paciente:"), m("div.input-group", [
+                                    m("input.form-control[type='text'][placeholder='Numero de Historia Clínica'][autofocus]", {
+                                        value: Cita.data.paciente !== undefined ? Cita.data.nhc + " - " + Cita.data.paciente : "",
+                                        oninput: (e) => {
+                                            e.preventDefault();
+                                        },
+                                        disabled: Cita.data.paciente !== undefined ? "disabled" : ""
+                                    }),
+                                    m("div.input-group-append", m("button.btn.btn-primary[type='button']", {
                                         onclick: (e) => {
                                             Cita.buscarPacientes = !Cita.buscarPacientes;
                                         }
-                                    }, m("i.fas.fa-times-circle"))),
-                                ]),
-                            ]), m("div.row", [m("div.col-12", m(BuscadorPacientes))])),
-                        ]),
-
-                        m("div", {
-                            class: !Cita.buscarItems ? "d-none" : ""
-                        }, [
-                            m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Buscar Items:"),
-                            m("div.form-group", m("form", {
-                                onsubmit: (e) => {
-                                    e.preventDefault();
-                                    if (BuscadorItems.searchField.length !== 0) {
-                                        BuscadorItems.fetchSearch();
-                                    } else {
-                                        alert("Ingrese algún valor para continuar.");
-                                    }
-                                }
-                            }, [
-                                m("div.input-group", [
-                                    m("input.form-control[type='text'][placeholder='Buscar Items']", {
+                                    }, [m("i.fas.fa-search.mg-r-2"), " Buscar Pacientes ",])),
+                                ])),
+                                m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Estudio:"), m("div.input-group", [
+                                    m("input.form-control[type='text'][placeholder='Items/Estudio']", {
+                                        value: Cita.data.codItem !== undefined ? Cita.data.codItem + " - " + Cita.data.estudio : "",
                                         oninput: (e) => {
-                                            BuscadorItems.searchField = e.target.value;
-                                        }
+                                            e.preventDefault();
+                                        },
+                                        disabled: Cita.data.codItem !== undefined ? "disabled" : ""
                                     }),
-                                    m("div.input-group-append", m("button.btn.btn-outline-light[type='button']", {
-                                        onclick: (e) => {
-                                            if (BuscadorItems.searchField.length !== 0) {
-                                                BuscadorItems.fetchSearch();
-                                            } else {
-                                                alert("Ingrese algún valor para continuar.");
-                                            }
-                                        }
-                                    }, "Buscar"), m("button.btn.btn-outline-light[type='button']", {
+                                    m("div.input-group-append", m("button.btn.btn-primary[type='button']", {
                                         onclick: (e) => {
                                             Cita.buscarItems = !Cita.buscarItems;
                                         }
-                                    }, m("i.fas.fa-times-circle"))),
-                                ]),
-                            ]), m("div.row", [m("div.col-12", m(BuscadorItems))])),
-                        ]),
-                        m("div", {
-                            class: Cita.buscarPacientes || Cita.buscarItems ? "d-none" : ""
-                        }, [
-                            m("div.form-group.d-none", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Tipo:"), m("div.input-group", [
-                                m("div.custom-control.custom-radio", [
-                                    m("input.custom-control-input[type='radio'][id='tipoCitaUpdate1'][name='tipoCitaUpdate']", {
-                                        onclick: (e) => {
-                                            Cita.data.tipo = 1;
-                                        },
-                                        onupdate: (el) => {
-                                            if (Cita.data.tipo == 1) {
-                                                el.dom.checked = true;
-                                            }
-                                        }
-                                    }),
-                                    m("label.custom-control-label[for='tipoCitaUpdate1']", "Cita Médica"),
-                                ]),
-                                m("div.custom-control.custom-radio.mg-l-20", [
-                                    m("input.custom-control-input[type='radio'][id='tipoCitaUpdate2'][name='tipoCitaUpdate']", {
-                                        onclick: (e) => {
-                                            Cita.data.tipo = 2;
-                                        },
-                                        onupdate: (el) => {
-                                            if (Cita.data.tipo == 2) {
-                                                el.dom.checked = true;
-                                            }
-                                        }
-                                    }),
-                                    m("label.custom-control-label[for='tipoCitaUpdate2']", "Evento"),
-                                ]),
-                            ])),
+                                    }, [m("i.fas.fa-search.mg-r-2"), " Buscar Estudios "])),
+                                ])),
+                                m("div.form-group", m("ul.nav.nav-tabs[id='myTab'][role='tablist']", [
+                                    m("li.nav-item", m("a.nav-link.active[id='homeUpdate-tab'][data-toggle='tab'][href='#homeUpdate'][role='tab'][aria-controls='homeUpdate'][aria-selected='true']", "Comentarios")),
+                                    m("li.nav-item", {
+                                        class: Cita.data.tipo == 1 && Cita.data.email !== undefined ? "" : "d-none"
+                                    }, m("a.nav-link[id='profile-tab'][data-toggle='tab'][href='#profileUpdate'][role='tab'][aria-controls='profileUpdate'][aria-selected='false']", "Notificación al Correo")),
+                                ]), m(".tab-content.bd.bd-gray-300.bd-t-0.pd-20[id='myTabContent']", [
+                                    m(".tab-pane.fade.show.active[id='homeUpdate'][role='tabpanel'][aria-labelledby='homeUpdate-tab']", [
+                                        m("div.form-group", [
+                                            m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Comentarios: "),
+                                            m("textarea.form-control[rows='2'][placeholder='Comentarios']", {
+                                                oninput: (e) => {
+                                                    Cita.data.comentarios = e.target.value;
+                                                }
+                                            }),
+                                        ]),
+                                    ]),
+                                    m(".tab-pane.fade[id='profileUpdate'][role='tabpanel'][aria-labelledby='profileUpdate-tab']", {
+                                        class: Cita.data.tipo == 1 && Cita.data.email !== undefined ? "" : "d-none"
+                                    }, [
+                                        Cita.data.tipo == 1 && Cita.data.email !== undefined ? [
+                                            m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Correo electrónico: ", m("br"), m("span.tx-light.tx-5", "*Se enviará una notificación de correo a la(s) siguiente(s) direccione(s).")), m("div", m("input.form-control[id='correoCitaUpdate'][type='text'][data-role='tagsinput']", {
+                                                onchange: (e) => {
+                                                    console.log(e);
+                                                },
+
+                                                oncreate: (el) => {
+                                                    let elt = $("#correoCitaUpdate");
+                                                    elt.tagsinput({ allowDuplicates: true });
+
+                                                    elt.on("itemAdded", function (event) {
+                                                        console.log("item added : " + event.item);
+                                                    });
+
+                                                    if (Cita.data.email !== undefined) {
+                                                        elt.tagsinput("add", Cita.data.email);
+                                                    }
+                                                }
+                                            }))),
+                                        ] : [],
+                                    ])
+                                ]))
+                            ])
+                        ] : [
+
+
                             m("div.form-group", [
                                 m("div.row.row-xs", [
                                     m("div.col-6", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha y Hora de Inicio:"), m("input.form-control.text-capitalize[id='eventStartDate'][type='text'][disabled='disabled']", { value: Cita.data.start })),
                                     m("div.col-6", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha y Hora de Fin"), m("input.form-control.text-capitalize[type='text'][disabled='disabled']", { value: Cita.data.end })),
                                 ]),
                             ]),
-                            m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Historia Clínica Paciente:"), m("div.input-group", [
-                                m("input.form-control[type='text'][placeholder='Numero de Historia Clínica'][autofocus]", {
-                                    value: Cita.data.paciente !== undefined ? Cita.data.nhc + " - " + Cita.data.paciente : "",
+                            m("div.form-group", {
+                                class: Cita.data.tipo == 2 ? "" : "d-none"
+                            }, m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Nombre Evento:"), m("div.input-group", [
+                                m("input.form-control[type='text'][placeholder='Nombre Evento']", {
+                                    value: Cita.data.evento !== undefined ? Cita.data.evento : "",
                                     oninput: (e) => {
-                                        e.preventDefault();
-                                    },
-                                    disabled: Cita.data.paciente !== undefined ? "disabled" : ""
-                                }),
-                                m("div.input-group-append", m("button.btn.btn-primary[type='button']", {
-                                    onclick: (e) => {
-                                        Cita.buscarPacientes = !Cita.buscarPacientes;
+                                        Cita.data.evento = e.target.value;
                                     }
-                                }, [m("i.fas.fa-search.mg-r-2"), " Buscar Pacientes ",])),
+                                })
                             ])),
-                            m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Estudio:"), m("div.input-group", [
-                                m("input.form-control[type='text'][placeholder='Items/Estudio']", {
-                                    value: Cita.data.codItem !== undefined ? Cita.data.codItem + " - " + Cita.data.estudio : "",
+                            m("div.form-group", {
+                                class: Cita.data.tipo == 3 ? "" : "d-none"
+                            }, m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Nota:"), m("div.input-group", [
+                                m("input.form-control[type='text'][placeholder='Nota']", {
+                                    value: Cita.data.nota !== undefined ? Cita.data.evento : "",
                                     oninput: (e) => {
-                                        e.preventDefault();
-                                    },
-                                    disabled: Cita.data.codItem !== undefined ? "disabled" : ""
-                                }),
-                                m("div.input-group-append", m("button.btn.btn-primary[type='button']", {
-                                    onclick: (e) => {
-                                        Cita.buscarItems = !Cita.buscarItems;
+                                        Cita.data.nota = e.target.value;
                                     }
-                                }, [m("i.fas.fa-search.mg-r-2"), " Buscar Estudios "])),
+                                })
                             ])),
-                            m("div.form-group", m("ul.nav.nav-tabs[id='myTab'][role='tablist']", [
-                                m("li.nav-item", m("a.nav-link.active[id='homeUpdate-tab'][data-toggle='tab'][href='#homeUpdate'][role='tab'][aria-controls='homeUpdate'][aria-selected='true']", "Comentarios")),
-                                m("li.nav-item", {
-                                    class: Cita.data.tipo == 1 && Cita.data.email !== undefined ? "" : "d-none"
-                                }, m("a.nav-link[id='profile-tab'][data-toggle='tab'][href='#profileUpdate'][role='tab'][aria-controls='profileUpdate'][aria-selected='false']", "Notificación al Correo")),
-                            ]), m(".tab-content.bd.bd-gray-300.bd-t-0.pd-20[id='myTabContent']", [
-                                m(".tab-pane.fade.show.active[id='homeUpdate'][role='tabpanel'][aria-labelledby='homeUpdate-tab']", [
-                                    m("div.form-group", [
-                                        m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Comentarios: "),
-                                        m("textarea.form-control[rows='2'][placeholder='Comentarios']", {
-                                            oninput: (e) => {
-                                                Cita.data.comentarios = e.target.value;
-                                            }
-                                        }),
-                                    ]),
-                                ]),
-                                m(".tab-pane.fade[id='profileUpdate'][role='tabpanel'][aria-labelledby='profileUpdate-tab']", {
-                                    class: Cita.data.tipo == 1 && Cita.data.email !== undefined ? "" : "d-none"
-                                }, [
-                                    Cita.data.tipo == 1 && Cita.data.email !== undefined ? [
-                                        m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Correo electrónico: ", m("br"), m("span.tx-light.tx-5", "*Se enviará una notificación de correo a la(s) siguiente(s) direccione(s).")), m("div", m("input.form-control[id='correoCitaUpdate'][type='text'][data-role='tagsinput']", {
-                                            onchange: (e) => {
-                                                console.log(e);
-                                            },
+                        ])
 
-                                            oncreate: (el) => {
-                                                let elt = $("#correoCitaUpdate");
-                                                elt.tagsinput({ allowDuplicates: true });
 
-                                                elt.on("itemAdded", function (event) {
-                                                    console.log("item added : " + event.item);
-                                                });
 
-                                                if (Cita.data.email !== undefined) {
-                                                    elt.tagsinput("add", Cita.data.email);
-                                                }
-                                            }
-                                        }))),
-                                    ] : [],
-                                ]),
-                            ])),
-                        ]),
                     ]),
                 ]),
                 m("div.modal-footer", [
                     m("button.btn.btn-primary.mg-r-5", {
                         onclick: () => {
+
+
                             Cita.reagendarHttp();
+
                         }
-                    }, "Reagendar Cita"),
+                    }, "Reagendar"),
                     m("a.btn.btn-secondary[href=''][data-dismiss='modal']", "Cerrar"),
                 ]),
             ]))),
@@ -2228,7 +2367,7 @@ class Calendario extends App {
         let _timeFin = "";
 
         Calendario.citas.data.events.map((_val, _index) => {
-            if (_val.tipo == 1) {
+            if (_val.tipo == 1 && _val.tipo == 2) {
                 if (moment(_val.start).format("DD-MM-YYYY HH:mm") == moment(Cita.data.start, "dddd, DD-MM-YYYY HH:mm").format("DD-MM-YYYY HH:mm")) {
                     _track = false;
                     _timeInicio = moment(_val.start).format("DD-MM-YYYY HH:mm");
