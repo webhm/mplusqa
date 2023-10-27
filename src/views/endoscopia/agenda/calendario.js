@@ -30,15 +30,15 @@ class OptionSelect {
     static selectInit() {
 
         $("#agendas").select2({
-                templateSelection: function(data, container) {
-                    container[0].style["font-size"] = "10px";
-                    // container[0].style.backgroundColor = Calendario.setColor(data.id);
-                    return data.text;
-                },
-                placeholder: "Seleccione...",
-                searchInputPlaceholder: "Buscar"
-            })
-            .on("select2:select", function(e) {
+            templateSelection: function (data, container) {
+                container[0].style["font-size"] = "10px";
+                // container[0].style.backgroundColor = Calendario.setColor(data.id);
+                return data.text;
+            },
+            placeholder: "Seleccione...",
+            searchInputPlaceholder: "Buscar"
+        })
+            .on("select2:select", function (e) {
 
                 console.log("select2:select", e);
                 Calendario.error = null;
@@ -46,7 +46,7 @@ class OptionSelect {
                 let idCalendar = "";
                 let tree = $(this).val();
 
-                $.each(tree, function(index, value) {
+                $.each(tree, function (index, value) {
                     idCalendar += value + ",";
                 });
 
@@ -78,14 +78,14 @@ class OptionSelect {
 
 
             })
-            .on("select2:unselect", function(e) {
+            .on("select2:unselect", function (e) {
 
                 Calendario.error = null;
 
                 let idCalendar = "";
                 let tree = $(this).val();
 
-                $.each(tree, function(index, value) {
+                $.each(tree, function (index, value) {
                     idCalendar += value + ",";
                 });
 
@@ -149,7 +149,7 @@ class OptionSelect {
 
                 }
             }, [
-                Calendario.calendarios.map(function(_v, _i, _contentData) {
+                Calendario.calendarios.map(function (_v, _i, _contentData) {
                     return [
                         m("option.tx-10[value='" + _v.IDCALENDAR + "']", {
                             oncreate: (el) => {
@@ -292,62 +292,62 @@ class BuscadorItems {
             ],
             destroy: true,
             columns: [{
-                    title: "N°:"
-                },
-                {
-                    title: "Código:"
-                },
-                {
-                    title: "Item:"
-                },
+                title: "N°:"
+            },
+            {
+                title: "Código:"
+            },
+            {
+                title: "Item:"
+            },
 
-                {
-                    title: "Duración:"
-                }, {
-                    title: "Opciones:"
-                },
+            {
+                title: "Duración:"
+            }, {
+                title: "Opciones:"
+            },
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                    visible: true,
-                    aTargets: [0]
+                mRender: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.CD_ITEM_AGENDAMENTO;
-                    },
-                    visible: true,
-                    aTargets: [1]
+                visible: true,
+                aTargets: [0]
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.CD_ITEM_AGENDAMENTO;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.DS_ITEM_AGENDAMENTO;
-                    },
-                    visible: true,
-                    aTargets: [2]
+                visible: true,
+                aTargets: [1]
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.DS_ITEM_AGENDAMENTO;
                 },
+                visible: true,
+                aTargets: [2]
+            },
 
-                {
-                    mRender: function(data, type, full) {
-                        return ('<b class="tx-14 tx-semibold tx-danger">' + full.DURACION + " Min. </b>");
-                    },
-                    visible: true,
-                    aTargets: [3]
-                }, {
-                    mRender: function(data, type, full) {
-                        return "OPCIONES";
-                    },
-                    visible: true,
-                    aTargets: [4]
+            {
+                mRender: function (data, type, full) {
+                    return ('<b class="tx-14 tx-semibold tx-danger">' + full.DURACION + " Min. </b>");
                 },
+                visible: true,
+                aTargets: [3]
+            }, {
+                mRender: function (data, type, full) {
+                    return "OPCIONES";
+                },
+                visible: true,
+                aTargets: [4]
+            },
             ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {},
-            drawCallback: function(settings) {
-                settings.aoData.map(function(_i) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) { },
+            drawCallback: function (settings) {
+                settings.aoData.map(function (_i) {
                     m.mount(_i.anCells[4], {
-                        view: function() {
+                        view: function () {
                             return [
                                 m("button.btn.btn-sm.btn-block.btn-primary[type='button']", {
                                     onclick: () => {
@@ -392,11 +392,11 @@ class BuscadorItems {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             BuscadorItems.loader = false;
             BuscadorItems.data = res.data;
             BuscadorItems.loadItems();
-        }).catch(function(e) {});
+        }).catch(function (e) { });
     }
     view() {
         return [
@@ -451,77 +451,77 @@ class BuscadorPacientes {
             ],
             destroy: true,
             columns: [{
-                    title: "N°:"
-                },
-                {
-                    title: "NHC:"
-                },
-                {
-                    title: "Paciente:"
-                },
-                {
-                    title: "Edad:"
-                }, {
-                    title: "Sexo:"
-                }, {
-                    title: "F. Nacimiento:"
-                }, {
-                    title: "Opciones:"
-                },
+                title: "N°:"
+            },
+            {
+                title: "NHC:"
+            },
+            {
+                title: "Paciente:"
+            },
+            {
+                title: "Edad:"
+            }, {
+                title: "Sexo:"
+            }, {
+                title: "F. Nacimiento:"
+            }, {
+                title: "Opciones:"
+            },
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                    visible: true,
-                    aTargets: [0]
+                mRender: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.CD_PACIENTE;
-                    },
-                    visible: true,
-                    aTargets: [1]
+                visible: true,
+                aTargets: [0]
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.CD_PACIENTE;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.NM_PACIENTE;
-                    },
-                    visible: true,
-                    aTargets: [2],
-                    width: "60%"
+                visible: true,
+                aTargets: [1]
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.NM_PACIENTE;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.EDAD;
-                    },
-                    visible: true,
-                    aTargets: [3]
-                }, {
-                    mRender: function(data, type, full) {
-                        return full.TP_SEXO;
-                    },
-                    visible: true,
-                    aTargets: [4]
-                }, {
-                    mRender: function(data, type, full) {
-                        return full.DT_NASCIMENTO;
-                    },
-                    visible: true,
-                    aTargets: [5]
-                }, {
-                    mRender: function(data, type, full) {
-                        return "OPCIONES";
-                    },
-                    visible: true,
-                    aTargets: [6]
+                visible: true,
+                aTargets: [2],
+                width: "60%"
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.EDAD;
                 },
+                visible: true,
+                aTargets: [3]
+            }, {
+                mRender: function (data, type, full) {
+                    return full.TP_SEXO;
+                },
+                visible: true,
+                aTargets: [4]
+            }, {
+                mRender: function (data, type, full) {
+                    return full.DT_NASCIMENTO;
+                },
+                visible: true,
+                aTargets: [5]
+            }, {
+                mRender: function (data, type, full) {
+                    return "OPCIONES";
+                },
+                visible: true,
+                aTargets: [6]
+            },
             ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {},
-            drawCallback: function(settings) {
-                settings.aoData.map(function(_i) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) { },
+            drawCallback: function (settings) {
+                settings.aoData.map(function (_i) {
                     m.mount(_i.anCells[6], {
-                        view: function() {
+                        view: function () {
                             return [
                                 m("button.btn.btn-sm.btn-block.btn-primary[type='button']", {
                                     onclick: () => {
@@ -569,11 +569,11 @@ class BuscadorPacientes {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             BuscadorPacientes.loader = false;
             BuscadorPacientes.data = res.data;
             BuscadorPacientes.loadPacientes();
-        }).catch(function(e) {});
+        }).catch(function (e) { });
     }
     view() {
         return [
@@ -701,7 +701,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Cita.reAgendarCita();
@@ -712,7 +712,7 @@ class Cita {
                 Cita.data.error = res.message;
                 throw res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             $("#modalUpdateEvent").animate({
                 scrollTop: 0
             }, "slow");
@@ -734,7 +734,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Cita.cancelarCita();
@@ -745,7 +745,7 @@ class Cita {
                 Cita.data.error = res.message;
                 throw res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             $("#modalCreateEvent").animate({
                 scrollTop: 0
             }, "slow");
@@ -790,7 +790,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Cita.agendarCita();
@@ -801,7 +801,7 @@ class Cita {
                 Cita.data.error = res.message;
                 throw res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             $("#modalCreateEvent").animate({
                 scrollTop: 0
             }, "slow");
@@ -820,7 +820,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
 
             if (res.status) {
@@ -830,7 +830,7 @@ class Cita {
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             Calendario.error = e;
         });
     }
@@ -845,7 +845,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Calendario.reloadFetchAgenda();
@@ -854,7 +854,7 @@ class Cita {
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             Calendario.error = e;
         });
     }
@@ -870,7 +870,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Calendario.success = res.message;
@@ -881,7 +881,7 @@ class Cita {
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             Calendario.error = e;
         });
     }
@@ -895,7 +895,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
 
             console.log(res);
@@ -908,7 +908,7 @@ class Cita {
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             Calendario.error = e;
         });
     }
@@ -922,7 +922,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
 
             console.log(res);
@@ -936,7 +936,7 @@ class Cita {
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             Calendario.error = res.message;
         });
     }
@@ -972,11 +972,11 @@ class Calendario extends App {
             showOtherMonths: true,
             selectOtherMonths: true,
             dateFormat: "yy-mm-dd",
-            onSelect: function(dateText, inst) {
+            onSelect: function (dateText, inst) {
                 $("#calendar").fullCalendar("gotoDate", dateText);
 
             },
-            beforeShowDay: function(date) { // add leading zero to single digit date
+            beforeShowDay: function (date) { // add leading zero to single digit date
                 var day = date.getDate();
                 console.log(day);
 
@@ -989,7 +989,7 @@ class Calendario extends App {
         });
 
 
-        $("#calendarSidebarShow").on("click", function(e) {
+        $("#calendarSidebarShow").on("click", function (e) {
             e.preventDefault();
             $("body").toggleClass("calendar-sidebar-show");
 
@@ -997,7 +997,7 @@ class Calendario extends App {
             $("#mainMenuOpen").removeClass("d-none");
         });
 
-        $(document).on("click touchstart", function(e) {
+        $(document).on("click touchstart", function (e) {
             e.stopPropagation();
 
             // closing of sidebar menu when clicking outside of it
@@ -1036,7 +1036,7 @@ class Calendario extends App {
             timeFormat: "HH:mma",
             views: {
                 agenda: {
-                    columnHeaderHtml: function(mom) {
+                    columnHeaderHtml: function (mom) {
                         return ("<span>" + mom.format("ddd") + "</span>" + "<span>" + mom.format("DD") + "</span>");
                     }
                 },
@@ -1060,10 +1060,10 @@ class Calendario extends App {
                 }
             },
             eventSources: [Calendario.citas.data],
-            eventAfterAllRender: function(view) {
+            eventAfterAllRender: function (view) {
                 if (view.name === "listMonth" || view.name === "listWeek") {
                     var dates = view.el.find(".fc-list-heading-main");
-                    dates.each(function() {
+                    dates.each(function () {
                         var text = $(this).text().split(" ");
                         var now = moment().format("DD");
 
@@ -1078,7 +1078,7 @@ class Calendario extends App {
 
                 if ($("#calendar .fc-event").length > 0) {
                     var op = 999999;
-                    $("#calendar .fc-content-col").each(function(index) {
+                    $("#calendar .fc-content-col").each(function (index) {
                         if ($(this).find('.fc-event:first').length > 0) {
                             var ot = $(this).find('.fc-event:first').position().top;
                             if (ot < op) {
@@ -1099,7 +1099,7 @@ class Calendario extends App {
 
 
             },
-            eventRender: function(event, element) {
+            eventRender: function (event, element) {
                 /*
                                                   if (event.description) {
                                                   element.find('.fc-list-item-title').append('<span class="fc-desc">' + event.description + '</span>');
@@ -1153,7 +1153,7 @@ class Calendario extends App {
                     element.css("borderLeftColor", eBorderColor);
                 }
             },
-            eventDrop: function(calEvent) {
+            eventDrop: function (calEvent) {
 
 
                 Cita.data.id = calEvent.id;
@@ -1172,7 +1172,7 @@ class Calendario extends App {
                 Cita.data.newHashCita = calEvent.start.format("YYYY-MM-DD HH:mm") + "." + calEvent.end.format("YYYY-MM-DD HH:mm");
                 Cita.verUpdate(calEvent);
             },
-            eventResize: function(calEvent) {
+            eventResize: function (calEvent) {
 
 
                 Cita.data.id = calEvent.id;
@@ -1218,7 +1218,7 @@ class Calendario extends App {
         }
 
         // change view based in viewport width when resize is detected
-        calendar.option("windowResize", function(view) {
+        calendar.option("windowResize", function (view) {
             try {
                 if (view.name === "listWeek") {
                     if (window.matchMedia("(min-width: 992px)").matches) {
@@ -1235,7 +1235,7 @@ class Calendario extends App {
         });
 
         // Display calendar event modal
-        calendar.on("eventClick", function(calEvent, jsEvent, view) {
+        calendar.on("eventClick", function (calEvent, jsEvent, view) {
             if (calEvent.tipo == 1) {
                 Cita.verCita(calEvent);
             } else if (calEvent.tipo == 3) {
@@ -1247,7 +1247,7 @@ class Calendario extends App {
 
         // display current date
         var dateNow = calendar.getDate();
-        calendar.option("select", function(startDate, endDate) {
+        calendar.option("select", function (startDate, endDate) {
             let fecha = moment(startDate).format("DD/MM/YYYY HH:mm");
 
             if (moment(fecha, "DD/MM/YYYY HH:mm").unix() > moment().unix()) {
@@ -1318,7 +1318,7 @@ class Calendario extends App {
                                 $("#modalCreateEvent").modal("show");
                             }
                         }, [
-                            m("div[data-toggle='tooltip']", [m("i.tx-white[data-feather='plus']"), ]),
+                            m("div[data-toggle='tooltip']", [m("i.tx-white[data-feather='plus']"),]),
                         ]),
                     ]),
                     m("div.calendar-sidebar-body.ht-auto.pos-relative[id='calendarSidebarBody']", [
@@ -1330,11 +1330,11 @@ class Calendario extends App {
                         ]),
                         m("div.pd-t-20.pd-l-20.pd-r-20", [
                             m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03.mg-b-15", "Próximas Citas:"),
-                            m("div.schedule-group.mg-b-5", [!Calendario.loader && Calendario.citas.status && Object.keys(Calendario.citas.data).length !== 0 ? [m(ProximasCitas)] : [], ]),
+                            m("div.schedule-group.mg-b-5", [!Calendario.loader && Calendario.citas.status && Object.keys(Calendario.citas.data).length !== 0 ? [m(ProximasCitas)] : [],]),
                         ]),
                         m("div.pd-t-5.pd-l-20.pd-r-20", [
                             m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03.mg-b-15", "Próximos Eventos/Bloqueos:"),
-                            m("div.schedule-group.mg-b-40", [!Calendario.loader && Calendario.citas.status && Object.keys(Calendario.citas.data).length !== 0 ? [m(ProximosEventos)] : [], ]),
+                            m("div.schedule-group.mg-b-40", [!Calendario.loader && Calendario.citas.status && Object.keys(Calendario.citas.data).length !== 0 ? [m(ProximosEventos)] : [],]),
                         ]),
                     ]),
                 ]),
@@ -1376,7 +1376,7 @@ class Calendario extends App {
                             error: Calendario.citas
                         }),
                     ]),
-                ] : [m("div.pd-20", [m(Loader)])], ]),
+                ] : [m("div.pd-20", [m(Loader)])],]),
             ]),
 
             m(".modal.calendar-modal-create[id='modalCreateEvent'][role='dialog'][aria-hidden='true']", m(".modal-dialog.modal-dialog-centered.modal-xl[role='document']", m("div.modal-content", [
@@ -1649,7 +1649,7 @@ class Calendario extends App {
                                     onclick: (e) => {
                                         Cita.buscarPacientes = !Cita.buscarPacientes;
                                     }
-                                }, [m("i.fas.fa-search.mg-r-2"), " Buscar Pacientes ", ])),
+                                }, [m("i.fas.fa-search.mg-r-2"), " Buscar Pacientes ",])),
                             ]), m("div.input-group", {
                                 class: Cita.data.sinDatos ? "" : "d-none"
                             }, [
@@ -1750,7 +1750,7 @@ class Calendario extends App {
                                                     let elt = $("#correoCreaCita");
                                                     elt.tagsinput({ allowDuplicates: true });
 
-                                                    elt.on("itemAdded", function(event) {
+                                                    elt.on("itemAdded", function (event) {
                                                         console.log("item added : " + event.item);
                                                     });
 
@@ -1832,24 +1832,24 @@ class Calendario extends App {
                     ]),
                     m("hr"),
                     m("div.text-right", [!Cita.data.editable ? [
-                            m("button.btn.btn-xs.btn-primary.mg-r-5[data-dismiss='modal']", {
-                                onclick: () => {
-                                    Cita.trackReAgendar();
-                                }
-                            }, "Reagendar Cita"),
-                        ] : [
-                            m("button.btn.btn-xs.btn-secondary.mg-r-5[data-dismiss='modal']", {
-                                onclick: () => {
-                                    Cita.trackCancelReAgendar();
-                                }
-                            }, "Cancelar Reagendamiento"),
-                        ],
-                        m("button.btn.btn-xs.btn-danger.mg-r-5", {
+                        m("button.btn.btn-xs.btn-primary.mg-r-5[data-dismiss='modal']", {
                             onclick: () => {
-                                Cita.cancelarCita();
+                                Cita.trackReAgendar();
                             }
-                        }, "Cancelar Cita"),
-                        m("a.btn.btn-xs.btn-secondary.pd-x-20[href=''][data-dismiss='modal']", "Cerrar"),
+                        }, "Reagendar Cita"),
+                    ] : [
+                        m("button.btn.btn-xs.btn-secondary.mg-r-5[data-dismiss='modal']", {
+                            onclick: () => {
+                                Cita.trackCancelReAgendar();
+                            }
+                        }, "Cancelar Reagendamiento"),
+                    ],
+                    m("button.btn.btn-xs.btn-danger.mg-r-5", {
+                        onclick: () => {
+                            Cita.cancelarCita();
+                        }
+                    }, "Cancelar Cita"),
+                    m("a.btn.btn-xs.btn-secondary.pd-x-20[href=''][data-dismiss='modal']", "Cerrar"),
                     ]),
                 ]),
             ]))),
@@ -1990,7 +1990,7 @@ class Calendario extends App {
                                     onclick: (e) => {
                                         Cita.buscarPacientes = !Cita.buscarPacientes;
                                     }
-                                }, [m("i.fas.fa-search.mg-r-2"), " Buscar Pacientes ", ])),
+                                }, [m("i.fas.fa-search.mg-r-2"), " Buscar Pacientes ",])),
                             ])),
                             m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Estudio:"), m("div.input-group", [
                                 m("input.form-control[type='text'][placeholder='Items/Estudio']", {
@@ -2035,7 +2035,7 @@ class Calendario extends App {
                                                 let elt = $("#correoCitaUpdate");
                                                 elt.tagsinput({ allowDuplicates: true });
 
-                                                elt.on("itemAdded", function(event) {
+                                                elt.on("itemAdded", function (event) {
                                                     console.log("item added : " + event.item);
                                                 });
 
@@ -2073,7 +2073,7 @@ class Calendario extends App {
                 res.push(_v);
             }
         });
-        return res.reverse();
+        return res;
     }
 
     static filterEventos(parametro) {
@@ -2098,20 +2098,20 @@ class Calendario extends App {
                 headers: {
                     "Content-Type": "application/json; charset=utf-8"
                 }
-            }).then(function(res) {
+            }).then(function (res) {
                 Calendario.loader = false;
                 Calendario.citas = {
                     status: res.status,
                     data: res.citasAgendadas,
                     colorsCalendar: res.colorsCalendar
                 };
-                setTimeout(function() {
+                setTimeout(function () {
                     Calendario.setCalendar();
                 }, 80);
-                setTimeout(function() {
+                setTimeout(function () {
                     Calendario.setSidebar();
                 }, 160);
-            }).catch(function(e) {
+            }).catch(function (e) {
                 Calendario.loader = false;
                 Calendario.citas = {
                     status: null,
@@ -2139,7 +2139,7 @@ class Calendario extends App {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Calendario.citas = {
                 status: res.status,
                 data: res.citasAgendadas,
@@ -2151,7 +2151,7 @@ class Calendario extends App {
             OptionSelect.selectDestroy();
             Calendario.reloadSidebarCitas();
 
-        }).catch(function(e) {});
+        }).catch(function (e) { });
     }
 
     static fetchPerfilAgenda(_data) {
@@ -2165,7 +2165,7 @@ class Calendario extends App {
                     "Content-Type": "application/json",
                     Authorization: localStorage.userToken
                 }
-            }).then(function(res) {
+            }).then(function (res) {
                 if (res.status) {
                     Calendario.calendarios = res.data.calendarios;
 
@@ -2187,7 +2187,7 @@ class Calendario extends App {
 
                     };
                 }
-            }).catch(function(e) {
+            }).catch(function (e) {
                 Calendario.loader = false;
                 Calendario.citas = {
                     status: null,
@@ -2269,7 +2269,7 @@ class Calendario extends App {
         document.body.classList.add("app-calendar");
     }
 
-    onupdate(_data) {}
+    onupdate(_data) { }
 
     static page() {
         return [Calendario.vHeader(), Calendario.vMain()];
