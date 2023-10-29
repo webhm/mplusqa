@@ -20,6 +20,7 @@ import SingOut from "../views/layout/singOut";
 import AgendaEndo from "../views/endoscopia/agenda/agendas";
 import ConfigAgEndo from "../views/endoscopia/agenda/config";
 import CalendarioEndo from "../views/endoscopia/agenda/calendario";
+import CalendarioEndo2 from "../views/endoscopia/agenda/calendario2";
 
 // Crear una instancia de la clase
 // const authManager = new AuthManager();
@@ -49,19 +50,6 @@ console.log("Logout exitoso");
 
 */
 
-moment.lang("es", {
-  months: "Enero_Febrero_Marzo_Abril_Mayo_Junio_Julio_Agosto_Septiembre_Octubre_Noviembre_Diciembre".split(
-      "_"
-  ),
-  monthsShort: "Enero._Feb._Mar_Abr._May_Jun_Jul._Ago_Sept._Oct._Nov._Dec.".split(
-      "_"
-  ),
-  weekdays: "Domingo_Lunes_Martes_Miércoles_Jueves_Viernes_Sábado".split(
-      "_"
-  ),
-  weekdaysShort: "Dom._Lun._Mar._Mier._Jue._Vier._Sab.".split("_"),
-  weekdaysMin: "Do_Lu_Ma_Mi_Ju_Vi_Sa".split("_"),
-});
 
 // Routes here
 const Routes = {
@@ -84,7 +72,7 @@ const Routes = {
     "/endoscopia": Endo,
     "/endoscopia/agendas": AgendaEndo,
     "/endoscopia/agendas/configuracion": ConfigAgEndo,
-    "/endoscopia/agendas/calendario": CalendarioEndo,
+    "/endoscopia/agendas/calendario": CalendarioEndo2,
     "/salir": Salir,
     "/sing-out": SingOut,
 };
