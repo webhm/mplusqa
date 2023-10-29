@@ -610,11 +610,10 @@ class Calendario extends App {
 
     static setItem(params) {
         Cita.error = null;
-        let fecha1 = moment(Cita.data.start, "dddd, DD-MM-YYYY HH:mm");
+        let fecha1 = moment(Cita.data.inicio, "DD/MM/YYYY HH:mm");
         let _duracion = moment(params.DURACION, "HH:mm").minutes();
         let _suma = fecha1.add(_duracion, "minutes");
         Cita.data.end = moment(_suma).format("dddd, DD-MM-YYYY HH:mm");
-        Cita.data.inicio = moment(fecha1).format("DD/MM/YYYY HH:mm");
         Cita.data.fin = moment(_suma).format("DD/MM/YYYY HH:mm");
         Cita.data.estudio = params.DS_ITEM_AGENDAMENTO;
         Cita.data.id_estudio = params.CD_ITEM_AGENDAMENTO;
@@ -797,7 +796,7 @@ class Calendario extends App {
                                 m("input.custom-control-input[type='radio'][id='tipoCita1'][name='tipoCita']", {
                                     onclick: (e) => {
                                         if (Cita.data !== null) {
-                                            Cita.crearCita(Cita.data.start, Cita.data.end);
+                                            Cita.crearCita(moment(moment(Cita.data.start, 'dddd, DD-MM-YYYY HH:mm')), moment(moment(Cita.data.end, 'dddd, DD-MM-YYYY HH:mm')));
                                         } else {
                                             Cita.crearCita(moment(moment().format("YYYY-MM-DD 07:00:00")), moment(moment().format("YYYY-MM-DD 07:10:00")));
                                         }
@@ -1112,6 +1111,7 @@ class Calendario extends App {
                             m("div.form-group", [
                                 m("div.row.row-xs", [
                                     m("div.col-3", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha de Inicio:"), m("input.form-control[id='eventStartDate'][type='text'][placeholder='DD/MM/YYYY']", {
+
                                         oncreate: (el) => {
                                             el.dom.value = moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
 
@@ -1121,11 +1121,25 @@ class Calendario extends App {
                                                     datePattern: ["d", "m", "Y"]
                                                 });
                                             }, 50);
-                                        }
+                                        },
+                                        oninput: (e) => {
+
+                                            setTimeout(() => {
+                                                console.log(33, moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("HH:mm"))
+                                                Cita.data.inicio = e.target.value + " " + moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("HH:mm");
+                                                Cita.data.start = moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
+                                            }, 50);
+
+
+                                        },
                                     })),
                                     m("div.col-3", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Hora de Inicio:"), m("input.form-control[id='eventStartHourDate'][type='text'][placeholder='hh:mm']", {
                                         oninput: (e) => {
-                                            Cita.data.inicio = moment(Cita.inicio, "DD/MM/YYYY HH:mm").format("DD/MM/YYYY") + " " + e.target.value;
+                                            setTimeout(() => {
+                                                Cita.data.inicio = moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("DD/MM/YYYY") + " " + e.target.value;
+                                                Cita.data.start = moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
+                                            }, 50);
+
                                         },
                                         oncreate: (el) => {
                                             el.dom.value = moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("HH:mm");
@@ -1139,19 +1153,32 @@ class Calendario extends App {
                                         }
                                     })),
                                     m("div.col-3", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha de Fin"), m("input.form-control[id='eventEndDate'][type='text'][placeholder='DD/MM/YYYY']", {
-                                        oncreate: (e) => {
+                                        oncreate: (el) => {
+                                            el.dom.value = moment(Cita.data.fin, "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
+
+
                                             setTimeout(() => {
                                                 new Cleave("#eventEndDate", {
                                                     date: true,
                                                     datePattern: ["d", "m", "Y"]
                                                 });
-                                            }, 100);
+                                            }, 50);
                                         },
-                                        value: moment(Cita.data.fin, "DD/MM/YYYY HH:mm").format("DD/MM/YYYY")
+                                        oninput: (e) => {
+
+                                            setTimeout(() => {
+                                                Cita.data.fin = e.target.value + " " + moment(Cita.data.fin, "DD/MM/YYYY HH:mm").format("HH:mm");
+                                                Cita.data.end = moment(Cita.data.fin, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
+                                            }, 50);
+
+                                        }
                                     })),
                                     m("div.col-3", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Hora de Fin"), m("input.form-control[id='eventEndHourDate'][type='text'][placeholder='hh:mm']", {
                                         oninput: (e) => {
-                                            Cita.data.pn_fin = moment(Cita.data.fin, "DD/MM/YYYY HH:mm").format("DD/MM/YYYY") + " " + e.target.value;
+                                            setTimeout(() => {
+                                                Cita.data.fin = moment(Cita.data.fin, "DD/MM/YYYY HH:mm").format("DD/MM/YYYY") + " " + e.target.value;
+                                                Cita.data.end = moment(Cita.data.fin, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
+                                            }, 50);
                                         },
                                         oncreate: (el) => {
                                             el.dom.value = moment(Cita.data.fin, "DD/MM/YYYY HH:mm").format("HH:mm");

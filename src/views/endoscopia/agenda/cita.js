@@ -130,7 +130,7 @@ class Cita {
             $("#modalCreateEvent").animate({
                 scrollTop: 0
             }, "slow");
-            Cita.error = "No se puede agendar una cita en fecha y hora anterior.";
+            Cita.error = "No se puede agendar o evento en fecha y hora anterior.";
             m.redraw();
             throw Cita.error;
         }
