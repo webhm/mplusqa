@@ -13,9 +13,12 @@ class ProximasCitas {
                 if (_v.tipo == 1 && _i <= 5) {
                     return [
                         m("a.schedule-item.bd-l.bd-2", {
+                            style: {
+                                "cursor": "pointer",
+                            },
                             onclick: (e) => {
                                 e.preventDefault();
-                                $("#calendar").fullCalendar("gotoDate", moment(_v.pn_inicio, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD"));
+                                Calendario._goToDate(_v.inicio);
 
                             }
                         }, [
@@ -26,7 +29,7 @@ class ProximasCitas {
                                 }
                             }, _v.tipo == 1 ? " Cita Médica " : _v.tipo == 2 ? " Evento" : " Nota"),
                             m("h6.tx-10", _v.paciente),
-                            m("span.tx-5.text-capitalize", moment(_v.pn_inicio, "DD/MM/YYYY HH:mm").format("HH:mm") + " - " + moment(_v.pn_fin, "DD/MM/YYYY HH:mm").format("HH:mm") + " " + moment(_v.pn_fin, "DD/MM/YYYY HH:mm").format("dddd, DD/MM/YYYY")),
+                            m("span.tx-5.text-capitalize", moment(_v.inicio, "DD/MM/YYYY HH:mm").format("HH:mm") + " - " + moment(_v.fin, "DD/MM/YYYY HH:mm").format("HH:mm") + " " + moment(_v.fin, "DD/MM/YYYY HH:mm").format("dddd, DD/MM/YYYY")),
                         ]),
                     ];
                 }
@@ -48,10 +51,12 @@ class ProximosEventos {
                 if (_v.tipo == 2 && _i <= 5) {
                     return [
                         m("a.schedule-item.bd-l.bd-2", {
+                            style: {
+                                "cursor": "pointer",
+                            },
                             onclick: (e) => {
                                 e.preventDefault();
-                                $("#calendar").fullCalendar("gotoDate", moment(_v.pn_inicio, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD"));
-
+                                Calendario._goToDate(_v.inicio);
                             }
                         }, [
                             m("span.tx-5.wd-100p.pd-1.pd-r-2.pd-l-5.mg-b-5.tx-semibold", {
@@ -60,8 +65,8 @@ class ProximosEventos {
                                     color: "#fff"
                                 }
                             }, _v.tipo == 1 ? " Cita Médica " : _v.tipo == 2 ? " Evento" : " Nota"),
-                            m("h6.tx-10", _v.paciente),
-                            m("span.tx-5.text-capitalize", moment(_v.pn_inicio, "DD/MM/YYYY HH:mm").format("HH:mm") + " - " + moment(_v.pn_fin, "DD/MM/YYYY HH:mm").format("HH:mm") + " " + moment(_v.pn_fin, "DD/MM/YYYY HH:mm").format("dddd, DD/MM/YYYY")),
+                            m("h6.tx-10", _v.title),
+                            m("span.tx-5.text-capitalize", moment(_v.inicio, "DD/MM/YYYY HH:mm").format("HH:mm") + " - " + moment(_v.fin, "DD/MM/YYYY HH:mm").format("HH:mm") + " " + moment(_v.fin, "DD/MM/YYYY HH:mm").format("dddd, DD/MM/YYYY")),
                         ]),
                     ];
                 }
@@ -82,9 +87,12 @@ class CitasAnteriores {
                 if (_v.tipo == 2 && _i <= 5) {
                     return [
                         m("a.schedule-item.bd-l.bd-2", {
+                            style: {
+                                "cursor": "pointer",
+                            },
                             onclick: (e) => {
                                 e.preventDefault();
-                                $("#calendar").fullCalendar("gotoDate", moment(_v.pn_inicio, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD"));
+                                Calendario._goToDate(_v.inicio);
 
                             }
                         }, [
@@ -95,7 +103,7 @@ class CitasAnteriores {
                                 }
                             }, _v.tipo == 1 ? " Cita Médica " : _v.tipo == 2 ? " Evento" : " Nota"),
                             m("h6.tx-10", _v.paciente),
-                            m("span.tx-5.text-capitalize", moment(_v.pn_inicio, "DD/MM/YYYY HH:mm").format("HH:mm") + " - " + moment(_v.pn_fin, "DD/MM/YYYY HH:mm").format("HH:mm") + " " + moment(_v.pn_fin, "DD/MM/YYYY HH:mm").format("dddd, DD/MM/YYYY")),
+                            m("span.tx-5.text-capitalize", moment(_v.inicio, "DD/MM/YYYY HH:mm").format("HH:mm") + " - " + moment(_v.fin, "DD/MM/YYYY HH:mm").format("HH:mm") + " " + moment(_v.fin, "DD/MM/YYYY HH:mm").format("dddd, DD/MM/YYYY")),
                         ]),
                     ];
                 }

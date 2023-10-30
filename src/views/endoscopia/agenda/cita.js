@@ -11,115 +11,105 @@ class Cita {
     static success = null;
 
     static verCita(calEvent) {
+        Cita.data = null;
         Cita.data = {};
-        Cita.data.tipo = calEvent.tipo;
         Cita.data.id = calEvent.id;
-        Cita.data.hashCita = calEvent.id;
-        Cita.data.idCalendar = calEvent.idCalendar;
-        Cita.data.start = calEvent.start.format("dddd, DD-MM-YYYY HH:mm");
-        Cita.data.end = calEvent.end.format("dddd, DD-MM-YYYY HH:mm");
-        Cita.data.paciente = calEvent.title;
-        Cita.data.estudio = calEvent.estudio;
-        Cita.data.editable = calEvent.editable;
-        Cita.data.comentarios = calEvent.comentarios;
+        Cita.data.tipo = calEvent.tipo;
+        Cita.data.backgroundColor = calEvent.backgroundColor;
+        Cita.data.borderColor = calEvent.borderColor;
         Cita.data.calendarios = calEvent.calendarios;
-        Cita.data.pn_inicio = calEvent.pn_inicio;
-        Cita.data.pn_fin = calEvent.pn_fin;
-        Cita.data.sexType = calEvent.sexType;
+        Cita.data.editable = calEvent.editable;
         Cita.data.email = calEvent.email;
-        Cita.data.pc_fecha_nacimiento = calEvent.pc_fecha_nacimiento;
-        let nacimiento = moment(calEvent.pc_fecha_nacimiento);
+        Cita.data.estudio = calEvent.estudio;
+        Cita.data.fecha_nacimiento = calEvent.fecha_nacimiento;
+        Cita.data.hashCita = calEvent.hashCita;
+        Cita.data.idCalendar = calEvent.idCalendar;
+        Cita.data.id_estudio = calEvent.id_estudio;
+        Cita.data.nhc = calEvent.nhc;
+        Cita.data.paciente = calEvent.paciente;
+        Cita.data.sexo = calEvent.sexo;
+        Cita.data.telefono = calEvent.telefono;
+        Cita.data.title = calEvent.title;
+        Cita.data.start = moment(calEvent.inicio, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
+        Cita.data.end = moment(calEvent.fin, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
+        Cita.data.inicio = calEvent.inicio;
+        Cita.data.fin = calEvent.fin;
+        let nacimiento = moment(Cita.data.fecha_nacimiento);
         let hoy = moment();
         Cita.data.anios = hoy.diff(nacimiento, "years");
-        if (Cita.data.tipo == 2) {
-            Cita.data.evento = calEvent.title;
-        }
-        if (Cita.data.tipo == 3) {
-            Cita.data.nota = calEvent.title;
-        }
-
-
         $('[data-toggle="tooltip"]').tooltip("hide");
         let modal = $("#modalCalendarEvent");
         modal.modal("show");
-        modal.find(".modal-header").css("backgroundColor", calEvent.borderColor ? calEvent.borderColor : calEvent.borderColor);
         m.redraw();
     }
 
     static verEvento(calEvent) {
+        Cita.data = null;
         Cita.data = {};
-        Cita.data.tipo = calEvent.tipo;
         Cita.data.id = calEvent.id;
-        Cita.data.hashCita = calEvent.id;
-        Cita.data.idCalendar = calEvent.idCalendar;
-        Cita.data.start = calEvent.start.format("dddd, DD-MM-YYYY HH:mm");
-        Cita.data.end = calEvent.end.format("dddd, DD-MM-YYYY HH:mm");
-        Cita.data.comentarios = calEvent.description;
+        Cita.data.tipo = calEvent.tipo;
+        Cita.data.backgroundColor = calEvent.backgroundColor;
+        Cita.data.borderColor = calEvent.borderColor;
         Cita.data.calendarios = calEvent.calendarios;
-        Cita.data.pn_inicio = calEvent.pn_inicio;
-        Cita.data.pn_fin = calEvent.pn_fin;
-        Cita.data.paciente = calEvent.title;
         Cita.data.editable = calEvent.editable;
-
+        Cita.data.start = moment(calEvent.inicio, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
+        Cita.data.end = moment(calEvent.fin, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
+        Cita.data.inicio = calEvent.inicio;
+        Cita.data.fin = calEvent.fin;
+        Cita.data.title = calEvent.title;
         $('[data-toggle="tooltip"]').tooltip("hide");
         let modal = $("#modalCalendarEvent");
         modal.modal("show");
-        modal.find(".modal-header").css("backgroundColor", calEvent.borderColor ? calEvent.borderColor : calEvent.borderColor);
         m.redraw();
     }
 
     static verUpdate(calEvent) {
-
+        Cita.data = null;
+        Cita.data = {};
         if (calEvent.tipo == 1) {
-            Cita.data.tipo = calEvent.tipo;
             Cita.data.id = calEvent.id;
-            Cita.data.hashCita = calEvent.id;
+            Cita.data.tipo = calEvent.tipo;
+            Cita.data.backgroundColor = calEvent.backgroundColor;
+            Cita.data.borderColor = calEvent.borderColor;
+            Cita.data.calendarios = calEvent.calendarios;
+            Cita.data.editable = calEvent.editable;
+            Cita.data.email = calEvent.email;
+            Cita.data.estudio = calEvent.estudio;
+            Cita.data.fecha_nacimiento = calEvent.fecha_nacimiento;
+            Cita.data.hashCita = calEvent.hashCita;
             Cita.data.idCalendar = calEvent.idCalendar;
+            Cita.data.id_estudio = calEvent.id_estudio;
+            Cita.data.nhc = calEvent.nhc;
+            Cita.data.paciente = calEvent.paciente;
+            Cita.data.sexo = calEvent.sexo;
+            Cita.data.telefono = calEvent.telefono;
+            Cita.data.title = calEvent.title;
+            Cita.data.hashCita = calEvent.hashCita;
             Cita.data.start = calEvent.start.format("dddd, DD-MM-YYYY HH:mm");
             Cita.data.end = calEvent.end.format("dddd, DD-MM-YYYY HH:mm");
-            Cita.data.paciente = calEvent.title;
-            Cita.data.estudio = calEvent.estudio;
-            Cita.data.editable = calEvent.editable;
-            Cita.data.comentarios = calEvent.comentarios;
-            Cita.data.calendarios = calEvent.calendarios;
-            Cita.data.pn_inicio = calEvent.pn_inicio;
-            Cita.data.pn_fin = calEvent.pn_fin;
-            Cita.data.sexType = calEvent.sexType;
-            Cita.data.email = calEvent.email;
-            Cita.data.pc_email = calEvent.pc_email;
-            Cita.data.pc_fecha_nacimiento = calEvent.pc_fecha_nacimiento;
-            let nacimiento = moment(calEvent.pc_fecha_nacimiento);
+            Cita.data.inicio = calEvent.start.format("DD/MM/YYYY HH:mm");
+            Cita.data.fin = calEvent.end.format("DD/MM/YYYY HH:mm");
+            Cita.data.newHashCita = calEvent.start.format("YYYY-MM-DD HH:mm") + "." + calEvent.end.format("YYYY-MM-DD HH:mm");
+            let nacimiento = moment(Cita.data.fecha_nacimiento);
             let hoy = moment();
             Cita.data.anios = hoy.diff(nacimiento, "years");
-            Cita.data.newHashCita = calEvent.start.format("YYYY-MM-DD HH:mm") + "." + calEvent.end.format("YYYY-MM-DD HH:mm");
-
         } else {
-            Cita.data.tipo = calEvent.tipo;
             Cita.data.id = calEvent.id;
-            Cita.data.hashCita = calEvent.id;
-            Cita.data.idCalendar = calEvent.idCalendar;
+            Cita.data.tipo = calEvent.tipo;
+            Cita.data.backgroundColor = calEvent.backgroundColor;
+            Cita.data.borderColor = calEvent.borderColor;
+            Cita.data.calendarios = calEvent.calendarios;
+            Cita.data.editable = calEvent.editable;
             Cita.data.start = calEvent.start.format("dddd, DD-MM-YYYY HH:mm");
             Cita.data.end = calEvent.end.format("dddd, DD-MM-YYYY HH:mm");
-            Cita.data.comentarios = calEvent.description;
-            Cita.data.calendarios = calEvent.calendarios;
-            Cita.data.paciente = calEvent.title;
-            Cita.data.editable = calEvent.editable;
+            Cita.data.inicio = calEvent.start.format("DD/MM/YYYY HH:mm");
+            Cita.data.fin = calEvent.end.format("DD/MM/YYYY HH:mm");
+            Cita.data.title = calEvent.title;
             Cita.data.newHashCita = calEvent.start.format("YYYY-MM-DD HH:mm") + "." + calEvent.end.format("YYYY-MM-DD HH:mm");
-
-            if (Cita.data.tipo == 2) {
-                Cita.data.evento = calEvent.title;
-            }
-            if (Cita.data.tipo == 3) {
-                Cita.data.nota = calEvent.title;
-            }
         }
-
-
-
         $('[data-toggle="tooltip"]').tooltip("hide");
         let modal = $("#modalUpdateEvent");
         modal.modal("show");
-        modal.find(".modal-header").css("backgroundColor", calEvent.borderColor ? calEvent.borderColor : calEvent.borderColor);
         m.redraw();
     }
 
@@ -130,29 +120,58 @@ class Cita {
             $("#modalCreateEvent").animate({
                 scrollTop: 0
             }, "slow");
-            Cita.error = "No se puede agendar o evento en fecha y hora anterior.";
+            Cita.error = "No se puede agendar una cita o evento en fecha y hora anterior.";
             m.redraw();
             throw Cita.error;
         }
 
-        if (Cita.data.id_estudio == undefined) {
-            $("#modalCreateEvent").animate({
-                scrollTop: 0
-            }, "slow");
-            Cita.error = "No existe datos de estudio.";
-            m.redraw();
-            throw Cita.error;
+        if (Cita.data.tipo == 1) {
+
+            if (Cita.data.id_estudio == undefined) {
+                $("#modalCreateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.error = "No existe datos de estudio.";
+                m.redraw();
+                throw Cita.error;
+            }
+
+
+            if (Cita.data.paciente == undefined) {
+                $("#modalCreateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.error = "No existe datos de paciente.";
+                m.redraw();
+                throw Cita.error;
+            }
+
+        }
+
+        if (Cita.data.tipo == 2) {
+            if (Cita.data.evento == undefined) {
+                $("#modalCreateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.error = "No existe datos del evento.";
+                m.redraw();
+                throw Cita.error;
+            }
+        }
+
+        if (Cita.data.tipo == 3) {
+            if (Cita.data.nota == undefined) {
+                $("#modalCreateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.error = "No existe datos de la nota.";
+                m.redraw();
+                throw Cita.error;
+            }
         }
 
 
-        if (Cita.data.paciente == undefined) {
-            $("#modalCreateEvent").animate({
-                scrollTop: 0
-            }, "slow");
-            Cita.error = "No existe datos de paciente.";
-            m.redraw();
-            throw Cita.error;
-        }
+
 
     }
 
@@ -186,7 +205,7 @@ class Cita {
         Cita.data.end = _data.end;
         Cita.data.inicio = _data.inicio;
         Cita.data.fin = _data.fin;
-        Cita.data.hashCita = moment(_data.inicio, 'DD/MM/YYYY HH:mm').format("YYYY-MM-DD HH:mm") + "." + moment(_data.end, 'DD/MM/YYYY HH:mm').format("YYYY-MM-DD HH:mm");
+        Cita.data.hashCita = moment(_data.inicio, 'DD/MM/YYYY HH:mm').format("YYYY-MM-DD HH:mm") + "." + moment(_data.fin, 'DD/MM/YYYY HH:mm').format("YYYY-MM-DD HH:mm");
         m.redraw();
     }
 
@@ -206,11 +225,9 @@ class Cita {
         m.redraw();
     }
 
-    static reagendarHttp() {
-        console.log(33, Cita.data)
+    static reagendarHttp(Calendario) {
 
-        Cita.data.error = undefined;
-
+        Cita.error = null;
         if (Cita.data.tipo == 1) {
             if (Cita.data.email != document.getElementById('correoCitaUpdate').value) {
                 Cita.data.email = document.getElementById('correoCitaUpdate').value;
@@ -231,25 +248,25 @@ class Cita {
         }).then(function(res) {
             Cita.loader = false;
             if (res.status) {
-                Cita.reAgendarCita();
+                Cita.reAgendarCita(Calendario);
             } else {
                 $("#modalUpdateEvent").animate({
                     scrollTop: 0
                 }, "slow");
-                Cita.data.error = res.message;
+                Cita.error = res.message;
                 throw res.message;
             }
         }).catch(function(e) {
             $("#modalUpdateEvent").animate({
                 scrollTop: 0
             }, "slow");
-            Cita.data.error = e;
+            Cita.error = e;
             throw e;
         });
     }
 
-    static cancelarHttp() {
-        Cita.data.error = undefined;
+    static cancelarHttp(Calendario) {
+        Cita.error = null;
         Cita.loader = true;
         Cita.data.idCalendar = Calendario.idCalendar;
         Cita.data.calendarios = Calendario.calendarios;
@@ -264,39 +281,32 @@ class Cita {
         }).then(function(res) {
             Cita.loader = false;
             if (res.status) {
-                Cita.cancelarCita();
+                Cita.cancelarCita(Calendario);
             } else {
                 $("#modalCreateEvent").animate({
                     scrollTop: 0
                 }, "slow");
-                Cita.data.error = res.message;
+                Cita.error = res.message;
                 throw res.message;
             }
         }).catch(function(e) {
             $("#modalCreateEvent").animate({
                 scrollTop: 0
             }, "slow");
-            Cita.data.error = e;
+            Cita.error = e;
             throw e;
         });
     }
 
-    static agendarCitaHttp() {
-
-
-
-
-
+    static agendarCitaHttp(calendario) {
 
         if (Cita.data.email != document.getElementById('correoCreaCita').value) {
             Cita.data.email = document.getElementById('correoCreaCita').value;
         }
 
-        throw "jj";
-
         Cita.loader = true;
-        Cita.data.idCalendar = Calendario.idCalendar;
-        Cita.data.calendarios = Calendario.calendarios;
+        Cita.data.idCalendar = calendario.idCalendar;
+        Cita.data.calendarios = calendario.calendarios;
 
         m.request({
             method: "POST",
@@ -308,7 +318,7 @@ class Cita {
         }).then(function(res) {
             Cita.loader = false;
             if (res.status) {
-                Cita.agendarCita();
+                Cita.agendarCita(calendario);
             } else {
                 $("#modalCreateEvent").animate({
                     scrollTop: 0
@@ -325,11 +335,9 @@ class Cita {
         });
     }
 
-    static trackReAgendar() {
-        console.log(Cita.data)
+    static trackReAgendar(Calendario) {
 
         Cita.loader = true;
-
         m.request({
             method: "POST",
             url: "https://api.hospitalmetropolitano.org/v2/date/citas/reagendar",
@@ -339,9 +347,8 @@ class Cita {
             }
         }).then(function(res) {
             Cita.loader = false;
-
             if (res.status) {
-                FetchCalendario.reloadFetchAgenda();
+                Calendario.reloadFetchAgenda();
                 Calendario.success = "Ahora puede reagendar este Cita.";
                 Calendario.clearAlertCalendar();
             } else {
@@ -352,7 +359,7 @@ class Cita {
         });
     }
 
-    static trackCancelReAgendar() {
+    static trackCancelReAgendar(Calendario) {
         Cita.loader = true;
 
         m.request({
@@ -365,7 +372,7 @@ class Cita {
         }).then(function(res) {
             Cita.loader = false;
             if (res.status) {
-                FetchCalendario.reloadFetchAgenda();
+                Calendario.reloadFetchAgenda();
                 Calendario.success = "El reagendamiento se canceló.";
                 Calendario.clearAlertCalendar();
             } else {
@@ -376,7 +383,7 @@ class Cita {
         });
     }
 
-    static agendarCita() {
+    static agendarCita(Calendario) {
         Cita.loader = true;
         Cita.data.idCalendar = Calendario.idCalendar;
         Cita.data.calendarios = Calendario.calendarios;
@@ -393,17 +400,16 @@ class Cita {
                 Calendario.success = res.message;
                 Calendario.clearAlertCalendar();
                 $("#modalCreateEvent").modal("hide");
-                FetchCalendario.reloadFetchAgenda();
-                Cita.data = {};
+                Calendario.reloadFetchAgenda();
             } else {
-                Calendario.error = res.message;
+                Cita.error = res.message;
             }
         }).catch(function(e) {
-            Calendario.error = e;
+            Cita.error = e;
         });
     }
 
-    static reAgendarCita() {
+    static reAgendarCita(Calendario) {
         Cita.loader = true;
         m.request({
             method: "POST",
@@ -418,7 +424,7 @@ class Cita {
                 Calendario.success = res.message;
                 Calendario.clearAlertCalendar();
                 $("#modalUpdateEvent").modal("hide");
-                FetchCalendario.reloadFetchAgenda();
+                Calendario.reloadFetchAgenda();
             } else {
                 Calendario.error = res.message;
             }
