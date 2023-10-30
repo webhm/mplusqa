@@ -84,7 +84,7 @@ class CitasAnteriores {
     view() {
         if (CitasAnteriores.citas !== null && CitasAnteriores.citas.length > 0) {
             return CitasAnteriores.citas.map((_v, _i) => {
-                if (_v.tipo == 2 && _i <= 5) {
+                if (_v.tipo == 1 && _i <= 5) {
                     return [
                         m("a.schedule-item.bd-l.bd-2", {
                             style: {
@@ -158,62 +158,62 @@ class BuscadorItems {
             ],
             destroy: true,
             columns: [{
-                    title: "N°:"
-                },
-                {
-                    title: "Código:"
-                },
-                {
-                    title: "Item:"
-                },
+                title: "N°:"
+            },
+            {
+                title: "Código:"
+            },
+            {
+                title: "Item:"
+            },
 
-                {
-                    title: "Duración:"
-                }, {
-                    title: "Opciones:"
-                },
+            {
+                title: "Duración:"
+            }, {
+                title: "Opciones:"
+            },
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                    visible: true,
-                    aTargets: [0]
+                mRender: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.CD_ITEM_AGENDAMENTO;
-                    },
-                    visible: true,
-                    aTargets: [1]
+                visible: true,
+                aTargets: [0]
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.CD_ITEM_AGENDAMENTO;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.DS_ITEM_AGENDAMENTO;
-                    },
-                    visible: true,
-                    aTargets: [2]
+                visible: true,
+                aTargets: [1]
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.DS_ITEM_AGENDAMENTO;
                 },
+                visible: true,
+                aTargets: [2]
+            },
 
-                {
-                    mRender: function(data, type, full) {
-                        return ('<b class="tx-14 tx-semibold tx-danger">' + full.DURACION + " Min. </b>");
-                    },
-                    visible: true,
-                    aTargets: [3]
-                }, {
-                    mRender: function(data, type, full) {
-                        return "OPCIONES";
-                    },
-                    visible: true,
-                    aTargets: [4]
+            {
+                mRender: function (data, type, full) {
+                    return ('<b class="tx-14 tx-semibold tx-danger">' + full.DURACION + " Min. </b>");
                 },
+                visible: true,
+                aTargets: [3]
+            }, {
+                mRender: function (data, type, full) {
+                    return "OPCIONES";
+                },
+                visible: true,
+                aTargets: [4]
+            },
             ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {},
-            drawCallback: function(settings) {
-                settings.aoData.map(function(_i) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) { },
+            drawCallback: function (settings) {
+                settings.aoData.map(function (_i) {
                     m.mount(_i.anCells[4], {
-                        view: function() {
+                        view: function () {
                             return [
                                 m("button.btn.btn-sm.btn-block.btn-primary[type='button']", {
                                     onclick: () => {
@@ -244,11 +244,11 @@ class BuscadorItems {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             BuscadorItems.loader = false;
             BuscadorItems.data = res.data;
             BuscadorItems.loadItems();
-        }).catch(function(e) {});
+        }).catch(function (e) { });
     }
     view() {
         return [
@@ -303,77 +303,77 @@ class BuscadorPacientes {
             ],
             destroy: true,
             columns: [{
-                    title: "N°:"
-                },
-                {
-                    title: "NHC:"
-                },
-                {
-                    title: "Paciente:"
-                },
-                {
-                    title: "Edad:"
-                }, {
-                    title: "Sexo:"
-                }, {
-                    title: "F. Nacimiento:"
-                }, {
-                    title: "Opciones:"
-                },
+                title: "N°:"
+            },
+            {
+                title: "NHC:"
+            },
+            {
+                title: "Paciente:"
+            },
+            {
+                title: "Edad:"
+            }, {
+                title: "Sexo:"
+            }, {
+                title: "F. Nacimiento:"
+            }, {
+                title: "Opciones:"
+            },
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                    visible: true,
-                    aTargets: [0]
+                mRender: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.CD_PACIENTE;
-                    },
-                    visible: true,
-                    aTargets: [1]
+                visible: true,
+                aTargets: [0]
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.CD_PACIENTE;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.NM_PACIENTE;
-                    },
-                    visible: true,
-                    aTargets: [2],
-                    width: "60%"
+                visible: true,
+                aTargets: [1]
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.NM_PACIENTE;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.EDAD;
-                    },
-                    visible: true,
-                    aTargets: [3]
-                }, {
-                    mRender: function(data, type, full) {
-                        return full.TP_SEXO;
-                    },
-                    visible: true,
-                    aTargets: [4]
-                }, {
-                    mRender: function(data, type, full) {
-                        return full.DT_NASCIMENTO;
-                    },
-                    visible: true,
-                    aTargets: [5]
-                }, {
-                    mRender: function(data, type, full) {
-                        return "OPCIONES";
-                    },
-                    visible: true,
-                    aTargets: [6]
+                visible: true,
+                aTargets: [2],
+                width: "60%"
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.EDAD;
                 },
+                visible: true,
+                aTargets: [3]
+            }, {
+                mRender: function (data, type, full) {
+                    return full.TP_SEXO;
+                },
+                visible: true,
+                aTargets: [4]
+            }, {
+                mRender: function (data, type, full) {
+                    return full.DT_NASCIMENTO;
+                },
+                visible: true,
+                aTargets: [5]
+            }, {
+                mRender: function (data, type, full) {
+                    return "OPCIONES";
+                },
+                visible: true,
+                aTargets: [6]
+            },
             ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {},
-            drawCallback: function(settings) {
-                settings.aoData.map(function(_i) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) { },
+            drawCallback: function (settings) {
+                settings.aoData.map(function (_i) {
                     m.mount(_i.anCells[6], {
-                        view: function() {
+                        view: function () {
                             return [
                                 m("button.btn.btn-sm.btn-block.btn-primary[type='button']", {
                                     onclick: () => {
@@ -406,11 +406,11 @@ class BuscadorPacientes {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             BuscadorPacientes.loader = false;
             BuscadorPacientes.data = res.data;
             BuscadorPacientes.loadPacientes();
-        }).catch(function(e) {});
+        }).catch(function (e) { });
     }
     view() {
         return [

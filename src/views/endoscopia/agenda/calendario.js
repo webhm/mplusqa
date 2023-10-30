@@ -1255,6 +1255,9 @@ class Calendario extends App {
         });
 
         var calendar = $("#calendar").fullCalendar("getCalendar");
+        // 1751087451
+        // 0990448987 carlos haro
+
 
         // change view to week when in tablet
         if (window.matchMedia("(min-width: 576px)").matches) {

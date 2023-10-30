@@ -125,7 +125,7 @@ class Cita {
             throw Cita.error;
         }
 
-        if (Cita.data.tipo == 1) {
+        if (Cita.data.tipo == 1 && Cita.data.sinDatos == undefined) {
 
             if (Cita.data.id_estudio == undefined) {
                 $("#modalCreateEvent").animate({
@@ -142,6 +142,64 @@ class Cita {
                     scrollTop: 0
                 }, "slow");
                 Cita.error = "No existe datos de paciente.";
+                m.redraw();
+                throw Cita.error;
+            }
+
+        }
+
+        if (Cita.data.tipo == 1 && Cita.data.sinDatos !== undefined && Cita.data.sinDatos) {
+
+            if (Cita.data.id_estudio == undefined) {
+                $("#modalCreateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.error = "No existe datos de estudio.";
+                m.redraw();
+                throw Cita.error;
+            }
+
+            if (Cita.data.paciente == undefined) {
+                $("#modalCreateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.error = "No existe datos de paciente.";
+                m.redraw();
+                throw Cita.error;
+            }
+
+            if (Cita.data.fecha_nacimiento == undefined) {
+                $("#modalCreateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.error = "No existe datos de fecha de nacimiento.";
+                m.redraw();
+                throw Cita.error;
+            }
+
+            if (Cita.data.telefono == undefined) {
+                $("#modalCreateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.error = "No existe datos de teléfono.";
+                m.redraw();
+                throw Cita.error;
+            }
+
+            if (Cita.data.sexo == undefined) {
+                $("#modalCreateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.error = "No existe datos de sexo.";
+                m.redraw();
+                throw Cita.error;
+            }
+
+            if (Cita.data.email == undefined) {
+                $("#modalCreateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.error = "No existe datos de Correo electrónico.";
                 m.redraw();
                 throw Cita.error;
             }
@@ -234,7 +292,6 @@ class Cita {
             }
         }
 
-        Calendario.validarAgendamiento();
         Cita.loader = true;
         Cita.data.calendarios = Calendario.calendarios;
 
@@ -245,7 +302,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Cita.reAgendarCita(Calendario);
@@ -256,7 +313,7 @@ class Cita {
                 Cita.error = res.message;
                 throw res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             $("#modalUpdateEvent").animate({
                 scrollTop: 0
             }, "slow");
@@ -278,7 +335,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Cita.cancelarCita(Calendario);
@@ -289,7 +346,7 @@ class Cita {
                 Cita.error = res.message;
                 throw res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             $("#modalCreateEvent").animate({
                 scrollTop: 0
             }, "slow");
@@ -315,7 +372,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Cita.agendarCita(calendario);
@@ -326,7 +383,7 @@ class Cita {
                 Cita.data.error = res.message;
                 throw res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             $("#modalCreateEvent").animate({
                 scrollTop: 0
             }, "slow");
@@ -345,7 +402,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Calendario.reloadFetchAgenda();
@@ -354,7 +411,7 @@ class Cita {
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             Calendario.error = e;
         });
     }
@@ -369,7 +426,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Calendario.reloadFetchAgenda();
@@ -378,7 +435,7 @@ class Cita {
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             Calendario.error = e;
         });
     }
@@ -394,7 +451,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Calendario.success = res.message;
@@ -404,7 +461,7 @@ class Cita {
             } else {
                 Cita.error = res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             Cita.error = e;
         });
     }
@@ -418,7 +475,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Calendario.success = res.message;
@@ -428,11 +485,11 @@ class Cita {
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             Calendario.error = e;
         });
     }
-    static cancelarCita() {
+    static cancelarCita(Calendario) {
         Cita.loader = true;
 
         m.request({
@@ -442,19 +499,18 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
 
             if (res.status) {
                 Calendario.success = res.message;
                 Calendario.clearAlertCalendar();
                 $("#modalCalendarEvent").modal("hide");
-                FetchCalendario.reloadFetchAgenda();
-                Cita.data = {};
+                Calendario.reloadFetchAgenda();
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             Calendario.error = res.message;
         });
     }
