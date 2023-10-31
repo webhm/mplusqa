@@ -494,10 +494,15 @@ class Calendario extends App {
                     }
                 },
                 eventDrop: function(calEvent) {
-                    Cita.verUpdate(calEvent);
+                    setTimeout(() => {
+                        Cita.verUpdate(calEvent);
+                    }, 500);
+
                 },
                 eventResize: function(calEvent) {
-                    Cita.verUpdate(calEvent);
+                    setTimeout(() => {
+                        Cita.verUpdate(calEvent);
+                    }, 500);
                 }
             });
 
@@ -514,7 +519,10 @@ class Calendario extends App {
                 }
 
                 if (calEvent.tipo == 1 && calEvent.editable) {
-                    Cita.verUpdate(calEvent);
+                    setTimeout(() => {
+                        Cita.verUpdate(calEvent);
+                    }, 50);
+
                 }
 
                 if (calEvent.tipo > 1 && !calEvent.editable) {
@@ -1814,7 +1822,7 @@ class Calendario extends App {
 
 
             if (_val.tipo == 1 || _val.tipo == 2) {
-                if (_val.inicio == Cita.data.inicio && _val.fin == Cita.data.fin) {
+                if (_val.inicio == Cita.data.inicio || _val.fin == Cita.data.fin) {
                     _track = true;
                     _timeInicio = moment(_val.inicio, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
                     _timeFin = moment(_val.fin, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
