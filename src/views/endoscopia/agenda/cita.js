@@ -51,6 +51,7 @@ class Cita {
         Cita.data.backgroundColor = calEvent.backgroundColor;
         Cita.data.borderColor = calEvent.borderColor;
         Cita.data.calendarios = calEvent.calendarios;
+        Cita.data.idCalendar = calEvent.idCalendar;
         Cita.data.editable = calEvent.editable;
         Cita.data.start = moment(calEvent.inicio, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
         Cita.data.end = moment(calEvent.fin, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
@@ -99,6 +100,7 @@ class Cita {
             Cita.data.backgroundColor = calEvent.backgroundColor;
             Cita.data.borderColor = calEvent.borderColor;
             Cita.data.calendarios = calEvent.calendarios;
+            Cita.data.idCalendar = calEvent.idCalendar;
             Cita.data.editable = calEvent.editable;
             Cita.data.start = calEvent.start.format("dddd, DD-MM-YYYY HH:mm");
             Cita.data.end = calEvent.end.format("dddd, DD-MM-YYYY HH:mm");
@@ -302,10 +304,10 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function (res) {
+        }).then(function(res) {
             Cita.loader = false;
             if (res.status) {
-                Cita.reAgendarCita(Calendario);
+                Cita.reagendar(Calendario);
             } else {
                 $("#modalUpdateEvent").animate({
                     scrollTop: 0
@@ -313,7 +315,7 @@ class Cita {
                 Cita.error = res.message;
                 throw res.message;
             }
-        }).catch(function (e) {
+        }).catch(function(e) {
             $("#modalUpdateEvent").animate({
                 scrollTop: 0
             }, "slow");
@@ -322,11 +324,14 @@ class Cita {
         });
     }
 
+    static reagendar(Calendario) {
+        Cita.agendarReagendarCitaHttp(Calendario);
+    }
+
+
     static cancelarHttp(Calendario) {
         Cita.error = null;
         Cita.loader = true;
-        Cita.data.idCalendar = Calendario.idCalendar;
-        Cita.data.calendarios = Calendario.calendarios;
 
         m.request({
             method: "POST",
@@ -335,7 +340,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function (res) {
+        }).then(function(res) {
             Cita.loader = false;
             if (res.status) {
                 Cita.cancelarCita(Calendario);
@@ -346,7 +351,7 @@ class Cita {
                 Cita.error = res.message;
                 throw res.message;
             }
-        }).catch(function (e) {
+        }).catch(function(e) {
             $("#modalCreateEvent").animate({
                 scrollTop: 0
             }, "slow");
@@ -372,7 +377,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function (res) {
+        }).then(function(res) {
             Cita.loader = false;
             if (res.status) {
                 Cita.agendarCita(calendario);
@@ -383,7 +388,39 @@ class Cita {
                 Cita.data.error = res.message;
                 throw res.message;
             }
-        }).catch(function (e) {
+        }).catch(function(e) {
+            $("#modalCreateEvent").animate({
+                scrollTop: 0
+            }, "slow");
+            Cita.data.error = e;
+            throw e;
+        });
+    }
+
+    static agendarReagendarCitaHttp(calendario) {
+
+        Cita.loader = true;
+        Cita.data.calendarios = calendario.calendarios;
+
+        m.request({
+            method: "POST",
+            url: "https://api.hospitalmetropolitano.org/v2/date/citas/call",
+            body: Cita.data,
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        }).then(function(res) {
+            Cita.loader = false;
+            if (res.status) {
+                Cita.reAgendarCita(calendario);
+            } else {
+                $("#modalCreateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.data.error = res.message;
+                throw res.message;
+            }
+        }).catch(function(e) {
             $("#modalCreateEvent").animate({
                 scrollTop: 0
             }, "slow");
@@ -402,7 +439,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function (res) {
+        }).then(function(res) {
             Cita.loader = false;
             if (res.status) {
                 Calendario.reloadFetchAgenda();
@@ -411,7 +448,7 @@ class Cita {
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function (e) {
+        }).catch(function(e) {
             Calendario.error = e;
         });
     }
@@ -426,7 +463,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function (res) {
+        }).then(function(res) {
             Cita.loader = false;
             if (res.status) {
                 Calendario.reloadFetchAgenda();
@@ -435,15 +472,15 @@ class Cita {
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function (e) {
+        }).catch(function(e) {
             Calendario.error = e;
         });
     }
 
     static agendarCita(Calendario) {
         Cita.loader = true;
-        Cita.data.idCalendar = Calendario.idCalendar;
-        Cita.data.calendarios = Calendario.calendarios;
+
+
         m.request({
             method: "POST",
             url: "https://api.hospitalmetropolitano.org/v2/date/citas/nueva",
@@ -451,7 +488,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function (res) {
+        }).then(function(res) {
             Cita.loader = false;
             if (res.status) {
                 Calendario.success = res.message;
@@ -461,7 +498,7 @@ class Cita {
             } else {
                 Cita.error = res.message;
             }
-        }).catch(function (e) {
+        }).catch(function(e) {
             Cita.error = e;
         });
     }
@@ -475,7 +512,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function (res) {
+        }).then(function(res) {
             Cita.loader = false;
             if (res.status) {
                 Calendario.success = res.message;
@@ -485,7 +522,7 @@ class Cita {
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function (e) {
+        }).catch(function(e) {
             Calendario.error = e;
         });
     }
@@ -499,7 +536,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function (res) {
+        }).then(function(res) {
             Cita.loader = false;
 
             if (res.status) {
@@ -510,7 +547,7 @@ class Cita {
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function (e) {
+        }).catch(function(e) {
             Calendario.error = res.message;
         });
     }
