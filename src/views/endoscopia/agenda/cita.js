@@ -65,6 +65,7 @@ class Cita {
     }
 
     static verUpdate(calEvent) {
+        Cita.error = null;
         Cita.data = null;
         Cita.data = {};
         if (calEvent.tipo == 1) {
@@ -479,7 +480,8 @@ class Cita {
 
     static agendarCita(Calendario) {
         Cita.loader = true;
-
+        Cita.data.idCalendar = Calendario.idCalendar;
+        Cita.data.calendarios = Calendario.calendarios;
 
         m.request({
             method: "POST",
