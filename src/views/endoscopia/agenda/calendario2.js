@@ -543,26 +543,27 @@ class Calendario extends App {
             });
 
 
-
-
-            // change view based in viewport width when resize is detected
-            Calendario.calendar.option("windowResize", function(view) {
+            // change view to week when in tablet
+            if (window.matchMedia("(min-width: 576px)").matches) {
                 try {
-                    if (view.name === "listWeek") {
-                        if (window.matchMedia("(min-width: 992px)").matches) {
-                            calendar.changeView("agendaWeek");
-                        } else {
-                            calendar.changeView("agendaWeek");
-                        }
-                    }
+                    Calendario.calendar.changeView("agendaWeek");
                 } catch (error) {
                     setTimeout(() => {
                         window.location.reload();
-                    }, 2000);
-
+                    }, 1000);
                 }
-            });
+            }
 
+            // change view to month when in desktop
+            if (window.matchMedia("(min-width: 992px)").matches) {
+                try {
+                    Calendario.calendar.changeView("agendaWeek");
+                } catch (error) {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                }
+            }
 
 
             $(".select2-modal").select2({ minimumResultsForSearch: Infinity, dropdownCssClass: "select2-dropdown-modal" });
@@ -1258,12 +1259,9 @@ class Calendario extends App {
                 m("div.modal-footer", [
                     m("button.btn.btn-primary.mg-r-5", {
                         onclick: () => {
-                            if (Cita.data !== null && Cita.data.tipo == 1) {
-                                Calendario.validarAgendamiento('Agendar');
-                            } else {
-                                Cita.validarCita();
-                                Cita.agendarCita(Calendario);
-                            }
+                            m.redraw();
+                            Calendario.validarAgendamiento('Agendar');
+
                         }
                     }, "Agendar"),
                     m("a.btn.btn-secondary[href=''][data-dismiss='modal']", "Cerrar"),
@@ -1363,7 +1361,9 @@ class Calendario extends App {
                                 ],
 
                                 m("button.btn.btn-xs.btn-danger.mg-r-5", {
+
                                     onclick: () => {
+                                        Cita.error = null;
                                         $.confirm({
                                             title: 'Cancelar',
                                             content: '¿Esta Ud. seguro de realizar este cancelación?',
@@ -1371,27 +1371,13 @@ class Calendario extends App {
                                                 confirm: {
                                                     text: 'Confirmar',
                                                     action: function() {
-                                                        $("#modalCreateEvent").animate({
-                                                            scrollTop: 0
-                                                        }, "slow");
-                                                        $("#modalUpdateEvent").animate({
-                                                            scrollTop: 0
-                                                        }, "slow");
+                                                        m.redraw();
                                                         Cita.cancelarHttp(Calendario);
                                                     }
                                                 },
                                                 cancel: {
                                                     btnClass: "btn-danger op-8",
                                                     text: 'Cancelar',
-                                                    action: function() {
-                                                        $("#modalCreateEvent").animate({
-                                                            scrollTop: 0
-                                                        }, "slow");
-                                                        $("#modalUpdateEvent").animate({
-                                                            scrollTop: 0
-                                                        }, "slow");
-
-                                                    }
                                                 }
 
                                             }
@@ -1414,24 +1400,16 @@ class Calendario extends App {
                                                 confirm: {
                                                     text: 'Confirmar',
                                                     action: function() {
-
-                                                        Cita.cancelarCita(Calendario);
+                                                        m.redraw();
+                                                        Cita.cancelarHttp(Calendario);
 
 
                                                     }
                                                 },
                                                 cancel: {
                                                     btnClass: "btn-danger op-8",
-                                                    text: 'Cancelar',
-                                                    action: function() {
-                                                        $("#modalCreateEvent").animate({
-                                                            scrollTop: 0
-                                                        }, "slow");
-                                                        $("#modalUpdateEvent").animate({
-                                                            scrollTop: 0
-                                                        }, "slow");
+                                                    text: 'Cancelar'
 
-                                                    }
 
                                                 }
 
@@ -1708,7 +1686,9 @@ class Calendario extends App {
                                         confirm: {
                                             text: 'Confirmar',
                                             action: function() {
+                                                m.redraw();
                                                 Calendario.validarAgendamiento('Reagendar');
+
                                             }
                                         },
                                         cancel: {
@@ -1804,7 +1784,7 @@ class Calendario extends App {
             Calendario.error = null;
             Calendario.success = null;
             m.redraw();
-        }, 2500);
+        }, 1500);
     }
 
     static validarCorreo(emailField) {
@@ -1843,7 +1823,7 @@ class Calendario extends App {
                 if (moment(Cita.data.fin, "DD/MM/YYYY HH:mm").unix() > moment(_val.inicio, "DD/MM/YYYY HH:mm").unix() && moment(_val.fin, "DD/MM/YYYY HH:mm").unix() > moment(Cita.data.fin, "DD/MM/YYYY HH:mm").unix()) {
                     _track = true;
                     _timeInicio = moment(_val.inicio, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
-                    _timeFin = moment(_val.fin, "DD/MM/YYYY HH:mm").format("DD-MM-YYYY HH:mm");
+                    _timeFin = moment(_val.fin, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
                 }
 
                 if (moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").unix() < moment(_val.fin, "DD/MM/YYYY HH:mm").unix() && moment(_val.inicio, "DD/MM/YYYY HH:mm").unix() < moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").unix()) {

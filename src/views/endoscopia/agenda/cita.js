@@ -232,8 +232,6 @@ class Cita {
         }
 
 
-
-
     }
 
     static crearCita(startDate, endDate) {
@@ -289,10 +287,8 @@ class Cita {
     static reagendarHttp(Calendario) {
 
         Cita.error = null;
-        if (Cita.data.tipo == 1) {
-            if (Cita.data.email != document.getElementById('correoCitaUpdate').value) {
-                Cita.data.email = document.getElementById('correoCitaUpdate').value;
-            }
+        if (Cita.data.tipo == 1 && Cita.data.email != document.getElementById('correoCitaUpdate').value) {
+            Cita.data.email = document.getElementById('correoCitaUpdate').value;
         }
 
         Cita.loader = true;
@@ -363,7 +359,9 @@ class Cita {
 
     static agendarCitaHttp(calendario) {
 
-        if (Cita.data.email != document.getElementById('correoCreaCita').value) {
+        Cita.error = null;
+
+        if (Cita.data.tipo == 1 && Cita.data.email != document.getElementById('correoCreaCita').value) {
             Cita.data.email = document.getElementById('correoCreaCita').value;
         }
 
@@ -381,6 +379,7 @@ class Cita {
         }).then(function(res) {
             Cita.loader = false;
             if (res.status) {
+                console.log(22, 'estoy por aqui');
                 Cita.agendarCita(calendario);
             } else {
                 $("#modalCreateEvent").animate({
