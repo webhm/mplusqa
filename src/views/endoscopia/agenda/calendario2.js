@@ -11,7 +11,6 @@ import { ProximasCitas, ProximosEventos, CitasAnteriores, BuscadorItems, Buscado
 class OptionSelect {
     static idFilter = "";
     static reloadSelect() {
-        $("#agendas").select2("destroy");
         OptionSelect.idFilter = "";
         setTimeout(() => {
             OptionSelect.idFilter = Calendario.idCalendar;
@@ -451,7 +450,7 @@ class Calendario extends App {
                                                   */
 
 
-                    let nacimiento = moment(event.fecha_nacimiento);
+                    let nacimiento = moment(event.fecha_nacimiento, "DD/MM/YYYY");
                     let hoy = moment();
                     let anios = hoy.diff(nacimiento, "years");
                     let eBorderColor = event.borderColor ? event.borderColor : event.borderColor;
@@ -975,7 +974,6 @@ class Calendario extends App {
                                                 setTimeout(() => {
                                                     Cita.data.fecha_nacimiento = e.target.value;
                                                 }, 50);
-                                                console.log(Cita.dateBirth);
                                             },
                                             oncreate: (e) => {
                                                 setTimeout(() => {
@@ -1612,6 +1610,9 @@ class Calendario extends App {
                                             m("div.form-group", [
                                                 m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Comentarios: "),
                                                 m("textarea.form-control[rows='2'][placeholder='Comentarios']", {
+                                                    oncreate: (el) => {
+                                                        el.dom.value = (Cita.data.comentarios.length !== 0 ? Cita.data.comentarios : '')
+                                                    },
                                                     oninput: (e) => {
                                                         Cita.data.comentarios = e.target.value;
                                                     }
@@ -1822,11 +1823,7 @@ class Calendario extends App {
 
 
             if (_val.tipo == 1 || _val.tipo == 2) {
-                if (_val.inicio == Cita.data.inicio || _val.fin == Cita.data.fin) {
-                    _track = true;
-                    _timeInicio = moment(_val.inicio, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
-                    _timeFin = moment(_val.fin, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
-                }
+
 
                 if (moment(Cita.data.fin, "DD/MM/YYYY HH:mm").unix() > moment(_val.inicio, "DD/MM/YYYY HH:mm").unix() && moment(_val.fin, "DD/MM/YYYY HH:mm").unix() > moment(Cita.data.fin, "DD/MM/YYYY HH:mm").unix()) {
                     _track = true;

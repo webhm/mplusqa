@@ -25,6 +25,7 @@ class Cita {
         Cita.data.hashCita = calEvent.hashCita;
         Cita.data.idCalendar = calEvent.idCalendar;
         Cita.data.id_estudio = calEvent.id_estudio;
+        Cita.data.comentarios = calEvent.comentarios;
         Cita.data.nhc = calEvent.nhc;
         Cita.data.paciente = calEvent.paciente;
         Cita.data.sexo = calEvent.sexo;
@@ -34,7 +35,8 @@ class Cita {
         Cita.data.end = moment(calEvent.fin, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
         Cita.data.inicio = calEvent.inicio;
         Cita.data.fin = calEvent.fin;
-        let nacimiento = moment(Cita.data.fecha_nacimiento);
+        console.log(Cita.data)
+        let nacimiento = moment(Cita.data.fecha_nacimiento, "DD/MM/YYYY");
         let hoy = moment();
         Cita.data.anios = hoy.diff(nacimiento, "years");
         $('[data-toggle="tooltip"]').tooltip("hide");
@@ -81,6 +83,7 @@ class Cita {
             Cita.data.hashCita = calEvent.hashCita;
             Cita.data.idCalendar = calEvent.idCalendar;
             Cita.data.id_estudio = calEvent.id_estudio;
+            Cita.data.comentarios = calEvent.comentarios;
             Cita.data.nhc = calEvent.nhc;
             Cita.data.paciente = calEvent.paciente;
             Cita.data.sexo = calEvent.sexo;
@@ -92,7 +95,7 @@ class Cita {
             Cita.data.inicio = calEvent.start.format("DD/MM/YYYY HH:mm");
             Cita.data.fin = calEvent.end.format("DD/MM/YYYY HH:mm");
             Cita.data.newHashCita = calEvent.start.format("YYYY-MM-DD HH:mm") + "." + calEvent.end.format("YYYY-MM-DD HH:mm");
-            let nacimiento = moment(Cita.data.fecha_nacimiento);
+            let nacimiento = moment(Cita.data.fecha_nacimiento, "DD/MM/YYYY");
             let hoy = moment();
             Cita.data.anios = hoy.diff(nacimiento, "years");
         } else {
@@ -103,6 +106,7 @@ class Cita {
             Cita.data.calendarios = calEvent.calendarios;
             Cita.data.idCalendar = calEvent.idCalendar;
             Cita.data.editable = calEvent.editable;
+            Cita.data.comentarios = calEvent.comentarios;
             Cita.data.start = calEvent.start.format("dddd, DD-MM-YYYY HH:mm");
             Cita.data.end = calEvent.end.format("dddd, DD-MM-YYYY HH:mm");
             Cita.data.inicio = calEvent.start.format("DD/MM/YYYY HH:mm");
@@ -124,6 +128,15 @@ class Cita {
                 scrollTop: 0
             }, "slow");
             Cita.error = "No se puede agendar una cita o evento en fecha y hora anterior.";
+            m.redraw();
+            throw Cita.error;
+        }
+
+        if (moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").unix() > moment(Cita.data.fin, "DD/MM/YYYY HH:mm").unix()) {
+            $("#modalCreateEvent").animate({
+                scrollTop: 0
+            }, "slow");
+            Cita.error = "No se puede agendar una cita o evento donde la fecha fin sea menor a la fecha inicio.";
             m.redraw();
             throw Cita.error;
         }
@@ -253,6 +266,7 @@ class Cita {
     }
 
     static crearEvento() {
+        $('[data-toggle="tooltip"]').tooltip("hide");
         Cita.buscarPacientes = false;
         Cita.buscarItems = false;
         let _data;
