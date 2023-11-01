@@ -533,7 +533,7 @@ class Calendario extends App {
             });
 
             // display current date
-            let dateNow = Calendario.calendar.getDate();
+            // let dateNow = Calendario.calendar.getDate();
             Calendario.calendar.option("select", function(startDate, endDate) {
 
                 if (Calendario.idCalendar !== null) {
@@ -541,11 +541,9 @@ class Calendario extends App {
                     if (moment(fecha, "DD/MM/YYYY HH:mm").unix() > moment().unix()) {
                         Cita.crearCita(startDate, endDate);
                     }
-
                 } else {
                     Calendario.error = "Es necesario un perfil de agendamiento válido.";
                 }
-
 
             });
 
