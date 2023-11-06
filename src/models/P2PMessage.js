@@ -7,7 +7,8 @@ class WebRTCConnection {
             host: "172.16.2.19",
             port: 9000,
             path: "/myapp",
-            pingInterval: 15000
+            pingInterval: 15000,
+            proxied: true
         });
 
         // Almacena el estado de la conexión (abierta o cerrada) para determinar
