@@ -5,7 +5,9 @@ import Loader from "../../utils/loader";
 import HeaderCalendar from "../../layout/headerCalendar";
 import Errors from "../../utils/errors";
 import Cita from "./cita";
+import EventosCalendario from "./eventosCalendar";
 import { ProximasCitas, ProximosEventos, CitasAnteriores, BuscadorItems, BuscadorPacientes } from "./widgets";
+import WebRTCConnection from "../../../models/P2PMessage";
 
 
 class OptionSelect {
@@ -33,13 +35,20 @@ class OptionSelect {
 
             })
             .on("change", function(e) {
+
                 Calendario.error = null;
+                ProximasCitas.citas = null;
+                ProximosEventos.citas = null;
+                CitasAnteriores.citas = null;
+
+
                 let idCalendar = "";
                 let tree = $(this).val();
                 $.each(tree, function(index, value) {
                     idCalendar += value + ",";
                 });
                 idCalendar = idCalendar.substring(0, idCalendar.length - 1);
+
                 if (tree.length > 0) {
                     Calendario.idCalendar = idCalendar;
                     m.route.set("/endoscopia/agendas/calendario/", {
@@ -47,11 +56,8 @@ class OptionSelect {
                     });
                     FetchCalendario.reloadFetchAgenda();
                 } else {
-                    Calendario.idCalendar = null;
                     m.route.set("/endoscopia/agendas/calendario");
-                    ProximasCitas.citas = null;
-                    ProximosEventos.citas = null;
-                    CitasAnteriores.citas = null;
+                    Calendario.idCalendar = null;
                     Calendario.error = "Es necesario un perfil de agendamiento válido.";
                 }
 
@@ -96,14 +102,37 @@ class BadgeAgendas {
     static agendas = null;
 
     oninit() {
-        BadgeAgendas.agendas = Cita.data.calendarios;
+        if (Cita.data.calendarios == undefined) {
+            BadgeAgendas.agendas = [];
+
+            Calendario.calendarios.map(function(_v, _i, _contentData) {
+                if (Calendario.idCalendar.search(_v.IDCALENDAR) != -1) {
+                    BadgeAgendas.agendas.push(_v);
+                }
+            })
+        } else {
+            BadgeAgendas.agendas = Cita.data.calendarios;
+
+        }
     }
 
     onupdate() {
-        if (BadgeAgendas.agendas != Cita.data.calendarios) {
-            BadgeAgendas.agendas = Cita.data.calendarios;
-            m.redraw();
+
+        if (Cita.data.calendarios == undefined) {
+            BadgeAgendas.agendas = [];
+
+            Calendario.calendarios.map(function(_v, _i, _contentData) {
+                if (Calendario.idCalendar.search(_v.IDCALENDAR) != -1) {
+                    BadgeAgendas.agendas.push(_v);
+                }
+            });
+        } else {
+            if (BadgeAgendas.agendas != Cita.data.calendarios) {
+                BadgeAgendas.agendas = Cita.data.calendarios;
+                m.redraw();
+            }
         }
+
     }
 
     view() {
@@ -113,19 +142,20 @@ class BadgeAgendas {
     }
 }
 
-class EventosCalendario {
-    static connectCalendar() {
-        console.log('me logue');
-    }
-    static agendadoCita() {
-
-    }
-}
 
 class FetchCalendario {
-
+    static events = null;
+    static peerId = null;
     static fetch() {
-        EventosCalendario.connectCalendar();
+
+        OnlineCalendar.status = "Cargando Conexión.";
+
+        // crea un canal de eventos con el nombre "test" y una función que imprime los eventos recibidos
+        FetchCalendario.channel = new WebRTCConnection((id) => {
+            FetchCalendario.peerId = id + "_" + App.userName;
+            EventosCalendario.getStatus(FetchCalendario.peerId);
+        });
+
         Calendario.setLoader();
         return m.request({
             method: "GET",
@@ -145,6 +175,15 @@ class FetchCalendario {
             };
             Calendario.setSidebar();
             Calendario.setCalendar();
+            setTimeout(() => {
+                if (FetchCalendario.peerId == null) {
+                    OnlineCalendar.status = "No existe conexión.";
+                } else {
+                    OnlineCalendar.status = "Calendario Online";
+                }
+                m.redraw();
+
+            }, 5000);
         }).catch(function(e) {
             Calendario.setLoader();
             Calendario.citas = {
@@ -153,6 +192,8 @@ class FetchCalendario {
             };
         });
     }
+
+
 
     static reloadFetchAgenda() {
         try {
@@ -169,6 +210,7 @@ class FetchCalendario {
                     }
                 }).then(function(res) {
                     if (res.status) {
+
                         Calendario.citas = {
                             status: res.status,
                             data: res.citasAgendadas,
@@ -252,6 +294,17 @@ class FetchCalendario {
 
 }
 
+class OnlineCalendar {
+    static status = "";
+    view() {
+        return [
+            m("span.badge.badge-primary",
+                OnlineCalendar.status
+            )
+        ];
+    }
+}
+
 
 // Calendario
 class Calendario extends App {
@@ -285,7 +338,10 @@ class Calendario extends App {
         return m(HeaderCalendar, { userName: App.userName });
     }
 
+
+
     static reloadFetchAgenda() {
+
         FetchCalendario.reloadFetchAgenda();
     }
 
@@ -468,7 +524,7 @@ class Calendario extends App {
                     element.find(".fc-title").attr("data-placement", "left");
 
                     if (event.tipo == 1) {
-                        element.find(".fc-title").attr("title", "<div class='wd-50px text-left'>Cita Médica:</div> <br> <div class='wd-50px text-left'>Paciente:</div> <div class='wd-50px text-left'>" + event.paciente + "  </div> <div class='wd-50px text-left'>" + anios + " Años - " + (
+                        element.find(".fc-title").attr("title", "<div class='wd-50px text-left'>" + (event.userEdit !== undefined ? event.userEdit + ' esta modificando esta cita.' : 'Cita Médica: ') + "</div> <br> <div class='wd-50px text-left'>Paciente:</div> <div class='wd-50px text-left'>" + event.paciente + "  </div> <div class='wd-50px text-left'>" + anios + " Años - " + (
                             event.sexo == "M" ? "Masculino" : "Femenino"
                         ) + "  </div> <br> <div class='wd-50px text-left'>Fecha Y Hora:</div> <div class='wd-50px text-right text-capitalize'>" + moment(event.inicio, "DD/MM/YYYY HH:mm").format("HH:mm") + " - " + moment(event.fin, "DD/MM/YYYY HH:mm").format("HH:mm") + " <br> " + moment(event.fin, "DD/MM/YYYY HH:mm").format("dddd, DD/MM/YYYY") + "  </div> <br>  " + "<div class='wd-50px text-left'>Agendas:</div> <div class='wd-50px text-left'>" + _calendarios + "</div>  ");
                     }
@@ -493,19 +549,30 @@ class Calendario extends App {
                     }
                 },
                 eventDrop: function(calEvent) {
-                    setTimeout(() => {
-                        Cita.verUpdate(calEvent);
-                    }, 500);
+                    if (calEvent.editable) {
+                        if (calEvent.userEdit !== undefined && calEvent.userEdit == App.userName) {
+                            setTimeout(() => {
+                                Cita.setUpdate(calEvent);
+                            }, 50);
+                        }
+                    }
+
+
 
                 },
                 eventResize: function(calEvent) {
-                    setTimeout(() => {
-                        Cita.verUpdate(calEvent);
-                    }, 500);
+                    if (calEvent.editable) {
+                        if (calEvent.userEdit !== undefined && calEvent.userEdit == App.userName) {
+                            setTimeout(() => {
+                                Cita.setUpdate(calEvent);
+                            }, 50);
+                        }
+                    }
                 }
             });
 
 
+            $(".select2-modal").select2({ minimumResultsForSearch: Infinity, dropdownCssClass: "select2-dropdown-modal" });
 
 
             Calendario.calendar = $("#calendar").fullCalendar("getCalendar");
@@ -518,9 +585,12 @@ class Calendario extends App {
                 }
 
                 if (calEvent.tipo == 1 && calEvent.editable) {
-                    setTimeout(() => {
-                        Cita.verUpdate(calEvent);
-                    }, 50);
+                    if (calEvent.userEdit !== undefined && calEvent.userEdit == App.userName) {
+                        setTimeout(() => {
+                            Cita.verUpdate(calEvent);
+                        }, 50);
+                    }
+
 
                 }
 
@@ -532,20 +602,7 @@ class Calendario extends App {
 
             });
 
-            // display current date
-            // let dateNow = Calendario.calendar.getDate();
-            Calendario.calendar.option("select", function(startDate, endDate) {
 
-                if (Calendario.idCalendar !== null) {
-                    let fecha = moment(startDate).format("DD/MM/YYYY HH:mm");
-                    if (moment(fecha, "DD/MM/YYYY HH:mm").unix() > moment().unix()) {
-                        Cita.crearCita(startDate, endDate);
-                    }
-                } else {
-                    Calendario.error = "Es necesario un perfil de agendamiento válido.";
-                }
-
-            });
 
 
             // change view to week when in tablet
@@ -571,7 +628,24 @@ class Calendario extends App {
             }
 
 
-            $(".select2-modal").select2({ minimumResultsForSearch: Infinity, dropdownCssClass: "select2-dropdown-modal" });
+
+            // display current date
+            // let dateNow = Calendario.calendar.getDate();
+            Calendario.calendar.option("select", function(startDate, endDate) {
+
+                if (Calendario.idCalendar !== null) {
+                    let fecha = moment(startDate).format("DD/MM/YYYY HH:mm");
+                    if (moment(fecha, "DD/MM/YYYY HH:mm").unix() > moment().unix()) {
+                        Cita.crearCita(startDate, endDate);
+                    }
+                } else {
+                    Calendario.error = "Es necesario un perfil de agendamiento válido.";
+                }
+
+            });
+
+
+
 
         }, 50);
 
@@ -602,6 +676,12 @@ class Calendario extends App {
         Cita.data.fecha_nacimiento = moment(params.DT_NASCIMENTO, "DD-MM-YYYY").format("DD/MM/YYYY");
         Cita.data.email = params.EMAIL;
         Cita.buscarPacientes = !Cita.buscarPacientes;
+    }
+
+    static sendEvent() {
+        EventosCalendario.getStatus(FetchCalendario.peerId).then((_data) => {
+            FetchCalendario.channel.sendAll(_data.usersCalendar, App.userName);
+        });
     }
 
     static vMain() {
@@ -641,7 +721,9 @@ class Calendario extends App {
                         m("a.btn btn-sm btn-primary btn-icon calendar-add", {
                             onclick: (e) => {
                                 e.preventDefault();
-                                Cita.crearCita(moment(moment().format("YYYY-MM-DD 07:00:00")), moment(moment().format("YYYY-MM-DD 07:10:00")));
+
+
+
 
                             }
                         }, [
@@ -654,6 +736,7 @@ class Calendario extends App {
                             m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03.mg-b-15", {
 
                             }, "Filtro Agendas/Calendarios: "),
+
                             m("div.schedule-group",
                                 m(OptionSelect)
                             )
@@ -673,8 +756,14 @@ class Calendario extends App {
                         ]),
                         m("div.pd-t-5.pd-l-20.pd-r-20", [
                             m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03.mg-b-15", "Citas Anteriores:"),
-                            m("div.schedule-group.mg-b-40",
+                            m("div.schedule-group.mg-b-5",
                                 m(CitasAnteriores)
+                            ),
+                        ]),
+                        m("div.pd-t-5.pd-l-20.pd-r-20", [
+                            m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03.mg-b-15", "Status Online:"),
+                            m("div.schedule-group.mg-b-40",
+                                m(OnlineCalendar)
                             ),
                         ]),
                     ]),
@@ -751,6 +840,7 @@ class Calendario extends App {
                                 }, m("span[aria-hidden='true']", "×")),
                             ]),
                         ]),
+
                         m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Tipo:"), m("div.input-group", [
                             m("div.custom-control.custom-radio", [
                                 m("input.custom-control-input[type='radio'][id='tipoCita1'][name='tipoCita']", {
@@ -899,6 +989,18 @@ class Calendario extends App {
                             m("div", {
                                 class: Cita.buscarPacientes || Cita.buscarItems ? "d-none" : ""
                             }, [
+
+                                m("div.row", [
+                                    m("div.col-12", [
+                                        m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Agenda(s):"),
+                                        m("p", [
+
+                                            m(BadgeAgendas)
+
+                                        ]),
+                                    ]),
+                                ]),
+
                                 m("div.form-group.d-none", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Agendas:")),
                                 (Cita.data.tipo == 1 && Cita.data.estudio !== undefined) ? [
                                     m("div.form-group", [
@@ -1734,10 +1836,11 @@ class Calendario extends App {
 
     static filterCitas(parametro) {
         let res = [];
-        Calendario.citas.data.events.map((_v, _i) => {
-            let inicio = moment(_v.inicio, "DD/MM/YYYY HH:mm");
-            if (_v.tipo == 1 && inicio.unix() > moment().unix() && _i <= 4) {
+        let _i = 0;
+        Calendario.citas.data.events.map((_v) => {
+            if (_v.tipo == 1 && moment(_v.inicio, "DD/MM/YYYY HH:mm").unix() > moment().unix() && _i <= 4) {
                 res.push(_v);
+                _i++;
             }
         });
         return res;
@@ -1745,9 +1848,11 @@ class Calendario extends App {
 
     static filterCitasAnteriores(parametro) {
         let res = [];
-        Calendario.citas.data.events.map((_v, _i) => {
+        let _i = 0;
+        Calendario.citas.data.events.map((_v) => {
             if (_v.tipo == 1 && moment(_v.inicio, "DD/MM/YYYY HH:mm").unix() < moment().unix() && _i <= 4) {
                 res.push(_v);
+                _i++;
             }
         });
         return res;
@@ -1755,16 +1860,18 @@ class Calendario extends App {
 
     static filterEventos(parametro) {
         let res = [];
-        Calendario.citas.data.events.map((_v, _i) => {
+        let _i = 0;
+        Calendario.citas.data.events.map((_v) => {
             if (_v.tipo == 2 && moment(_v.inicio, "DD/MM/YYYY HH:mm").unix() > moment().unix() && _i <= 4) {
                 res.push(_v);
+                _i++;
+
             }
         });
         return res;
     }
 
     static _goToDate(fecha) {
-        console.log(fecha)
         $("#calendar").fullCalendar("gotoDate", moment(fecha, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD"));
 
     }
@@ -1830,6 +1937,12 @@ class Calendario extends App {
                 }
 
                 if (moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").unix() < moment(_val.fin, "DD/MM/YYYY HH:mm").unix() && moment(_val.inicio, "DD/MM/YYYY HH:mm").unix() < moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").unix()) {
+                    _track = true;
+                    _timeInicio = moment(_val.inicio, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
+                    _timeFin = moment(_val.fin, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
+                }
+
+                if (moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").unix() == moment(_val.inicio, "DD/MM/YYYY HH:mm").unix() && moment(Cita.data.fin, "DD/MM/YYYY HH:mm").unix() == moment(_val.fin, "DD/MM/YYYY HH:mm").unix()) {
                     _track = true;
                     _timeInicio = moment(_val.inicio, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
                     _timeFin = moment(_val.fin, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");

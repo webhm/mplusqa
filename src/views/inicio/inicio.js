@@ -27,7 +27,7 @@ class ModulesAccess {
 
         return [
 
-            (_data.attrs.profiles.includes('ADMISIONES_METROPLUS') ? [
+            (_data.attrs.profiles.includes('PERFIL_ADMISIONES_METROPLUS') ? [
                 m("div.col-sm-6.col-lg-3.mg-t-20.mg-sm-t-30.mg-lg-t-0.mg-b-10",
 
                     m("a[href='/admisiones']", {
@@ -36,8 +36,8 @@ class ModulesAccess {
                         m("div.card.card-help", [
                             m("div.card-body.tx-13", [
                                 m("div.tx-60.lh-0.mg-b-15", {
-                                    style: { 'color': "#325a98" }
-                                },
+                                        style: { 'color': "#325a98" }
+                                    },
                                     m("i.fas.fa-folder-open")
                                 ),
 
@@ -59,8 +59,8 @@ class ModulesAccess {
                         m("div.card.card-help", [
                             m("div.card-body.tx-13", [
                                 m("div.tx-60.lh-0.mg-b-15", {
-                                    style: { 'color': "#325a98" }
-                                },
+                                        style: { 'color': "#325a98" }
+                                    },
                                     m("i.fas.fa-compact-disc")
                                 ),
 
@@ -82,8 +82,8 @@ class ModulesAccess {
                         m("div.card.card-help", [
                             m("div.card-body.tx-13", [
                                 m("div.tx-60.lh-0.mg-b-15", {
-                                    style: { 'color': "#325a98" }
-                                },
+                                        style: { 'color': "#325a98" }
+                                    },
                                     m("i.fas.fa-first-aid")
                                 ),
 
@@ -105,8 +105,8 @@ class ModulesAccess {
                         m("div.card.card-help", [
                             m("div.card-body.tx-13", [
                                 m("div.tx-60.lh-0.mg-b-15", {
-                                    style: { 'color': "#325a98" }
-                                },
+                                        style: { 'color': "#325a98" }
+                                    },
                                     m("i.fas.fa-pills")
                                 ),
 
@@ -128,8 +128,8 @@ class ModulesAccess {
                         m("div.card.card-help", [
                             m("div.card-body.tx-13", [
                                 m("div.tx-60.lh-0.mg-b-15", {
-                                    style: { 'color': "#325a98" }
-                                },
+                                        style: { 'color': "#325a98" }
+                                    },
                                     m("i.fas.fa-file-prescription")
                                 ),
 
@@ -151,8 +151,8 @@ class ModulesAccess {
                         m("div.card.card-help", [
                             m("div.card-body.tx-13", [
                                 m("div.tx-60.lh-0.mg-b-15", {
-                                    style: { 'color': "#325a98" }
-                                },
+                                        style: { 'color': "#325a98" }
+                                    },
                                     m("i.fas.fa-microscope")
                                 ),
 
@@ -174,8 +174,8 @@ class ModulesAccess {
                         m("div.card.card-help", [
                             m("div.card-body.tx-13", [
                                 m("div.tx-60.lh-0.mg-b-15", {
-                                    style: { 'color': "#325a98" }
-                                },
+                                        style: { 'color': "#325a98" }
+                                    },
                                     m("i.fas.fa-procedures")
                                 ),
 
@@ -197,8 +197,8 @@ class ModulesAccess {
                         m("div.card.card-help", [
                             m("div.card-body.tx-13", [
                                 m("div.tx-60.lh-0.mg-b-15", {
-                                    style: { 'color': "#325a98" }
-                                },
+                                        style: { 'color': "#325a98" }
+                                    },
                                     m("i.fas.fa-burn.tx-55")
                                 ),
 
@@ -220,8 +220,8 @@ class ModulesAccess {
                         m("div.card.card-help", [
                             m("div.card-body.tx-13", [
                                 m("div.tx-60.lh-0.mg-b-15", {
-                                    style: { 'color': "#325a98" }
-                                },
+                                        style: { 'color': "#325a98" }
+                                    },
                                     m("i.fas.fa-cog")
                                 ),
 
@@ -243,8 +243,8 @@ class ModulesAccess {
                         m("div.card.card-help", [
                             m("div.card-body.tx-13", [
                                 m("div.tx-60.lh-0.mg-b-15", {
-                                    style: { 'color': "#325a98" }
-                                },
+                                        style: { 'color': "#325a98" }
+                                    },
                                     m("i.fas.fa-user-md")
                                 ),
 
@@ -429,7 +429,7 @@ class Inicio extends App {
             ]),
             m("div.content.content-components", {
 
-            },
+                },
                 m("div.container.mg-l-0.mg-r-0", {
                     style: { "max-width": "100%" }
                 }, [

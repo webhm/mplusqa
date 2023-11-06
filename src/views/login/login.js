@@ -6,31 +6,31 @@ import FormLogin from "./formLogin";
 // Login
 class Login extends App {
 
-  constructor() {
-    super();
-    if (App.isPublic()) {
-      App.title = "Inicia Sesión";
-      this.view = this.page;
+    constructor() {
+        super();
+        if (App.isPublic()) {
+            App.setTitle("Inicia Sesión");
+            this.view = this.page;
+        }
+
+
     }
 
 
-  }
+    vForm() {
+        return m(FormLogin);
+    }
 
+    vHeader() {
+        return m(HeaderPublic);
+    }
 
-  vForm() {
-    return m(FormLogin);
-  }
-
-  vHeader() {
-    return m(HeaderPublic);
-  }
-
-  page() {
-    return [
-      this.vHeader(),
-      this.vForm()
-    ];
-  }
+    page() {
+        return [
+            this.vHeader(),
+            this.vForm()
+        ];
+    }
 
 
 }

@@ -11,7 +11,7 @@ import VentanaTemporizada from "../views/utils/ventanaTemp";
 class App {
 
 
-    static title;
+    static title = '';
     static name;
     static version;
     static offline;
@@ -43,7 +43,6 @@ class App {
         if (!App.auth.isAuthenticated()) {
             App.logout();
         }
-        App.setTitle();
         return App.auth.isAuthenticated();
     }
 
@@ -51,11 +50,11 @@ class App {
         if (App.auth.isAuthenticated()) {
             App.getInicio();
         }
-        App.setTitle();
         return !App.auth.isAuthenticated();
     }
 
     static logout() {
+        App.auth.logout();
         return m.route.set("/");
     }
 
@@ -77,7 +76,7 @@ class App {
                 console.log("Login exitoso");
                 App.getInicio();
             } else {
-                m.redraw();
+                App.logout();
                 console.log("Login fallido");
             }
         });
@@ -87,14 +86,28 @@ class App {
 
         let userToken = localStorage.userToken;
         localStorage.clear();
-        localStorage.setItem('userToken', userToken);
+        if (userToken !== undefined) {
+            localStorage.setItem('userToken', userToken);
+        }
         localStorage.setItem('authToken' + nombreApp, JSON.stringify({
-            usr: usr,
+            user: usr,
             app: nombreApp
         }));
 
         // Redireccionar
         if (nombreApp == 'Flebotomista') {
+            m.route.set('/laboratorio/flebotomista');
+        }
+
+    }
+
+    static desAutorizarApp(nombreApp) {
+
+        // Redireccionar
+        if (nombreApp == 'Flebotomista') {
+            App._msa.logoutRequest.mainWindowRedirectUri = window.location.origin + '/laboratorio/flebotomista';
+            App._logoutMsi();
+            localStorage.removeItem('authToken' + nombreApp);
             m.route.set('/laboratorio/flebotomista');
         }
 
@@ -112,21 +125,24 @@ class App {
                 App._msa.accountId = loginResponse.account.homeAccountId;
                 console.log(1, loginResponse);
                 App.login(loginResponse.idToken);
-            }).catch(function (error) {
+            }).catch(function(error) {
                 console.log(error);
             });
     }
 
-    static autorizarMSA(nombreApp) {
+    static async autorizarMSA(nombreApp) {
 
 
         if (localStorage.getItem('authToken' + nombreApp) == undefined) {
 
+            await App._msa.myMSALObj.initialize();
+
+
             // Crea Objeto para el Login de MSA
             App._msa.myMSALObj.loginPopup(App._msa.loginRequest)
                 .then((loginResponse) => {
-                    App.autorizarApp('mchang@hmetro.med.ec', nombreApp);
-                }).catch(function (error) {
+                    App.autorizarApp(loginResponse.account.username, nombreApp);
+                }).catch(function(error) {
                     console.log(error);
                 });
         }
@@ -154,7 +170,7 @@ class App {
         document.title = App.title + " | " + App.name + App.version;
     }
 
-    view() { }
+    view() {}
 
 }
 

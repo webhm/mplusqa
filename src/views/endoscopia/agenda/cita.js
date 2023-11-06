@@ -66,6 +66,56 @@ class Cita {
         m.redraw();
     }
 
+    static setUpdate(calEvent) {
+        Cita.error = null;
+        Cita.data = null;
+        Cita.data = {};
+        if (calEvent.tipo == 1) {
+            Cita.data.id = calEvent.id;
+            Cita.data.tipo = calEvent.tipo;
+            Cita.data.backgroundColor = calEvent.backgroundColor;
+            Cita.data.borderColor = calEvent.borderColor;
+            Cita.data.calendarios = calEvent.calendarios;
+            Cita.data.editable = calEvent.editable;
+            Cita.data.email = calEvent.email;
+            Cita.data.estudio = calEvent.estudio;
+            Cita.data.fecha_nacimiento = calEvent.fecha_nacimiento;
+            Cita.data.hashCita = calEvent.hashCita;
+            Cita.data.idCalendar = calEvent.idCalendar;
+            Cita.data.id_estudio = calEvent.id_estudio;
+            Cita.data.comentarios = calEvent.comentarios;
+            Cita.data.nhc = calEvent.nhc;
+            Cita.data.paciente = calEvent.paciente;
+            Cita.data.sexo = calEvent.sexo;
+            Cita.data.telefono = calEvent.telefono;
+            Cita.data.title = calEvent.title;
+            Cita.data.hashCita = calEvent.hashCita;
+            Cita.data.start = calEvent.start.format("dddd, DD-MM-YYYY HH:mm");
+            Cita.data.end = calEvent.end.format("dddd, DD-MM-YYYY HH:mm");
+            Cita.data.inicio = calEvent.start.format("DD/MM/YYYY HH:mm");
+            Cita.data.fin = calEvent.end.format("DD/MM/YYYY HH:mm");
+            Cita.data.newHashCita = calEvent.start.format("YYYY-MM-DD HH:mm") + "." + calEvent.end.format("YYYY-MM-DD HH:mm");
+            let nacimiento = moment(Cita.data.fecha_nacimiento, "DD/MM/YYYY");
+            let hoy = moment();
+            Cita.data.anios = hoy.diff(nacimiento, "years");
+        } else {
+            Cita.data.id = calEvent.id;
+            Cita.data.tipo = calEvent.tipo;
+            Cita.data.backgroundColor = calEvent.backgroundColor;
+            Cita.data.borderColor = calEvent.borderColor;
+            Cita.data.calendarios = calEvent.calendarios;
+            Cita.data.idCalendar = calEvent.idCalendar;
+            Cita.data.editable = calEvent.editable;
+            Cita.data.comentarios = calEvent.comentarios;
+            Cita.data.start = calEvent.start.format("dddd, DD-MM-YYYY HH:mm");
+            Cita.data.end = calEvent.end.format("dddd, DD-MM-YYYY HH:mm");
+            Cita.data.inicio = calEvent.start.format("DD/MM/YYYY HH:mm");
+            Cita.data.fin = calEvent.end.format("DD/MM/YYYY HH:mm");
+            Cita.data.title = calEvent.title;
+            Cita.data.newHashCita = calEvent.start.format("YYYY-MM-DD HH:mm") + "." + calEvent.end.format("YYYY-MM-DD HH:mm");
+        }
+    }
+
     static verUpdate(calEvent) {
         Cita.error = null;
         Cita.data = null;
@@ -114,6 +164,7 @@ class Cita {
             Cita.data.title = calEvent.title;
             Cita.data.newHashCita = calEvent.start.format("YYYY-MM-DD HH:mm") + "." + calEvent.end.format("YYYY-MM-DD HH:mm");
         }
+
         $('[data-toggle="tooltip"]').tooltip("hide");
         let modal = $("#modalUpdateEvent");
         modal.modal("show");
@@ -451,14 +502,19 @@ class Cita {
             url: "https://api.hospitalmetropolitano.org/v2/date/citas/reagendar",
             body: Cita.data,
             headers: {
-                "Content-Type": "application/json; charset=utf-8"
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": localStorage.userToken
+
             }
         }).then(function(res) {
             Cita.loader = false;
             if (res.status) {
-                Calendario.reloadFetchAgenda();
+                Calendario.sendEvent();
+
+
                 Calendario.success = "Ahora puede reagendar este Cita.";
                 Calendario.clearAlertCalendar();
+                Calendario.reloadFetchAgenda();
             } else {
                 Calendario.error = res.message;
             }
@@ -475,14 +531,19 @@ class Cita {
             url: "https://api.hospitalmetropolitano.org/v2/date/citas/reagendar/cancel",
             body: Cita.data,
             headers: {
-                "Content-Type": "application/json; charset=utf-8"
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": localStorage.userToken
+
             }
         }).then(function(res) {
             Cita.loader = false;
             if (res.status) {
-                Calendario.reloadFetchAgenda();
+                Calendario.sendEvent();
+
+
                 Calendario.success = "El reagendamiento se canceló.";
                 Calendario.clearAlertCalendar();
+                Calendario.reloadFetchAgenda();
             } else {
                 Calendario.error = res.message;
             }
@@ -501,11 +562,15 @@ class Cita {
             url: "https://api.hospitalmetropolitano.org/v2/date/citas/nueva",
             body: Cita.data,
             headers: {
-                "Content-Type": "application/json; charset=utf-8"
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": localStorage.userToken
+
             }
         }).then(function(res) {
             Cita.loader = false;
             if (res.status) {
+                Calendario.sendEvent();
+
                 Calendario.success = res.message;
                 Calendario.clearAlertCalendar();
                 $("#modalCreateEvent").modal("hide");
@@ -525,15 +590,19 @@ class Cita {
             url: "https://api.hospitalmetropolitano.org/v2/date/citas/update",
             body: Cita.data,
             headers: {
-                "Content-Type": "application/json; charset=utf-8"
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": localStorage.userToken
+
             }
         }).then(function(res) {
             Cita.loader = false;
             if (res.status) {
+                Calendario.sendEvent();
+                Calendario.reloadFetchAgenda();
+
                 Calendario.success = res.message;
                 Calendario.clearAlertCalendar();
                 $("#modalUpdateEvent").modal("hide");
-                Calendario.reloadFetchAgenda();
             } else {
                 Calendario.error = res.message;
             }
@@ -549,12 +618,15 @@ class Cita {
             url: "https://api.hospitalmetropolitano.org/v2/date/citas/delete",
             body: Cita.data,
             headers: {
-                "Content-Type": "application/json; charset=utf-8"
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": localStorage.userToken
+
             }
         }).then(function(res) {
             Cita.loader = false;
 
             if (res.status) {
+                Calendario.sendEvent();
                 Calendario.success = res.message;
                 Calendario.clearAlertCalendar();
                 $("#modalCalendarEvent").modal("hide");

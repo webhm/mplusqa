@@ -1,11 +1,13 @@
+import EventosCalendario from "../views/endoscopia/agenda/eventosCalendar";
 
 class WebRTCConnection {
     constructor(onId) {
         // Crea una instancia de PeerJS con el peerId y las opciones proporcionadas
         this.peer = new Peer({
-            host: "localhost",
+            host: "172.16.2.19",
             port: 9000,
             path: "/myapp",
+            pingInterval: 15000
         });
 
         // Almacena el estado de la conexión (abierta o cerrada) para determinar
@@ -44,15 +46,32 @@ class WebRTCConnection {
         });
     }
 
-    // Define un método para establecer una conexión de datos con otro peer usando su peerId
-    connectTo(peerId) {
-        console.log('Connecting to', peerId);
+    // Define un método para establecer una conexión de datos con otro peer usando su peerId y enviar un mensaje
+    sendTo(peerId) {
+
 
         // Crea una conexión de datos con el otro peer usando PeerJS
         let dataConnection = this.peer.connect(peerId);
 
-        // Establece la conexión de datos con el otro peer
-        this.setDataConnection(dataConnection);
+        // Almacena la referencia a la conexión de datos
+        this.dataConnection = dataConnection;
+
+        // Escucha el evento 'open' de la conexión de datos para saber cuando está establecida
+        this.dataConnection.on('open', () => {
+            this.sendMessage('updateCalendar');
+        });
+
+
+
+
+    }
+
+    sendAll(users, usr) {
+        return Object.keys(users).map((_i) => {
+            if (_i !== usr) {
+                this.sendTo(users[_i]);
+            }
+        });
     }
 
     // Define un método para establecer la conexión de datos con el otro peer y escuchar sus eventos
@@ -75,10 +94,13 @@ class WebRTCConnection {
 
         // Escucha el evento 'data' de la conexión de datos para recibir mensajes del otro peer
         this.dataConnection.on('data', (data) => {
+
+            EventosCalendario.sendEvent();
             console.log('Data received from', this.dataConnection.peer, data);
 
             // Invoca el callback de mensaje si existe
             if (this.onMessage) {
+
                 this.onMessage(data);
             }
         });
@@ -120,7 +142,9 @@ class WebRTCConnection {
         // Destruye la instancia de PeerJS
         this.peer.destroy();
     }
+
 }
+
 
 
 export default WebRTCConnection;
