@@ -703,6 +703,7 @@ class Calendario extends App {
                             onclick: (e) => {
                                 e.preventDefault();
 
+                                Cita.crearCita(moment(moment().format("YYYY-MM-DD HH:00:00")), moment(moment().format("YYYY-MM-DD HH:10:00")));
 
 
 
