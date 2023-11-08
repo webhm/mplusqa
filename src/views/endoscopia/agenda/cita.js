@@ -42,6 +42,9 @@ class Cita {
         $('[data-toggle="tooltip"]').tooltip("hide");
         let modal = $("#modalCalendarEvent");
         modal.modal("show");
+        modal.on('hidden.bs.modal', function() {
+            Cita.data = null;
+        });
         m.redraw();
     }
 
@@ -63,6 +66,9 @@ class Cita {
         $('[data-toggle="tooltip"]').tooltip("hide");
         let modal = $("#modalCalendarEvent");
         modal.modal("show");
+        modal.on('hidden.bs.modal', function() {
+            Cita.data = null;
+        });
         m.redraw();
     }
 
@@ -168,6 +174,9 @@ class Cita {
         $('[data-toggle="tooltip"]').tooltip("hide");
         let modal = $("#modalUpdateEvent");
         modal.modal("show");
+        modal.on('hidden.bs.modal', function() {
+            Cita.data = null;
+        });
         m.redraw();
     }
 
@@ -312,6 +321,9 @@ class Cita {
     static crearCita(startDate, endDate) {
         $('[data-toggle="tooltip"]').tooltip("hide");
         $("#modalCreateEvent").modal("show");
+        $("#modalCreateEvent").on('hidden.bs.modal', function() {
+            Cita.data = null;
+        });
         Cita.buscarPacientes = false;
         Cita.buscarItems = false;
         Cita.error = null;

@@ -453,22 +453,26 @@ class Calendario extends App {
 
                     }
 
-                    if ($("#calendar .fc-event").length > 0) {
-                        var op = 999999;
-                        $("#calendar .fc-content-col").each(function(index) {
-                            if ($(this).find('.fc-event:first').length > 0) {
-                                var ot = $(this).find('.fc-event:first').position().top;
-                                if (ot < op) {
-                                    op = ot;
+                    if (Cita.data == null) {
+                        if ($("#calendar .fc-event").length > 0) {
+                            var op = 999999;
+                            $("#calendar .fc-content-col").each(function(index) {
+                                if ($(this).find('.fc-event:first').length > 0) {
+                                    var ot = $(this).find('.fc-event:first').position().top;
+                                    if (ot < op) {
+                                        op = ot;
+                                    }
                                 }
+                            });
+                            if (op < 999999) {
+                                $("#calendar .fc-scroller").animate({
+                                    scrollTop: op
+                                }, 800);
                             }
-                        });
-                        if (op < 999999) {
-                            $("#calendar .fc-scroller").animate({
-                                scrollTop: op
-                            }, 800);
                         }
                     }
+
+
 
                     $('[data-toggle="tooltip"]').tooltip({
                         template: '<div class=" tooltip tooltip-dark " role="tooltip">' + '<div class= "arrow" ></div>' + '<div class="tooltip-inner"></div>' + "</div > "

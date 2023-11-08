@@ -4,8 +4,8 @@ class WebRTCConnection {
     constructor(onId) {
         // Crea una instancia de PeerJS con el peerId y las opciones proporcionadas
         this.peer = new Peer({
-            host: "172.16.2.19",
-            port: 9000,
+            host: "172.16.253.68",
+            port: 8000,
             path: "/myapp",
             pingInterval: 15000,
             proxied: true
