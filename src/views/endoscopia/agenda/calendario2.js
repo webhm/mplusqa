@@ -99,46 +99,25 @@ class OptionSelect {
 
 
 class BadgeAgendas {
-    static agendas = null;
-
-    oninit() {
-        if (Cita.data.calendarios == undefined) {
-            BadgeAgendas.agendas = [];
-
-            Calendario.calendarios.map(function(_v, _i, _contentData) {
-                if (Calendario.idCalendar.search(_v.IDCALENDAR) != -1) {
-                    BadgeAgendas.agendas.push(_v);
-                }
-            })
-        } else {
-            BadgeAgendas.agendas = Cita.data.calendarios;
-
-        }
-    }
 
     onupdate() {
-
-        if (Cita.data.calendarios == undefined) {
-            BadgeAgendas.agendas = [];
-
-            Calendario.calendarios.map(function(_v, _i, _contentData) {
-                if (Calendario.idCalendar.search(_v.IDCALENDAR) != -1) {
-                    BadgeAgendas.agendas.push(_v);
-                }
-            });
-        } else {
-            if (BadgeAgendas.agendas != Cita.data.calendarios) {
-                BadgeAgendas.agendas = Cita.data.calendarios;
-                m.redraw();
-            }
-        }
-
+        m.redraw();
     }
 
     view() {
-        return Object.keys(BadgeAgendas.agendas).map((_v, _i) => {
-            return m("span.badge.badge-primary.mg-r-2", BadgeAgendas.agendas[_v].CALENDAR);
-        });
+        if (Cita.data !== null && Cita.data.calendarios !== undefined) {
+            return Object.keys(Cita.data.calendarios).map((_i) => {
+                return m("span.badge.badge-primary.mg-r-2", Cita.data.calendarios[_i].CALENDAR);
+
+            });
+        } else {
+            return Calendario.calendarios.map((_v, _i) => {
+                if (Calendario.idCalendar.search(_v.IDCALENDAR) != -1) {
+                    return m("span.badge.badge-primary.mg-r-2", _v.CALENDAR);
+                }
+            });
+        }
+
     }
 }
 
@@ -519,23 +498,23 @@ class Calendario extends App {
                         }
                     }
 
-                    element.find(".fc-title").attr("data-toggle", "tooltip");
-                    element.find(".fc-title").attr("data-html", "true");
-                    element.find(".fc-title").attr("data-placement", "left");
+                    element.find(".fc-title").parent().attr("data-toggle", "tooltip");
+                    element.find(".fc-title").parent().attr("data-html", "true");
+                    element.find(".fc-title").parent().attr("data-placement", "left");
 
                     if (event.tipo == 1) {
-                        element.find(".fc-title").attr("title", "<div class='wd-50px text-left'>" + (event.userEdit !== undefined ? event.userEdit + ' esta modificando esta cita.' : 'Cita Médica: ') + "</div> <br> <div class='wd-50px text-left'>Paciente:</div> <div class='wd-50px text-left'>" + event.paciente + "  </div> <div class='wd-50px text-left'>" + anios + " Años - " + (
+                        element.find(".fc-title").parent().attr("title", "<div class='wd-50px text-left'>" + (event.userEdit !== undefined ? event.userEdit + ' esta modificando esta cita.' : 'Cita Médica: ') + "</div> <br> <div class='wd-50px text-left'>Paciente:</div> <div class='wd-50px text-left'>" + event.paciente + "  </div> <div class='wd-50px text-left'>" + anios + " Años - " + (
                             event.sexo == "M" ? "Masculino" : "Femenino"
                         ) + "  </div> <br> <div class='wd-50px text-left'>Fecha Y Hora:</div> <div class='wd-50px text-right text-capitalize'>" + moment(event.inicio, "DD/MM/YYYY HH:mm").format("HH:mm") + " - " + moment(event.fin, "DD/MM/YYYY HH:mm").format("HH:mm") + " <br> " + moment(event.fin, "DD/MM/YYYY HH:mm").format("dddd, DD/MM/YYYY") + "  </div> <br>  " + "<div class='wd-50px text-left'>Agendas:</div> <div class='wd-50px text-left'>" + _calendarios + "</div>  ");
                     }
 
                     if (event.tipo == 2) {
-                        element.find(".fc-title").attr("title", "<div class='wd-50px text-left'>" + event.title + "  </div> <br>" + "<div class='wd-50px text-left'>Agendas:</div> <div class='wd-50px text-left'>" + _calendarios + "</div>  ");
+                        element.find(".fc-title").parent().attr("title", "<div class='wd-50px text-left'>" + event.title + "  </div> <br>" + "<div class='wd-50px text-left'>Agendas:</div> <div class='wd-50px text-left'>" + _calendarios + "</div>  ");
                     }
 
                     if (event.tipo == 3) {
                         element.find(".fc-title").parent().parent().css("width", "35%");
-                        element.find(".fc-title").attr("title", "<div class='wd-50px text-left'>" + event.title + "  </div> " + "<br> <div class='wd-50px text-left'>Fecha Y Hora:</div> <div class='wd-50px text-right text-capitalize'>" + moment(event.inicio, "DD/MM/YYYY HH:mm").format("HH:mm") + " - " + moment(event.fin, "DD/MM/YYYY HH:mm").format("HH:mm") + " <br> " + moment(event.fin, "DD/MM/YYYY HH:mm").format("dddd, DD/MM/YYYY") + "  </div> <br> " + "<div class='wd-50px text-left'>Agendas:</div> <div class='wd-50px text-left'>" + _calendarios + "</div>  ");
+                        element.find(".fc-title").parent().attr("title", "<div class='wd-50px text-left'>" + event.title + "  </div> " + "<br> <div class='wd-50px text-left'>Fecha Y Hora:</div> <div class='wd-50px text-right text-capitalize'>" + moment(event.inicio, "DD/MM/YYYY HH:mm").format("HH:mm") + " - " + moment(event.fin, "DD/MM/YYYY HH:mm").format("HH:mm") + " <br> " + moment(event.fin, "DD/MM/YYYY HH:mm").format("dddd, DD/MM/YYYY") + "  </div> <br> " + "<div class='wd-50px text-left'>Agendas:</div> <div class='wd-50px text-left'>" + _calendarios + "</div>  ");
                     }
 
                     if (event.editable) {
@@ -554,18 +533,22 @@ class Calendario extends App {
                             setTimeout(() => {
                                 Cita.setUpdate(calEvent);
                             }, 50);
+                        } else {
+                            Calendario.reloadCalendar();
                         }
                     }
 
 
-
                 },
+
                 eventResize: function(calEvent) {
                     if (calEvent.editable) {
                         if (calEvent.userEdit !== undefined && calEvent.userEdit == App.userName) {
                             setTimeout(() => {
                                 Cita.setUpdate(calEvent);
                             }, 50);
+                        } else {
+                            Calendario.reloadCalendar();
                         }
                     }
                 }
@@ -638,8 +621,6 @@ class Calendario extends App {
                     if (moment(fecha, "DD/MM/YYYY HH:mm").unix() > moment().unix()) {
                         Cita.crearCita(startDate, endDate);
                     }
-                } else {
-                    Calendario.error = "Es necesario un perfil de agendamiento válido.";
                 }
 
             });
@@ -1171,6 +1152,16 @@ class Calendario extends App {
                             ]),
                         ] : Cita.data !== null && Cita.data.tipo == 2 ? [
                             m("div.form-group", [
+                                m("div.row", [
+                                    m("div.col-12", [
+                                        m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Agenda(s):"),
+                                        m("p", [
+
+                                            m(BadgeAgendas)
+
+                                        ]),
+                                    ]),
+                                ]),
                                 m("div.row.row-xs", [
                                     m("div.col-3", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha de Inicio:"), m("input.form-control[id='eventStartDate'][type='text'][placeholder='DD/MM/YYYY']", {
 
@@ -1263,6 +1254,16 @@ class Calendario extends App {
                             ]))
                         ] : Cita.data !== null && Cita.data.tipo == 3 ? [
                             m("div.form-group", [
+                                m("div.row", [
+                                    m("div.col-12", [
+                                        m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Agenda(s):"),
+                                        m("p", [
+
+                                            m(BadgeAgendas)
+
+                                        ]),
+                                    ]),
+                                ]),
                                 m("div.row.row-xs", [
                                     m("div.col-3", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha de Inicio:"), m("input.form-control[id='eventStartDate'][type='text'][placeholder='DD/MM/YYYY']", {
 
@@ -1362,16 +1363,20 @@ class Calendario extends App {
 
 
                 ]),
-                m("div.modal-footer", [
-                    m("button.btn.btn-primary.mg-r-5", {
-                        onclick: () => {
-                            m.redraw();
-                            Calendario.validarAgendamiento('Agendar');
+                m("div.modal-footer",
 
-                        }
-                    }, "Agendar"),
-                    m("a.btn.btn-secondary[href=''][data-dismiss='modal']", "Cerrar"),
-                ]),
+                    {
+                        class: Cita.loader ? "d-none" : ""
+                    }, [
+                        m("button.btn.btn-primary.mg-r-5", {
+                            onclick: () => {
+                                m.redraw();
+                                Calendario.validarAgendamiento('Agendar');
+
+                            }
+                        }, "Agendar"),
+                        m("a.btn.btn-secondary[href=''][data-dismiss='modal']", "Cerrar"),
+                    ]),
             ]))),
             m(".modal.calendar-modal-event[id='modalCalendarEvent'][role='dialog'][aria-hidden='true']", m(".modal-dialog.modal-dialog-centered.modal-xl[role='document']", m("div.modal-content", [
                 (Cita.data !== null ? [m("div.modal-header", {
@@ -1449,85 +1454,89 @@ class Calendario extends App {
                             ])
                         ]),
                         m("hr"),
-                        m("div.text-right", [
-                            (moment(Cita.data.inicio, 'DD/MM/YYYY HH:mm').unix() > moment().unix() ? [(Cita.data.tipo == 1 ? [
+                        m("div.text-right",
 
-                                !Cita.data.editable ? [
-                                    m("button.btn.btn-xs.btn-primary.mg-r-5[data-dismiss='modal']", {
+                            {
+                                class: Cita.loader ? "d-none" : ""
+                            }, [
+                                (moment(Cita.data.inicio, 'DD/MM/YYYY HH:mm').unix() > moment().unix() ? [(Cita.data.tipo == 1 ? [
+
+                                    !Cita.data.editable ? [
+                                        m("button.btn.btn-xs.btn-primary.mg-r-5[data-dismiss='modal']", {
+                                            onclick: () => {
+                                                Cita.trackReAgendar(Calendario);
+                                            }
+                                        }, "Reagendar"),
+                                    ] : [
+                                        m("button.btn.btn-xs.btn-secondary.mg-r-5[data-dismiss='modal']", {
+                                            onclick: () => {
+                                                Cita.trackCancelReAgendar(Calendario);
+                                            }
+                                        }, "Cancelar Reagendamiento"),
+                                    ],
+
+                                    m("button.btn.btn-xs.btn-danger.mg-r-5", {
+
                                         onclick: () => {
-                                            Cita.trackReAgendar(Calendario);
+                                            Cita.error = null;
+                                            $.confirm({
+                                                title: 'Cancelar',
+                                                content: '¿Esta Ud. seguro de realizar este cancelación?',
+                                                buttons: {
+                                                    confirm: {
+                                                        text: 'Confirmar',
+                                                        action: function() {
+                                                            m.redraw();
+                                                            Cita.cancelarHttp(Calendario);
+                                                        }
+                                                    },
+                                                    cancel: {
+                                                        btnClass: "btn-danger op-8",
+                                                        text: 'Cancelar',
+                                                    }
+
+                                                }
+                                            });
+
+
+
+
                                         }
-                                    }, "Reagendar"),
+                                    }, "Cancelar"),
+
                                 ] : [
-                                    m("button.btn.btn-xs.btn-secondary.mg-r-5[data-dismiss='modal']", {
+                                    m("button.btn.btn-xs.btn-danger.mg-r-5", {
                                         onclick: () => {
-                                            Cita.trackCancelReAgendar(Calendario);
+                                            Cita.error = null;
+                                            $.confirm({
+                                                title: 'Cancelar',
+                                                content: '¿Esta Ud. seguro de realizar este cancelación?',
+                                                buttons: {
+                                                    confirm: {
+                                                        text: 'Confirmar',
+                                                        action: function() {
+                                                            m.redraw();
+                                                            Cita.cancelarHttp(Calendario);
+
+
+                                                        }
+                                                    },
+                                                    cancel: {
+                                                        btnClass: "btn-danger op-8",
+                                                        text: 'Cancelar'
+
+
+                                                    }
+
+                                                }
+                                            });
+
                                         }
-                                    }, "Cancelar Reagendamiento"),
-                                ],
+                                    }, "Cancelar"),
 
-                                m("button.btn.btn-xs.btn-danger.mg-r-5", {
-
-                                    onclick: () => {
-                                        Cita.error = null;
-                                        $.confirm({
-                                            title: 'Cancelar',
-                                            content: '¿Esta Ud. seguro de realizar este cancelación?',
-                                            buttons: {
-                                                confirm: {
-                                                    text: 'Confirmar',
-                                                    action: function() {
-                                                        m.redraw();
-                                                        Cita.cancelarHttp(Calendario);
-                                                    }
-                                                },
-                                                cancel: {
-                                                    btnClass: "btn-danger op-8",
-                                                    text: 'Cancelar',
-                                                }
-
-                                            }
-                                        });
-
-
-
-
-                                    }
-                                }, "Cancelar"),
-
-                            ] : [
-                                m("button.btn.btn-xs.btn-danger.mg-r-5", {
-                                    onclick: () => {
-                                        Cita.error = null;
-                                        $.confirm({
-                                            title: 'Cancelar',
-                                            content: '¿Esta Ud. seguro de realizar este cancelación?',
-                                            buttons: {
-                                                confirm: {
-                                                    text: 'Confirmar',
-                                                    action: function() {
-                                                        m.redraw();
-                                                        Cita.cancelarHttp(Calendario);
-
-
-                                                    }
-                                                },
-                                                cancel: {
-                                                    btnClass: "btn-danger op-8",
-                                                    text: 'Cancelar'
-
-
-                                                }
-
-                                            }
-                                        });
-
-                                    }
-                                }, "Cancelar"),
-
-                            ])] : []),
-                            m("a.btn.btn-xs.btn-secondary.pd-x-20[href=''][data-dismiss='modal']", "Cerrar"),
-                        ]),
+                                ])] : []),
+                                m("a.btn.btn-xs.btn-secondary.pd-x-20[href=''][data-dismiss='modal']", "Cerrar"),
+                            ]),
                     ])
                 ] : [])
 
@@ -1665,7 +1674,16 @@ class Calendario extends App {
                                 m("div", {
                                     class: Cita.buscarPacientes || Cita.buscarItems ? "d-none" : ""
                                 }, [
+                                    m("div.row", [
+                                        m("div.col-12", [
+                                            m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Agenda(s):"),
+                                            m("p", [
 
+                                                m(BadgeAgendas)
+
+                                            ]),
+                                        ]),
+                                    ]),
                                     m("div.form-group", [
                                         m("div.row.row-xs", [
                                             m("div.col-6", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha y Hora de Inicio:"), m("input.form-control.text-capitalize[id='eventStartDate'][type='text'][disabled='disabled']", { value: Cita.data.start })),
@@ -1782,7 +1800,9 @@ class Calendario extends App {
 
                         ]),
                     ]),
-                    m("div.modal-footer", [
+                    m("div.modal-footer", {
+                        class: Cita.loader ? "d-none" : ""
+                    }, [
 
                         m("button.btn.btn-xs.btn-primary.mg-r-5", {
                             onclick: () => {
@@ -1915,6 +1935,15 @@ class Calendario extends App {
 
     static validarAgendamiento(track) {
 
+
+        if (track == 'Reagendar' && Cita.data.tipo == 1 && Cita.data.email != document.getElementById('correoCitaUpdate').value) {
+            Cita.data.email = document.getElementById('correoCitaUpdate').value;
+        }
+
+        if (track == 'Agendar' && Cita.data.tipo == 1 && Cita.data.email != document.getElementById('correoCreaCita').value) {
+            Cita.data.email = document.getElementById('correoCreaCita').value;
+        }
+
         Cita.validarCita();
 
         Cita.buscarItems = false;
@@ -1960,7 +1989,7 @@ class Calendario extends App {
             $("#modalUpdateEvent").animate({
                 scrollTop: 0
             }, "slow");
-            Cita.error = "No se puede reagendar. Ya existe una cita agendada desde: " + _timeInicio + " hasta: " + _timeFin;
+            Cita.error = "No se puede continuar. Ya existe una cita agendada desde: " + _timeInicio + " hasta: " + _timeFin;
             throw Cita.error;
         }
 

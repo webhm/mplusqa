@@ -213,6 +213,17 @@ class Cita {
                 throw Cita.error;
             }
 
+
+
+            if (Cita.data.email == undefined || Cita.data.email == '') {
+                $("#modalCreateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.error = "No existe datos de Correo electrónico.";
+                m.redraw();
+                throw Cita.error;
+            }
+
         }
 
         if (Cita.data.tipo == 1 && Cita.data.sinDatos !== undefined && Cita.data.sinDatos) {
