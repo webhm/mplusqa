@@ -52,7 +52,7 @@ class EventosCalendario {
         try {
             return m.request({
                 method: "GET",
-                url: "http://api.hospitalmetropolitano.org/v2/date/calendar/status",
+                url: "https://api.hospitalmetropolitano.org/v2/date/calendar/status",
                 params: {
                     peerId: peerId
                 },
