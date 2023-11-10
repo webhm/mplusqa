@@ -127,7 +127,7 @@ class FetchCalendario {
     static peerId = null;
     static fetch() {
 
-        OnlineCalendar.status = "Cargando Conexión.";
+        OnlineCalendar.status = "";
 
         // crea un canal de eventos con el nombre "test" y una función que imprime los eventos recibidos
         FetchCalendario.channel = new WebRTCConnection((id) => {
@@ -156,9 +156,9 @@ class FetchCalendario {
             Calendario.setCalendar();
             setTimeout(() => {
                 if (FetchCalendario.peerId == null) {
-                    OnlineCalendar.status = "No existe conexión.";
+                    OnlineCalendar.status = "Offline";
                 } else {
-                    OnlineCalendar.status = "Calendario Online";
+                    OnlineCalendar.status = "Online";
                 }
                 m.redraw();
 
@@ -276,11 +276,30 @@ class FetchCalendario {
 class OnlineCalendar {
     static status = "";
     view() {
-        return [
-            m("span.badge.badge-primary",
-                OnlineCalendar.status
-            )
-        ];
+        if (OnlineCalendar.status == 'Online') {
+            return [
+                m("span.badge.badge-primary.tx-8", {
+                        title: "Su Calendario exta sincronizado."
+                    },
+                    OnlineCalendar.status
+                )
+            ];
+        } else if (OnlineCalendar.status == 'Offline') {
+            return [
+                m("span.badge.badge-light.tx-8", {
+                        title: "Su Calendario no esta sincronizado."
+                    },
+                    OnlineCalendar.status
+                )
+            ];
+        } else {
+            return [
+                m("span.badge.badge-light.tx-8",
+                    OnlineCalendar.status
+                )
+            ];
+        }
+
     }
 }
 
@@ -721,7 +740,7 @@ class Calendario extends App {
                         m("div.pd-t-0.pd-l-20.pd-r-20", [
                             m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03.mg-b-15", {
 
-                            }, "Filtro Agendas/Calendarios: "),
+                            }, ["Filtro Agendas/Calendarios: ", m(OnlineCalendar)]),
 
                             m("div.schedule-group",
                                 m(OptionSelect)
@@ -745,13 +764,8 @@ class Calendario extends App {
                             m("div.schedule-group.mg-b-5",
                                 m(CitasAnteriores)
                             ),
-                        ]),
-                        m("div.pd-t-5.pd-l-20.pd-r-20", [
-                            m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03.mg-b-15", "Status Online:"),
-                            m("div.schedule-group.mg-b-40",
-                                m(OnlineCalendar)
-                            ),
-                        ]),
+                        ])
+
                     ]),
                 ]),
 
