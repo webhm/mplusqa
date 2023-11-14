@@ -9,7 +9,7 @@ class WebRTCConnection {
         // Crea una instancia de PeerJS con el peerId y las opciones proporcionadas
         this.peer = new Peer({
             host: "rtc.hospitalmetropolitano.org",
-            port: 8443,
+            port: 443,
             path: "/myapp",
             pingInterval: 15000,
             proxied: true

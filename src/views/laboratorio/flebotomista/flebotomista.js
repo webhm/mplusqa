@@ -51,7 +51,6 @@ const actions = {
     }
 };
 
-
 function Stopwatch() {
     const model = stopwatchModel();
     actions.start(model);
@@ -405,7 +404,6 @@ class Flebotomista extends App {
         super();
         App.title = "Flebotomia";
         this.view = this.page;
-
     }
 
     static autorizar() {
@@ -436,11 +434,16 @@ class Flebotomista extends App {
         }
     }
 
-    static fetchLlamada() {
+    static fetchLlamada(at, id, numero) {
 
         return m.request({
                 method: "POST",
                 url: "http://api.hospitalmetropolitano.org/t/v1/procesos/call-toma",
+                body: {
+                    atencion: at,
+                    wid: id,
+                    modulo: numero
+                },
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
                 },
@@ -519,22 +522,19 @@ class Flebotomista extends App {
             pageLength: 100,
             destroy: true,
             columns: [{
-                    title: "",
-                },
-                {
-                    title: "Fecha:",
+                    title: "LLAMAR",
                 },
                 {
                     title: "SC:",
                 },
                 {
-                    title: "Paciente:",
+                    title: "PACIENTE:",
                 },
                 {
-                    title: "Nhc:",
+                    title: "NHC:",
                 },
                 {
-                    title: "Opciones:",
+                    title: "OPCIONES:",
                 },
 
 
@@ -548,16 +548,19 @@ class Flebotomista extends App {
                         return m.mount(nTd, {
                             view: () => {
                                 return [
-                                    m("button.btn-xs[type='button']", {
-                                            onclick: () => {
-                                                Flebotomista.fetchLlamada();
+                                    m('div.text-center', [
+                                        m("button.btn-xs[type='button']", {
+                                                onclick: () => {
+                                                    Flebotomista.fetchLlamada(oData.cdAtendimento, oData.wid, oData.numero);
+                                                },
+                                                class: 'bg-warning',
                                             },
-                                            class: 'bg-warning',
-                                        },
-                                        m('i.fas.fa-bell.tx-22'),
-                                        m('div.tx-12.tx-semibold', 'Llamar'),
-                                        m('div.d-inline.tx-12.tx-semibold.tx-danger', ''),
-                                    )
+                                            m('i.fas.fa-bell.tx-22'),
+                                            m('div.tx-12.tx-semibold', 'Llamar'),
+                                            m('div.d-inline.tx-12.tx-semibold.tx-danger', ''),
+                                        )
+                                    ])
+
                                 ]
                             }
                         });
@@ -566,22 +569,7 @@ class Flebotomista extends App {
                     aTargets: [0],
                     orderable: true,
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return moment(full.fechaPedido, 'DD-MM-YYYY HH:mm:ss').unix();
-                    },
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return m('.d-block.pd-0.mg-0', oData.fechaPedido)
-                            }
-                        });
-                    },
-                    visible: true,
-                    aTargets: [1],
-                    orderable: true,
 
-                },
                 {
                     mRender: function(data, type, full) {
                         return full.codigoPedido;
@@ -596,7 +584,7 @@ class Flebotomista extends App {
                         });
                     },
                     visible: true,
-                    aTargets: [2],
+                    aTargets: [1],
                     orderable: true,
                 },
                 {
@@ -614,7 +602,7 @@ class Flebotomista extends App {
                         });
                     },
                     visible: true,
-                    aTargets: [3],
+                    aTargets: [2],
                     orderable: true,
                 }, {
                     mRender: function(data, type, full) {
@@ -629,7 +617,7 @@ class Flebotomista extends App {
                         });
                     },
                     visible: true,
-                    aTargets: [4],
+                    aTargets: [3],
                     orderable: true,
 
                 },
@@ -638,7 +626,7 @@ class Flebotomista extends App {
                         return m.mount(nTd, {
                             view: () => {
                                 return [
-                                    m("a.btn-xs.btn-block.tx-white.text-center[role='button']", {
+                                    m("a.btn-xs.btn-block.text-white.text-center[role='button']", {
                                             href: "https://metroplus.hospitalmetropolitano.org/laboratorio/flebotomista/pedido?numeroHistoriaClinica=" + oData.numeroHistoriaClinica + "&numeroAtencion=" + oData.cdAtendimento + "&numeroPedido=" + oData.codigoPedido + "&idTimeRecord=0&track=view",
                                             target: "_blank",
                                             style: { "background-color": "#185b98" },
@@ -652,9 +640,8 @@ class Flebotomista extends App {
                         });
                     },
                     visible: true,
-                    aTargets: [5],
+                    aTargets: [4],
                     orderable: true,
-
                 }
             ],
 
