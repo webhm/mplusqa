@@ -438,11 +438,12 @@ class Flebotomista extends App {
 
         return m.request({
                 method: "POST",
-                url: "http://api.hospitalmetropolitano.org/t/v1/procesos/call-toma",
+                url: "https://api.hospitalmetropolitano.org/t/v1/procesos/call-toma",
                 body: {
                     atencion: at,
                     wid: id,
-                    modulo: numero
+                    modulo: numero,
+                    toma: localStorage.peerId
                 },
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
@@ -461,10 +462,14 @@ class Flebotomista extends App {
 
     static fetchPendientes() {
 
+        let _query = '';
+        if (localStorage.peerId !== undefined) {
+            _query = '&toma=' + localStorage.peerId;
+        }
 
         return m.request({
                 method: "GET",
-                url: "https://lisa.hospitalmetropolitano.org/v1/listar?type=ingresadasFlebotomia&idFiltro=4",
+                url: "https://lisa.hospitalmetropolitano.org/v1/listar?type=ingresadasFlebotomia&idFiltro=4" + _query,
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
                 },
