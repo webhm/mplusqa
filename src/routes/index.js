@@ -21,6 +21,7 @@ import AgendaEndo from "../views/endoscopia/agenda/agendas";
 import ConfigAgEndo from "../views/endoscopia/agenda/config";
 import CalendarioEndo from "../views/endoscopia/agenda/calendario";
 import CalendarioEndo2 from "../views/endoscopia/agenda/calendario2";
+import InicioFlebotomista from "../views/laboratorio/flebotomista/inicioFlebo";
 
 // Crear una instancia de la clase
 // const authManager = new AuthManager();
@@ -64,6 +65,7 @@ const Routes = {
     "/hospitalizacion/pasaporte": VerPasaporte,
     "/laboratorio": Laboratorio,
     "/laboratorio/flebotomista": Flebotomista,
+    "/laboratorio/flebotomista/inicio": InicioFlebotomista,
     "/step-passport": StepPassport,
     "/imagen": Imagen,
     "/imagen/agendas": AgendaMV,

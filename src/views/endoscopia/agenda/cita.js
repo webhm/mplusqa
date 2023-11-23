@@ -473,14 +473,14 @@ class Cita {
                 $("#modalCreateEvent").animate({
                     scrollTop: 0
                 }, "slow");
-                Cita.data.error = res.message;
+                Cita.error = res.message;
                 throw res.message;
             }
         }).catch(function(e) {
             $("#modalCreateEvent").animate({
                 scrollTop: 0
             }, "slow");
-            Cita.data.error = e;
+            Cita.error = e;
             throw e;
         });
     }
@@ -505,14 +505,14 @@ class Cita {
                 $("#modalCreateEvent").animate({
                     scrollTop: 0
                 }, "slow");
-                Cita.data.error = res.message;
+                Cita.error = res.message;
                 throw res.message;
             }
         }).catch(function(e) {
             $("#modalCreateEvent").animate({
                 scrollTop: 0
             }, "slow");
-            Cita.data.error = e;
+            Cita.error = e;
             throw e;
         });
     }
