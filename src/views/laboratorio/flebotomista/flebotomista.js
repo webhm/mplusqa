@@ -438,7 +438,7 @@ class Flebotomista extends App {
 
         return m.request({
                 method: "POST",
-                url: "https://api.hospitalmetropolitano.org/t/v1/procesos/call-toma",
+                url: "https://lisa.hospitalmetropolitano.org/v1/procesos/call-toma",
                 body: {
                     atencion: at,
                     wid: id,
@@ -558,7 +558,7 @@ class Flebotomista extends App {
                                                 onclick: () => {
                                                     Flebotomista.fetchLlamada(oData.cdAtendimento, oData.wid, oData.numero);
                                                 },
-                                                class: 'bg-warning',
+                                                class: (oData.call == 1 ? 'bg-success' : 'bg-warning'),
                                             },
                                             m('i.fas.fa-bell.tx-22'),
                                             m('div.tx-12.tx-semibold', 'Llamar'),
