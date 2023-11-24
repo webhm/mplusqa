@@ -399,6 +399,7 @@ class Flebotomista extends App {
     static usrToma = null;
     static pedidos = null;
     static reLoader = false;
+    static listaAtenciones = [];
 
     constructor() {
         super();
@@ -492,6 +493,82 @@ class Flebotomista extends App {
         ]
     }
 
+    static buscarListaAtenciones(_at_mv, _sc) {
+
+        try {
+
+            let existeSC = false;
+            Flebotomista.listaAtenciones.map(function(_v, _i, _contentData) {
+                if (_sc == _v.sc) {
+                    existeSC = true;
+                }
+            });
+
+            let existeAtencion = false;
+            Flebotomista.listaAtenciones.map(function(_v, _i, _contentData) {
+                if (_at_mv == _v.atencion) {
+                    existeAtencion = true;
+                }
+            });
+
+            if (existeAtencion && !existeSC) {
+
+                let _totalPedidos = 0;
+                Flebotomista.listaAtenciones.map(function(_v, _i, _contentData) {
+                    if (_at_mv == _v.atencion) {
+                        _totalPedidos = (_totalPedidos + 1)
+                    }
+                });
+
+                Flebotomista.listaAtenciones.push({
+                    atencion: _at_mv,
+                    sc: _sc,
+                    nro: 1,
+                    pedidos: _totalPedidos
+                });
+
+                Flebotomista.listaAtenciones.map(function(_v, _i, _contentData) {
+                    if (_at_mv == _v.atencion && _sc == _v.sc) {
+                        Flebotomista.listaAtenciones[_i].nro = (_totalPedidos + 1);
+                    }
+                });
+
+
+                let _totalPedidos_ = 0;
+                Flebotomista.listaAtenciones.map(function(_v, _i, _contentData) {
+                    if (_at_mv == _v.atencion) {
+                        _totalPedidos_ = (_totalPedidos_ + 1)
+                    }
+                });
+
+                Flebotomista.listaAtenciones.map(function(_v, _i, _contentData) {
+                    if (_at_mv == _v.atencion) {
+                        Flebotomista.listaAtenciones[_i].pedidos = _totalPedidos_;
+                    }
+                });
+
+
+            } else {
+
+                Flebotomista.listaAtenciones.push({
+                    atencion: _at_mv,
+                    sc: _sc,
+                    nro: 1,
+                    pedidos: 1
+                });
+
+            }
+
+
+        } catch (error) {
+
+            console.log(error)
+
+        }
+
+
+    }
+
     static arqTablePedidos(idTable, dataTable, arqTable) {
 
         return {
@@ -550,6 +627,9 @@ class Flebotomista extends App {
                     },
                     fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
 
+                        Flebotomista.buscarListaAtenciones(oData.cdAtendimento, oData.codigoPedido);
+
+
                         return m.mount(nTd, {
                             view: () => {
                                 return [
@@ -581,10 +661,18 @@ class Flebotomista extends App {
                     },
                     fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
 
-
                         return m.mount(nTd, {
                             view: () => {
-                                return m('.d-block.pd-0.mg-0', oData.codigoPedido)
+
+                                return [
+                                    m('.d-inline.tx-14.tx-semibold.tx-danger', [
+                                        m('i.fas.fa-file.mg-r-5.tx-12'),
+                                        (Flebotomista.listaAtenciones[iRow].nro !== undefined ? Flebotomista.listaAtenciones[iRow].nro + ' de ' + Flebotomista.listaAtenciones[iRow].pedidos : '')
+                                    ]),
+                                    m('br'),
+                                    'SC: ' + oData.codigoPedido,
+
+                                ]
                             }
                         });
                     },
