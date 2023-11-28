@@ -35,7 +35,7 @@ class OptionSelect {
 
             })
             .on("change", function(e) {
-
+                Calendario.warning = null;
                 Calendario.error = null;
                 ProximasCitas.citas = null;
                 ProximosEventos.citas = null;
@@ -80,15 +80,30 @@ class OptionSelect {
                 }
             }, [
                 Calendario.calendarios.map(function(_v, _i, _contentData) {
-                    return [
-                        m("option.tx-10[value='" + _v.IDCALENDAR + "']", {
-                            oncreate: (el) => {
-                                if (Calendario.idCalendar.search(_v.IDCALENDAR) != -1) {
-                                    el.dom.selected = true;
+
+                    if (Calendario.idCalendar !== null) {
+
+                        let _agendas = Calendario.idCalendar.split(',');
+                        return [
+                            m("option.tx-10[value='" + _v.IDCALENDAR + "']", {
+                                oncreate: (el) => {
+                                    if (_agendas.includes(_v.IDCALENDAR)) {
+                                        el.dom.selected = true;
+                                    }
                                 }
-                            }
-                        }, _v.CALENDAR),
-                    ];
+                            }, _v.CALENDAR),
+                        ];
+
+                    } else {
+
+                        return [
+                            m("option.tx-10[value='" + _v.IDCALENDAR + "']", _v.CALENDAR),
+                        ];
+
+                    }
+
+
+
                 }),
             ]);
         } else {
@@ -1947,6 +1962,7 @@ class Calendario extends App {
 
     static clearAlertCalendar() {
         setTimeout(() => {
+            Calendario.warning = null;
             Calendario.error = null;
             Calendario.success = null;
             m.redraw();
