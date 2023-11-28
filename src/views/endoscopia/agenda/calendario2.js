@@ -82,7 +82,6 @@ class OptionSelect {
                 Calendario.calendarios.map(function(_v, _i, _contentData) {
 
                     if (Calendario.idCalendar !== null) {
-
                         let _agendas = Calendario.idCalendar.split(',');
                         return [
                             m("option.tx-10[value='" + _v.IDCALENDAR + "']", {
@@ -95,11 +94,9 @@ class OptionSelect {
                         ];
 
                     } else {
-
                         return [
                             m("option.tx-10[value='" + _v.IDCALENDAR + "']", _v.CALENDAR),
                         ];
-
                     }
 
 
@@ -120,16 +117,25 @@ class BadgeAgendas {
     }
 
     view() {
+        return Calendario.calendarios.map((_v, _i) => {
+            if (Calendario.idCalendar !== null) {
+                let _agendas = Calendario.idCalendar.split(',');
+                if (_agendas.includes(_v.IDCALENDAR)) {
+                    return m("span.badge.badge-primary.mg-r-2", _v.CALENDAR);
+                }
+            }
+
+        });
+
+    }
+}
+
+class BadgeAgendasCita {
+
+    view() {
         if (Cita.data !== null && Cita.data.calendarios !== undefined) {
             return Object.keys(Cita.data.calendarios).map((_i) => {
                 return m("span.badge.badge-primary.mg-r-2", Cita.data.calendarios[_i].CALENDAR);
-
-            });
-        } else {
-            return Calendario.calendarios.map((_v, _i) => {
-                if (Calendario.idCalendar.search(_v.IDCALENDAR) != -1) {
-                    return m("span.badge.badge-primary.mg-r-2", _v.CALENDAR);
-                }
             });
         }
 
@@ -1057,99 +1063,108 @@ class Calendario extends App {
                                     }, [m("i.fas.fa-search.mg-r-2"), " Buscar Estudios"])),
                                 ])),
                                 m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Historia Clínica Paciente: ", m("div.d-inline.tx.semibold.tx-danger", {
-                                    style: {
-                                        cursor: "pointer"
-                                    },
-                                    onclick: () => {
-                                        Cita.data.sinDatos = !Cita.data.sinDatos;
-                                    }
-                                }, " *Sin Historia Clínica ")), m("div.input-group", {
-                                    class: Cita.data.sinDatos ? "d-none" : ""
-                                }, [
-                                    m("input.form-control[type='text'][placeholder='Numero de Historia Clínica'][autofocus]", {
-                                        class: Cita.data.paciente !== undefined ? "" : "d-none",
-                                        value: Cita.data.paciente !== undefined ? Cita.data.nhc + " - " + Cita.data.paciente : "",
-                                        oninput: (e) => {
-                                            e.preventDefault();
+                                        style: {
+                                            cursor: "pointer"
                                         },
-                                        disabled: Cita.data.paciente !== undefined ? "disabled" : ""
-                                    }),
-                                    m("div.input-group-append", m("button.btn.btn-primary[type='button']", {
-                                        onclick: (e) => {
-                                            Cita.error = null;
-                                            Cita.buscarPacientes = !Cita.buscarPacientes;
+                                        onclick: () => {
+                                            Cita.data.sinDatos = !Cita.data.sinDatos;
                                         }
-                                    }, [m("i.fas.fa-search.mg-r-2"), " Buscar Pacientes ", ])),
-                                ]), m("div.input-group", {
-                                    class: Cita.data.sinDatos ? "" : "d-none"
-                                }, [
-                                    m("div.col-12.mg-b-10", [
-                                        m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Apellidos y Nombres del Paciente:"),
-                                        m("input.form-control[type='text'][placeholder='Apellidos y Nombres del Paciente'][autofocus]", {
-                                            value: Cita.data.paciente !== undefined ? Cita.data.paciente : "",
+                                    }, " *Sin Historia Clínica ")), m("div.input-group", {
+                                        class: Cita.data.sinDatos ? "d-none" : ""
+                                    }, [
+                                        m("input.form-control[type='text'][placeholder='Numero de Historia Clínica'][autofocus]", {
+                                            class: Cita.data.paciente !== undefined ? "" : "d-none",
+                                            value: Cita.data.paciente !== undefined ? Cita.data.nhc + " - " + Cita.data.paciente : "",
                                             oninput: (e) => {
-                                                Cita.data.paciente = e.target.value;
-                                            }
-                                        }),
-                                    ]),
-                                ]), m("div.input-group", {
-                                    class: Cita.data.sinDatos ? "" : "d-none"
-                                }, [
-                                    m("div.col-12.mg-b-10", [
-                                        m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha de Nacimiento:"),
-                                        m("input.form-control[type='text'][id='dateBirth'][placeholder='DD/MM/YYYY']", {
-                                            oninput: (e) => {
-                                                setTimeout(() => {
-                                                    Cita.data.fecha_nacimiento = e.target.value;
-                                                }, 50);
+                                                e.preventDefault();
                                             },
-                                            oncreate: (e) => {
-                                                setTimeout(() => {
-                                                    new Cleave("#dateBirth", {
-                                                        date: true,
-                                                        datePattern: ["d", "m", "Y"]
-                                                    });
-                                                }, 50);
-                                            }
+                                            disabled: Cita.data.paciente !== undefined ? "disabled" : ""
                                         }),
+
+                                        m("div.input-group-append",
+                                            m("button.btn.btn-primary[type='button']", {
+                                                onclick: (e) => {
+                                                    Cita.error = null;
+                                                    Cita.buscarPacientes = !Cita.buscarPacientes;
+                                                }
+                                            }, [
+                                                m("i.fas.fa-search.mg-r-2"), " Buscar Pacientes ",
+                                            ])),
+
+
                                     ]),
-                                ]), m("div.input-group", {
-                                    class: Cita.data.sinDatos ? "" : "d-none"
-                                }, [
-                                    m("div.col-12.mg-b-10", [
-                                        m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Sexo:"),
-                                        m("select.tx-semibold", {
-                                            onchange: (e) => {
-                                                Cita.data.sexo = e.target.value;
-                                            },
-                                            class: "custom-select"
-                                        }, m("option", "Seleccione..."), m('option[value="M"]', "Masculino"), m('option[value="F"]', "Femenino")),
-                                    ]),
-                                ]), m("div.input-group", {
-                                    class: Cita.data.sinDatos ? "" : "d-none"
-                                }, [
-                                    m("div.col-12.mg-b-10", [
-                                        m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Correo electrónico:"),
-                                        m("input.form-control[type='text'][placeholder='Correo electrónico'][autofocus]", {
-                                            value: Cita.data.email !== undefined ? Cita.data.email : "",
-                                            oninput: (e) => {
-                                                Cita.data.email = e.target.value;
-                                            }
-                                        }),
-                                    ]),
-                                ]), m("div.input-group", {
-                                    class: Cita.data.sinDatos ? "" : "d-none"
-                                }, [
-                                    m("div.col-12.mg-b-10", [
-                                        m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Celular:"),
-                                        m("input.form-control[type='text'][placeholder='Correo electrónico'][autofocus]", {
-                                            value: Cita.data.telefono !== undefined ? Cita.data.telefono : "",
-                                            oninput: (e) => {
-                                                Cita.data.telefono = e.target.value;
-                                            }
-                                        }),
-                                    ]),
-                                ])),
+
+
+                                    m("div.input-group", {
+                                        class: Cita.data.sinDatos ? "" : "d-none"
+                                    }, [
+                                        m("div.col-12.mg-b-10", [
+                                            m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Apellidos y Nombres del Paciente:"),
+                                            m("input.form-control[type='text'][placeholder='Apellidos y Nombres del Paciente'][autofocus]", {
+                                                value: Cita.data.paciente !== undefined ? Cita.data.paciente : "",
+                                                oninput: (e) => {
+                                                    Cita.data.paciente = e.target.value;
+                                                }
+                                            }),
+                                        ]),
+                                    ]), m("div.input-group", {
+                                        class: Cita.data.sinDatos ? "" : "d-none"
+                                    }, [
+                                        m("div.col-12.mg-b-10", [
+                                            m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha de Nacimiento:"),
+                                            m("input.form-control[type='text'][id='dateBirth'][placeholder='DD/MM/YYYY']", {
+                                                oninput: (e) => {
+                                                    setTimeout(() => {
+                                                        Cita.data.fecha_nacimiento = e.target.value;
+                                                    }, 50);
+                                                },
+                                                oncreate: (e) => {
+                                                    setTimeout(() => {
+                                                        new Cleave("#dateBirth", {
+                                                            date: true,
+                                                            datePattern: ["d", "m", "Y"]
+                                                        });
+                                                    }, 50);
+                                                }
+                                            }),
+                                        ]),
+                                    ]), m("div.input-group", {
+                                        class: Cita.data.sinDatos ? "" : "d-none"
+                                    }, [
+                                        m("div.col-12.mg-b-10", [
+                                            m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Sexo:"),
+                                            m("select.tx-semibold", {
+                                                onchange: (e) => {
+                                                    Cita.data.sexo = e.target.value;
+                                                },
+                                                class: "custom-select"
+                                            }, m("option", "Seleccione..."), m('option[value="M"]', "Masculino"), m('option[value="F"]', "Femenino")),
+                                        ]),
+                                    ]), m("div.input-group", {
+                                        class: Cita.data.sinDatos ? "" : "d-none"
+                                    }, [
+                                        m("div.col-12.mg-b-10", [
+                                            m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Correo electrónico:"),
+                                            m("input.form-control[type='text'][placeholder='Correo electrónico'][autofocus]", {
+                                                value: Cita.data.email !== undefined ? Cita.data.email : "",
+                                                oninput: (e) => {
+                                                    Cita.data.email = e.target.value;
+                                                }
+                                            }),
+                                        ]),
+                                    ]), m("div.input-group", {
+                                        class: Cita.data.sinDatos ? "" : "d-none"
+                                    }, [
+                                        m("div.col-12.mg-b-10", [
+                                            m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Celular:"),
+                                            m("input.form-control[type='text'][placeholder='Correo electrónico'][autofocus]", {
+                                                value: Cita.data.telefono !== undefined ? Cita.data.telefono : "",
+                                                oninput: (e) => {
+                                                    Cita.data.telefono = e.target.value;
+                                                }
+                                            }),
+                                        ]),
+                                    ])),
 
                                 m("div.form-group", [
                                     m("ul.nav.nav-tabs[id='myTab'][role='tablist']", [
@@ -1448,7 +1463,7 @@ class Calendario extends App {
                                 m("div.col-12", [
                                     m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Agenda(s):"),
                                     m("p", [
-                                        Cita.data.calendarios !== undefined ? [m(BadgeAgendas)] : [],
+                                        m(BadgeAgendasCita)
                                     ]),
                                 ]),
                             ]),
