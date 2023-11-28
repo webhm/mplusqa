@@ -58,7 +58,7 @@ class OptionSelect {
                 } else {
                     m.route.set("/endoscopia/agendas/calendario");
                     Calendario.idCalendar = null;
-                    Calendario.error = "Es necesario un perfil de agendamiento válido.";
+                    Calendario.warning = "No tiene perfil para realizar las agendas.";
                 }
 
 
@@ -309,6 +309,7 @@ class Calendario extends App {
 
     static loader = false;
     static error = null;
+    static warning = null;
     static success = null;
     static cita = null;
     static citas = null;
@@ -424,7 +425,7 @@ class Calendario extends App {
                 editable: false,
                 defaultView: "agendaWeek",
                 minTime: "07:00:00",
-                maxTime: "17:55:00",
+                maxTime: "23:40:00",
                 slotDuration: "00:10:00",
                 slotLabelInterval: 10,
                 slotLabelFormat: "HH:mma",
@@ -779,6 +780,18 @@ class Calendario extends App {
                             m("button.close[type='button'][aria-label='Close']", {
                                 onclick: () => {
                                     Calendario.error = null;
+                                }
+                            }, m("span[aria-hidden='true']", "×")),
+                        ]),
+                    ]),
+                    m("div.pd-20.mg-b-0", {
+                        class: Calendario.warning != null ? "" : "d-none"
+                    }, [
+                        m(".alert.alert-warning.fade.show.mg-b-0[role='alert']", [
+                            Calendario.warning,
+                            m("button.close[type='button'][aria-label='Close']", {
+                                onclick: () => {
+                                    Calendario.warning = null;
                                 }
                             }, m("span[aria-hidden='true']", "×")),
                         ]),
