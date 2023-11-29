@@ -694,6 +694,7 @@ class Calendario extends App {
     }
 
     static setPaciente(params) {
+
         Cita.error = null;
         Cita.data.nhc = params.CD_PACIENTE;
         Cita.data.paciente = params.NM_PACIENTE;
@@ -702,6 +703,14 @@ class Calendario extends App {
         Cita.data.fecha_nacimiento = moment(params.DT_NASCIMENTO, "DD-MM-YYYY").format("DD/MM/YYYY");
         Cita.data.email = params.EMAIL;
         Cita.buscarPacientes = !Cita.buscarPacientes;
+
+        let elt = $("#correoCreaCita");
+        elt.tagsinput('removeAll');
+
+        if (Cita.data.email !== undefined) {
+            elt.tagsinput("add", Cita.data.email);
+        }
+
     }
 
     static sendEvent() {
@@ -1824,9 +1833,7 @@ class Calendario extends App {
                                         }, [
                                             Cita.data.tipo == 1 && Cita.data.email !== undefined ? [
                                                 m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Correo electrónico: ", m("br"), m("span.tx-light.tx-5", "*Se enviará una notificación de correo a la(s) siguiente(s) direccione(s).")), m("div", m("input.form-control[id='correoCitaUpdate'][type='text'][data-role='tagsinput']", {
-                                                    onchange: (e) => {
-                                                        console.log(e);
-                                                    },
+
 
                                                     oncreate: (el) => {
                                                         let elt = $("#correoCitaUpdate");
