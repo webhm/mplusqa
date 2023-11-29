@@ -372,15 +372,15 @@ class Cita {
         m.redraw();
     }
 
-    static reagendarHttp(Calendario) {
-
+    static reagendarCitaHttp(Calendario) {
+        Cita.loader = true;
         Cita.error = null;
+
         if (Cita.data.tipo == 1 && Cita.data.email != document.getElementById('correoCitaUpdate').value) {
             Cita.data.email = document.getElementById('correoCitaUpdate').value;
         }
 
-        Cita.loader = true;
-        Cita.data.calendarios = Calendario.calendarios;
+
 
         m.request({
             method: "POST",
@@ -455,7 +455,17 @@ class Cita {
 
         Cita.loader = true;
         Cita.data.idCalendar = calendario.idCalendar;
-        Cita.data.calendarios = calendario.calendarios;
+        Cita.data.calendarios = [];
+
+        let _agendas = calendario.idCalendar.split(',');
+        for (let i = 0; i < Object.keys(_agendas).length; i++) {
+            for (let a = 0; a < Object.keys(calendario.calendarios).length; a++) {
+                if (_agendas[i] == calendario.calendarios[a].IDCALENDAR) {
+                    Cita.data.calendarios.push(calendario.calendarios[a]);
+                }
+            }
+        }
+
 
         m.request({
             method: "POST",
@@ -488,7 +498,6 @@ class Cita {
     static agendarReagendarCitaHttp(calendario) {
 
         Cita.loader = true;
-        Cita.data.calendarios = calendario.calendarios;
 
         m.request({
             method: "POST",
@@ -577,8 +586,6 @@ class Cita {
 
     static agendarCita(Calendario) {
         Cita.loader = true;
-        Cita.data.idCalendar = Calendario.idCalendar;
-        Cita.data.calendarios = Calendario.calendarios;
 
         m.request({
             method: "POST",

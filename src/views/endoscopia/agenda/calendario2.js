@@ -1665,103 +1665,7 @@ class Calendario extends App {
                                 ]),
                             ]),
                             (Cita.data.tipo == 1 ? [
-                                m("div", {
-                                    class: !Cita.buscarPacientes ? "d-none" : ""
-                                }, [
-                                    m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Buscar Pacientes:"),
-                                    m("div.form-group", m("form", {
-                                        onsubmit: (e) => {
-                                            e.preventDefault();
-                                            if (BuscadorPacientes.searchField.length !== 0) {
-                                                BuscadorPacientes.fetchSearch();
-                                                Cita.buscarPacientes = true;
-                                            } else {
-                                                $("#modalUpdateEvent").animate({
-                                                    scrollTop: 0
-                                                }, "slow");
-                                                Cita.error = "Ingrese algún valor para continuar.";
-                                                Cita.buscarPacientes = true;
-                                            }
-                                        }
-                                    }, [
-                                        m("div.input-group", [
-                                            m("input.form-control[type='text'][placeholder='Apellidos y Nombres']", {
-                                                oninput: (e) => {
-                                                    Cita.error = null;
-                                                    BuscadorPacientes.searchField = e.target.value;
-                                                }
-                                            }),
-                                            m("div.input-group-append", m("button.btn.btn-outline-light[type='button']", {
-                                                onclick: (e) => {
-                                                    if (BuscadorPacientes.searchField.length !== 0) {
-                                                        BuscadorPacientes.fetchSearch();
-                                                        Cita.buscarPacientes = true;
-                                                    } else {
-                                                        $("#modalUpdateEvent").animate({
-                                                            scrollTop: 0
-                                                        }, "slow");
-                                                        Cita.error = "Ingrese algún valor para continuar.";
-                                                        Cita.buscarPacientes = true;
-                                                    }
-                                                }
-                                            }, "Buscar"), m("button.btn.btn-outline-light[type='button']", {
-                                                onclick: (e) => {
-                                                    Cita.error = null;
-                                                    Cita.buscarPacientes = !Cita.buscarPacientes;
-                                                }
-                                            }, m("i.fas.fa-times-circle"))),
-                                        ]),
-                                    ]), m("div.row", [m("div.col-12", m(BuscadorPacientes))])),
-                                ]),
 
-                                m("div", {
-                                    class: !Cita.buscarItems ? "d-none" : ""
-                                }, [
-                                    m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Buscar Items:"),
-                                    m("div.form-group", m("form", {
-                                        onsubmit: (e) => {
-                                            e.preventDefault();
-                                            if (BuscadorItems.searchField.length !== 0) {
-                                                BuscadorItems.fetchSearch();
-                                                Cita.buscarItems = true;
-                                            } else {
-                                                $("#modalUpdateEvent").animate({
-                                                    scrollTop: 0
-                                                }, "slow");
-                                                Cita.error = "Ingrese algún valor para continuar.";
-                                                Cita.buscarItems = true;
-                                            }
-                                        }
-                                    }, [
-                                        m("div.input-group", [
-                                            m("input.form-control[type='text'][placeholder='Buscar Items']", {
-                                                oninput: (e) => {
-                                                    Cita.error = null;
-                                                    BuscadorItems.searchField = e.target.value;
-                                                }
-                                            }),
-                                            m("div.input-group-append", m("button.btn.btn-outline-light[type='button']", {
-                                                onclick: (e) => {
-                                                    if (BuscadorItems.searchField.length !== 0) {
-                                                        BuscadorItems.fetchSearch();
-                                                        Cita.buscarItems = true;
-                                                    } else {
-                                                        $("#modalUpdateEvent").animate({
-                                                            scrollTop: 0
-                                                        }, "slow");
-                                                        Cita.error = "Ingrese algún valor para continuar.";
-                                                        Cita.buscarItems = true;
-                                                    }
-                                                }
-                                            }, "Buscar"), m("button.btn.btn-outline-light[type='button']", {
-                                                onclick: (e) => {
-                                                    Cita.error = null;
-                                                    Cita.buscarItems = !Cita.buscarItems;
-                                                }
-                                            }, m("i.fas.fa-times-circle"))),
-                                        ]),
-                                    ]), m("div.row", [m("div.col-12", m(BuscadorItems))])),
-                                ]),
                                 m("div", {
                                     class: Cita.buscarPacientes || Cita.buscarItems ? "d-none" : ""
                                 }, [
@@ -1789,11 +1693,7 @@ class Calendario extends App {
                                             },
                                             disabled: Cita.data.paciente !== undefined ? "disabled" : ""
                                         }),
-                                        m("div.input-group-append", m("button.btn.btn-primary[type='button']", {
-                                            onclick: (e) => {
-                                                Cita.buscarPacientes = !Cita.buscarPacientes;
-                                            }
-                                        }, [m("i.fas.fa-search.mg-r-2"), " Buscar Pacientes ", ])),
+
                                     ])),
                                     m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Estudio:"), m("div.input-group", [
                                         m("input.form-control[type='text'][placeholder='Items/Estudio']", {
@@ -1803,11 +1703,7 @@ class Calendario extends App {
                                             },
                                             disabled: Cita.data.id_estudio !== undefined ? "disabled" : ""
                                         }),
-                                        m("div.input-group-append", m("button.btn.btn-primary[type='button']", {
-                                            onclick: (e) => {
-                                                Cita.buscarItems = !Cita.buscarItems;
-                                            }
-                                        }, [m("i.fas.fa-search.mg-r-2"), " Buscar Estudios "])),
+
                                     ])),
                                     m("div.form-group", m("ul.nav.nav-tabs[id='myTab'][role='tablist']", [
                                         m("li.nav-item", m("a.nav-link.active[id='homeUpdate-tab'][data-toggle='tab'][href='#homeUpdate'][role='tab'][aria-controls='homeUpdate'][aria-selected='true']", "Comentarios")),
@@ -2088,7 +1984,7 @@ class Calendario extends App {
         }
 
         if (track == 'Reagendar') {
-            Cita.reagendarHttp(Calendario);
+            Cita.reagendarCitaHttp(Calendario);
         }
 
 
