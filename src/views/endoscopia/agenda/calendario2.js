@@ -1062,14 +1062,10 @@ class Calendario extends App {
                                         }
                                     }, [m("i.fas.fa-search.mg-r-2"), " Buscar Estudios"])),
                                 ])),
-                                m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Historia Clínica Paciente: ", m("div.d-inline.tx.semibold.tx-danger", {
-                                        style: {
-                                            cursor: "pointer"
-                                        },
-                                        onclick: () => {
-                                            Cita.data.sinDatos = !Cita.data.sinDatos;
-                                        }
-                                    }, " *Sin Historia Clínica ")), m("div.input-group", {
+                                m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Paciente: ",
+
+
+                                    ), m("div.input-group", {
                                         class: Cita.data.sinDatos ? "d-none" : ""
                                     }, [
                                         m("input.form-control[type='text'][placeholder='Numero de Historia Clínica'][autofocus]", {
@@ -1089,7 +1085,17 @@ class Calendario extends App {
                                                 }
                                             }, [
                                                 m("i.fas.fa-search.mg-r-2"), " Buscar Pacientes ",
-                                            ])),
+                                            ]),
+                                            m("button.btn.btn-light[type='button']", {
+                                                onclick: () => {
+                                                    Cita.data.sinDatos = !Cita.data.sinDatos;
+                                                }
+                                            }, [
+                                                m("i.fas.fa-edit.mg-r-2"), " Agendar Sin Historia Clínica",
+                                            ])
+
+
+                                        ),
 
 
                                     ]),
@@ -1098,6 +1104,18 @@ class Calendario extends App {
                                     m("div.input-group", {
                                         class: Cita.data.sinDatos ? "" : "d-none"
                                     }, [
+
+                                        m("div.col-12.mg-b-10.text-right", [
+                                            m("button.btn.btn-light[type='button']", {
+                                                onclick: () => {
+                                                    Cita.data.sinDatos = !Cita.data.sinDatos;
+                                                }
+                                            }, [
+                                                m("i.fas.fa-chevron-left.mg-r-2"), "Regresar ",
+                                            ]),
+                                        ]),
+
+
                                         m("div.col-12.mg-b-10", [
                                             m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Apellidos y Nombres del Paciente:"),
                                             m("input.form-control[type='text'][placeholder='Apellidos y Nombres del Paciente'][autofocus]", {
@@ -1111,6 +1129,8 @@ class Calendario extends App {
                                         class: Cita.data.sinDatos ? "" : "d-none"
                                     }, [
                                         m("div.col-12.mg-b-10", [
+
+
                                             m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha de Nacimiento:"),
                                             m("input.form-control[type='text'][id='dateBirth'][placeholder='DD/MM/YYYY']", {
                                                 oninput: (e) => {
@@ -1752,7 +1772,7 @@ class Calendario extends App {
                                             m("div.col-6", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha y Hora de Fin"), m("input.form-control.text-capitalize[type='text'][disabled='disabled']", { value: Cita.data.end })),
                                         ]),
                                     ]),
-                                    m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Historia Clínica Paciente:"), m("div.input-group", [
+                                    m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Paciente:"), m("div.input-group", [
                                         m("input.form-control[type='text'][placeholder='Numero de Historia Clínica'][autofocus]", {
                                             value: Cita.data.paciente !== undefined ? Cita.data.nhc + " - " + Cita.data.paciente : "",
                                             oninput: (e) => {
