@@ -19,9 +19,10 @@ import Endo from "../views/endoscopia/endo";
 import SingOut from "../views/layout/singOut";
 import AgendaEndo from "../views/endoscopia/agenda/agendas";
 import ConfigAgEndo from "../views/endoscopia/agenda/config";
-import CalendarioEndo from "../views/endoscopia/agenda/calendario";
 import CalendarioEndo2 from "../views/endoscopia/agenda/calendario2";
 import InicioFlebotomista from "../views/laboratorio/flebotomista/inicioFlebo";
+import Uci from "../views/uci/uci";
+import PacientesUCI from "../views/uci/pacientes/pacientesUci";
 
 // Crear una instancia de la clase
 // const authManager = new AuthManager();
@@ -60,6 +61,8 @@ const Routes = {
     "/administracion": Administracion,
     "/administracion/metrovirtual": usrMV,
     "/administracion/metroplus": usrMPLUS,
+    "/uci": Uci,
+    "/uci/pacientes": PacientesUCI,
     "/hospitalizacion": Hospital,
     "/hospitalizacion/pasaportes": Pasaportes,
     "/hospitalizacion/pasaporte": VerPasaporte,

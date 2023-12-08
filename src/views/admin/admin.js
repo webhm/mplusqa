@@ -24,7 +24,7 @@ class Administracion extends App {
 
             m("div.content.content-components", {
 
-            },
+                },
                 m("div.container.mg-l-0.mg-r-0", {
                     style: { "max-width": "100%" }
                 }, [
@@ -46,48 +46,52 @@ class Administracion extends App {
 
                     m("div.row", [
 
-                        m("div.col-sm-6.col-lg-3.mg-t-20.mg-sm-t-30.mg-lg-t-0.mg-b-10",
+                        (App.hasProfile('PERFIL_ADM_MEDICOS_METROVIRTUAL') ? [m("div.col-sm-6.col-lg-3.mg-t-20.mg-sm-t-30.mg-lg-t-0.mg-b-10",
 
-                            m("a[href='/administracion/metrovirtual']", {
+                            m("a[href='/administracion/medicos/metrovirtual']", {
                                 style: { 'color': "#325a98" }
                             }, [
                                 m("div.card.card-help", [
                                     m("div.card-body.tx-13", [
                                         m("div.tx-60.lh-0.mg-b-15", {
-                                            style: { 'color': "#325a98" }
-                                        },
+                                                style: { 'color': "#325a98" }
+                                            },
                                             m("i.fas.fa-users")
                                         ),
 
                                         m("p.tx-color-03.mg-b-0.tx-semibold",
-                                            "Usuarios MetroVirtual"
+                                            "Médicos MetroVirtual"
                                         )
                                     ])
 
                                 ])
                             ])
-                        ),
-                        m("div.col-sm-6.col-lg-3.mg-t-20.mg-sm-t-30.mg-lg-t-0.mg-b-10",
+                        )] : []),
+                        (App.hasProfile('PERFIL_ADM_PACIENTES_METROVIRTUAL') ? [m("div.col-sm-6.col-lg-3.mg-t-20.mg-sm-t-30.mg-lg-t-0.mg-b-10",
 
-                            m("a[href='/administracion/metroplus']", {
+                            m("a[href='/administracion/pacientes/metrovirtual']", {
                                 style: { 'color': "#325a98" }
                             }, [
                                 m("div.card.card-help", [
                                     m("div.card-body.tx-13", [
                                         m("div.tx-60.lh-0.mg-b-15", {
-                                            style: { 'color': "#325a98" }
-                                        },
+                                                style: { 'color': "#325a98" }
+                                            },
                                             m("i.fas.fa-users")
                                         ),
 
                                         m("p.tx-color-03.mg-b-0.tx-semibold",
-                                            "Usuarios MetroPlus"
+                                            "Pacientes MetroVirtual"
                                         )
                                     ])
 
                                 ])
                             ])
-                        ),
+                        )] : []),
+
+
+
+
 
 
 

@@ -8,6 +8,7 @@ import Cita from "./cita";
 import EventosCalendario from "./eventosCalendar";
 import { ProximasCitas, ProximosEventos, CitasAnteriores, BuscadorItems, BuscadorPacientes } from "./widgets";
 import WebRTCConnection from "../../../models/P2PMessage";
+import { UNDERLINE } from "construct-ui/lib/esm/components/icon/generated/IconNames";
 
 
 class OptionSelect {
@@ -35,12 +36,12 @@ class OptionSelect {
 
             })
             .on("change", function(e) {
+
                 Calendario.warning = null;
                 Calendario.error = null;
                 ProximasCitas.citas = null;
                 ProximosEventos.citas = null;
                 CitasAnteriores.citas = null;
-
 
                 let idCalendar = "";
                 let tree = $(this).val();
@@ -58,9 +59,8 @@ class OptionSelect {
                 } else {
                     m.route.set("/endoscopia/agendas/calendario");
                     Calendario.idCalendar = null;
-                    Calendario.warning = "No tiene perfil para realizar las agendas.";
+                    Calendario.warning = "No se han aplicado filtros para la búsqueda.";
                 }
-
 
             });
 
@@ -596,6 +596,9 @@ class Calendario extends App {
                             Calendario.reloadCalendar();
                         }
                     }
+                },
+                viewSkeletonRender: function(info) {
+                    info.view.calendar.scrollToTime((new Date()) - calendar.state.dateProfile.renderRange.start);
                 }
             });
 
@@ -703,6 +706,7 @@ class Calendario extends App {
         Cita.data.fecha_nacimiento = moment(params.DT_NASCIMENTO, "DD-MM-YYYY").format("DD/MM/YYYY");
         Cita.data.email = params.EMAIL;
         Cita.buscarPacientes = !Cita.buscarPacientes;
+        Cita.data.sinDatos = false;
 
         let elt = $("#correoCreaCita");
         elt.tagsinput('removeAll');
@@ -1071,21 +1075,21 @@ class Calendario extends App {
                                         }
                                     }, [m("i.fas.fa-search.mg-r-2"), " Buscar Estudios"])),
                                 ])),
-                                m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Paciente: ",
 
 
-                                    ), m("div.input-group", {
+                                m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Paciente: "),
+
+                                    m("div.input-group", {
                                         class: Cita.data.sinDatos ? "d-none" : ""
                                     }, [
                                         m("input.form-control[type='text'][placeholder='Numero de Historia Clínica'][autofocus]", {
                                             class: Cita.data.paciente !== undefined ? "" : "d-none",
-                                            value: Cita.data.paciente !== undefined ? Cita.data.nhc + " - " + Cita.data.paciente : "",
+                                            value: Cita.data.paciente !== undefined ? (Cita.data.nhc !== undefined ? Cita.data.nhc + " - " : '') + Cita.data.paciente : "",
                                             oninput: (e) => {
                                                 e.preventDefault();
                                             },
                                             disabled: Cita.data.paciente !== undefined ? "disabled" : ""
                                         }),
-
                                         m("div.input-group-append",
                                             m("button.btn.btn-primary[type='button']", {
                                                 onclick: (e) => {
@@ -1096,11 +1100,13 @@ class Calendario extends App {
                                                 m("i.fas.fa-search.mg-r-2"), " Buscar Pacientes ",
                                             ]),
                                             m("button.btn.btn-light[type='button']", {
+                                                class: (Cita.data.sinDatos !== undefined && Cita.data.sinDatos == false ? 'd-none' : ''),
                                                 onclick: () => {
-                                                    Cita.data.sinDatos = !Cita.data.sinDatos;
+                                                    Cita.error = null;
+                                                    Cita.data.sinDatos = true;
                                                 }
                                             }, [
-                                                m("i.fas.fa-edit.mg-r-2"), " Agendar Sin Historia Clínica",
+                                                m("i.fas.fa-edit.mg-r-2"), " Agendar Sin Historia Clínica ",
                                             ])
 
 
@@ -1113,33 +1119,19 @@ class Calendario extends App {
                                     m("div.input-group", {
                                         class: Cita.data.sinDatos ? "" : "d-none"
                                     }, [
-
-                                        m("div.col-12.mg-b-10.text-right", [
-                                            m("button.btn.btn-light[type='button']", {
-                                                onclick: () => {
-                                                    Cita.data.sinDatos = !Cita.data.sinDatos;
-                                                }
-                                            }, [
-                                                m("i.fas.fa-chevron-left.mg-r-2"), "Regresar ",
-                                            ]),
-                                        ]),
-
-
                                         m("div.col-12.mg-b-10", [
                                             m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Apellidos y Nombres del Paciente:"),
                                             m("input.form-control[type='text'][placeholder='Apellidos y Nombres del Paciente'][autofocus]", {
-                                                value: Cita.data.paciente !== undefined ? Cita.data.paciente : "",
                                                 oninput: (e) => {
                                                     Cita.data.paciente = e.target.value;
                                                 }
                                             }),
                                         ]),
-                                    ]), m("div.input-group", {
+                                    ]),
+                                    m("div.input-group", {
                                         class: Cita.data.sinDatos ? "" : "d-none"
                                     }, [
                                         m("div.col-12.mg-b-10", [
-
-
                                             m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha de Nacimiento:"),
                                             m("input.form-control[type='text'][id='dateBirth'][placeholder='DD/MM/YYYY']", {
                                                 oninput: (e) => {
@@ -1157,7 +1149,8 @@ class Calendario extends App {
                                                 }
                                             }),
                                         ]),
-                                    ]), m("div.input-group", {
+                                    ]),
+                                    m("div.input-group", {
                                         class: Cita.data.sinDatos ? "" : "d-none"
                                     }, [
                                         m("div.col-12.mg-b-10", [
@@ -1169,37 +1162,38 @@ class Calendario extends App {
                                                 class: "custom-select"
                                             }, m("option", "Seleccione..."), m('option[value="M"]', "Masculino"), m('option[value="F"]', "Femenino")),
                                         ]),
-                                    ]), m("div.input-group", {
+                                    ]),
+                                    m("div.input-group", {
                                         class: Cita.data.sinDatos ? "" : "d-none"
                                     }, [
                                         m("div.col-12.mg-b-10", [
                                             m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Correo electrónico:"),
                                             m("input.form-control[type='text'][placeholder='Correo electrónico'][autofocus]", {
-                                                value: Cita.data.email !== undefined ? Cita.data.email : "",
                                                 oninput: (e) => {
                                                     Cita.data.email = e.target.value;
                                                 }
                                             }),
                                         ]),
-                                    ]), m("div.input-group", {
+                                    ]),
+                                    m("div.input-group", {
                                         class: Cita.data.sinDatos ? "" : "d-none"
                                     }, [
                                         m("div.col-12.mg-b-10", [
                                             m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Celular:"),
-                                            m("input.form-control[type='text'][placeholder='Correo electrónico'][autofocus]", {
-                                                value: Cita.data.telefono !== undefined ? Cita.data.telefono : "",
+                                            m("input.form-control[type='text'][placeholder='Celular'][autofocus]", {
                                                 oninput: (e) => {
                                                     Cita.data.telefono = e.target.value;
                                                 }
                                             }),
-                                        ]),
-                                    ])),
 
+                                        ]),
+                                    ])
+                                ),
                                 m("div.form-group", [
                                     m("ul.nav.nav-tabs[id='myTab'][role='tablist']", [
                                         m("li.nav-item", m("a.nav-link.active[id='home-tab'][data-toggle='tab'][href='#home'][role='tab'][aria-controls='home'][aria-selected='true']", "Comentarios")),
                                         m("li.nav-item", {
-                                            class: Cita.data.email !== undefined ? "" : "d-none"
+                                            class: Cita.data.sinDatos == false && Cita.data.email !== undefined ? "" : "d-none"
                                         }, m("a.nav-link[id='profile-tab'][data-toggle='tab'][href='#profile'][role='tab'][aria-controls='profile'][aria-selected='false']", "Notificación al Correo")),
                                     ]),
                                     m(".tab-content.bd.bd-gray-300.bd-t-0.pd-20[id='myTabContent']", [
@@ -1214,25 +1208,25 @@ class Calendario extends App {
                                             ]),
                                         ]),
                                         m(".tab-pane.fade[id='profile'][role='tabpanel'][aria-labelledby='profile-tab']", {
-                                            class: Cita.data.email !== undefined ? "" : "d-none"
+                                            class: Cita.data.sinDatos == false && Cita.data.email !== undefined ? "" : "d-none"
                                         }, [
-                                            Cita.data.email !== undefined ? [
+                                            Cita.data.sinDatos == false && Cita.data.email !== undefined ? [
                                                 m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Correo electrónico: ", m("br"), m("span.tx-light.tx-5", "*Se enviará una notificación de correo a la(s) siguiente(s) direccione(s).")), m("div", m("input.form-control[id='correoCreaCita'][type='text'][data-role='tagsinput']", {
-
                                                     oncreate: (el) => {
-                                                        let elt = $("#correoCreaCita");
-                                                        elt.tagsinput({ allowDuplicates: true });
-                                                        elt.on("itemAdded", function(event) {
-                                                            if (Calendario.validarCorreo(event.item)) {
-                                                                console.log("item added : " + event.item);
-                                                            } else {
-                                                                alert('El correo electrónico ingresado no es válido.');
-                                                                elt.tagsinput('remove', event.item);
+                                                        if (Cita.data.sinDatos == false && Cita.data.email !== undefined) {
+                                                            let elt = $("#correoCreaCita");
+                                                            elt.tagsinput({ allowDuplicates: true });
+                                                            elt.on("itemAdded", function(event) {
+                                                                if (Calendario.validarCorreo(event.item)) {
+                                                                    console.log("item added : " + event.item);
+                                                                } else {
+                                                                    alert('El correo electrónico ingresado no es válido.');
+                                                                    elt.tagsinput('remove', event.item);
+                                                                }
+                                                            });
+                                                            if (Cita.data.email !== undefined) {
+                                                                elt.tagsinput("add", Cita.data.email);
                                                             }
-
-                                                        });
-                                                        if (Cita.data.email !== undefined) {
-                                                            elt.tagsinput("add", Cita.data.email);
                                                         }
                                                     }
                                                 }))),
@@ -1247,9 +1241,7 @@ class Calendario extends App {
                                     m("div.col-12", [
                                         m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Agenda(s):"),
                                         m("p", [
-
                                             m(BadgeAgendas)
-
                                         ]),
                                     ]),
                                 ]),
@@ -1685,16 +1677,6 @@ class Calendario extends App {
                                             m("div.col-6", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha y Hora de Fin"), m("input.form-control.text-capitalize[type='text'][disabled='disabled']", { value: Cita.data.end })),
                                         ]),
                                     ]),
-                                    m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Paciente:"), m("div.input-group", [
-                                        m("input.form-control[type='text'][placeholder='Numero de Historia Clínica'][autofocus]", {
-                                            value: Cita.data.paciente !== undefined ? Cita.data.nhc + " - " + Cita.data.paciente : "",
-                                            oninput: (e) => {
-                                                e.preventDefault();
-                                            },
-                                            disabled: Cita.data.paciente !== undefined ? "disabled" : ""
-                                        }),
-
-                                    ])),
                                     m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Estudio:"), m("div.input-group", [
                                         m("input.form-control[type='text'][placeholder='Items/Estudio']", {
                                             value: Cita.data.id_estudio !== undefined ? Cita.data.id_estudio + " - " + Cita.data.estudio : "",
@@ -1705,6 +1687,17 @@ class Calendario extends App {
                                         }),
 
                                     ])),
+                                    m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Paciente:"), m("div.input-group", [
+                                        m("input.form-control[type='text'][placeholder='Numero de Historia Clínica'][autofocus]", {
+                                            value: Cita.data.paciente !== undefined ? (Cita.data.nhc !== undefined ? Cita.data.nhc + " - " : '') + Cita.data.paciente : "",
+                                            oninput: (e) => {
+                                                e.preventDefault();
+                                            },
+                                            disabled: Cita.data.paciente !== undefined ? "disabled" : ""
+                                        }),
+
+                                    ])),
+
                                     m("div.form-group", m("ul.nav.nav-tabs[id='myTab'][role='tablist']", [
                                         m("li.nav-item", m("a.nav-link.active[id='homeUpdate-tab'][data-toggle='tab'][href='#homeUpdate'][role='tab'][aria-controls='homeUpdate'][aria-selected='true']", "Comentarios")),
                                         m("li.nav-item", {
@@ -1729,25 +1722,27 @@ class Calendario extends App {
                                         }, [
                                             Cita.data.tipo == 1 && Cita.data.email !== undefined ? [
                                                 m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Correo electrónico: ", m("br"), m("span.tx-light.tx-5", "*Se enviará una notificación de correo a la(s) siguiente(s) direccione(s).")), m("div", m("input.form-control[id='correoCitaUpdate'][type='text'][data-role='tagsinput']", {
+                                                    oncreate: () => {
 
+                                                        if (Cita.data.track == 'update' && Cita.data.email !== undefined) {
 
-                                                    oncreate: (el) => {
-                                                        let elt = $("#correoCitaUpdate");
-                                                        elt.tagsinput({ allowDuplicates: true });
+                                                            let elt = $("#correoCitaUpdate");
+                                                            elt.tagsinput({ allowDuplicates: true });
+                                                            elt.on("itemAdded", function(event) {
+                                                                if (Calendario.validarCorreo(event.item)) {
+                                                                    console.log("item added : " + event.item);
+                                                                } else {
+                                                                    alert('El correo electrónico ingresado no es válido.');
+                                                                    elt.tagsinput('remove', event.item);
+                                                                }
+                                                            });
 
-                                                        elt.on("itemAdded", function(event) {
-                                                            if (Calendario.validarCorreo(event.item)) {
-                                                                console.log("item added : " + event.item);
-                                                            } else {
-
-                                                                alert('El correo electrónico ingresado no es válido.');
-                                                                elt.tagsinput('remove', event.item);
+                                                            if (Cita.data.email !== undefined) {
+                                                                elt.tagsinput("add", Cita.data.email);
                                                             }
-                                                        });
-
-                                                        if (Cita.data.email !== undefined) {
-                                                            elt.tagsinput("add", Cita.data.email);
                                                         }
+
+
                                                     }
                                                 }))),
                                             ] : [],
@@ -1897,7 +1892,6 @@ class Calendario extends App {
         $("#calendar").fullCalendar("rerenderEvents");
     }
 
-
     static clearAlertCalendar() {
         setTimeout(() => {
             Calendario.warning = null;
@@ -1922,11 +1916,11 @@ class Calendario extends App {
     static validarAgendamiento(track) {
 
 
-        if (track == 'Reagendar' && Cita.data.tipo == 1 && Cita.data.email != document.getElementById('correoCitaUpdate').value) {
+        if (track == 'Reagendar' && Cita.data.tipo == 1 && Cita.data.sinDatos == false && Cita.data.email != document.getElementById('correoCitaUpdate').value) {
             Cita.data.email = document.getElementById('correoCitaUpdate').value;
         }
 
-        if (track == 'Agendar' && Cita.data.tipo == 1 && Cita.data.email != document.getElementById('correoCreaCita').value) {
+        if (track == 'Agendar' && Cita.data.tipo == 1 && Cita.data.sinDatos == false && Cita.data.email != document.getElementById('correoCreaCita').value) {
             Cita.data.email = document.getElementById('correoCreaCita').value;
         }
 

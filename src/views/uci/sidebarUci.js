@@ -1,30 +1,18 @@
 import m from "mithril";
 import App from "../../models/App";
+import Menu from "./menuUci";
 
-class MenuAdmin {
-    static modulos = [{
-        page: 'administracion/medicos/metrovirtual',
-        label: 'Médicos MetroVirtual',
-        profile: 'PERFIL_ADM_MEDICOS_METROVIRTUAL',
-    }, {
-        page: 'administracion/pacientes/metrovirtual',
-        label: 'Pacientes MetroVirtual',
-        profile: 'PERFIL_ADM_MEDICOS_METROVIRTUAL',
-    }];
-}
 
 class MenuSidebar {
     view() {
-        if (MenuAdmin.modulos.length !== 0) {
+        if (Menu.modulos.length !== 0) {
             return [
-                MenuAdmin.modulos.map(function(_v, _i, _contentData) {
-
+                Menu.modulos.map(function(_v, _i, _contentData) {
                     if (App.hasProfile(_v.profile)) {
                         return [
-                            m(m.route.Link, { href: "/" + _v.page, class: ((SidebarAdmin.page == _v.page) ? "active" : "") }, [
+                            m(m.route.Link, { href: "/" + _v.page, class: ((SidebarUCI.page == _v.page) ? "active" : "") }, [
                                 _v.label
                             ])
-
                         ]
                     }
 
@@ -41,9 +29,9 @@ class MenuSidebar {
 
 
 
-class SidebarAdmin {
+class SidebarUCI {
     oninit(_data) {
-        SidebarAdmin.page = _data.attrs.page;
+        SidebarUCI.page = _data.attrs.page;
     }
     view() {
         return [
@@ -62,13 +50,13 @@ class SidebarAdmin {
                 m("div.sidebar-body",
                     m("ul.sidebar-nav", [
                         m("li.nav-label.mg-b-15",
-                            "Administración"
+                            "U.C.I."
                         ),
                         m("li.nav-item.show", [
 
-                            m(m.route.Link, { href: "/administracion", class: "nav-link with-sub" }, [
+                            m(m.route.Link, { href: "/uci", class: "nav-link with-sub" }, [
                                 m("i[data-feather='layout']"),
-                                " Administración"
+                                " U.C.I. "
                             ]),
                             m("nav.nav", [
 
@@ -85,4 +73,4 @@ class SidebarAdmin {
 
 };
 
-export default SidebarAdmin;
+export default SidebarUCI;

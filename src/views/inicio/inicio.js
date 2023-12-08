@@ -188,6 +188,29 @@ class ModulesAccess {
                     ])
                 ),
             ] : []),
+            (_data.attrs.profiles.includes('PERFIL_UCI_METROPLUS') ? [
+                m("div.col-sm-6.col-lg-3.mg-t-20.mg-sm-t-30.mg-lg-t-0.mg-b-10",
+
+                    m("a[href='/uci']", {
+                        style: { 'color': "#325a98" }
+                    }, [
+                        m("div.card.card-help", [
+                            m("div.card-body.tx-13", [
+                                m("div.tx-60.lh-0.mg-b-15", {
+                                        style: { 'color': "#325a98" }
+                                    },
+                                    m("i.fas.fa-procedures")
+                                ),
+
+                                m("p.tx-color-03.mg-b-0.tx-semibold",
+                                    "U.C.I."
+                                )
+                            ])
+
+                        ])
+                    ])
+                ),
+            ] : []),
 
             (_data.attrs.profiles.includes('BCO_SANGRE_METROPLUS') ? [
                 m("div.col-sm-6.col-lg-3.mg-t-20.mg-sm-t-30.mg-lg-t-0.mg-b-10",

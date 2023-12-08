@@ -126,6 +126,7 @@ class Cita {
         Cita.error = null;
         Cita.data = null;
         Cita.data = {};
+        Cita.data.track = 'update';
         if (calEvent.tipo == 1) {
             Cita.data.id = calEvent.id;
             Cita.data.tipo = calEvent.tipo;
@@ -201,7 +202,7 @@ class Cita {
             throw Cita.error;
         }
 
-        if (Cita.data.tipo == 1 && Cita.data.sinDatos == undefined) {
+        if (Cita.data.tipo == 1 && Cita.data.sinDatos !== undefined && Cita.data.sinDatos == false) {
 
             if (Cita.data.id_estudio == undefined) {
                 $("#modalCreateEvent").animate({
@@ -221,7 +222,6 @@ class Cita {
                 m.redraw();
                 throw Cita.error;
             }
-
 
 
             if (Cita.data.email == undefined || Cita.data.email == '') {
@@ -235,7 +235,8 @@ class Cita {
 
         }
 
-        if (Cita.data.tipo == 1 && Cita.data.sinDatos !== undefined && Cita.data.sinDatos) {
+        if (Cita.data.tipo == 1 && Cita.data.sinDatos !== undefined && Cita.data.sinDatos == true) {
+
 
             if (Cita.data.id_estudio == undefined) {
                 $("#modalCreateEvent").animate({
@@ -255,20 +256,13 @@ class Cita {
                 throw Cita.error;
             }
 
+            Cita.data.paciente = Cita.data.paciente.toUpperCase();
+
             if (Cita.data.fecha_nacimiento == undefined) {
                 $("#modalCreateEvent").animate({
                     scrollTop: 0
                 }, "slow");
                 Cita.error = "No existe datos de fecha de nacimiento.";
-                m.redraw();
-                throw Cita.error;
-            }
-
-            if (Cita.data.telefono == undefined) {
-                $("#modalCreateEvent").animate({
-                    scrollTop: 0
-                }, "slow");
-                Cita.error = "No existe datos de teléfono.";
                 m.redraw();
                 throw Cita.error;
             }
@@ -290,6 +284,17 @@ class Cita {
                 m.redraw();
                 throw Cita.error;
             }
+
+            if (Cita.data.telefono == undefined) {
+                $("#modalCreateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.error = "No existe datos de teléfono.";
+                m.redraw();
+                throw Cita.error;
+            }
+
+
 
         }
 
@@ -380,8 +385,6 @@ class Cita {
             Cita.data.email = document.getElementById('correoCitaUpdate').value;
         }
 
-
-
         m.request({
             method: "POST",
             url: "https://api.hospitalmetropolitano.org/v2/date/citas/upcall",
@@ -449,7 +452,7 @@ class Cita {
 
         Cita.error = null;
 
-        if (Cita.data.tipo == 1 && Cita.data.email != document.getElementById('correoCreaCita').value) {
+        if (Cita.data.tipo == 1 && Cita.data.sinDatos == false && Cita.data.email !== document.getElementById('correoCreaCita').value) {
             Cita.data.email = document.getElementById('correoCreaCita').value;
         }
 
