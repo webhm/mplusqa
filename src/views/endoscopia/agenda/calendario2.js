@@ -1685,7 +1685,6 @@ class Calendario extends App {
                                             },
                                             disabled: Cita.data.id_estudio !== undefined ? "disabled" : ""
                                         }),
-
                                     ])),
                                     m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Paciente:"), m("div.input-group", [
                                         m("input.form-control[type='text'][placeholder='Numero de Historia Clínica'][autofocus]", {
