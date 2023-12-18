@@ -23,6 +23,9 @@ import CalendarioEndo2 from "../views/endoscopia/agenda/calendario2";
 import InicioFlebotomista from "../views/laboratorio/flebotomista/inicioFlebo";
 import Uci from "../views/uci/uci";
 import PacientesUCI from "../views/uci/pacientes/pacientesUci";
+import Contratos from "../views/admisiones/contratos/contratos";
+import NuevoContrato from "../views/admisiones/contratos/nuevoContrato";
+import VerContrato from "../views/admisiones/contratos/verContrato";
 
 // Crear una instancia de la clase
 // const authManager = new AuthManager();
@@ -58,6 +61,9 @@ const Routes = {
     "/": Login,
     "/inicio": Inicio,
     "/admisiones": Admisiones,
+    "/admisiones/contrato": VerContrato,
+    "/admisiones/contratos": Contratos,
+    "/admisiones/contratos/nuevo": NuevoContrato,
     "/administracion": Administracion,
     "/administracion/metrovirtual": usrMV,
     "/administracion/metroplus": usrMPLUS,
