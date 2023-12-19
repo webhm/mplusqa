@@ -956,27 +956,28 @@ class Calendario extends App {
                                             BuscadorPacientes.searchField = e.target.value;
                                         }
                                     }),
-                                    m("div.input-group-append", m("button.btn.btn-outline-light[type='button']", {
-                                        onclick: (e) => {
-                                            if (BuscadorPacientes.searchField.length !== 0) {
-                                                BuscadorPacientes.fetchSearch();
-                                                Cita.buscarPacientes = true;
+                                    m("div.input-group-append",
+                                        m("button.btn.btn-outline-light[type='button']", {
+                                            onclick: (e) => {
+                                                if (BuscadorPacientes.searchField.length !== 0) {
+                                                    BuscadorPacientes.fetchSearch();
+                                                    Cita.buscarPacientes = true;
 
-                                            } else {
-                                                $("#modalCreateEvent").animate({
-                                                    scrollTop: 0
-                                                }, "slow");
-                                                Cita.error = "Ingrese Apellidos y Nombres para continuar.";
-                                                Cita.buscarPacientes = true;
+                                                } else {
+                                                    $("#modalCreateEvent").animate({
+                                                        scrollTop: 0
+                                                    }, "slow");
+                                                    Cita.error = "Ingrese Apellidos y Nombres para continuar.";
+                                                    Cita.buscarPacientes = true;
 
+                                                }
                                             }
-                                        }
-                                    }, "Buscar"), m("button.btn.btn-outline-light[type='button']", {
-                                        onclick: (e) => {
-                                            Cita.error = null;
-                                            Cita.buscarPacientes = !Cita.buscarPacientes;
-                                        }
-                                    }, m("i.fas.fa-times-circle"))),
+                                        }, "Buscar"), m("button.btn.btn-outline-light[type='button']", {
+                                            onclick: (e) => {
+                                                Cita.error = null;
+                                                Cita.buscarPacientes = !Cita.buscarPacientes;
+                                            }
+                                        }, m("i.fas.fa-times-circle"))),
                                 ]),
                             ]), m("div.row", [m("div.col-12", m(BuscadorPacientes))])),
                         ]),
@@ -1348,29 +1349,30 @@ class Calendario extends App {
                                     ]),
                                 ]),
                                 m("div.row.row-xs", [
-                                    m("div.col-3", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha de Inicio:"), m("input.form-control[id='eventStartDate'][type='text'][placeholder='DD/MM/YYYY']", {
+                                    m("div.col-3", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Fecha de Inicio:"),
+                                        m("input.form-control[id='eventStartDate'][type='text'][placeholder='DD/MM/YYYY']", {
 
-                                        oncreate: (el) => {
-                                            el.dom.value = moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
+                                            oncreate: (el) => {
+                                                el.dom.value = moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("DD/MM/YYYY");
 
-                                            setTimeout(() => {
-                                                new Cleave("#eventStartDate", {
-                                                    date: true,
-                                                    datePattern: ["d", "m", "Y"]
-                                                });
-                                            }, 50);
-                                        },
-                                        oninput: (e) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#eventStartDate", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            },
+                                            oninput: (e) => {
 
-                                            setTimeout(() => {
-                                                console.log(33, moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("HH:mm"))
-                                                Cita.data.inicio = e.target.value + " " + moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("HH:mm");
-                                                Cita.data.start = moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
-                                            }, 50);
+                                                setTimeout(() => {
+                                                    console.log(33, moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("HH:mm"))
+                                                    Cita.data.inicio = e.target.value + " " + moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("HH:mm");
+                                                    Cita.data.start = moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
+                                                }, 50);
 
 
-                                        },
-                                    })),
+                                            },
+                                        })),
                                     m("div.col-3", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Hora de Inicio:"), m("input.form-control[id='eventStartHourDate'][type='text'][placeholder='hh:mm']", {
                                         oninput: (e) => {
                                             setTimeout(() => {

@@ -4,10 +4,10 @@ import HeaderPrivate from "../../layout/headerPrivate";
 import Sidebar from "../sidebarUci";
 import Loader from "../../utils/loader";
 import Errors from "../../utils/errors";
-import Table from "../../utils/table";
+import TableUCI from "../../utils/tableUci";
 import { Stopwatch } from "../../utils/stopWatch";
 import ApiHTTP from "../../../models/ApiHTTP";
-import qrcode from "qrcode";
+import TurnosUci from "./turnosUci";
 
 
 // Pacientes UCI
@@ -26,294 +26,16 @@ class PacientesUCI extends App {
         }
 
     }
-    oncreate(_data) {
-        if (_data.attrs.idFiltro !== undefined) {
-            PacientesUCI.idFiltro = _data.attrs.idFiltro;
-            if (PacientesUCI.idFiltro == 2) {
-                PacientesUCI.fechaHasta = moment().format('DD-MM-YYYY');
-                PacientesUCI.fechaDesde = moment().subtract(1, 'd').format('DD-MM-YYYY');
-                m.route.set('/uci/pacientes/', {
-                    idFiltro: PacientesUCI.idFiltro,
-                    fechaDesde: PacientesUCI.fechaDesde,
-                    fechaHasta: PacientesUCI.fechaHasta
-                })
-            }
-        }
+    oncreate(_data) {}
 
-        PacientesUCI.fetchData().then((_data) => {
-            PacientesUCI.pacientes = _data;
-        });
-    }
-    onupdate(_data) {
-
-        // Para vista de idUSR
-        if (_data.attrs.numeroHistoriaClinica !== undefined) {
-            PacientesUCI.numeroHistoriaClinica = _data.attrs.numeroHistoriaClinica;
-            m.redraw();
-        } else {
-            PacientesUCI.numeroHistoriaClinica = null;
-            m.redraw();
-        }
-
-
-
-    }
     static vHeader() {
         return m(HeaderPrivate, { userName: App.userName });
     }
-    static vMain() {
-        return [
-            m("div.content.content-components",
-                m("div.container.mg-l-0.mg-r-0", {
-                    style: { "max-width": "100%" }
-                }, [
-                    m("ol.breadcrumb.df-breadcrumbs", [
-                        m("li.breadcrumb-item",
-                            m(m.route.Link, { href: "/", }, [
-                                "MetroPlus"
-                            ]),
-                        ),
-                        m("li.breadcrumb-item",
-                            m(m.route.Link, { href: "/uci", }, [
-                                'U.C.I.'
-                            ]),
-                        ),
-                        m("li.breadcrumb-item.active[aria-current='page']",
-                            App.title
-                        )
-                    ]),
-                    m("h1.df-title.mg-t-20.mg-b-20",
-                        App.title + ":"
-                    ),
 
-                    m("div", [
-
-                        (PacientesUCI.pacientes !== null && PacientesUCI.pacientes.status) ? [
-                            m(".modal.calendar-modal-event[id='modalViewQR'][role='dialog'][aria-hidden='true']",
-                                m(".modal-dialog.modal-dialog-centered.modal-sm[role='document']",
-                                    m("div.modal-content", [
-                                        m("div.modal-header.bg-primary", [
-                                            m("h6.event-title.text-semibold", 'Pasaporte QR:'),
-                                            m("nav.nav.nav-modal-event", [
-                                                m("a.nav-link[href='#'][data-dismiss='modal']",
-                                                    m("i[data-feather='x']")
-                                                )
-                                            ])
-                                        ]),
-                                        m("div.modal-body", [
-                                            m("div.row.col-12", [
-                                                m("label.tx-11.tx-medium.tx-spacing-1.tx-color-03",
-                                                    "*Escanee con su teléfono para continuar."
-                                                ),
-                                                m("p.event-start-date.tx-center", [
-                                                    m('canvas.qr.wd-100p')
-                                                ])
-                                            ]),
-                                        ])
-                                    ])
-                                )
-                            ),
-                            m("div.table-content.col-12.pd-r-0.pd-l-0", [
-                                m("div.d-flex.align-items-center.justify-content-between.mg-t-10", [
-                                    m("h5.mg-b-0",
-                                        "Todos los Pacientes:",
-                                        m("span.badge.bg-litecoin.tx-white.tx-semibold.pd-l-10.pd-r-10.mg-l-5.tx-15", {
-                                                oncreate: (el) => {
-                                                    if (PacientesUCI.idFiltro == 1) {
-                                                        el.dom.innerHTML = 'Admisiones de Hoy';
-                                                    }
-                                                    if (PacientesUCI.idFiltro == 2) {
-                                                        el.dom.innerHTML = 'Admisiones Anteriores';
-                                                    }
-                                                },
-
-                                            }
-
-                                        )
-
-                                    ),
-                                    m("div.d-flex.tx-14", [
-                                        m('.', {
-                                            class: (PacientesUCI.idFiltro == 1 ? 'd-none' : 'd-flex')
-                                        }, [
-                                            m("div.link-03", {
-                                                    title: "Desde"
-                                                },
-                                                m(".tx-10.pd-r-0", {
-                                                    style: { "padding-top": "10px" }
-                                                }, 'Desde:')
-                                            ),
-                                            m("div.link-03", {
-                                                    style: { "cursor": "pointer" },
-                                                    title: "Desde"
-                                                },
-
-                                                m("input.tx-light.pd-4[type='date'][id='desde']", {
-                                                    oncreate: (el) => {
-                                                        el.dom.value = (PacientesUCI.idFiltro !== 1 ? moment(moment(PacientesUCI.fechaDesde, 'DD-MM-YYYY')).format('YYYY-MM-DD') : '');
-                                                    },
-                                                    onchange: (el) => {
-                                                        PacientesUCI.fechaDesde = moment(moment(el.target.value, 'YYYY-MM-DD')).format('DD-MM-YYYY');
-                                                        m.route.set("/uci/pacientes?idFiltro=" + PacientesUCI.idFiltro + "&fechaDesde=" + PacientesUCI.fechaDesde + "&fechaHasta=" + PacientesUCI.fechaHasta);
-
-                                                    },
-                                                    style: {
-                                                        "border": "transparent"
-                                                    }
-                                                })
-                                            ),
-                                            m("div.link-03", {
-                                                    title: "Hasta"
-                                                },
-                                                m(".tx-10.pd-r-0", {
-                                                    style: { "padding-top": "10px" }
-                                                }, 'Hasta:')
-                                            ),
-                                            m("div.link-03", {
-                                                    style: { "cursor": "pointer" },
-                                                    title: "Hasta"
-                                                },
-                                                m("input.tx-light.pd-4[type='date'][id='hasta']", {
-                                                    oncreate: (el) => {
-                                                        el.dom.value = (PacientesUCI.idFiltro !== 1 ? moment(moment(PacientesUCI.fechaHasta, 'DD-MM-YYYY')).format('YYYY-MM-DD') : '');
-                                                    },
-                                                    onchange: (el) => {
-                                                        PacientesUCI.fechaHasta = moment(moment(el.target.value, 'YYYY-MM-DD')).format('DD-MM-YYYY');
-                                                        m.route.set("/uci/pacientes?idFiltro=" + PacientesUCI.idFiltro + "&fechaDesde=" + PacientesUCI.fechaDesde + "&fechaHasta=" + PacientesUCI.fechaHasta);
-                                                    },
-                                                    style: {
-                                                        "border": "transparent"
-                                                    }
-                                                })
-                                            )
-                                        ]),
-                                        m("div", {
-                                            class: (PacientesUCI.idFiltro == 1 ? 'd-none' : '')
-                                        }, [
-                                            m("div.link-03.lh-0.mg-l-6", {
-                                                    style: { "cursor": "pointer" },
-                                                    title: "Buscar",
-                                                    onclick: () => {
-                                                        PacientesUCI.reloadData(2);
-                                                        PacientesUCI.fetchData().then((_data) => {
-                                                            PacientesUCI.pacientes = _data;
-                                                        });
-                                                    }
-                                                },
-                                                m("i.fas.fa-search.tx-18.pd-5")
-                                            ),
-                                        ]),
-                                        m("div.dropdown.dropleft", [
-
-                                            m("div.link-03.lh-0.mg-l-5[id='dropdownMenuButton'][data-toggle='dropdown'][aria-haspopup='true'][aria-expanded='false']", {
-                                                    style: { "cursor": "pointer" },
-                                                    title: "Filtrar"
-                                                },
-                                                m("i.fas.fa-filter.tx-18.pd-5")
-                                            ),
-                                            m(".dropdown-menu.tx-13[aria-labelledby='dropdownMenuButton']", [
-                                                m("h6.dropdown-header.tx-uppercase.tx-12.tx-bold.tx-inverse",
-                                                    "FILTROS:"
-                                                ),
-                                                m(m.route.Link, {
-                                                    class: 'dropdown-item',
-                                                    href: "/uci/pacientes/?idFiltro=1",
-                                                    onclick: (e) => {
-                                                        PacientesUCI.reloadData(1);
-                                                        PacientesUCI.fetchData().then((_data) => {
-                                                            PacientesUCI.pacientes = _data;
-                                                        });
-                                                    }
-                                                }, [
-                                                    "Admisiones de Hoy"
-                                                ]),
-                                                m(m.route.Link, {
-                                                    class: 'dropdown-item',
-                                                    href: "/uci/pacientes/",
-                                                    params: {
-                                                        idFiltro: 2,
-                                                        fechaDesde: PacientesUCI.fechaDesde,
-                                                        fechaHasta: PacientesUCI.fechaHasta
-                                                    },
-                                                    oncreate: () => {
-
-                                                        if (PacientesUCI.idFiltro == 1) {
-                                                            PacientesUCI.fechaHasta = moment().format('DD-MM-YYYY');
-                                                            PacientesUCI.fechaDesde = moment().subtract(1, 'd').format('DD-MM-YYYY');
-                                                        }
-
-                                                    },
-                                                    onclick: (e) => {
-                                                        PacientesUCI.reloadData(2);
-                                                        PacientesUCI.fetchData().then((_data) => {
-                                                            PacientesUCI.pacientes = _data;
-                                                        });
-                                                    }
-                                                }, [
-                                                    "Admisiones Anteriores"
-                                                ]),
-
-
-                                            ])
-                                        ])
-                                    ])
-                                ]),
-
-                            ]),
-                            PacientesUCI.vTableUsuarios('table-usr', PacientesUCI.pacientes.data, PacientesUCI.arqTable())
-                        ] : (PacientesUCI.pacientes !== null && (!PacientesUCI.pacientes.status || PacientesUCI.pacientes.status == null)) ? [
-                            m(Errors, { type: (!PacientesUCI.pacientes.status ? 1 : 0), error: PacientesUCI.pacientes })
-                        ] : [
-                            m(Loader)
-                        ]
-                    ]),
-
-
-
-                ])
-            ),
-            m("div.section-nav", {
-                class: (PacientesUCI.pacientes !== null ? '' : 'd-none')
-            }, [
-                m("label.nav-label",
-                    PacientesUCI.title + ":"
-                ),
-                m("div.mg-t-10.bg-white", {
-
-                    },
-
-                    m("div.mg-t-10.bg-white",
-                        m("div.card-header.pd-t-20.pd-b-0.bd-b-0", [
-                            m("h6.lh-5.mg-b-5",
-                                "N° de Resultados:"
-                            ),
-
-                        ]),
-                        m("div.card-body.pd-0", [
-                            m("div.pd-t-10.pd-b-0.pd-x-20.d-flex.align-items-baseline", [
-                                m("h2.tx-normal.tx-rubik.mg-b-0.mg-r-5",
-                                    (PacientesUCI.pacientes !== null ? PacientesUCI.pacientes.data.length : 0)
-                                ),
-                                m("div.tx-14", [
-                                    m("divv.lh-0.tx-gray-300", 'Resultado(s)')
-                                ])
-                            ]),
-
-                        ])
-                    ),
-                    m("div.pd-20", [
-                        m(Stopwatch)
-                    ])
-                ),
-
-            ])
-        ];
-    }
     static vMainProfile() {
-        PacientesUCI.fetchProfile();
         return [
             m("div.content.content-components", {
-                    style: { "margin-right": "0px" }
+                    style: { "margin-right": "0px", "margin-left": "0px" }
                 },
                 m("div.container.mg-l-0.mg-r-0", {
                     style: { "max-width": "100%" }
@@ -333,2404 +55,4252 @@ class PacientesUCI extends App {
                             PacientesUCI.title
                         )
                     ]),
-                    (PacientesUCI.dataPte !== null ? [
-                        m('div.table-responsive', [
-                            m("table.table.table-bordered.table-sm.tx-14", [
-                                m("thead",
-                                    m("tr.tx-uppercase", {
-                                        style: { "background-color": "#CCCCFF" }
-                                    }, [
-                                        m("th[scope='col'][colspan='12']",
-                                            "BITÁCORA U.C.I. ADULTO:"
-                                        ),
-
-                                    ]),
-                                    m("tr.tx-uppercase", {
-                                        style: { "background-color": "#CCCCFF" }
-                                    }, [
-                                        m("th[scope='col'][colspan='12']",
-                                            "A. DATOS DEL ESTABLECIMIENTO Y USUARIO / PACIENTE: "
-                                        ),
-
-                                    ])
-                                ),
-                                m("tbody", [
-                                    m("tr.tx-12", [
-                                        m("th.tx-semibold.text-center", {
-                                                style: { "background-color": "#CCFFCC" }
-                                            },
-                                            "INSTITUCIÓN DEL SISTEMA"
-                                        ),
-                                        m("th.tx-semibold.text-center", {
-                                                style: { "background-color": "#CCFFCC" }
-                                            },
-                                            "UNICÓDIGO"
-                                        ),
-                                        m("th.tx-semibold.text-center", {
-                                                style: { "background-color": "#CCFFCC" }
-                                            },
-                                            "ESTABLECIMIENTO DE SALUD	"
-                                        ),
-                                        m("th.tx-semibold.text-center", {
-                                                style: { "background-color": "#CCFFCC" }
-                                            },
-                                            "NÚMERO DE HISTORIA CLÍNICA ÚNICA	"
-                                        ),
-                                        m("th.tx-semibold.text-center", {
-                                                style: { "background-color": "#CCFFCC" }
-                                            },
-                                            "NÚMERO DE ARCHIVO	"
-                                        ),
-                                        m("th.tx-semibold.text-center", {
-                                                style: { "background-color": "#CCFFCC" }
-                                            },
-                                            "No. HOJA"
-                                        ),
-
-
-                                    ]),
-
-                                    m("tr.tx-12", [
-                                        m("th.text-center", {
-                                                style: { "background-color": "#eaeff5" }
-                                            },
-                                            "Hospital Metropolitano"
-                                        ),
-
-
-
-
-                                    ]),
-                                ]),
-
-                                m("thead",
-
-                                    m("tr.tx-uppercase", {
-                                        style: { "background-color": "#CCCCFF" }
-                                    }, [
-                                        m("th[scope='col'][colspan='12']",
-                                            "B.- ANTROPOMETRÍA:"
-                                        ),
-
-                                    ])
+                    m("table.table.table-bordered.table-sm.tx-14", [
+                        m("thead",
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "#CCCCFF" }
+                            }, [
+                                m("th[scope='col'][colspan='12']",
+                                    "BITÁCORA U.C.I. ADULTO:"
                                 ),
 
-                                m("tbody", [
-
-                                    m("tr.mg-b-20", [
-                                        m("th", {
-                                                style: { "background-color": "#CCFFCC" }
-                                            },
-                                            "TALLA (cm)"
-                                        ),
-                                        m("td", {
-                                                style: { "background-color": "#eaeff5" }
-                                            },
-                                            PacientesUCI.dataPte.FECHA_ADMISION
-                                        ),
-                                        m("th", {
-                                                style: { "background-color": "#CCFFCC" }
-                                            },
-                                            "PESO REAL (kg)"
-                                        ),
-                                        m("td", {
-                                                style: { "background-color": "#eaeff5" }
-
-                                            },
-                                            PacientesUCI.dataPte.FECHA_ADMISION,
-                                        ),
-                                        m("th", {
-                                                style: { "background-color": "#CCFFCC" }
-                                            },
-                                            "IMC (m/kg2)"
-                                        ),
-                                        m("td", {
-                                                style: { "background-color": "#eaeff5" }
-
-                                            },
-                                            PacientesUCI.dataPte.FECHA_ADMISION,
-                                        ),
-
-                                        m("th", {
-                                                style: { "background-color": "#CCFFCC" }
-                                            },
-                                            "PESO IDEAL (kg)	"
-                                        ),
-                                        m("td", {
-                                                style: { "background-color": "#eaeff5" }
-
-                                            },
-                                            PacientesUCI.dataPte.FECHA_ADMISION,
-                                        ),
-                                        m("th", {
-                                                style: { "background-color": "#CCFFCC" }
-                                            },
-                                            "SUPERFICIE CORPORAL (m2)"
-                                        ),
-                                        m("td", {
-                                                style: { "background-color": "#eaeff5" }
-
-                                            },
-                                            PacientesUCI.dataPte.FECHA_ADMISION,
-                                        ),
-
-
-
-
-                                    ]),
-
-                                    m("tr.d-print-none", [
-
-                                        m("td[colspan='10']",
-                                            m(".tab-content.bd.bd-gray-300.bd-t-0[id='myTab']", [
-                                                m(".tab-pane.fade[id='home'][role='tabpanel'][aria-labelledby='home-antropometria']", [
-                                                    m("div.mg-0", [
-                                                        m("span.badge.badge-light.wd-100p.tx-14",
-                                                            " B.- ANTROPOMETRÍA ",
-                                                        ),
-                                                        m("hr.wd-100p.mg-t-5.mg-b-5"),
-
-                                                        m("tr.mg-b-20", [
-                                                            m("th[colspan='4']", {
-                                                                    style: { "background-color": "#CCFFCC" }
-                                                                },
-                                                                "TALLA (cm)"
-                                                            ),
-                                                            m("td[colspan='4']", {
-                                                                    style: { "background-color": "#eaeff5" }
-                                                                },
-                                                                PacientesUCI.dataPte.FECHA_ADMISION
-                                                            ),
-                                                            m("th[colspan='4']", {
-                                                                    style: { "background-color": "#CCFFCC" }
-                                                                },
-                                                                "PESO REAL (kg)"
-                                                            ),
-                                                            m("td[colspan='4']", {
-                                                                    style: { "background-color": "#eaeff5" }
-
-                                                                },
-                                                                PacientesUCI.dataPte.FECHA_ADMISION,
-                                                            ),
-                                                            m("th[colspan='4']", {
-                                                                    style: { "background-color": "#CCFFCC" }
-                                                                },
-                                                                "IMC (m/kg2)"
-                                                            ),
-                                                            m("td[colspan='4']", {
-                                                                    style: { "background-color": "#eaeff5" }
-
-                                                                },
-                                                                PacientesUCI.dataPte.FECHA_ADMISION,
-                                                            ),
-
-                                                            m("th[colspan='4']", {
-                                                                    style: { "background-color": "#CCFFCC" }
-                                                                },
-                                                                "PESO IDEAL (kg)	"
-                                                            ),
-                                                            m("td[colspan='4']", {
-                                                                    style: { "background-color": "#eaeff5" }
-
-                                                                },
-                                                                PacientesUCI.dataPte.FECHA_ADMISION,
-                                                            ),
-                                                            m("th[colspan='4']", {
-                                                                    style: { "background-color": "#CCFFCC" }
-                                                                },
-                                                                "SUPERFICIE CORPORAL (m2)"
-                                                            ),
-                                                            m("td[colspan='4']", {
-                                                                    style: { "background-color": "#eaeff5" }
-
-                                                                },
-                                                                PacientesUCI.dataPte.FECHA_ADMISION,
-                                                            ),
-
-
-
-
-                                                        ]),
-                                                        m("hr.wd-100p.mg-t-5.mg-b-20"),
-
-                                                    ]),
-
-
-
-                                                ]),
-                                                m(".tab-pane.fade[id='muestra'][role='tabpanel'][aria-labelledby='home-muestra']", [
-
-                                                ]),
-
-                                                m(".tab-pane.fade[id='recep'][role='tabpanel'][aria-labelledby='home-recep']", [
-
-                                                ]),
-                                                m(".tab-pane.fade[id='comment'][role='tabpanel'][aria-labelledby='home-comment']", [
-                                                    m("p.mg-5", [
-                                                        m("span.badge.badge-light.wd-100p.tx-14",
-                                                            "Observaciones",
-                                                        ),
-                                                        m("textarea.form-control.mg-t-5[rows='5'][placeholder='Observaciones']", {
-                                                            //oninput: function (e) { Observaciones.observaciones = e.target.value; },
-                                                            // value: Observaciones.observaciones,
-                                                        }),
-                                                        m("div.mg-0.mg-t-5.text-right", [
-
-                                                            m("button.btn.btn-xs.btn-primary.mg-l-2.tx-semibold[type='button']", {
-                                                                onclick: function() {
-
-                                                                },
-                                                            }, [
-                                                                m("i.fas.fa-paper-plane.mg-r-5", )
-                                                            ], "Guardar"),
-
-
-                                                        ]),
-                                                        m("hr.wd-100p.mg-t-5.mg-b-5"),
-
-                                                    ]),
-                                                    m("p.mg-5", [
-                                                        m("span.badge.badge-light.wd-100p.tx-14",
-                                                            "Historial de Observaciones",
-                                                        ),
-                                                        m("table.table.table-sm[id='table-observaciones'][width='100%']")
-                                                    ]),
-                                                ]),
-
-                                            ])
-                                        ),
-
-
-                                    ])
-
-
-                                ]),
-
-                                m("thead",
-
-                                    m("tr.tx-uppercase", {
-                                        style: { "background-color": "#CCCCFF" }
-                                    }, [
-                                        m("th[scope='col'][colspan='12']",
-                                            "D.- VENTILACIÓN MECÁNICA:"
-                                        ),
-
-                                    ])
+                            ]),
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "#CCCCFF" }
+                            }, [
+                                m("th[scope='col'][colspan='12']",
+                                    "Registro de Turnos:"
                                 ),
-
-                                m('tbody', [
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "No."
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "HORAS "
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "8"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "9"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "10"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "11"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "12"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "13"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "14"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "15"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "16"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "17"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "18"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "19"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "20"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "21"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "22"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "23"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "24"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "1"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "2"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "3"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "4"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "5"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "6"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "7"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } })
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "PARÁMETROS"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-
-
-
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "1"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "MODO VENTILATORIO"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-
-
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "2"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "PRESIÓN PICO"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-
-
-
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "3"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "PRESIÓN MEDIA"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-
-
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "2"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "PRESIÓN PICO"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "4"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "PEEP"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-
-
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "2"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "PRESIÓN PICO"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "5"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "AUTO PEEP"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-
-
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "2"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "PRESIÓN PICO"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "6"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "PRESIÓN SOPORTE"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-
-
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "2"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "PRESIÓN PICO"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "7"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "VOLUMEN TIDAL ESPIRADO MÁQUINA"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-
-
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "2"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "PRESIÓN PICO"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "8"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "VOLUMEN TIDAL ESPIRADO PACIENTE"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-
-
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "2"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "PRESIÓN PICO"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "9"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "VOLUMEN MINUTO ESPIRADO MÁQUINA"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-
-
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "2"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "PRESIÓN PICO"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "10"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "VOLUMEN MINUTO ESPIRADO PACIENTE"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-
-
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "2"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "PRESIÓN PICO"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "11"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "FRECUENCIA RESPIRATORIA MÁQUINA"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-
-
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "2"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "PRESIÓN PICO"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "12"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "FRECUENCIA RESPIRATORIA ESPONTÁNEA"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "13"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "COMPLIANCE ESTÁTICA"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "14"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "RESISTENCIA INSPIRATORIA"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "15"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "FiO2"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "16"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "ETCO2"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "17"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "VOLUMEN FUGAS"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "18"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "NIVEL TUBO OROTRAQUEAL"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "19"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "PRESIÓN DE BALÓN TUBO OROTRAQUEAL"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "20"
-                                        ),
-
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "RELACIÓN INSPIRACIÓN / ESPIRACIÓN"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "21"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "22"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "23"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ]),
-                                    m("tr", [
-                                        m("td", { "style": { "min-width": "50px" } },
-                                            "24"
-                                        ),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                        m("td", { "style": { "min-width": "50px" } }),
-                                    ])
-
-                                ])
 
                             ])
-                        ])
-                    ] : [
-                        m(Loader)
+                        ),
+                        m('tbody', [
+
+                            m("tr.text-right", [
+                                m("td[colspan='6']", ),
+                                m("td[colspan='6']",
+                                    m("button.btn.btn-xs.btn-primary[type='button']", {
+                                        onclick: () => {
+                                            TurnosUci.iniciarTurno();
+                                            PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
+                                        }
+                                    }, "Registar Turno")
+                                ),
+
+                            ]),
+
+                            m("tr", [
+                                m("td[colspan='12']", [
+                                    PacientesUCI.vTableTurnos('table-turnos', TurnosUci.getTurnos(), PacientesUCI.arqTableTurnos())
+                                ])
+                            ])
+
+                        ]),
+
+
+                        m("thead",
+
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "#CCCCFF" },
+                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
+                            }, [
+                                m("th.tx-semibold[scope='col'][colspan='12']",
+                                    "CUIDADOS GENERALES: "
+                                ),
+
+                            ])
+                        ),
+
+                        m("tbody.d-none", [
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "#eaeff5" }
+                            }, [
+                                m("th[scope='col'][colspan='3']",
+                                    "CUIDADOS: "
+                                ),
+                                m("th[scope='col'][colspan='3']",
+                                    "FRECUENCIA: "
+                                ),
+                                m("th[scope='col'][colspan='2']",
+                                    "AM: "
+                                ),
+                                m("th[scope='col'][colspan='2']",
+                                    "PM: "
+                                ),
+                                m("th[scope='col'][colspan='2']",
+                                    "HS: "
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "POSICION: "
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "AISLAMIENTO"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['AISLAMIENTO DE CONTANTO', 'AISLAMIENTO POR GOTITAS', 'AISLAMIENTO RESPIRATORIO', 'AISLAMIENTO PROTECTOR', 'NINGUNO'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "CAMBIOS DE POSICIÓN"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "CUIDADOS DE PIEL"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "HIGIENE ORAL"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "TERAPIA RESPIRATORIA"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "ASPIRACIÓN DE SECRECIONES "
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "CONTROL DE TEMPERATURA POR MEDIOS FÍSICOS"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "CONTROL DE MARCAPASOS"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "CONTROL DE DRENAJES"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "CONTROL DE SANGRADO "
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "CONTROL NEUROLÓGICO"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "CONTROL DE PRESION VENOSA CENTRAL "
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "ESQUEMA DE INSULINA  "
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "REHABILITACIÓN MOTORA  "
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "CONTROL DE PULSOS DISTALES  "
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='2']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SI', 'NO', 'NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+
+                            ]),
+                        ]),
+
+                        m("thead",
+
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "#CCCCFF" },
+                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
+
+                            }, [
+                                m("th.tx-semibold[scope='col'][colspan='12']",
+                                    "VIAS:"
+                                ),
+
+                            ])
+                        ),
+                        m("tbody.d-none", [
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "#eaeff5" }
+                            }, [
+                                m("th[scope='col'][colspan='3']",
+                                    "VIAS: "
+                                ),
+                                m("th[scope='col'][colspan='1']",
+                                    "UBICACIÓN: "
+                                ),
+                                m("th[scope='col'][colspan='1']",
+                                    "TIPO: "
+                                ),
+                                m("th[scope='col'][colspan='1']",
+                                    "INICIO: "
+                                ),
+                                m("th[scope='col'][colspan='1']",
+                                    "RETIRO: "
+                                ),
+                                m("th[scope='col'][colspan='1']",
+                                    "CAMBIO: "
+                                ),
+                                m("th[scope='col'][colspan='1']",
+                                    "CURACION: "
+                                ),
+                                m("th[scope='col'][colspan='1']",
+                                    "CONDICIÓN: "
+                                ),
+                                m("th[scope='col'][colspan='2']",
+                                    "OBSERVACIÓN: "
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "VIA PERIFERICA"
+                                    )
+                                ),
+                                m("td.tx-10.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['IZQUIERDA', 'DERECHA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaViaPeriferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaViaPeriferica", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraViaPeriferica'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraViaPeriferica", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaViaPeriferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaViaPeriferica", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraViaPeriferica'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraViaPeriferica", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaViaPeriferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaViaPeriferica", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraViaPeriferica'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraViaPeriferica", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaViaPeriferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaViaPeriferica", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraViaPeriferica'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraViaPeriferica", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "CATETER YUGULAR"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['IZQUIERDA', 'DERECHA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaCateterYugular'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaCateterYugular", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraCateterYugular'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraCateterYugular", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaCateterYugular'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaCateterYugular", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraCateterYugular'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraCateterYugular", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaCateterYugular'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaCateterYugular", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraCateterYugular'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraCateterYugular", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaViaPeriferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaCateterYugular", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraCateterYugular'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraCateterYugular", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "CATETER SUBCLAVIO"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['IZQUIERDA', 'DERECHA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaCateterSubclavio'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaCateterSubclavio", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraCateterSubclavio'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraCateterSubclavio", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaCateterSubclavio'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaCateterSubclavio", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraCateterSubclavio'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraCateterSubclavio", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaCateterSubclavio'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaCateterSubclavio", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraCateterSubclavio'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraCateterSubclavio", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaCateterSubclavio'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaCateterSubclavio", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraCateterSubclavio'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraCateterSubclavio", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+                            ]),
+
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "CATETER FEMORAL"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['IZQUIERDA', 'DERECHA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaCateterFemoral'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaCateterFemoral", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraCateterFemoral'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraCateterFemoral", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaCateterFemoral'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaCateterFemoral", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraCateterFemoral'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraCateterFemoral", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaCateterFemoral'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaCateterFemoral", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraCateterFemoral'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraCateterFemoral", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaCateterFemoral'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaCateterFemoral", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraCateterFemoral'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraCateterFemoral", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "CATETER CENTRAL DE INSERCION PERIFERICA"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['IZQUIERDA', 'DERECHA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaCateterCentralInsercionPerfiferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaCateterCentralInsercionPerfiferica", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraCateterCentralInsercionPerfiferica'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraCateterCentralInsercionPerfiferica", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaCateterCentralInsercionPerfiferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaCateterCentralInsercionPerfiferica", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraCateterCentralInsercionPerfiferica'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraCateterCentralInsercionPerfiferica", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaCateterCentralInsercionPerfiferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaCateterCentralInsercionPerfiferica", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraCateterCentralInsercionPerfiferica'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraCateterCentralInsercionPerfiferica", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaCateterCentralInsercionPerfiferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaCateterCentralInsercionPerfiferica", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraCateterCentralInsercionPerfiferica'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraViaPeriferica", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "CATETER DE HEMODIALISIS"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['IZQUIERDA', 'DERECHA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaCateterHemodialisis'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaCateterHemodialisis", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraCateterHemodialisis'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraCateterHemodialisis", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaCateterHemodialisis'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaCateterHemodialisis", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraCateterHemodialisis'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraCateterHemodialisis", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaCateterHemodialisis'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaCateterHemodialisis", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraCateterHemodialisis'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraCateterHemodialisis", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaCateterHemodialisis'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaCateterHemodialisis", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraCateterHemodialisis'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraCateterHemodialisis", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "CATETER IMPLANTABLE SUBCUTANEO"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['IZQUIERDA', 'DERECHA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaCateterImplantable'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaCateterImplantable", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraCateterImplantable'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraCateterImplantable", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaCateterImplantable'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaCateterImplantable", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraCateterImplantable'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraCateterImplantable", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaCateterImplantable'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaCateterImplantable", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraCateterImplantable'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraCateterImplantable", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaCateterImplantable'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaCateterImplantable", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraCateterImplantable'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraCateterImplantable", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "LINEA ARTERIAL"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['IZQUIERDA', 'DERECHA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+                            ]),
+
+
+
+                        ]),
+                        m("thead",
+
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "#CCCCFF" },
+                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
+
+                            }, [
+                                m("th.tx-semibold[scope='col'][colspan='12']",
+                                    "ACCESOS:"
+                                ),
+
+                            ])
+                        ),
+                        m("tbody.d-none", [
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "#eaeff5" }
+                            }, [
+                                m("th[scope='col'][colspan='3']",
+                                    "ACCESOS: "
+                                ),
+                                m("th[scope='col'][colspan='1']",
+                                    "UBICACIÓN: "
+                                ),
+                                m("th[scope='col'][colspan='1']",
+                                    "TIPO: "
+                                ),
+                                m("th[scope='col'][colspan='1']",
+                                    "INICIO: "
+                                ),
+                                m("th[scope='col'][colspan='1']",
+                                    "RETIRO: "
+                                ),
+                                m("th[scope='col'][colspan='1']",
+                                    "CAMBIO: "
+                                ),
+                                m("th[scope='col'][colspan='1']",
+                                    "CURACION: "
+                                ),
+                                m("th[scope='col'][colspan='1']",
+                                    "CONDICIÓN: "
+                                ),
+                                m("th[scope='col'][colspan='2']",
+                                    "OBSERVACIÓN: "
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "CATETER INTRACRANEAL "
+                                    )
+                                ),
+                                m("td.tx-10.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SUBDURAL', 'INTRAPARENQUIMATOSO'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaViaPeriferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaViaPeriferica", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraViaPeriferica'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraViaPeriferica", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaViaPeriferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaViaPeriferica", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraViaPeriferica'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraViaPeriferica", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaViaPeriferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaViaPeriferica", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraViaPeriferica'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraViaPeriferica", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaViaPeriferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaViaPeriferica", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraViaPeriferica'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraViaPeriferica", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "ACCESO INTRA-OSEO"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['TIBIAL'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaCateterYugular'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaCateterYugular", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraCateterYugular'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraCateterYugular", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaCateterYugular'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaCateterYugular", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraCateterYugular'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraCateterYugular", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaCateterYugular'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaCateterYugular", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraCateterYugular'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraCateterYugular", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaViaPeriferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaCateterYugular", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraCateterYugular'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraCateterYugular", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "TUBO TRAQUEAL"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['NASO-TRAQUEAL', 'ORO-TRAQUEAL', 'SUBMAXILAR'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaCateterSubclavio'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaCateterSubclavio", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraCateterSubclavio'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraCateterSubclavio", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaCateterSubclavio'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaCateterSubclavio", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraCateterSubclavio'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraCateterSubclavio", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaCateterSubclavio'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaCateterSubclavio", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraCateterSubclavio'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraCateterSubclavio", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaCateterSubclavio'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaCateterSubclavio", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraCateterSubclavio'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraCateterSubclavio", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+                            ]),
+
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "TUBO TORACICO"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['TORAX DERECHO', 'TORAX IZQUIERDO', 'PLEURAL', 'MEDIASTINAL'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaCateterFemoral'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaCateterFemoral", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraCateterFemoral'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraCateterFemoral", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaCateterFemoral'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaCateterFemoral", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraCateterFemoral'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraCateterFemoral", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaCateterFemoral'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaCateterFemoral", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraCateterFemoral'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraCateterFemoral", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaCateterFemoral'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaCateterFemoral", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraCateterFemoral'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraCateterFemoral", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "TRAQUEOTOMO"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['TRAQUEA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaCateterCentralInsercionPerfiferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaCateterCentralInsercionPerfiferica", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraCateterCentralInsercionPerfiferica'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraCateterCentralInsercionPerfiferica", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaCateterCentralInsercionPerfiferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaCateterCentralInsercionPerfiferica", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraCateterCentralInsercionPerfiferica'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraCateterCentralInsercionPerfiferica", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaCateterCentralInsercionPerfiferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaCateterCentralInsercionPerfiferica", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraCateterCentralInsercionPerfiferica'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraCateterCentralInsercionPerfiferica", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaCateterCentralInsercionPerfiferica'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaCateterCentralInsercionPerfiferica", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraCateterCentralInsercionPerfiferica'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraViaPeriferica", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "SONDA NASOGASTRICA"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['FOSA NASAL DERECHA', 'FOSA NASAL IZQUIERDA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaCateterHemodialisis'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaCateterHemodialisis", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraCateterHemodialisis'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraCateterHemodialisis", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaCateterHemodialisis'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaCateterHemodialisis", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraCateterHemodialisis'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraCateterHemodialisis", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaCateterHemodialisis'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaCateterHemodialisis", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraCateterHemodialisis'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraCateterHemodialisis", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaCateterHemodialisis'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaCateterHemodialisis", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraCateterHemodialisis'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraCateterHemodialisis", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "SONDA OROGASTRICA"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['OROGASTRICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaCateterImplantable'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaCateterImplantable", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraCateterImplantable'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraCateterImplantable", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaCateterImplantable'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaCateterImplantable", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraCateterImplantable'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraCateterImplantable", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaCateterImplantable'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaCateterImplantable", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraCateterImplantable'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraCateterImplantable", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaCateterImplantable'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaCateterImplantable", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraCateterImplantable'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraCateterImplantable", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "SONDA VESICAL"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['SONDA FOLEY'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "GASTROSTOMIA"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['EPIGASTRIO'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "YEYUYOSTOMIA"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['YEYUNO'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "MANGUERAS DE VELTILADOR"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "EQUIPOS DE NUTRICION ENTERAL "
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "EQUIPOS DE NUTRICION PARENTERAL "
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "MICROGOTEROS"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+                            ]),
+                            m("tr", [
+
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m("label.tx-semibold",
+                                        "EQUIPO DE VENOCLISIS"
+                                    )
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['NO APLICA'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+
+
+                                    })
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='ifechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ifechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='ihoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#ihoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ]),
+
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='rfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='rhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#rhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cfechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cfechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='choraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#choraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('div.d-flex', [
+                                        m("input.form-control[id='cufechaLineaArterial'][type='text'][placeholder='DD/MM/YYYY]", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cufechaLineaArterial", {
+                                                        date: true,
+                                                        datePattern: ["d", "m", "Y"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        }),
+                                        m("input.form-control[id='cuhoraLineaArterial'][type='text'][placeholder='hh:mm']", {
+                                            oncreate: (el) => {
+                                                setTimeout(() => {
+                                                    new Cleave("#cuhoraLineaArterial", {
+                                                        time: true,
+                                                        timePattern: ["h", "m"]
+                                                    });
+                                                }, 50);
+                                            }
+                                        })
+                                    ])
+
+                                ),
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {},
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
+                                        m('option', x)
+                                    ))
+                                ),
+
+                                m("td.tx-14.tx-normal[colspan='1']",
+                                    m("input", {
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "..."
+                                    })
+                                ),
+
+                            ]),
+
+
+
+                        ]),
+                        m("thead",
+
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "#CCCCFF" },
+                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
+
+                            }, [
+                                m("th.tx-semibold[scope='col'][colspan='12']",
+                                    "CATETER URINARIO:"
+                                ),
+
+                            ])
+                        ),
+                        m("thead",
+
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "#CCCCFF" },
+                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
+
+                            }, [
+                                m("th.tx-semibold[scope='col'][colspan='12']",
+                                    "MANEJO DE VENTILACION:"
+                                ),
+
+                            ])
+                        ),
+                        m("thead",
+
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "#CCCCFF" },
+                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
+
+                            }, [
+                                m("th.tx-semibold[scope='col'][colspan='12']",
+                                    "CATETER VIA CENTRAL O HEMODIALISIS:"
+                                ),
+
+                            ])
+                        ),
+                        m("thead",
+
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "#CCCCFF" },
+                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
+
+                            }, [
+                                m("th.tx-semibold[scope='col'][colspan='12']",
+                                    "CULTIVOS:"
+                                ),
+
+                            ])
+                        ),
+                        m("thead",
+
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "#CCCCFF" },
+                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
+
+                            }, [
+                                m("th.tx-semibold[scope='col'][colspan='12']",
+                                    "CULTIVOS:"
+                                ),
+
+                            ])
+                        ),
+                        m("thead",
+
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "#CCCCFF" },
+                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
+
+                            }, [
+                                m("th.tx-semibold[scope='col'][colspan='12']",
+                                    "MODOS VENTILATORIOS / VARIABLES:"
+                                ),
+
+                            ])
+                        ),
+
+
+
+
+
+
+
                     ])
                 ])
             ),
@@ -2948,20 +4518,216 @@ class PacientesUCI extends App {
             },
         };
     }
+
+    static arqTableTurnos() {
+        return {
+            data: null,
+            dom: 'ltp',
+            language: {
+                searchPlaceholder: "Buscar...",
+                sSearch: "",
+                lengthMenu: "Mostrar _MENU_ registros por página",
+                sProcessing: "Procesando...",
+                sZeroRecords: "Todavía no tienes resultados disponibles.",
+                sEmptyTable: "Ningún dato disponible en esta tabla",
+                sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+                sInfoPostFix: "",
+                sUrl: "",
+                sInfoThousands: ",",
+                sLoadingRecords: "Cargando...",
+                oPaginate: {
+                    sFirst: "Primero",
+                    sLast: "Último",
+                    sNext: "Siguiente",
+                    sPrevious: "Anterior",
+                },
+                oAria: {
+                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+                    sSortDescending: ": Activar para ordenar la columna de manera descendente",
+                },
+            },
+            cache: false,
+            destroy: true,
+            order: [
+                [0, 'desc']
+            ],
+            columns: [{
+                    title: "N° : ",
+                },
+                {
+                    title: "Fecha Turno:",
+                },
+                {
+                    title: "Usuario Turno:",
+                },
+                {
+                    title: "Paciente:",
+                },
+
+                {
+                    title: "Especialidad:",
+                },
+                {
+                    title: "Status:",
+                },
+
+                {
+                    title: "Opciones:",
+                },
+                {
+                    title: "Opciones:",
+                }
+            ],
+            aoColumnDefs: [{
+                    mRender: function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    },
+                    visible: true,
+                    aTargets: [0],
+                    orderable: true,
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.fechaTurno;
+                    },
+
+                    visible: true,
+                    aTargets: [1],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.usuarioTurno;
+                    },
+                    visible: true,
+                    aTargets: [2],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.paciente;
+                    },
+                    visible: true,
+                    aTargets: [3],
+                    orderable: true,
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.especialidad;
+                    },
+                    visible: true,
+                    aTargets: [4],
+                    orderable: true,
+
+
+                },
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center', [
+                                        m("button.btn-xs.btn-block[type='button']", {
+
+                                                class: (oData.status == 1 ? 'bg-warning' : 'bg-success'),
+
+                                            },
+                                            (oData.status == 1 ? 'Turno Abierto' : 'Turno Cerado'),
+                                        ),
+
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    visible: true,
+                    aTargets: [5],
+                    orderable: true,
+                },
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center', [
+                                        m("button.btn.btn-xs.btn-block.btn-success[type='button']", {
+                                                onclick: () => {
+                                                    oData.iniciarGestion();
+                                                },
+                                            },
+                                            'Gestionar',
+                                        ),
+
+
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    visible: true,
+                    aTargets: [6],
+                    orderable: true,
+
+                },
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center', [
+
+                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
+                                                onclick: () => {
+                                                    oData.cerrarTurno();
+                                                },
+                                            },
+                                            'Cerrar',
+                                        ),
+
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    visible: true,
+                    aTargets: [7],
+                    orderable: true,
+
+                }
+
+
+            ],
+            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+
+            },
+        };
+    }
+
+    static vReloadTable(idTable, _data) {
+        $('#' + idTable).DataTable().clear().rows.add(_data).draw();
+    }
+
+    static vTableTurnos(idTable, dataTable, arqTable) {
+        return [
+            m(TableUCI, { idTable: idTable, dataTable: dataTable, arqTable: arqTable })
+        ]
+    }
     static vTableUsuarios(idTable, dataTable, arqTable) {
         return [
-            m(Table, { idTable: idTable, dataTable: dataTable, arqTable: arqTable })
+            m(TableUCI, { idTable: idTable, dataTable: dataTable, arqTable: arqTable })
         ]
     }
     static page() {
         return [
             PacientesUCI.vHeader(),
-            PacientesUCI.vMenu(),
-            (PacientesUCI.numeroHistoriaClinica == null ? [
-                PacientesUCI.vMain()
-            ] : [
-                PacientesUCI.vMainProfile()
-            ])
+            PacientesUCI.vMainProfile()
         ];
     }
 }
