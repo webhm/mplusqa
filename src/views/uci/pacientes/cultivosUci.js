@@ -3,9 +3,9 @@ import App from "../../../models/App";
 import Loader from "../../utils/loader";
 import Errors from "../../utils/errors";
 
-class Acceso {
+class Cultivo {
     id = null;
-    acceso = null;
+    cultivo = null;
     ubicacion = null;
     tipo = null;
     inicio = null;
@@ -15,7 +15,7 @@ class Acceso {
     observacion = null;
     constructor() {
         this.id = this.id;
-        this.acceso = this.acceso;
+        this.cultivo = this.cultivo;
         this.ubicacion = this.ubicacion;
         this.tipo = this.tipo;
         this.inicio = this.inicio;
@@ -27,7 +27,7 @@ class Acceso {
 }
 
 
-class AccesosUci {
+class CultivosUci {
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
@@ -35,17 +35,17 @@ class AccesosUci {
 
     }
     static iniciarRegistro() {
-        AccesosUci.nuevoRegistro = new Acceso();
+        CultivosUci.nuevoRegistro = new Cultivo();
     }
     static agregarRegistro() {
-        AccesosUci.registros.push(AccesosUci.nuevoRegistro);
+        CultivosUci.registros.push(CultivosUci.nuevoRegistro);
     }
     static eliminarRegistro() {
 
     }
     static getRegistros() {
-        return AccesosUci.registros;
+        return CultivosUci.registros;
     }
 }
 
-export default AccesosUci;
+export default CultivosUci;

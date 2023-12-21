@@ -3,9 +3,9 @@ import App from "../../../models/App";
 import Loader from "../../utils/loader";
 import Errors from "../../utils/errors";
 
-class Acceso {
+class Cateter {
     id = null;
-    acceso = null;
+    cateter = null;
     ubicacion = null;
     tipo = null;
     inicio = null;
@@ -15,7 +15,7 @@ class Acceso {
     observacion = null;
     constructor() {
         this.id = this.id;
-        this.acceso = this.acceso;
+        this.cateter = this.cateter;
         this.ubicacion = this.ubicacion;
         this.tipo = this.tipo;
         this.inicio = this.inicio;
@@ -27,7 +27,7 @@ class Acceso {
 }
 
 
-class AccesosUci {
+class CateterUci {
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
@@ -35,17 +35,17 @@ class AccesosUci {
 
     }
     static iniciarRegistro() {
-        AccesosUci.nuevoRegistro = new Acceso();
+        CateterUci.nuevoRegistro = new Cateter();
     }
     static agregarRegistro() {
-        AccesosUci.registros.push(AccesosUci.nuevoRegistro);
+        CateterUci.registros.push(CateterUci.nuevoRegistro);
     }
     static eliminarRegistro() {
 
     }
     static getRegistros() {
-        return AccesosUci.registros;
+        return CateterUci.registros;
     }
 }
 
-export default AccesosUci;
+export default CateterUci;
