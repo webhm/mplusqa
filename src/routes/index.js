@@ -19,42 +19,14 @@ import Endo from "../views/endoscopia/endo";
 import SingOut from "../views/layout/singOut";
 import AgendaEndo from "../views/endoscopia/agenda/agendas";
 import ConfigAgEndo from "../views/endoscopia/agenda/config";
-import CalendarioEndo2 from "../views/endoscopia/agenda/calendario2";
+import CalendarioEndo4 from "../views/endoscopia/agenda/v2/calendario4";
 import InicioFlebotomista from "../views/laboratorio/flebotomista/inicioFlebo";
 import Uci from "../views/uci/uci";
 import PacientesUCI from "../views/uci/pacientes/pacientesUci";
 import Contratos from "../views/admisiones/contratos/contratos";
 import NuevoContrato from "../views/admisiones/contratos/nuevoContrato";
 import VerContrato from "../views/admisiones/contratos/verContrato";
-
-// Crear una instancia de la clase
-// const authManager = new AuthManager();
-/*
-
-// Iniciar sesión con un usuario válido
-authManager.login({ email: "user@example.com", password: "123456" }).then((result) => {
-  if (result) {
-    console.log("Login exitoso");
-    console.log("Token:", authManager.token);
-    console.log("Usuario:", authManager.user);
-  } else {
-    console.log("Login fallido");
-  }
-});
-
-// Comprobar si el usuario está autenticado
-console.log("Autenticado:", authManager.isAuthenticated());
-
-// Comprobar si el usuario tiene un rol o un perfil específico
-console.log("Rol admin:", authManager.hasRole("admin"));
-console.log("Perfil editor:", authManager.hasProfile("editor"));
-
-// Cerrar sesión
-authManager.logout();
-console.log("Logout exitoso");
-
-*/
-
+import CalendarioEndo2 from "../views/endoscopia/agenda/calendario2";
 
 // Routes here
 const Routes = {

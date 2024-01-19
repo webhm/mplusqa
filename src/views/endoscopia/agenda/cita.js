@@ -267,6 +267,15 @@ class Cita {
                 throw Cita.error;
             }
 
+            if (moment(Cita.data.fecha_nacimiento, 'DD-MM-YYYY').isValid() !== true) {
+                $("#modalCreateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.error = "La fecha ingresada no es válida.";
+                m.redraw();
+                throw Cita.error;
+            }
+
             if (Cita.data.sexo == undefined) {
                 $("#modalCreateEvent").animate({
                     scrollTop: 0
@@ -341,6 +350,7 @@ class Cita {
         Cita.data.end = endDate.format("dddd, DD-MM-YYYY HH:mm");
         Cita.data.inicio = startDate.format("DD/MM/YYYY HH:mm");
         Cita.data.fin = endDate.format("DD/MM/YYYY HH:mm");
+        console.log(9999, Cita.data)
         m.redraw();
     }
 

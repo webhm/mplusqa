@@ -1,6 +1,6 @@
 import m from "mithril";
 import Loader from "../../utils/loader";
-import Calendario from "./calendario2";
+import Calendario from "./calendario3";
 
 
 
@@ -83,6 +83,7 @@ class CitasAnteriores {
     static citas = null;
     view() {
         if (CitasAnteriores.citas !== null && CitasAnteriores.citas.length > 0) {
+
             return CitasAnteriores.citas.map((_v, _i) => {
                 if (_v.tipo == 1 && _i <= 5) {
                     return [

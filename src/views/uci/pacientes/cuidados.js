@@ -5,24 +5,18 @@ import Errors from "../../utils/errors";
 
 class Cuidado {
     id = null;
-    hemo = null;
-    ubicacion = null;
-    tipo = null;
-    inicio = null;
-    retiro = null;
-    curacion = null;
-    condicion = null;
-    observacion = null;
+    cuidado = null;
+    frecuencia = null;
+    am = null;
+    pm = null;
+    hs = null;
     constructor() {
         this.id = this.id;
-        this.hemo = this.hemo;
-        this.ubicacion = this.ubicacion;
-        this.tipo = this.tipo;
-        this.inicio = this.inicio;
-        this.retiro = this.retiro;
-        this.curacion = this.curacion;
-        this.condicion = this.condicion;
-        this.observacion = this.observacion;
+        this.cuidado = this.cuidado;
+        this.frecuencia = this.frecuencia;
+        this.am = this.pm;
+        this.pm = this.pm;
+        this.hs = this.hs;
     }
 }
 
@@ -30,7 +24,7 @@ class Cuidado {
 class CuidadosUci {
     static registros = [];
     static nuevoRegistro = null;
-    static show = false;
+    static show = true;
     static validarRegistro() {
 
     }
@@ -40,7 +34,17 @@ class CuidadosUci {
     static agregarRegistro() {
         CuidadosUci.registros.push(CuidadosUci.nuevoRegistro);
     }
-    static eliminarRegistro() {
+    static eliminarRegistro(id) {
+
+        let res = [];
+
+        CuidadosUci.registros.map((_v) => {
+            if (_v.id != id) {
+                res.push(_v);
+            }
+        });
+
+        CuidadosUci.registros = res;
 
     }
     static getRegistros() {

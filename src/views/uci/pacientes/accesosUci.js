@@ -30,7 +30,7 @@ class Acceso {
 class AccesosUci {
     static registros = [];
     static nuevoRegistro = null;
-    static show = false;
+    static show = true;
     static validarRegistro() {
 
     }

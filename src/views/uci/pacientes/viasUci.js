@@ -30,7 +30,7 @@ class Via {
 class ViasUci {
     static registros = [];
     static nuevoRegistro = null;
-    static show = false;
+    static show = true;
     static validarRegistro() {
 
     }

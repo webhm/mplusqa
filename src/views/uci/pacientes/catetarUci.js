@@ -6,22 +6,16 @@ import Errors from "../../utils/errors";
 class Cateter {
     id = null;
     cateter = null;
-    ubicacion = null;
-    tipo = null;
-    inicio = null;
-    retiro = null;
-    curacion = null;
-    condicion = null;
+    am = null;
+    pm = null;
+    hs = null;
     observacion = null;
     constructor() {
         this.id = this.id;
         this.cateter = this.cateter;
-        this.ubicacion = this.ubicacion;
-        this.tipo = this.tipo;
-        this.inicio = this.inicio;
-        this.retiro = this.retiro;
-        this.curacion = this.curacion;
-        this.condicion = this.condicion;
+        this.am = this.am;
+        this.pm = this.pm;
+        this.hs = this.hs;
         this.observacion = this.observacion;
     }
 }
@@ -30,7 +24,7 @@ class Cateter {
 class CateterUci {
     static registros = [];
     static nuevoRegistro = null;
-    static show = false;
+    static show = true;
     static validarRegistro() {
 
     }
