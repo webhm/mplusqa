@@ -30,15 +30,12 @@ class PacientesUCI extends App {
     static fechaDesde = null;
     constructor(_data) {
         super();
-        if (App.isAuthenticated() && App.hasProfile('PERFIL_UCI_METROPLUS')) {
-            App.setTitle("Pacientes U.C.I.");
-            this.view = PacientesUCI.page;
-            PacientesUCI.numeroHistoriaClinica = _data.attrs.numeroHistoriaClinica;
-            PacientesUCI.numeroAtencion = _data.attrs.numeroAtencion;
-            PacientesUCI.numeroTurno = (_data.attrs.numeroTurno !== undefined ? _data.attrs.numeroTurno : null);
-            PacientesUCI.validarAtencion();
-
-        }
+        App.setTitle("Pacientes U.C.I.");
+        this.view = PacientesUCI.page;
+        PacientesUCI.numeroHistoriaClinica = _data.attrs.numeroHistoriaClinica;
+        PacientesUCI.numeroAtencion = _data.attrs.numeroAtencion;
+        PacientesUCI.numeroTurno = (_data.attrs.numeroTurno !== undefined ? _data.attrs.numeroTurno : null);
+        PacientesUCI.validarAtencion();
 
     }
     oncreate(_data) {
