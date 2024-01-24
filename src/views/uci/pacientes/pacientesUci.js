@@ -14,6 +14,8 @@ import VentilcacionUci from "./ventilacionUci";
 import HemodialisisUci from "./hemodialisis";
 import CultivosUci from "./cultivosUci";
 import CuidadosUci from "./cuidados";
+import MarcapasosUci from "./marcapasos";
+import FecthUci from "./fecthUci";
 
 
 // Pacientes UCI
@@ -21,6 +23,8 @@ class PacientesUCI extends App {
     static pacientes = null;
     static dataPte = null;
     static numeroHistoriaClinica = null;
+    static numeroAtencion = null;
+    static numeroTurno = null;
     static idFiltro = 1;
     static fechaHasta = null;
     static fechaDesde = null;
@@ -29,13 +33,40 @@ class PacientesUCI extends App {
         if (App.isAuthenticated() && App.hasProfile('PERFIL_UCI_METROPLUS')) {
             App.setTitle("Pacientes U.C.I.");
             this.view = PacientesUCI.page;
+            PacientesUCI.numeroHistoriaClinica = _data.attrs.numeroHistoriaClinica;
+            PacientesUCI.numeroAtencion = _data.attrs.numeroAtencion;
+            PacientesUCI.numeroTurno = (_data.attrs.numeroTurno !== undefined ? _data.attrs.numeroTurno : null);
+            PacientesUCI.validarAtencion();
+
         }
 
     }
-    oncreate(_data) {}
+    oncreate(_data) {
+
+        console.log(_data)
+
+
+    }
 
     static vHeader() {
         return m(HeaderPrivate, { userName: App.userName });
+    }
+
+    static validarAtencion() {
+
+        FecthUci.validarAtencion();
+    }
+
+    static showSecciones() {
+        CuidadosUci.show = true;
+        AccesosUci.show = true;
+        ViasUci.show = true;
+        CateterUci.show = true;
+        VentilcacionUci.show = true;
+        HemodialisisUci.show = true;
+        CultivosUci.show = true;
+        CuidadosUci.show = true;
+        MarcapasosUci.show = true;
     }
 
     static vMainProfile() {
@@ -85,19 +116,19 @@ class PacientesUCI extends App {
                             m("tr.text-right", [
                                 m("td[colspan='6']", ),
                                 m("td[colspan='6']",
-                                    m("button.btn.btn-xs.btn-primary[type='button']", {
+                                    m("button.btn.btn-xs.btn-primary.tx-semibold[type='button']", {
                                         onclick: () => {
                                             TurnosUci.iniciarTurno();
                                             PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
                                         }
-                                    }, "Registar Turno")
+                                    }, "Registar Nuevo Turno")
                                 ),
 
                             ]),
 
                             m("tr", [
                                 m("td[colspan='12']", [
-                                    PacientesUCI.vTableTurnos('table-turnos', TurnosUci.getTurnos(), PacientesUCI.arqTableTurnos())
+                                    PacientesUCI.vTable('table-turnos', TurnosUci.getTurnos(), PacientesUCI.arqTableTurnos())
                                 ])
                             ])
 
@@ -107,10 +138,8 @@ class PacientesUCI extends App {
 
                             m("tr.tx-uppercase", {
                                 style: { "background-color": "#CCCCFF" },
-                                onclick: () => {
-                                    CuidadosUci.show = !CuidadosUci.show;
-                                },
-                                // class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
+
+                                class: (CuidadosUci.show ? '' : 'd-none')
                             }, [
                                 m("th.tx-semibold[scope='col'][colspan='4']",
                                     "CUIDADOS GENERALES: "
@@ -152,12 +181,18 @@ class PacientesUCI extends App {
 
                                 m("td.tx-14.tx-normal[colspan='3']",
                                     m('select.tx-semibold', {
+                                        id: 'sec_CuidadosGenerales',
                                         onchange: (e) => {
                                             let _id = e.target.options[e.target.selectedIndex].id;
                                             let _value = e.target.options[e.target.selectedIndex].value;
-                                            CuidadosUci.iniciarRegistro();
-                                            CuidadosUci.nuevoRegistro.id = _id;
-                                            CuidadosUci.nuevoRegistro.cuidado = _value;
+                                            if (CuidadosUci.nuevoRegistro == null) {
+                                                CuidadosUci.iniciarRegistro();
+                                                CuidadosUci.nuevoRegistro.id = _id;
+                                                CuidadosUci.nuevoRegistro.cuidado = _value;
+                                            } else {
+                                                CuidadosUci.nuevoRegistro.id = _id;
+                                                CuidadosUci.nuevoRegistro.cuidado = _value;
+                                            }
                                         },
                                         class: "custom-select"
                                     }, m('option', 'Seleccione...'), [{
@@ -200,7 +235,8 @@ class PacientesUCI extends App {
                                             placeholder: "...",
                                             oninput: (e) => {
                                                 CuidadosUci.nuevoRegistro.frecuencia = e.target.value;
-                                            }
+                                            },
+                                            value: CuidadosUci.nuevoRegistro.frecuencia
                                         })
                                     ] : [])
                                 ),
@@ -213,7 +249,8 @@ class PacientesUCI extends App {
                                             placeholder: "...",
                                             oninput: (e) => {
                                                 CuidadosUci.nuevoRegistro.am = e.target.value;
-                                            }
+                                            },
+                                            value: CuidadosUci.nuevoRegistro.am
                                         })
                                     ] : [])
                                 ),
@@ -226,7 +263,8 @@ class PacientesUCI extends App {
                                             placeholder: "...",
                                             oninput: (e) => {
                                                 CuidadosUci.nuevoRegistro.pm = e.target.value;
-                                            }
+                                            },
+                                            value: CuidadosUci.nuevoRegistro.pm
                                         })
                                     ] : [])
                                 ),
@@ -240,14 +278,24 @@ class PacientesUCI extends App {
                                             placeholder: "...",
                                             onkeypress: (e) => {
                                                 if (e.keyCode == 13) {
-                                                    CuidadosUci.agregarRegistro();
-                                                    PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
-                                                    CuidadosUci.nuevoRegistro = null;
+                                                    CuidadosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    if (CuidadosUci.nuevoRegistro.editar == null) {
+                                                        CuidadosUci.agregarRegistro();
+                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
+                                                        CuidadosUci.nuevoRegistro = null;
+                                                    } else {
+                                                        CuidadosUci.editarRegistro();
+                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
+                                                        CuidadosUci.nuevoRegistro = null;
+                                                    }
+
+
                                                 }
                                             },
                                             oninput: (e) => {
                                                 CuidadosUci.nuevoRegistro.hs = e.target.value;
-                                            }
+                                            },
+                                            value: CuidadosUci.nuevoRegistro.hs
                                         })
                                     ] : [])
                                 ),
@@ -262,7 +310,8 @@ class PacientesUCI extends App {
                             ]),
                             m("tr.tx-uppercase.mg-t-20", [
                                 m("td[colspan='12']",
-                                    PacientesUCI.vTableCuidados('table-cuidados', CuidadosUci.getRegistros(), PacientesUCI.arqTableCuidados())
+                                    (CuidadosUci.show != false ? [PacientesUCI.vTable('table-cuidados', CuidadosUci.getAllRegistros(Array.from(document.getElementById('sec_CuidadosGenerales').options)), PacientesUCI.arqTableCuidados())] : [])
+
                                 ),
                             ]),
 
@@ -271,12 +320,9 @@ class PacientesUCI extends App {
                         m("thead",
 
                             m("tr.tx-uppercase", {
-                                onclick: () => {
-                                    ViasUci.show = !ViasUci.show;
-                                },
-                                style: { "background-color": "#CCCCFF" },
-                                // class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
 
+                                style: { "background-color": "#CCCCFF" },
+                                class: (ViasUci.show ? '' : 'd-none')
                             }, [
                                 m("th.tx-semibold[scope='col'][colspan='12']",
                                     "VIAS:"
@@ -305,15 +351,22 @@ class PacientesUCI extends App {
                             m("tr", [
                                 m("td.tx-14.tx-normal[colspan='4']",
                                     m('select.tx-semibold', {
+                                        id: 'sec_Vias',
                                         onchange: (e) => {
                                             let _id = e.target.options[e.target.selectedIndex].id;
                                             let _value = e.target.options[e.target.selectedIndex].value;
-                                            ViasUci.iniciarRegistro();
-                                            ViasUci.nuevoRegistro.id = _id;
-                                            ViasUci.nuevoRegistro.via = _value;
+                                            if (ViasUci.nuevoRegistro == null) {
+                                                ViasUci.iniciarRegistro();
+                                                ViasUci.nuevoRegistro.id = _id;
+                                                ViasUci.nuevoRegistro.via = _value;
+                                            } else {
+                                                ViasUci.nuevoRegistro.id = _id;
+                                                ViasUci.nuevoRegistro.via = _value;
+                                            }
                                         },
-                                        class: "custom-select"
-                                    }, m('option', 'Seleccione...'), [{
+                                        class: "custom-select",
+                                        value: (ViasUci.nuevoRegistro !== null ? ViasUci.nuevoRegistro.via : 0),
+                                    }, m("option[value='0']", 'Seleccione...'), [{
                                         id: "ViaPeriferica",
                                         label: "VIA PERIFERICA"
                                     }, {
@@ -340,6 +393,7 @@ class PacientesUCI extends App {
                                     }].map(x =>
                                         m('option[id="' + x.id + '"]', x.label)
                                     ))
+
                                 ),
                                 m("td.tx-10.tx-normal[colspan='4']",
                                     (ViasUci.nuevoRegistro !== null ? [
@@ -350,7 +404,8 @@ class PacientesUCI extends App {
                                             placeholder: "...",
                                             oninput: (e) => {
                                                 ViasUci.nuevoRegistro.ubicacion = e.target.value;
-                                            }
+                                            },
+                                            value: ViasUci.nuevoRegistro.ubicacion
                                         })
                                     ] : [])
 
@@ -365,7 +420,8 @@ class PacientesUCI extends App {
                                             placeholder: "...",
                                             oninput: (e) => {
                                                 ViasUci.nuevoRegistro.tipo = e.target.value;
-                                            }
+                                            },
+                                            value: ViasUci.nuevoRegistro.tipo
                                         })
                                     ] : [])
                                 ),
@@ -400,6 +456,9 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
                                                 id: "ifecha" + ViasUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (ViasUci.nuevoRegistro.inicio_fecha !== undefined) {
+                                                        el.dom.value = ViasUci.nuevoRegistro.inicio_fecha;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#ifecha" + ViasUci.nuevoRegistro.id, {
                                                             date: true,
@@ -416,6 +475,9 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='hh:mm']", {
                                                 id: "ihora" + ViasUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (ViasUci.nuevoRegistro.inicio_hora !== undefined) {
+                                                        el.dom.value = ViasUci.nuevoRegistro.inicio_hora;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#ihora" + ViasUci.nuevoRegistro.id, {
                                                             time: true,
@@ -429,6 +491,7 @@ class PacientesUCI extends App {
                                                         ViasUci.nuevoRegistro.inicio = ViasUci.nuevoRegistro.inicio_fecha + " " + ViasUci.nuevoRegistro.inicio_hora;
                                                     }, 50);
                                                 },
+
                                             })
                                         ]),
                                     ] : [])
@@ -440,6 +503,9 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
                                                 id: "rfecha" + ViasUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (ViasUci.nuevoRegistro.retiro_fecha !== undefined) {
+                                                        el.dom.value = ViasUci.nuevoRegistro.retiro_fecha;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#rfecha" + ViasUci.nuevoRegistro.id, {
                                                             date: true,
@@ -456,6 +522,9 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='hh:mm']", {
                                                 id: "rHora" + ViasUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (ViasUci.nuevoRegistro.retiro_hora !== undefined) {
+                                                        el.dom.value = ViasUci.nuevoRegistro.retiro_hora;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#rHora" + ViasUci.nuevoRegistro.id, {
                                                             time: true,
@@ -484,6 +553,9 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
                                                 id: "cfecha" + ViasUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (ViasUci.nuevoRegistro.cambio_fecha !== undefined) {
+                                                        el.dom.value = ViasUci.nuevoRegistro.cambio_fecha;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#cfecha" + ViasUci.nuevoRegistro.id, {
                                                             date: true,
@@ -500,6 +572,9 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='hh:mm']", {
                                                 id: "chora" + ViasUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (ViasUci.nuevoRegistro.cambio_hora !== undefined) {
+                                                        el.dom.value = ViasUci.nuevoRegistro.cambio_hora;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#chora" + ViasUci.nuevoRegistro.id, {
                                                             time: true,
@@ -529,6 +604,9 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
                                                 id: "cufecha" + ViasUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (ViasUci.nuevoRegistro.curacion_fecha !== undefined) {
+                                                        el.dom.value = ViasUci.nuevoRegistro.curacion_fecha;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#cufecha" + ViasUci.nuevoRegistro.id, {
                                                             date: true,
@@ -545,6 +623,9 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='hh:mm']", {
                                                 id: "cuhora" + ViasUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (ViasUci.nuevoRegistro.curacion_hora !== undefined) {
+                                                        el.dom.value = ViasUci.nuevoRegistro.curacion_hora;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#cuhora" + ViasUci.nuevoRegistro.id, {
                                                             time: true,
@@ -584,11 +665,16 @@ class PacientesUCI extends App {
                                     (ViasUci.nuevoRegistro !== null ? [
                                         m('select.tx-semibold', {
                                             id: "condicion" + ViasUci.nuevoRegistro.id,
+                                            oncreate: (el) => {
+                                                if (ViasUci.nuevoRegistro.condicion !== undefined) {
+                                                    el.dom.value = ViasUci.nuevoRegistro.condicion;
+                                                }
+                                            },
                                             onchange: (e) => {
                                                 let _value = e.target.options[e.target.selectedIndex].value;
                                                 ViasUci.nuevoRegistro.condicion = _value;
                                             },
-                                            class: "custom-select"
+                                            class: "custom-select",
                                         }, m('option', 'Seleccione...'), [
                                             'VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES',
                                             'CATETER PERMEABLE',
@@ -608,17 +694,26 @@ class PacientesUCI extends App {
                                             class: "form-control tx-semibold tx-14",
                                             type: "text",
                                             placeholder: "...",
-
                                             onkeypress: (e) => {
                                                 if (e.keyCode == 13) {
-                                                    ViasUci.agregarRegistro();
-                                                    PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
-                                                    ViasUci.nuevoRegistro = null;
+                                                    ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    if (ViasUci.nuevoRegistro.editar == null) {
+                                                        ViasUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(ViasUci.nuevoRegistro);
+                                                        ViasUci.nuevoRegistro = null;
+                                                        PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                                    } else {
+                                                        ViasUci.editarRegistro();
+                                                        FecthUci.actualizarRegistro(ViasUci.nuevoRegistro);
+                                                        ViasUci.nuevoRegistro = null;
+                                                        PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                                    }
                                                 }
                                             },
                                             oninput: (e) => {
                                                 ViasUci.nuevoRegistro.observacion = e.target.value;
                                             },
+                                            value: ViasUci.nuevoRegistro.observacion
                                         })
                                     ] : [])
                                 ),
@@ -633,7 +728,7 @@ class PacientesUCI extends App {
                             ]),
                             m("tr.tx-uppercase.mg-t-20", [
                                 m("td[colspan='12']",
-                                    PacientesUCI.vTableVias('table-vias', ViasUci.getRegistros(), PacientesUCI.arqTableVias())
+                                    (ViasUci.show != false ? [PacientesUCI.vTable('table-vias', ViasUci.getAllRegistros(Array.from(document.getElementById('sec_Vias').options)), PacientesUCI.arqTableVias())] : [])
                                 ),
                             ]),
                         ]),
@@ -641,11 +736,9 @@ class PacientesUCI extends App {
                         m("thead",
 
                             m("tr.tx-uppercase", {
-                                onclick: () => {
-                                    AccesosUci.show = !AccesosUci.show;
-                                },
+
                                 style: { "background-color": "#CCCCFF" },
-                                // class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
+                                class: (AccesosUci.show ? '' : 'd-none')
 
                             }, [
                                 m("th.tx-semibold[scope='col'][colspan='12']",
@@ -675,39 +768,74 @@ class PacientesUCI extends App {
                             m("tr", [
                                 m("td.tx-14.tx-normal[colspan='4']",
                                     m('select.tx-semibold', {
+                                        id: 'sec_Accesos',
                                         onchange: (e) => {
                                             let _id = e.target.options[e.target.selectedIndex].id;
                                             let _value = e.target.options[e.target.selectedIndex].value;
-                                            AccesosUci.iniciarRegistro();
-                                            AccesosUci.nuevoRegistro.id = _id;
-                                            AccesosUci.nuevoRegistro.via = _value;
+                                            if (AccesosUci.nuevoRegistro == null) {
+                                                AccesosUci.iniciarRegistro();
+                                                AccesosUci.nuevoRegistro.id = _id;
+                                                AccesosUci.nuevoRegistro.acceso = _value;
+                                            } else {
+                                                AccesosUci.nuevoRegistro.id = _id;
+                                                AccesosUci.nuevoRegistro.acceso = _value;
+                                            }
                                         },
                                         class: "custom-select"
                                     }, m('option', 'Seleccione...'), [{
-                                        id: "ViaPeriferica",
-                                        label: "VIA PERIFERICA"
-                                    }, {
-                                        id: "CateterSubclavio",
-                                        label: "CATETER SUBCLAVIO"
-                                    }, {
-                                        id: "CateterYugular",
-                                        label: "CATETER YUGULAR"
-                                    }, {
-                                        id: "CateterFemoral",
-                                        label: "CATETER FEMORAL"
-                                    }, {
-                                        id: "CateterCentralInsercionPeriferica",
-                                        label: "CATETER CENTRAL DE INSERCION PERIFERICA"
-                                    }, {
-                                        id: "CateterHemodialisis",
-                                        label: "CATETER DE HEMODIALISIS"
-                                    }, {
-                                        id: "CateterImplantableSubcutaneo",
-                                        label: "CATETER IMPLANTABLE SUBCUTANEO"
-                                    }, {
-                                        id: "LineaArterial",
-                                        label: "LINEA ARTERIAL"
-                                    }].map(x =>
+                                            id: "CateterIntracraneal",
+                                            label: "CATETER INTRACRANEAL"
+                                        }, {
+                                            id: "AccesoIntraOseo",
+                                            label: "ACCESO INTRA-OSEO"
+                                        }, {
+                                            id: "TuboTraqueal",
+                                            label: "TUBO TRAQUEAL"
+                                        }, {
+                                            id: "TuboToracico",
+                                            label: "TUBO TORACICO"
+                                        }, {
+                                            id: "Traqueotomo",
+                                            label: "TRAQUEOTOMO"
+                                        }, {
+                                            id: "SondaNasogastrica",
+                                            label: "SONDA NASOGASTRICA"
+                                        }, {
+                                            id: "SondaOrogastrica",
+                                            label: "SONDA OROGASTRICA"
+                                        }, {
+                                            id: "SondaVesical",
+                                            label: "SONDA VESICAL"
+                                        },
+                                        {
+                                            id: "Gastrotomia",
+                                            label: "GASTROSTOMIA"
+                                        },
+                                        {
+                                            id: "Yeyuyostomia",
+                                            label: "YEYUYOSTOMIA"
+                                        },
+                                        {
+                                            id: "ManguerasVentilador",
+                                            label: "MANGUERAS DE VENTILADOR"
+                                        },
+                                        {
+                                            id: "EquiposNutricionEnteral",
+                                            label: "EQUIPOS DE NUTRICION ENTERAL"
+                                        },
+                                        {
+                                            id: "EquiposNutricionParenteral",
+                                            label: "EQUIPOS DE NUTRICION PARENTERAL"
+                                        },
+                                        {
+                                            id: "Microgoteros",
+                                            label: "MICROGOTEROS"
+                                        },
+                                        {
+                                            id: "EquipoVenoclisis",
+                                            label: "EQUIPO DE VENOCLISIS"
+                                        }
+                                    ].map(x =>
                                         m('option[id="' + x.id + '"]', x.label)
                                     ))
                                 ),
@@ -715,6 +843,11 @@ class PacientesUCI extends App {
                                     (AccesosUci.nuevoRegistro !== null ? [
                                         m('select.tx-semibold', {
                                             id: "ubicacion" + AccesosUci.nuevoRegistro.id,
+                                            oncreate: (el) => {
+                                                if (AccesosUci.nuevoRegistro.ubicacion != undefined) {
+                                                    el.dom.value = AccesosUci.nuevoRegistro.ubicacion;
+                                                }
+                                            },
                                             onchange: (e) => {
                                                 let _value = e.target.options[e.target.selectedIndex].value;
                                                 AccesosUci.nuevoRegistro.ubicacion = _value;
@@ -738,7 +871,8 @@ class PacientesUCI extends App {
                                             placeholder: "...",
                                             oninput: (e) => {
                                                 AccesosUci.nuevoRegistro.tipo = e.target.value;
-                                            }
+                                            },
+                                            value: AccesosUci.nuevoRegistro.tipo
                                         })
                                     ] : [])
                                 ),
@@ -773,6 +907,9 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
                                                 id: "ifecha" + AccesosUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (AccesosUci.nuevoRegistro.inicio_fecha != undefined) {
+                                                        el.dom.value = AccesosUci.nuevoRegistro.inicio_fecha;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#ifecha" + AccesosUci.nuevoRegistro.id, {
                                                             date: true,
@@ -789,6 +926,9 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='hh:mm']", {
                                                 id: "ihora" + AccesosUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (AccesosUci.nuevoRegistro.inicio_hora != undefined) {
+                                                        el.dom.value = AccesosUci.nuevoRegistro.inicio_hora;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#ihora" + AccesosUci.nuevoRegistro.id, {
                                                             time: true,
@@ -813,6 +953,9 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
                                                 id: "rfecha" + AccesosUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (AccesosUci.nuevoRegistro.retiro_fecha != undefined) {
+                                                        el.dom.value = AccesosUci.nuevoRegistro.retiro_fecha;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#rfecha" + AccesosUci.nuevoRegistro.id, {
                                                             date: true,
@@ -829,6 +972,9 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='hh:mm']", {
                                                 id: "rHora" + AccesosUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (AccesosUci.nuevoRegistro.retiro_hora != undefined) {
+                                                        el.dom.value = AccesosUci.nuevoRegistro.retiro_hora;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#rHora" + AccesosUci.nuevoRegistro.id, {
                                                             time: true,
@@ -857,6 +1003,9 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
                                                 id: "cfecha" + AccesosUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (AccesosUci.nuevoRegistro.cambio_fecha != undefined) {
+                                                        el.dom.value = AccesosUci.nuevoRegistro.cambio_fecha;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#cfecha" + AccesosUci.nuevoRegistro.id, {
                                                             date: true,
@@ -873,6 +1022,9 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='hh:mm']", {
                                                 id: "chora" + AccesosUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (AccesosUci.nuevoRegistro.cambio_hora != undefined) {
+                                                        el.dom.value = AccesosUci.nuevoRegistro.cambio_hora;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#chora" + AccesosUci.nuevoRegistro.id, {
                                                             time: true,
@@ -902,6 +1054,9 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
                                                 id: "cufecha" + AccesosUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (AccesosUci.nuevoRegistro.curacion_fecha != undefined) {
+                                                        el.dom.value = AccesosUci.nuevoRegistro.curacion_fecha;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#cufecha" + AccesosUci.nuevoRegistro.id, {
                                                             date: true,
@@ -918,6 +1073,9 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='hh:mm']", {
                                                 id: "cuhora" + AccesosUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (AccesosUci.nuevoRegistro.curacion_hora != undefined) {
+                                                        el.dom.value = AccesosUci.nuevoRegistro.curacion_hora;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#cuhora" + AccesosUci.nuevoRegistro.id, {
                                                             time: true,
@@ -961,7 +1119,7 @@ class PacientesUCI extends App {
                                             class: "form-control tx-semibold tx-14",
                                             type: "text",
                                             placeholder: "...",
-
+                                            value: AccesosUci.nuevoRegistro.condicion,
                                             oninput: (e) => {
                                                 AccesosUci.nuevoRegistro.condicion = e.target.value;
                                             },
@@ -977,12 +1135,19 @@ class PacientesUCI extends App {
                                             class: "form-control tx-semibold tx-14",
                                             type: "text",
                                             placeholder: "...",
-
+                                            value: AccesosUci.nuevoRegistro.observacion,
                                             onkeypress: (e) => {
                                                 if (e.keyCode == 13) {
-                                                    AccesosUci.agregarRegistro();
-                                                    PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
-                                                    AccesosUci.nuevoRegistro = null;
+                                                    AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    if (AccesosUci.nuevoRegistro.editar == null) {
+                                                        AccesosUci.agregarRegistro();
+                                                        PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
+                                                        AccesosUci.nuevoRegistro = null;
+                                                    } else {
+                                                        AccesosUci.editarRegistro();
+                                                        PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
+                                                        AccesosUci.nuevoRegistro = null;
+                                                    }
                                                 }
                                             },
                                             oninput: (e) => {
@@ -1002,7 +1167,7 @@ class PacientesUCI extends App {
                             ]),
                             m("tr.tx-uppercase.mg-t-20", [
                                 m("td[colspan='12']",
-                                    PacientesUCI.vTableVias('table-accesos', AccesosUci.getRegistros(), PacientesUCI.arqTableAccesos())
+                                    (AccesosUci.show != false ? [PacientesUCI.vTable('table-accesos', AccesosUci.getAllRegistros(Array.from(document.getElementById('sec_Accesos').options)), PacientesUCI.arqTableAccesos())] : [])
                                 ),
                             ]),
                         ]),
@@ -1010,11 +1175,9 @@ class PacientesUCI extends App {
                         m("thead",
 
                             m("tr.tx-uppercase", {
-                                onclick: () => {
-                                    CateterUci.show = !CateterUci.show;
-                                },
+
                                 style: { "background-color": "#CCCCFF" },
-                                // class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
+                                class: (CateterUci.show ? '' : 'd-none')
 
                             }, [
                                 m("th.tx-semibold[scope='col'][colspan='12']",
@@ -1059,12 +1222,28 @@ class PacientesUCI extends App {
                                         },
                                         class: "custom-select"
                                     }, m('option', 'Seleccione...'), [{
-                                        id: "RecoletcorVejiga",
-                                        label: "RECOLECTOR MAS ABAJO QUE VEJIGA"
-                                    }, {
-                                        id: "RecolectorNoTocaPiso",
-                                        label: "RECOLECTOR NO TOCA PISO"
-                                    }].map(x =>
+                                            id: "RecoletcorVejiga",
+                                            label: "RECOLECTOR MAS ABAJO QUE VEJIGA"
+                                        }, {
+                                            id: "RecolectorNoTocaPiso",
+                                            label: "RECOLECTOR NO TOCA PISO"
+                                        }, {
+                                            id: "OrinaRecolector",
+                                            label: "ORINA HASTA 50% EN RECOLECTOR"
+                                        },
+                                        {
+                                            id: "SondaFijadaMuslo",
+                                            label: "SONDA FIJADA EN MUSLO"
+                                        },
+                                        {
+                                            id: "RegistroAseoGenital",
+                                            label: "REGISTRO DE ASEO GENITAL"
+                                        },
+                                        {
+                                            id: "RegistroDiasCateter",
+                                            label: "REGISTRO N° DE DIAS DE CATETER"
+                                        }
+                                    ].map(x =>
                                         m('option[id="' + x.id + '"]', x.label)
                                     ))
                                 ),
@@ -1160,7 +1339,7 @@ class PacientesUCI extends App {
                             ]),
                             m("tr.tx-uppercase.mg-t-20", [
                                 m("td[colspan='12']",
-                                    PacientesUCI.vTableAccesos('table-cateter', CateterUci.getRegistros(), PacientesUCI.arqTableCateter())
+                                    PacientesUCI.vTable('table-cateter', CateterUci.getRegistros(), PacientesUCI.arqTableCateter())
                                 ),
                             ]),
                         ]),
@@ -1168,11 +1347,9 @@ class PacientesUCI extends App {
                         m("thead",
 
                             m("tr.tx-uppercase", {
-                                onclick: () => {
-                                    VentilcacionUci.show = !VentilcacionUci.show;
-                                },
+
                                 style: { "background-color": "#CCCCFF" },
-                                // class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
+                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
 
                             }, [
                                 m("th.tx-semibold[scope='col'][colspan='12']",
@@ -1217,12 +1394,37 @@ class PacientesUCI extends App {
                                         },
                                         class: "custom-select"
                                     }, m('option', 'Seleccione...'), [{
-                                        id: "RecoletcorVejiga",
-                                        label: "RECOLECTOR MAS ABAJO QUE VEJIGA"
-                                    }, {
-                                        id: "RecolectorNoTocaPiso",
-                                        label: "RECOLECTOR NO TOCA PISO"
-                                    }].map(x =>
+                                            id: "PosicionSemifowler",
+                                            label: "POSICION SEMIFOWLER"
+                                        }, {
+                                            id: "BolsaReanimacion",
+                                            label: "BOLSA DE REANIMACION"
+                                        },
+                                        {
+                                            id: "CorrugadoSinVaporCondesado",
+                                            label: "CORRUGADO SIN VAPOR CONDENSADO"
+                                        },
+                                        {
+                                            id: "FiltroFinalRespiratorio",
+                                            label: "USO DE FILTRO FINAL RESPIRATORIO"
+                                        },
+                                        {
+                                            id: "RegistroRotacionTetHoras",
+                                            label: "REGISTRO DE ROTACION DE TET CADA 12 HORAS"
+                                        },
+                                        {
+                                            id: "RegistroCambioCircuito",
+                                            label: "REGISTRO DE CAMBIO DE CIRCUITO"
+                                        },
+                                        {
+                                            id: "CambioFiltroHoras",
+                                            label: "CAMBIO DE FILTRO CADA 12 HORAS"
+                                        },
+                                        {
+                                            id: "RegistroDiasEnfermeria",
+                                            label: "REGISTRO DIAS VM HOJA DE ENFERMERIA"
+                                        }
+                                    ].map(x =>
                                         m('option[id="' + x.id + '"]', x.label)
                                     ))
                                 ),
@@ -1317,7 +1519,7 @@ class PacientesUCI extends App {
                             ]),
                             m("tr.tx-uppercase.mg-t-20", [
                                 m("td[colspan='12']",
-                                    PacientesUCI.vTableAccesos('table-ventilacion', VentilcacionUci.getRegistros(), PacientesUCI.arqTableVentilacion())
+                                    PacientesUCI.vTable('table-ventilacion', VentilcacionUci.getRegistros(), PacientesUCI.arqTableVentilacion())
                                 ),
                             ]),
                         ]),
@@ -1325,11 +1527,9 @@ class PacientesUCI extends App {
                         m("thead",
 
                             m("tr.tx-uppercase", {
-                                onclick: () => {
-                                    HemodialisisUci.show = !HemodialisisUci.show;
-                                },
+
                                 style: { "background-color": "#CCCCFF" },
-                                // class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
+                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
 
                             }, [
                                 m("th.tx-semibold[scope='col'][colspan='12']",
@@ -1374,12 +1574,25 @@ class PacientesUCI extends App {
                                         },
                                         class: "custom-select"
                                     }, m('option', 'Seleccione...'), [{
-                                        id: "RecoletcorVejiga",
-                                        label: "RECOLECTOR MAS ABAJO QUE VEJIGA"
-                                    }, {
-                                        id: "RecolectorNoTocaPiso",
-                                        label: "RECOLECTOR NO TOCA PISO"
-                                    }].map(x =>
+                                            id: "ParcheLimpioSeco",
+                                            label: "PARCHE LIMPIO Y SECO"
+                                        }, {
+                                            id: "FechaCuracionParche",
+                                            label: "FECHA DE CURACION SOBRE PARCHE"
+                                        },
+                                        {
+                                            id: "TodosAccesosTapados",
+                                            label: "TODOS LOS ACCESOS TAPADOS"
+                                        },
+                                        {
+                                            id: "RegistroNumerosDias",
+                                            label: "REGISTRO DE NUMEROS DE DIAS"
+                                        },
+                                        {
+                                            id: "RegistroCambioEquipo",
+                                            label: "REGISTRO DE CAMBIO DE EQUIPO"
+                                        }
+                                    ].map(x =>
                                         m('option[id="' + x.id + '"]', x.label)
                                     ))
                                 ),
@@ -1474,7 +1687,7 @@ class PacientesUCI extends App {
                             ]),
                             m("tr.tx-uppercase.mg-t-20", [
                                 m("td[colspan='12']",
-                                    PacientesUCI.vTableAccesos('table-hemodialisis', HemodialisisUci.getRegistros(), PacientesUCI.arqTableHemodialisis())
+                                    PacientesUCI.vTable('table-hemodialisis', HemodialisisUci.getRegistros(), PacientesUCI.arqTableHemodialisis())
                                 ),
                             ]),
                         ]),
@@ -1482,9 +1695,7 @@ class PacientesUCI extends App {
                         m("thead",
 
                             m("tr.tx-uppercase", {
-                                onclick: () => {
-                                    CultivosUci.show = !CultivosUci.show;
-                                },
+
                                 style: { "background-color": "#CCCCFF" },
                                 class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
 
@@ -1495,29 +1706,28 @@ class PacientesUCI extends App {
 
                             ])
                         ),
-                        m('thead', {
-                            class: (CultivosUci.show ? '' : 'd-none')
+                        m("tbody", {
+                            class: (HemodialisisUci.show ? '' : 'd-none')
                         }, [
+
+
 
                             m("tr.tx-uppercase", {
-                                style: { "background-color": "#eaeff5" }
+                                style: { "background-color": "rgb(238, 249, 200)" }
                             }, [
-                                m("th[colspan='6']",
-                                    "CULTIVOS:"
+                                m("th[scope='col'][colspan='4']",
+                                    "MUESTRA: "
                                 ),
-                                m("th[colspan='6']",
-                                    ""
+                                m("th[scope='col'][colspan='4']",
+                                    "FECHA DE ENVÍO: "
                                 ),
-
+                                m("th[scope='col'][colspan='4']",
+                                    "RESULTADO DE GERMEN AISLADO: "
+                                ),
 
                             ]),
+                            m("tr", [
 
-                        ]),
-                        m("tbody", {
-                            class: (CultivosUci.show ? '' : 'd-none')
-                        }, [
-
-                            m('tr', [
                                 m("td.tx-14.tx-normal[colspan='4']",
                                     m('select.tx-semibold', {
                                         onchange: (e) => {
@@ -1525,276 +1735,263 @@ class PacientesUCI extends App {
                                             let _value = e.target.options[e.target.selectedIndex].value;
                                             CultivosUci.iniciarRegistro();
                                             CultivosUci.nuevoRegistro.id = _id;
-                                            CultivosUci.nuevoRegistro.cultivo = _value;
+                                            CultivosUci.nuevoRegistro.muestra = _value;
                                         },
                                         class: "custom-select"
                                     }, m('option', 'Seleccione...'), [{
-                                        id: "ViaPeriferica",
-                                        label: "VIA PERIFERICA"
-                                    }, {
-                                        id: "CateterYugular",
-                                        label: "CATETER YUGULAR"
-                                    }].map(x =>
+                                            id: "Sangre",
+                                            label: "SANGRE"
+                                        }, {
+                                            id: "Orina",
+                                            label: "ORINA"
+                                        },
+                                        {
+                                            id: "CateterUrinario",
+                                            label: "CATETER URINARIO"
+                                        },
+                                        {
+                                            id: "SecrecionTraqueal",
+                                            label: "SECRECION TRAQUEAL"
+                                        },
+                                        {
+                                            id: "SecrecionHerida",
+                                            label: "SECRECION HERIDA"
+                                        },
+                                        {
+                                            id: "LiquidoCefaloRraquedeo",
+                                            label: "LIQUIDO CEFALORRAQUIDEO"
+                                        },
+                                        {
+                                            id: "Otros",
+                                            label: "OTROS"
+                                        }
+                                    ].map(x =>
                                         m('option[id="' + x.id + '"]', x.label)
                                     ))
                                 ),
-                                m("td[colspan='8']"),
-                            ]),
+                                m("td.tx-14.tx-normal[colspan='4']",
+                                    (CultivosUci.nuevoRegistro !== null ? [
+                                        m('div.d-flex', [
+                                            m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
+                                                id: "cultivoEnvioFecha" + CultivosUci.nuevoRegistro.id,
+                                                oncreate: (el) => {
+                                                    setTimeout(() => {
+                                                        new Cleave("#cultivoEnvio" + CultivosUci.nuevoRegistro.id, {
+                                                            date: true,
+                                                            datePattern: ["d", "m", "Y"]
+                                                        });
+                                                    }, 50);
+                                                },
+                                                oninput: (e) => {
+                                                    setTimeout(() => {
+                                                        CultivosUci.nuevoRegistro.envio_fecha = e.target.value;
+                                                    }, 50);
+                                                },
+                                            }),
+                                            m("input.form-control[type='text'][placeholder='hh:mm']", {
+                                                id: "cultivoEnvioHora" + CultivosUci.nuevoRegistro.id,
+                                                oncreate: (el) => {
+                                                    setTimeout(() => {
+                                                        new Cleave("#cultivoEnvioHora" + CultivosUci.nuevoRegistro.id, {
+                                                            time: true,
+                                                            timePattern: ["h", "m"]
+                                                        });
+                                                    }, 50);
+                                                },
+                                                oninput: (e) => {
+                                                    setTimeout(() => {
+                                                        CultivosUci.nuevoRegistro.envio_hora = e.target.value;
+                                                        CultivosUci.nuevoRegistro.envio = CultivosUci.nuevoRegistro.envio_fecha + " " + CultivosUci.nuevoRegistro.envio_hora;
+                                                    }, 50);
+                                                },
+                                            })
+                                        ])
+                                    ] : [])
+                                ),
+                                m("td.tx-14.tx-normal[colspan='4']",
+                                    (CultivosUci.nuevoRegistro !== null ? [
+                                        m('div.d-flex', [
+                                            m("input", {
+                                                id: "resultado" + CultivosUci.nuevoRegistro.id,
+                                                class: "form-control tx-semibold tx-14",
+                                                type: "text",
+                                                placeholder: "...",
+                                                oninput: (e) => {
+                                                    CultivosUci.nuevoRegistro.resultado = e.target.value;
+                                                },
+                                            })
 
+                                        ]),
+                                    ] : [])
+                                ),
+                            ]),
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "#eaeff5" }
+                            }, [
+                                m("th[scope='col'][colspan='12']",
+                                    "Registros: "
+                                ),
+                            ]),
+                            m("tr.tx-uppercase.mg-t-20", [
+                                m("td[colspan='12']",
+                                    PacientesUCI.vTable('table-cultivos', CultivosUci.getRegistros(), PacientesUCI.arqTableCultivos())
+                                ),
+                            ]),
                         ]),
+                        // Marcapasos
+                        m("thead",
+
+                            m("tr.tx-uppercase", {
+
+                                style: { "background-color": "#CCCCFF" },
+                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
+
+                            }, [
+                                m("th.tx-semibold[scope='col'][colspan='12']",
+                                    "MARCAPASOS:"
+                                ),
+
+                            ])
+                        ),
                         m("tbody", {
-                            class: (CultivosUci.show ? '' : 'd-none')
+                            class: (MarcapasosUci.show ? '' : 'd-none')
                         }, [
 
 
 
                             m("tr.tx-uppercase", {
-                                style: { "background-color": "#eaeff5" }
+                                style: { "background-color": "rgb(238, 249, 200)" }
                             }, [
-
-                                m("th[scope='col'][colspan='2']",
-                                    "UBICACIÓN: "
-                                ),
-                                m("th[scope='col'][colspan='2']",
-                                    "TIPO: "
-                                ),
-                                m("th[scope='col'][colspan='1']",
-                                    "INICIO: "
-                                ),
-                                m("th[scope='col'][colspan='1']",
-                                    "RETIRO: "
-                                ),
-                                m("th[scope='col'][colspan='1']",
-                                    "CAMBIO: "
-                                ),
-                                m("th[scope='col'][colspan='1']",
-                                    "CURACION: "
-                                ),
-                                m("th[scope='col'][colspan='1']",
-                                    "CONDICIÓN: "
+                                m("th[scope='col'][colspan='3']",
+                                    "HORA:"
                                 ),
                                 m("th[scope='col'][colspan='3']",
-                                    "OBSERVACIÓN: "
+                                    "AM: "
+                                ),
+                                m("th[scope='col'][colspan='3']",
+                                    "PM: "
+                                ),
+                                m("th[scope='col'][colspan='3']",
+                                    "HS: "
                                 ),
 
                             ]),
                             m("tr", [
 
-                                m("td.tx-10.tx-normal[colspan='2']",
-                                    (CultivosUci.nuevoRegistro !== null ? [
-                                        m('select.tx-semibold', {
-                                            id: "ubicacion" + CultivosUci.nuevoRegistro.id,
-                                            onchange: (e) => {
-                                                let _value = e.target.options[e.target.selectedIndex].value;
-                                                CultivosUci.nuevoRegistro.ubicacion = _value;
-                                                console.log(CultivosUci.nuevoRegistro)
-                                            },
-                                            class: "custom-select"
-                                        }, m('option', 'Seleccione...'), ['IZQUIERDA', 'DERECHA'].map(x =>
-                                            m('option', x)
-                                        ))
-                                    ] : [])
-
-
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {
+                                            let _id = e.target.options[e.target.selectedIndex].id;
+                                            let _value = e.target.options[e.target.selectedIndex].value;
+                                            MarcapasosUci.iniciarRegistro();
+                                            MarcapasosUci.nuevoRegistro.id = _id;
+                                            MarcapasosUci.nuevoRegistro.hora = _value;
+                                        },
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), [{
+                                            id: "Frecuencia",
+                                            label: "Frecuencia"
+                                        }, {
+                                            id: "Unipolar",
+                                            label: "UNIPOLAR"
+                                        },
+                                        {
+                                            id: "Bipolar",
+                                            label: "BIPOLAR"
+                                        },
+                                        {
+                                            id: "Miliamperios",
+                                            label: "MILIAMPERIOS"
+                                        },
+                                        {
+                                            id: "Milivoltios",
+                                            label: "MILIVOLTIOS"
+                                        },
+                                        {
+                                            id: "Sensibilidad",
+                                            label: "SENSIBILIDAD"
+                                        }
+                                    ].map(x =>
+                                        m('option[id="' + x.id + '"]', x.label)
+                                    ))
                                 ),
-                                m("td.tx-14.tx-normal[colspan='2']",
-                                    (CultivosUci.nuevoRegistro !== null ? [
-                                        m("input", {
-                                            id: "tipo" + CultivosUci.nuevoRegistro.id,
-                                            class: "form-control tx-semibold tx-14",
-                                            type: "text",
-                                            placeholder: "...",
-                                            oninput: (e) => {
-                                                CultivosUci.nuevoRegistro.tipo = e.target.value;
-                                            }
-                                        })
-                                    ] : [])
-                                ),
-                                m("td.tx-14.tx-normal[colspan='1']",
-                                    (CultivosUci.nuevoRegistro !== null ? [
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    (MarcapasosUci.nuevoRegistro !== null ? [
                                         m('div.d-flex', [
-                                            m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
-                                                id: "ifecha" + CultivosUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    setTimeout(() => {
-                                                        new Cleave("#ifecha" + CultivosUci.nuevoRegistro.id, {
-                                                            date: true,
-                                                            datePattern: ["d", "m", "Y"]
-                                                        });
-                                                    }, 50);
-                                                },
+                                            m("input", {
+                                                id: "am" + MarcapasosUci.nuevoRegistro.id,
+                                                class: "form-control tx-semibold tx-14",
+                                                type: "text",
+                                                placeholder: "...",
                                                 oninput: (e) => {
-                                                    setTimeout(() => {
-                                                        CultivosUci.nuevoRegistro.inicio = e.target.value;
-                                                    }, 50);
-                                                },
-                                            }),
-                                            m("input.form-control[type='text'][placeholder='hh:mm']", {
-                                                id: "ihora" + CultivosUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    setTimeout(() => {
-                                                        new Cleave("#ihora" + CultivosUci.nuevoRegistro.id, {
-                                                            time: true,
-                                                            timePattern: ["h", "m"]
-                                                        });
-                                                    }, 50);
-                                                },
-                                                oninput: (e) => {
-                                                    setTimeout(() => {
-                                                        CultivosUci.nuevoRegistro.inicio = e.target.value;
-                                                    }, 50);
+                                                    MarcapasosUci.nuevoRegistro.am = e.target.value;
                                                 },
                                             })
+
                                         ]),
                                     ] : [])
                                 ),
-                                m("td.tx-14.tx-normal[colspan='1']",
-
-                                    (CultivosUci.nuevoRegistro !== null ? [
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    (MarcapasosUci.nuevoRegistro !== null ? [
                                         m('div.d-flex', [
-                                            m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
-                                                id: "rfecha" + CultivosUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    setTimeout(() => {
-                                                        new Cleave("#rfecha" + CultivosUci.nuevoRegistro.id, {
-                                                            date: true,
-                                                            datePattern: ["d", "m", "Y"]
-                                                        });
-                                                    }, 50);
-                                                },
+                                            m("input", {
+                                                id: "pm" + MarcapasosUci.nuevoRegistro.id,
+                                                class: "form-control tx-semibold tx-14",
+                                                type: "text",
+                                                placeholder: "...",
                                                 oninput: (e) => {
-                                                    setTimeout(() => {
-                                                        CultivosUci.nuevoRegistro.retiro = e.target.value;
-                                                    }, 50);
+                                                    MarcapasosUci.nuevoRegistro.pm = e.target.value;
                                                 },
-                                            }),
-                                            m("input.form-control[type='text'][placeholder='hh:mm']", {
-                                                id: "rHora" + CultivosUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    setTimeout(() => {
-                                                        new Cleave("#rHora" + CultivosUci.nuevoRegistro.id, {
-                                                            time: true,
-                                                            timePattern: ["h", "m"]
-                                                        });
-                                                    }, 50);
-                                                }
                                             })
-                                        ])
 
-
+                                        ]),
                                     ] : [])
-
-
                                 ),
-                                m("td.tx-14.tx-normal[colspan='1']",
 
-                                    (CultivosUci.nuevoRegistro !== null ? [
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    (MarcapasosUci.nuevoRegistro !== null ? [
                                         m('div.d-flex', [
-                                            m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
-                                                id: "cfecha" + CultivosUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    setTimeout(() => {
-                                                        new Cleave("#cfecha" + CultivosUci.nuevoRegistro.id, {
-                                                            date: true,
-                                                            datePattern: ["d", "m", "Y"]
-                                                        });
-                                                    }, 50);
-                                                },
+                                            m("input", {
+                                                id: "hs" + MarcapasosUci.nuevoRegistro.id,
+                                                class: "form-control tx-semibold tx-14",
+                                                type: "text",
+                                                placeholder: "...",
                                                 oninput: (e) => {
-                                                    setTimeout(() => {
-                                                        CultivosUci.nuevoRegistro.cambio = e.target.value;
-                                                    }, 50);
+                                                    MarcapasosUci.nuevoRegistro.hs = e.target.value;
                                                 },
-                                            }),
-                                            m("input.form-control[type='text'][placeholder='hh:mm']", {
-                                                id: "chora" + CultivosUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    setTimeout(() => {
-                                                        new Cleave("#chora" + CultivosUci.nuevoRegistro.id, {
-                                                            time: true,
-                                                            timePattern: ["h", "m"]
-                                                        });
-                                                    }, 50);
-                                                }
                                             })
-                                        ])
-                                    ] : [
 
-                                    ])
-
-
-
-                                ),
-                                m("td.tx-14.tx-normal[colspan='1']",
-
-                                    (CultivosUci.nuevoRegistro !== null ? [
-                                        m('div.d-flex', [
-                                            m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
-                                                id: "cufecha" + CultivosUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    setTimeout(() => {
-                                                        new Cleave("#cufecha" + CultivosUci.nuevoRegistro.id, {
-                                                            date: true,
-                                                            datePattern: ["d", "m", "Y"]
-                                                        });
-                                                    }, 50);
-                                                },
-                                                oninput: (e) => {
-                                                    setTimeout(() => {
-                                                        CultivosUci.nuevoRegistro.curacion = e.target.value;
-                                                    }, 50);
-                                                },
-                                            }),
-                                            m("input.form-control[type='text'][placeholder='hh:mm']", {
-                                                id: "cuhora" + CultivosUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    setTimeout(() => {
-                                                        new Cleave("#cuhora" + CultivosUci.nuevoRegistro.id, {
-                                                            time: true,
-                                                            timePattern: ["h", "m"]
-                                                        });
-                                                    }, 50);
-                                                }
-                                            })
-                                        ])
+                                        ]),
                                     ] : [])
-
-
                                 ),
-                                m("td.tx-14.tx-normal[colspan='2']",
-                                    (CultivosUci.nuevoRegistro !== null ? [
-                                        m('select.tx-semibold', {
-                                            id: "condicion" + CultivosUci.nuevoRegistro.id,
-                                            onchange: (e) => {
-                                                let _value = e.target.options[e.target.selectedIndex].value;
-                                                CultivosUci.nuevoRegistro.condicion = _value;
-                                            },
-                                            class: "custom-select"
-                                        }, m('option', 'Seleccione...'), ['VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES'].map(x =>
-                                            m('option', x)
-                                        ))
-                                    ] : [])
-
-
+                            ]),
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "rgb(238, 249, 200)" }
+                            }, [
+                                m("th[scope='col'][colspan='12']",
+                                    "OBSERVACIÓN: "
                                 ),
-                                m("td.tx-14.tx-normal[colspan='2']",
-                                    (CultivosUci.nuevoRegistro !== null ? [
+
+
+                            ]),
+                            m('tr', [
+                                m("td.tx-14.tx-normal[colspan='12']",
+                                    (MarcapasosUci.nuevoRegistro !== null ? [
                                         m("input", {
-                                            id: "observacion" + CultivosUci.nuevoRegistro.id,
+                                            id: "observacion" + MarcapasosUci.nuevoRegistro.id,
                                             class: "form-control tx-semibold tx-14",
                                             type: "text",
                                             placeholder: "...",
 
                                             onkeypress: (e) => {
                                                 if (e.keyCode == 13) {
-                                                    CultivosUci.agregarRegistro();
-                                                    console.log(CultivosUci.getRegistros())
-                                                    PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
-                                                    CultivosUci.nuevoRegistro = null;
+                                                    MarcapasosUci.agregarRegistro();
+                                                    PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+                                                    MarcapasosUci.nuevoRegistro = null;
                                                 }
                                             },
                                             oninput: (e) => {
-                                                CultivosUci.nuevoRegistro.observacion = e.target.value;
+                                                MarcapasosUci.nuevoRegistro.observacion = e.target.value;
                                             },
                                         })
                                     ] : [])
@@ -1809,30 +2006,205 @@ class PacientesUCI extends App {
                             ]),
                             m("tr.tx-uppercase.mg-t-20", [
                                 m("td[colspan='12']",
-                                    PacientesUCI.vTableAccesos('table-cultivos', CultivosUci.getRegistros(), PacientesUCI.arqTableCultivos())
+                                    PacientesUCI.vTable('table-marcapasos', MarcapasosUci.getRegistros(), PacientesUCI.arqTableMarcapasos())
                                 ),
                             ]),
                         ]),
-
+                        // Ventilatorios
                         m("thead",
 
                             m("tr.tx-uppercase", {
+
                                 style: { "background-color": "#CCCCFF" },
                                 class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
 
                             }, [
                                 m("th.tx-semibold[scope='col'][colspan='12']",
-                                    "MODOS VENTILATORIOS / VARIABLES:"
+                                    "MODOS VENTILATORIOS / VARIABLES"
                                 ),
 
                             ])
                         ),
+                        m("tbody", {
+                            class: (VentilcacionUci.show ? '' : 'd-none')
+                        }, [
 
 
 
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "rgb(238, 249, 200)" }
+                            }, [
+                                m("th[scope='col'][colspan='4']",
+                                    "VENTILATORIOS/VARIABLES:"
+                                ),
+                                m("th[scope='col'][colspan='4']",
+                                    "CONDICIÓN: "
+                                ),
+                                m("th[scope='col'][colspan='4']",
+                                    "HORA: "
+                                ),
 
 
+                            ]),
+                            m("tr", [
 
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    m('select.tx-semibold', {
+                                        onchange: (e) => {
+                                            let _id = e.target.options[e.target.selectedIndex].id;
+                                            let _value = e.target.options[e.target.selectedIndex].value;
+                                            VentilcacionUci.iniciarRegistro();
+                                            VentilcacionUci.nuevoRegistro.id = _id;
+                                            VentilcacionUci.nuevoRegistro.ventilatorio = _value;
+                                        },
+                                        class: "custom-select"
+                                    }, m('option', 'Seleccione...'), [{
+                                            id: "ModoVentilatorio",
+                                            label: "MODO VENTILARIO"
+                                        }, {
+                                            id: "PresionInspiratoria",
+                                            label: "PRESION INSPIRATORIA"
+                                        }, {
+                                            id: "VolumenCorriente",
+                                            label: "VOLUMEN CORRIENTE"
+                                        }, {
+                                            id: "VolumenCorrientePack",
+                                            label: "VOLUMEN CORRIENTE PACK"
+                                        },
+                                        {
+                                            id: "PresionSoporte",
+                                            label: "PRESION SOPORTE"
+                                        },
+                                        {
+                                            id: "PEEP",
+                                            label: "PEEP"
+                                        },
+                                        {
+                                            id: "FVR",
+                                            label: "FVR"
+                                        },
+                                        {
+                                            id: "FRPT",
+                                            label: "FRPT"
+                                        },
+                                        {
+                                            id: "FIO2",
+                                            label: "FIO2"
+                                        },
+                                        {
+                                            id: "PAFI",
+                                            label: "PAFI"
+                                        },
+                                        {
+                                            id: "RelacionIE",
+                                            label: "RELACION I:E"
+                                        },
+                                        {
+                                            id: "TInspiracion",
+                                            label: "T. INSPIRACION"
+                                        },
+                                        {
+                                            id: "PresionPico",
+                                            label: "PRESION PICO"
+                                        },
+                                        {
+                                            id: "PresionMedia",
+                                            label: "PRESION MEDIA"
+                                        },
+                                        {
+                                            id: "Compliance",
+                                            label: "COMPLIANCE"
+                                        },
+                                        {
+                                            id: "ResistenciaPulmonar",
+                                            label: "RESISTENCIA PULMONAR"
+                                        },
+                                        {
+                                            id: "Hercios",
+                                            label: "HERCIOS"
+                                        },
+                                        {
+                                            id: "PresionMediaVia",
+                                            label: "PRESION MEDIA VIA"
+                                        },
+                                        {
+                                            id: "Flujo",
+                                            label: "FLUJO"
+                                        },
+                                        {
+                                            id: "Amplitud",
+                                            label: "AMPLITUD"
+                                        },
+                                        {
+                                            id: "DO2",
+                                            label: "DO2"
+                                        },
+                                        {
+                                            id: "DCO2",
+                                            label: "DCO2"
+                                        },
+                                        {
+                                            id: "VolumenAltaHere",
+                                            label: "VOLUMEN ALTA HERE"
+                                        },
+                                        {
+                                            id: "FijacionTet",
+                                            label: "FIJACION TET"
+                                        }
+                                    ].map(x =>
+                                        m('option[id="' + x.id + '"]', x.label)
+                                    ))
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    (VentilcacionUci.nuevoRegistro !== null ? [
+                                        m('div.d-flex', [
+                                            m("input", {
+                                                id: "condicion" + VentilcacionUci.nuevoRegistro.id,
+                                                class: "form-control tx-semibold tx-14",
+                                                type: "text",
+                                                placeholder: "...",
+                                                oninput: (e) => {
+                                                    VentilcacionUci.nuevoRegistro.condicion = e.target.value;
+                                                },
+                                            })
+
+                                        ]),
+                                    ] : [])
+                                ),
+                                m("td.tx-14.tx-normal[colspan='3']",
+                                    (VentilcacionUci.nuevoRegistro !== null ? [
+                                        m('div.d-flex', [
+                                            m("input", {
+                                                id: "hora" + VentilcacionUci.nuevoRegistro.id,
+                                                class: "form-control tx-semibold tx-14",
+                                                type: "text",
+                                                placeholder: "...",
+                                                oninput: (e) => {
+                                                    VentilcacionUci.nuevoRegistro.hora = e.target.value;
+                                                },
+                                            })
+
+                                        ]),
+                                    ] : [])
+                                ),
+
+
+                            ]),
+
+
+                            m("tr.tx-uppercase", {
+                                style: { "background-color": "#eaeff5" }
+                            }, [
+                                m("th[scope='col'][colspan='12']",
+                                    "Registros: "
+                                ),
+                            ]),
+                            m("tr.tx-uppercase.mg-t-20", [
+                                m("td[colspan='12']",
+                                    PacientesUCI.vTable('table-ventilatorios', VentilcacionUci.getRegistros(), PacientesUCI.arqTableVentilatorios())
+                                ),
+                            ]),
+                        ]),
 
                     ])
                 ])
@@ -2084,7 +2456,7 @@ class PacientesUCI extends App {
             cache: false,
             destroy: true,
             order: [
-                [0, 'desc']
+                [0, 'asc']
             ],
             columns: [{
                     title: "N° : ",
@@ -2160,6 +2532,8 @@ class PacientesUCI extends App {
                 },
                 {
                     fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+
+                        console.log(oData)
                         return m.mount(nTd, {
                             view: () => {
                                 return [
@@ -2169,7 +2543,8 @@ class PacientesUCI extends App {
                                                 class: (oData.status == 1 ? 'bg-warning' : 'bg-success'),
 
                                             },
-                                            (oData.status == 1 ? 'Turno Abierto' : 'Turno Cerado'),
+                                            (oData.status == 1 ? 'Turno Abierto' : ''),
+                                            (oData.status == 2 ? 'Turno Cerado' : ''),
                                         ),
 
                                     ])
@@ -2189,8 +2564,10 @@ class PacientesUCI extends App {
                                 return [
                                     m('div.text-center', [
                                         m("button.btn.btn-xs.btn-block.btn-success[type='button']", {
+                                                disabled: (oData.status == 1 && FecthUci.dataSecciones !== null ? '' : 'disabled'),
                                                 onclick: () => {
                                                     oData.iniciarGestion();
+                                                    PacientesUCI.showSecciones();
                                                 },
                                             },
                                             'Gestionar',
@@ -2214,10 +2591,12 @@ class PacientesUCI extends App {
                             view: () => {
                                 return [
                                     m('div.text-center', [
-
                                         m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
+                                                disabled: (oData.status == 1 && FecthUci.dataSecciones !== null ? '' : 'disabled'),
+
                                                 onclick: () => {
                                                     oData.cerrarTurno();
+                                                    FecthUci.cerrarTurno();
                                                 },
                                             },
                                             'Cerrar',
@@ -2275,10 +2654,15 @@ class PacientesUCI extends App {
             cache: false,
             destroy: true,
             order: [
-                [0, 'desc']
+                [1, 'desc']
             ],
             columns: [{
-                    title: "N° : ",
+                    title: "N°:",
+
+                }, {
+                    title: "Turno N°:",
+                }, {
+                    title: "Turno N°:",
                 },
                 {
                     title: "Cuidado:",
@@ -2296,6 +2680,9 @@ class PacientesUCI extends App {
                 {
                     title: "HS:",
                 },
+                {
+                    title: "Opciones:",
+                },
 
 
             ],
@@ -2303,69 +2690,33 @@ class PacientesUCI extends App {
                     mRender: function(data, type, row, meta) {
                         return meta.row + meta.settings._iDisplayStart + 1;
                     },
-                    visible: true,
+
+                    visible: false,
                     aTargets: [0],
                     orderable: true,
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.cuidado;
+                        return full.numeroTurno;
                     },
 
-                    visible: true,
+                    visible: false,
                     aTargets: [1],
                     orderable: true,
 
                 },
                 {
-                    mRender: function(data, type, full) {
-                        return full.frecuencia;
-                    },
-                    visible: true,
-                    aTargets: [2],
-                    orderable: true,
 
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.am;
-                    },
-                    visible: true,
-                    aTargets: [3],
-                    orderable: true,
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.pm;
-                    },
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.hs;
-                    },
-                    visible: true,
-                    aTargets: [5],
-                    orderable: true,
-                },
-
-                {
                     fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+
                         return m.mount(nTd, {
                             view: () => {
                                 return [
-                                    m('div.text-center', [
-
-                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                                onclick: () => {
-                                                    CuidadosUci.eliminarRegistro(oData.id);
-                                                    PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
-
-                                                },
+                                    m('div.text-center.pd-5', [
+                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                                class: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'bg-light' : 'bg-warning')
                                             },
-                                            'Eliminar',
+                                            oData.numeroTurno
                                         ),
 
                                     ])
@@ -2374,8 +2725,115 @@ class PacientesUCI extends App {
                             }
                         });
                     },
+                    width: '6%',
+                    visible: true,
+                    aTargets: [2],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.cuidado;
+                    },
+                    width: '19%',
+                    visible: true,
+                    aTargets: [3],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.frecuencia;
+                    },
+                    width: '10%',
+                    visible: true,
+                    aTargets: [4],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.am;
+                    },
+                    width: '10%',
+                    visible: true,
+                    aTargets: [5],
+                    orderable: true,
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.pm;
+                    },
+                    width: '10%',
                     visible: true,
                     aTargets: [6],
+                    orderable: true,
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.hs;
+                    },
+                    width: '10%',
+                    visible: true,
+                    aTargets: [7],
+                    orderable: true,
+                },
+
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
+                                        m("button.btn.btn-xs.btn-success[type='button']", {
+                                                class: (oData.editar ? 'd-none' : ''),
+                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
+                                                onclick: () => {
+                                                    CuidadosUci.nuevoRegistro = null
+                                                    CuidadosUci.verRegistro(oData);
+                                                },
+                                            },
+                                            'Editar',
+                                        ),
+                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
+                                                class: (oData.editar ? '' : 'd-none'),
+                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
+
+                                                onclick: () => {
+                                                    oData.editar = null;
+                                                    CuidadosUci.nuevoRegistro = null;
+                                                },
+                                            },
+                                            'Cancelar Edición',
+                                        ),
+                                        m("button.btn.btn-xs.btn-danger[type='button']", {
+                                                class: (oData.editar ? 'd-none' : ''),
+                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
+
+                                                onclick: () => {
+
+                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                                        CuidadosUci.eliminarRegistro(oData);
+
+                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
+                                                    }
+
+
+
+
+                                                },
+                                            },
+                                            'Eliminar',
+                                        ),
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    width: '10%',
+                    visible: true,
+                    aTargets: [8],
                     orderable: true,
 
                 }
@@ -2420,10 +2878,20 @@ class PacientesUCI extends App {
             cache: false,
             destroy: true,
             order: [
-                [0, 'desc']
+                [0, 'desc'],
+                [1, 'desc']
             ],
             columns: [{
-                    title: "N° : ",
+                    title: "Turno:",
+                },
+                {
+                    title: "N°:",
+                },
+                {
+                    title: "Turno:",
+                },
+                {
+                    title: "N°:",
                 },
                 {
                     title: "Via:",
@@ -2459,20 +2927,64 @@ class PacientesUCI extends App {
                 }
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
+                    mRender: function(data, type, full) {
+                        return full.numeroTurno;
                     },
-                    visible: true,
+                    visible: false,
                     aTargets: [0],
                     orderable: true,
                 },
+                {
+                    mRender: function(data, type, full) {
+                        return full.nro;
+                    },
+                    visible: false,
+                    aTargets: [1],
+                    orderable: true,
+
+                },
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center.pd-5', [
+                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                                class: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'bg-light' : 'bg-warning')
+                                            },
+                                            oData.numeroTurno
+                                        ),
+
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    width: '6%',
+                    visible: true,
+                    aTargets: [2],
+                    orderable: false,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.nro;
+                    },
+
+                    visible: true,
+                    aTargets: [3],
+                    orderable: false,
+
+                },
+
                 {
                     mRender: function(data, type, full) {
                         return full.via;
                     },
 
                     visible: true,
-                    aTargets: [1],
+                    aTargets: [4],
                     orderable: true,
 
                 },
@@ -2481,7 +2993,7 @@ class PacientesUCI extends App {
                         return full.ubicacion;
                     },
                     visible: true,
-                    aTargets: [2],
+                    aTargets: [5],
                     orderable: true,
 
                 },
@@ -2490,42 +3002,12 @@ class PacientesUCI extends App {
                         return full.tipo;
                     },
                     visible: true,
-                    aTargets: [3],
+                    aTargets: [6],
                     orderable: true,
                 },
                 {
                     mRender: function(data, type, full) {
                         return full.inicio;
-                    },
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.retiro;
-                    },
-                    visible: true,
-                    aTargets: [5],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.cambio;
-                    },
-                    visible: true,
-                    aTargets: [6],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.curacion;
                     },
                     visible: true,
                     aTargets: [7],
@@ -2535,7 +3017,7 @@ class PacientesUCI extends App {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.condicion;
+                        return full.retiro;
                     },
                     visible: true,
                     aTargets: [8],
@@ -2545,10 +3027,40 @@ class PacientesUCI extends App {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.observacion;
+                        return full.cambio;
                     },
                     visible: true,
                     aTargets: [9],
+                    orderable: true,
+
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.curacion;
+                    },
+                    visible: true,
+                    aTargets: [10],
+                    orderable: true,
+
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.condicion;
+                    },
+                    visible: true,
+                    aTargets: [11],
+                    orderable: true,
+
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.observacion;
+                    },
+                    visible: true,
+                    aTargets: [12],
                     orderable: true,
 
 
@@ -2558,24 +3070,51 @@ class PacientesUCI extends App {
                         return m.mount(nTd, {
                             view: () => {
                                 return [
-                                    m('div.text-center', [
-
-                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
+                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
+                                        m("button.btn.btn-xs.btn-success[type='button']", {
+                                                class: (oData.editar ? 'd-none' : ''),
+                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
                                                 onclick: () => {
+                                                    ViasUci.nuevoRegistro = null
+                                                    ViasUci.verRegistro(oData);
+                                                },
+                                            },
+                                            'Editar',
+                                        ),
+                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
+                                                class: (oData.editar ? '' : 'd-none'),
+                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
 
+                                                onclick: () => {
+                                                    oData.editar = null;
+                                                    ViasUci.nuevoRegistro = null;
+                                                },
+                                            },
+                                            'Cancelar Edición',
+                                        ),
+                                        m("button.btn.btn-xs.btn-danger[type='button']", {
+                                                class: (oData.editar ? 'd-none' : ''),
+                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
+                                                onclick: () => {
+                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                                        ViasUci.eliminarRegistro(oData);
+                                                        FecthUci.eliminarRegistro(oData);
+                                                        ViasUci.nuevoRegistro = null;
+                                                        PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                                    }
                                                 },
                                             },
                                             'Eliminar',
                                         ),
-
                                     ])
 
                                 ]
                             }
                         });
                     },
+                    width: '10%',
                     visible: true,
-                    aTargets: [10],
+                    aTargets: [13],
                     orderable: true,
 
                 }
@@ -2620,10 +3159,16 @@ class PacientesUCI extends App {
             cache: false,
             destroy: true,
             order: [
-                [0, 'desc']
+                [1, 'desc']
             ],
             columns: [{
                     title: "N° : ",
+                },
+                {
+                    title: "Turno N° : ",
+                },
+                {
+                    title: "Turno N° : ",
                 },
                 {
                     title: "Acceso:",
@@ -2662,9 +3207,43 @@ class PacientesUCI extends App {
                     mRender: function(data, type, row, meta) {
                         return meta.row + meta.settings._iDisplayStart + 1;
                     },
-                    visible: true,
+                    visible: false,
                     aTargets: [0],
                     orderable: true,
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.numeroTurno;
+                    },
+
+                    visible: false,
+                    aTargets: [1],
+                    orderable: true,
+
+                },
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center.pd-5', [
+                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                                class: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'bg-light' : 'bg-warning')
+                                            },
+                                            oData.numeroTurno
+                                        ),
+
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    width: '6%',
+                    visible: true,
+                    aTargets: [2],
+                    orderable: true,
+
                 },
                 {
                     mRender: function(data, type, full) {
@@ -2672,7 +3251,7 @@ class PacientesUCI extends App {
                     },
 
                     visible: true,
-                    aTargets: [1],
+                    aTargets: [3],
                     orderable: true,
 
                 },
@@ -2681,7 +3260,7 @@ class PacientesUCI extends App {
                         return full.ubicacion;
                     },
                     visible: true,
-                    aTargets: [2],
+                    aTargets: [4],
                     orderable: true,
 
                 },
@@ -2690,32 +3269,12 @@ class PacientesUCI extends App {
                         return full.tipo;
                     },
                     visible: true,
-                    aTargets: [3],
+                    aTargets: [5],
                     orderable: true,
                 },
                 {
                     mRender: function(data, type, full) {
                         return full.inicio;
-                    },
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.retiro;
-                    },
-                    visible: true,
-                    aTargets: [5],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.cambio;
                     },
                     visible: true,
                     aTargets: [6],
@@ -2725,7 +3284,7 @@ class PacientesUCI extends App {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.curacion;
+                        return full.retiro;
                     },
                     visible: true,
                     aTargets: [7],
@@ -2735,7 +3294,7 @@ class PacientesUCI extends App {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.condicion;
+                        return full.cambio;
                     },
                     visible: true,
                     aTargets: [8],
@@ -2745,10 +3304,30 @@ class PacientesUCI extends App {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.observacion;
+                        return full.curacion;
                     },
                     visible: true,
                     aTargets: [9],
+                    orderable: true,
+
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.condicion;
+                    },
+                    visible: true,
+                    aTargets: [10],
+                    orderable: true,
+
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.observacion;
+                    },
+                    visible: true,
+                    aTargets: [11],
                     orderable: true,
 
 
@@ -2758,24 +3337,55 @@ class PacientesUCI extends App {
                         return m.mount(nTd, {
                             view: () => {
                                 return [
-                                    m('div.text-center', [
-
-                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
+                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
+                                        m("button.btn.btn-xs.btn-success[type='button']", {
+                                                class: (oData.editar ? 'd-none' : ''),
+                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
                                                 onclick: () => {
+                                                    AccesosUci.nuevoRegistro = null
+                                                    AccesosUci.verRegistro(oData);
+                                                },
+                                            },
+                                            'Editar',
+                                        ),
+                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
+                                                class: (oData.editar ? '' : 'd-none'),
+                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
+
+                                                onclick: () => {
+                                                    oData.editar = null;
+                                                    AccesosUci.nuevoRegistro = null;
+                                                },
+                                            },
+                                            'Cancelar Edición',
+                                        ),
+                                        m("button.btn.btn-xs.btn-danger[type='button']", {
+                                                class: (oData.editar ? 'd-none' : ''),
+                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
+
+                                                onclick: () => {
+
+                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                                        AccesosUci.eliminarRegistro(oData);
+                                                        PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
+                                                    }
+
+
+
 
                                                 },
                                             },
                                             'Eliminar',
                                         ),
-
                                     ])
 
                                 ]
                             }
                         });
                     },
+                    width: '10%',
                     visible: true,
-                    aTargets: [10],
+                    aTargets: [12],
                     orderable: true,
 
                 }
@@ -2925,6 +3535,280 @@ class PacientesUCI extends App {
                     },
                     visible: true,
                     aTargets: [6],
+                    orderable: true,
+
+                }
+
+
+            ],
+            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+
+            },
+        };
+    }
+
+    static arqTableMarcapasos() {
+        return {
+            data: null,
+            dom: 'ltp',
+            language: {
+                searchPlaceholder: "Buscar...",
+                sSearch: "",
+                lengthMenu: "Mostrar _MENU_ registros por página",
+                sProcessing: "Procesando...",
+                sZeroRecords: "Todavía no tienes resultados disponibles.",
+                sEmptyTable: "Ningún dato disponible en esta tabla",
+                sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+                sInfoPostFix: "",
+                sUrl: "",
+                sInfoThousands: ",",
+                sLoadingRecords: "Cargando...",
+                oPaginate: {
+                    sFirst: "Primero",
+                    sLast: "Último",
+                    sNext: "Siguiente",
+                    sPrevious: "Anterior",
+                },
+                oAria: {
+                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+                    sSortDescending: ": Activar para ordenar la columna de manera descendente",
+                },
+            },
+            cache: false,
+            destroy: true,
+            order: [
+                [0, 'desc']
+            ],
+            columns: [{
+                    title: "N° : ",
+                },
+                {
+                    title: "Hora:",
+                },
+                {
+                    title: "AM:",
+                },
+                {
+                    title: "PM:",
+                },
+                {
+                    title: "HS:",
+                },
+
+                {
+                    title: "Observación:",
+                },
+                {
+                    title: "Opciones:",
+                }
+            ],
+            aoColumnDefs: [{
+                    mRender: function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    },
+                    visible: true,
+                    aTargets: [0],
+                    orderable: true,
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.hora;
+                    },
+
+                    visible: true,
+                    aTargets: [1],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.am;
+                    },
+                    visible: true,
+                    aTargets: [2],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.pm;
+                    },
+                    visible: true,
+                    aTargets: [3],
+                    orderable: true,
+
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.hs;
+                    },
+                    visible: true,
+                    aTargets: [4],
+                    orderable: true,
+
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.observacion;
+                    },
+                    visible: true,
+                    aTargets: [5],
+                    orderable: true,
+
+
+                },
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center', [
+
+                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
+                                                onclick: () => {
+
+                                                },
+                                            },
+                                            'Eliminar',
+                                        ),
+
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    visible: true,
+                    aTargets: [6],
+                    orderable: true,
+
+                }
+
+
+            ],
+            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+
+            },
+        };
+    }
+
+    static arqTableVentilatorios() {
+        return {
+            data: null,
+            dom: 'ltp',
+            language: {
+                searchPlaceholder: "Buscar...",
+                sSearch: "",
+                lengthMenu: "Mostrar _MENU_ registros por página",
+                sProcessing: "Procesando...",
+                sZeroRecords: "Todavía no tienes resultados disponibles.",
+                sEmptyTable: "Ningún dato disponible en esta tabla",
+                sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+                sInfoPostFix: "",
+                sUrl: "",
+                sInfoThousands: ",",
+                sLoadingRecords: "Cargando...",
+                oPaginate: {
+                    sFirst: "Primero",
+                    sLast: "Último",
+                    sNext: "Siguiente",
+                    sPrevious: "Anterior",
+                },
+                oAria: {
+                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+                    sSortDescending: ": Activar para ordenar la columna de manera descendente",
+                },
+            },
+            cache: false,
+            destroy: true,
+            order: [
+                [0, 'desc']
+            ],
+            columns: [{
+                    title: "N° : ",
+                },
+                {
+                    title: "Ventilatorio:",
+                },
+                {
+                    title: "Condición:",
+                },
+                {
+                    title: "Hora:",
+                },
+
+
+                {
+                    title: "Opciones:",
+                }
+            ],
+            aoColumnDefs: [{
+                    mRender: function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    },
+                    visible: true,
+                    aTargets: [0],
+                    orderable: true,
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.ventilatorio;
+                    },
+
+                    visible: true,
+                    aTargets: [1],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.condicion;
+                    },
+                    visible: true,
+                    aTargets: [2],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.hora;
+                    },
+                    visible: true,
+                    aTargets: [3],
+                    orderable: true,
+
+
+                },
+
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center', [
+
+                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
+                                                onclick: () => {
+
+                                                },
+                                            },
+                                            'Eliminar',
+                                        ),
+
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    visible: true,
+                    aTargets: [4],
                     orderable: true,
 
                 }
@@ -3269,33 +4153,13 @@ class PacientesUCI extends App {
                     title: "N° : ",
                 },
                 {
-                    title: "Cultivo:",
+                    title: "Muestra:",
                 },
                 {
-                    title: "Ubicación:",
+                    title: "Fecha de Envío:",
                 },
                 {
-                    title: "Tipo:",
-                },
-
-                {
-                    title: "Inicio:",
-                },
-                {
-                    title: "Retiro:",
-                },
-
-                {
-                    title: "Cambio:",
-                },
-                {
-                    title: "Curación:",
-                },
-                {
-                    title: "Condición:",
-                },
-                {
-                    title: "Observación:",
+                    title: "Resultado de Germen Aislado:",
                 },
                 {
                     title: "Opciones:",
@@ -3311,7 +4175,7 @@ class PacientesUCI extends App {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.cultivo;
+                        return full.muestra;
                     },
 
                     visible: true,
@@ -3321,7 +4185,7 @@ class PacientesUCI extends App {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.ubicacion;
+                        return full.envio;
                     },
                     visible: true,
                     aTargets: [2],
@@ -3330,71 +4194,11 @@ class PacientesUCI extends App {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.tipo;
+                        return full.resultado;
                     },
                     visible: true,
                     aTargets: [3],
                     orderable: true,
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.inicio;
-                    },
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.retiro;
-                    },
-                    visible: true,
-                    aTargets: [5],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.cambio;
-                    },
-                    visible: true,
-                    aTargets: [6],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.curacion;
-                    },
-                    visible: true,
-                    aTargets: [7],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.condicion;
-                    },
-                    visible: true,
-                    aTargets: [8],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.observacion;
-                    },
-                    visible: true,
-                    aTargets: [9],
-                    orderable: true,
-
-
                 },
                 {
                     fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
@@ -3418,7 +4222,7 @@ class PacientesUCI extends App {
                         });
                     },
                     visible: true,
-                    aTargets: [10],
+                    aTargets: [4],
                     orderable: true,
 
                 }
@@ -3435,34 +4239,13 @@ class PacientesUCI extends App {
         $('#' + idTable).DataTable().clear().rows.add(_data).draw();
     }
 
-    static vTableTurnos(idTable, dataTable, arqTable) {
+
+    static vTable(idTable, dataTable, arqTable) {
         return [
             m(TableUCI, { idTable: idTable, dataTable: dataTable, arqTable: arqTable })
         ]
     }
 
-    static vTableCuidados(idTable, dataTable, arqTable) {
-        return [
-            m(TableUCI, { idTable: idTable, dataTable: dataTable, arqTable: arqTable })
-        ]
-    }
-
-    static vTableVias(idTable, dataTable, arqTable) {
-        return [
-            m(TableUCI, { idTable: idTable, dataTable: dataTable, arqTable: arqTable })
-        ]
-    }
-
-    static vTableAccesos(idTable, dataTable, arqTable) {
-        return [
-            m(TableUCI, { idTable: idTable, dataTable: dataTable, arqTable: arqTable })
-        ]
-    }
-    static vTableUsuarios(idTable, dataTable, arqTable) {
-        return [
-            m(TableUCI, { idTable: idTable, dataTable: dataTable, arqTable: arqTable })
-        ]
-    }
     static page() {
         return [
             PacientesUCI.vHeader(),

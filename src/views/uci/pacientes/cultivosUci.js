@@ -5,24 +5,14 @@ import Errors from "../../utils/errors";
 
 class Cultivo {
     id = null;
-    cultivo = null;
-    ubicacion = null;
-    tipo = null;
-    inicio = null;
-    retiro = null;
-    curacion = null;
-    condicion = null;
-    observacion = null;
+    muestra = null;
+    envio = null;
+    resultado = null;
     constructor() {
         this.id = this.id;
-        this.cultivo = this.cultivo;
-        this.ubicacion = this.ubicacion;
-        this.tipo = this.tipo;
-        this.inicio = this.inicio;
-        this.retiro = this.retiro;
-        this.curacion = this.curacion;
-        this.condicion = this.condicion;
-        this.observacion = this.observacion;
+        this.muestra = this.muestra;
+        this.envio = this.envio;
+        this.resultado = this.resultado;
     }
 }
 
@@ -30,7 +20,7 @@ class Cultivo {
 class CultivosUci {
     static registros = [];
     static nuevoRegistro = null;
-    static show = false;
+    static show = true;
     static validarRegistro() {
 
     }

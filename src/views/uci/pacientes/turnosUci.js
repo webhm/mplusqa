@@ -3,6 +3,8 @@ import App from "../../../models/App";
 import Loader from "../../utils/loader";
 import Errors from "../../utils/errors";
 import Table from "../../utils/table";
+import FecthUci from "./fecthUci";
+import PacientesUCI from "./pacientesUci";
 
 class Turno {
     fechaTurno = null;
@@ -39,8 +41,20 @@ class Turno {
 class TurnosUci {
     static turnos = [];
     static nuevoTurno = null;
+
+    static setTurno(t) {
+        TurnosUci.nuevoTurno = new Turno();
+        TurnosUci.nuevoTurno.fechaTurno = moment().format('DD-MM-YYYY HH:mm');
+        TurnosUci.nuevoTurno.usuarioTurno = 'MCHANG';
+        TurnosUci.nuevoTurno.paciente = 'PACIENTE PRUEBA MV';
+        TurnosUci.nuevoTurno.especialidad = 'MEDICINA INTERNA';
+        TurnosUci.nuevoTurno.status = t.status;
+        TurnosUci.nuevoTurno.gestion = 0;
+    }
+
     static iniciarTurno() {
         TurnosUci.validarInicioTurno();
+        FecthUci.registrarTurno();
         TurnosUci.nuevoTurno = new Turno();
         TurnosUci.nuevoTurno.fechaTurno = moment().format('DD-MM-YYYY HH:mm');
         TurnosUci.nuevoTurno.usuarioTurno = 'MCHANG';

@@ -24,7 +24,7 @@ class Hemodialisis {
 class HemodialisisUci {
     static registros = [];
     static nuevoRegistro = null;
-    static show = true;
+    static show = false;
     static validarRegistro() {
 
     }
