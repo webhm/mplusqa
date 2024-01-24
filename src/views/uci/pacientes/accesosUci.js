@@ -39,8 +39,14 @@ class AccesosUci {
         AccesosUci.nuevoRegistro = new Acceso();
     }
     static agregarRegistro() {
-        FecthUci.registrarSeccion(AccesosUci.nuevoRegistro);
-        AccesosUci.registros.push(AccesosUci.nuevoRegistro);
+        AccesosUci.nuevoRegistro.nro = (AccesosUci.registros.length > 0 ? (AccesosUci.registros.length + 1) : 1);
+        let res = [];
+        AccesosUci.registros.map((_v, _i) => {
+            res.push(_v);
+        });
+        res.push(AccesosUci.nuevoRegistro);
+        AccesosUci.registros = res;
+
     }
     static verRegistro(registro) {
         registro.editar = true;
@@ -48,47 +54,41 @@ class AccesosUci {
     }
     static editarRegistro() {
 
-        FecthUci.actualizarRegistro(AccesosUci.nuevoRegistro);
-
-        let res = [];
-
-        AccesosUci.registros.map((_v) => {
-            if (_v.id != AccesosUci.nuevoRegistro.id) {
-                res.push(_v);
-            }
-        });
-
-        AccesosUci.registros = res;
         AccesosUci.nuevoRegistro.editar = null;
-        AccesosUci.registros.push(AccesosUci.nuevoRegistro);
-    }
-    static eliminarRegistro() {
-
-        FecthUci.eliminarRegistro(obj);
-
         let res = [];
-
         AccesosUci.registros.map((_v) => {
-            if (_v.id != obj.id) {
+            if (_v.nro != AccesosUci.nuevoRegistro.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
                 res.push(_v);
             }
         });
-
+        res.push(AccesosUci.nuevoRegistro);
         AccesosUci.registros = res;
-        AccesosUci.nuevoRegistro = null;
+
+    }
+    static eliminarRegistro(obj) {
+
+        let res = [];
+        AccesosUci.registros.map((_v) => {
+            if (_v.nro != obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                res.push(_v);
+            }
+        });
+        AccesosUci.registros = res;
+
     }
     static parseSeccion(options) {
 
-        AccesosUci.registros = [];
 
         options.map((option) => {
             FecthUci.dataSecciones.filter((obj) => {
-                if (obj.IDSECCION === option.id) {
-                    let _obj = JSON.parse(obj.DATASECCION);
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id) {
                     AccesosUci.registros.push(_obj);
                 }
             });
         });
+
+
 
     }
     static getAllRegistros(options) {

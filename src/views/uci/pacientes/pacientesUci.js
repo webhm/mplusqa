@@ -278,12 +278,14 @@ class PacientesUCI extends App {
                                                     CuidadosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     if (CuidadosUci.nuevoRegistro.editar == null) {
                                                         CuidadosUci.agregarRegistro();
-                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
+                                                        FecthUci.registrarSeccion(CuidadosUci.nuevoRegistro);
                                                         CuidadosUci.nuevoRegistro = null;
+                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
                                                     } else {
                                                         CuidadosUci.editarRegistro();
-                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
+                                                        FecthUci.actualizarRegistro(CuidadosUci.nuevoRegistro);
                                                         CuidadosUci.nuevoRegistro = null;
+                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
                                                     }
 
 
@@ -2045,7 +2047,7 @@ class PacientesUCI extends App {
                             ]),
                             m("tr", [
 
-                                m("td.tx-14.tx-normal[colspan='3']",
+                                m("td.tx-14.tx-normal[colspan='4']",
                                     m('select.tx-semibold', {
                                         onchange: (e) => {
                                             let _id = e.target.options[e.target.selectedIndex].id;
@@ -2152,7 +2154,7 @@ class PacientesUCI extends App {
                                         m('option[id="' + x.id + '"]', x.label)
                                     ))
                                 ),
-                                m("td.tx-14.tx-normal[colspan='3']",
+                                m("td.tx-14.tx-normal[colspan='4']",
                                     (VentilcacionUci.nuevoRegistro !== null ? [
                                         m('div.d-flex', [
                                             m("input", {
@@ -2168,7 +2170,7 @@ class PacientesUCI extends App {
                                         ]),
                                     ] : [])
                                 ),
-                                m("td.tx-14.tx-normal[colspan='3']",
+                                m("td.tx-14.tx-normal[colspan='4']",
                                     (VentilcacionUci.nuevoRegistro !== null ? [
                                         m('div.d-flex', [
                                             m("input", {
@@ -2651,6 +2653,7 @@ class PacientesUCI extends App {
             cache: false,
             destroy: true,
             order: [
+                [0, 'desc'],
                 [1, 'desc']
             ],
             columns: [{
@@ -2684,19 +2687,17 @@ class PacientesUCI extends App {
 
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
+                    mRender: function(data, type, full) {
+                        return full.numeroTurno;
                     },
-
                     visible: false,
                     aTargets: [0],
                     orderable: true,
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.numeroTurno;
+                        return full.nro;
                     },
-
                     visible: false,
                     aTargets: [1],
                     orderable: true,
@@ -2811,7 +2812,8 @@ class PacientesUCI extends App {
 
                                                     if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
                                                         CuidadosUci.eliminarRegistro(oData);
-
+                                                        FecthUci.eliminarRegistro(oData);
+                                                        CuidadosUci.nuevoRegistro = null;
                                                         PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
                                                     }
 

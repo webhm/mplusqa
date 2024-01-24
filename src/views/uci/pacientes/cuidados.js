@@ -37,8 +37,13 @@ class CuidadosUci {
         CuidadosUci.nuevoRegistro = new Cuidado();
     }
     static agregarRegistro() {
-        FecthUci.registrarSeccion(CuidadosUci.nuevoRegistro);
-        CuidadosUci.registros.push(CuidadosUci.nuevoRegistro);
+        CuidadosUci.nuevoRegistro.nro = (CuidadosUci.registros.length > 0 ? (CuidadosUci.registros.length + 1) : 1);
+        let res = [];
+        CuidadosUci.registros.map((_v, _i) => {
+            res.push(_v);
+        });
+        res.push(CuidadosUci.nuevoRegistro);
+        CuidadosUci.registros = res;
     }
     static verRegistro(registro) {
         registro.editar = true;
@@ -46,59 +51,46 @@ class CuidadosUci {
     }
     static editarRegistro() {
 
-        FecthUci.actualizarRegistro(CuidadosUci.nuevoRegistro);
-
+        CuidadosUci.nuevoRegistro.editar = null;
         let res = [];
-
         CuidadosUci.registros.map((_v) => {
-            if (_v.id != CuidadosUci.nuevoRegistro.id) {
+            if (_v.nro != CuidadosUci.nuevoRegistro.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
                 res.push(_v);
             }
         });
-
+        res.push(CuidadosUci.nuevoRegistro);
         CuidadosUci.registros = res;
-        CuidadosUci.nuevoRegistro.editar = null;
-        CuidadosUci.registros.push(CuidadosUci.nuevoRegistro);
+
     }
     static eliminarRegistro(obj) {
 
-        FecthUci.eliminarRegistro(obj);
-
         let res = [];
-
         CuidadosUci.registros.map((_v) => {
-            if (_v.id != obj.id) {
+            if (_v.nro != obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
                 res.push(_v);
             }
         });
-
         CuidadosUci.registros = res;
-        CuidadosUci.nuevoRegistro = null;
 
     }
     static parseSeccion(options) {
 
-        CuidadosUci.registros = [];
-
         options.map((option) => {
             FecthUci.dataSecciones.filter((obj) => {
-                if (obj.IDSECCION === option.id) {
-                    let _obj = JSON.parse(obj.DATASECCION);
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id) {
                     CuidadosUci.registros.push(_obj);
                 }
             });
         });
 
+
     }
-
     static getAllRegistros(options) {
-
         CuidadosUci.parseSeccion(options);
         return CuidadosUci.registros;
     }
-
     static getRegistros() {
-
         return CuidadosUci.registros;
     }
 }

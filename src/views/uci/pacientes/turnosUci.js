@@ -46,7 +46,7 @@ class TurnosUci {
         TurnosUci.nuevoTurno = new Turno();
         TurnosUci.nuevoTurno.fechaTurno = moment().format('DD-MM-YYYY HH:mm');
         TurnosUci.nuevoTurno.usuarioTurno = 'MCHANG';
-        TurnosUci.nuevoTurno.paciente = 'PACIENTE PRUEBA MV';
+        TurnosUci.nuevoTurno.paciente = 'PRUEBA PRUEBA PRODUCCION';
         TurnosUci.nuevoTurno.especialidad = 'MEDICINA INTERNA';
         TurnosUci.nuevoTurno.status = t.status;
         TurnosUci.nuevoTurno.gestion = 0;
@@ -58,7 +58,7 @@ class TurnosUci {
         TurnosUci.nuevoTurno = new Turno();
         TurnosUci.nuevoTurno.fechaTurno = moment().format('DD-MM-YYYY HH:mm');
         TurnosUci.nuevoTurno.usuarioTurno = 'MCHANG';
-        TurnosUci.nuevoTurno.paciente = 'PACIENTE PRUEBA MV';
+        TurnosUci.nuevoTurno.paciente = 'PRUEBA PRUEBA PRODUCCION';
         TurnosUci.nuevoTurno.especialidad = 'MEDICINA INTERNA';
         TurnosUci.nuevoTurno.abrirTurno();
         TurnosUci.turnos.push(TurnosUci.nuevoTurno);

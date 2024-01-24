@@ -52,7 +52,6 @@ class ViasUci {
         res.push(ViasUci.nuevoRegistro);
         ViasUci.registros = res;
 
-
     }
     static verRegistro(registro) {
         registro.editar = true;
@@ -61,40 +60,29 @@ class ViasUci {
     static editarRegistro() {
 
         ViasUci.nuevoRegistro.editar = null;
-
         let res = [];
-
         ViasUci.registros.map((_v) => {
             if (_v.nro != ViasUci.nuevoRegistro.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
                 res.push(_v);
             }
         });
-
         res.push(ViasUci.nuevoRegistro);
-
         ViasUci.registros = res;
-
-
-
 
     }
     static eliminarRegistro(obj) {
 
         let res = [];
-
         ViasUci.registros.map((_v) => {
             if (_v.nro != obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
                 res.push(_v);
             }
         });
-
         ViasUci.registros = res;
-
 
     }
     static parseSeccion(options) {
 
-        ViasUci.registros = [];
 
         options.map((option) => {
             FecthUci.dataSecciones.filter((obj) => {
@@ -104,6 +92,8 @@ class ViasUci {
                 }
             });
         });
+
+
 
 
     }
