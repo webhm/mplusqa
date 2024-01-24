@@ -1215,11 +1215,17 @@ class PacientesUCI extends App {
                                         onchange: (e) => {
                                             let _id = e.target.options[e.target.selectedIndex].id;
                                             let _value = e.target.options[e.target.selectedIndex].value;
-                                            CateterUci.iniciarRegistro();
-                                            CateterUci.nuevoRegistro.id = _id;
-                                            CateterUci.nuevoRegistro.cateter = _value;
+                                            if (CateterUci.nuevoRegistro == null) {
+                                                CateterUci.iniciarRegistro();
+                                                CateterUci.nuevoRegistro.id = _id;
+                                                CateterUci.nuevoRegistro.cateter = _value;
+                                            } else {
+                                                CateterUci.nuevoRegistro.id = _id;
+                                                CateterUci.nuevoRegistro.cateter = _value;
+                                            }
                                         },
-                                        class: "custom-select"
+                                        class: "custom-select",
+                                        value: (CateterUci.nuevoRegistro !== null ? CateterUci.nuevoRegistro.via : 0),
                                     }, m('option', 'Seleccione...'), [{
                                             id: "RecoletcorVejiga",
                                             label: "RECOLECTOR MAS ABAJO QUE VEJIGA"

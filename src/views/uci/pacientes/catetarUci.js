@@ -32,10 +32,61 @@ class CateterUci {
         CateterUci.nuevoRegistro = new Cateter();
     }
     static agregarRegistro() {
-        CateterUci.registros.push(CateterUci.nuevoRegistro);
-    }
-    static eliminarRegistro() {
+        CateterUci.nuevoRegistro.nro = (CateterUci.registros.length > 0 ? (CateterUci.registros.length + 1) : 1);
+        let res = [];
+        CateterUci.registros.map((_v, _i) => {
+            res.push(_v);
+        });
+        res.push(CateterUci.nuevoRegistro);
+        CateterUci.registros = res;
 
+    }
+    static verRegistro(registro) {
+        registro.editar = true;
+        CateterUci.nuevoRegistro = registro;
+    }
+    static editarRegistro() {
+
+        CateterUci.nuevoRegistro.editar = null;
+        let res = [];
+        CateterUci.registros.map((_v) => {
+            if (_v.nro != CateterUci.nuevoRegistro.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                res.push(_v);
+            }
+        });
+        res.push(CateterUci.nuevoRegistro);
+        CateterUci.registros = res;
+
+    }
+    static eliminarRegistro(obj) {
+
+        let res = [];
+        CateterUci.registros.map((_v) => {
+            if (_v.nro != obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                res.push(_v);
+            }
+        });
+        CateterUci.registros = res;
+
+    }
+    static parseSeccion(options) {
+
+
+        options.map((option) => {
+            FecthUci.dataSecciones.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id) {
+                    CateterUci.registros.push(_obj);
+                }
+            });
+        });
+
+
+
+    }
+    static getAllRegistros(options) {
+        CateterUci.parseSeccion(options);
+        return CateterUci.registros;
     }
     static getRegistros() {
         return CateterUci.registros;
