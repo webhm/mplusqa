@@ -1212,6 +1212,7 @@ class PacientesUCI extends App {
 
                                 m("td.tx-14.tx-normal[colspan='3']",
                                     m('select.tx-semibold', {
+                                        id: 'sec_Cateter',
                                         onchange: (e) => {
                                             let _id = e.target.options[e.target.selectedIndex].id;
                                             let _value = e.target.options[e.target.selectedIndex].value;
@@ -1322,10 +1323,16 @@ class PacientesUCI extends App {
 
                                             onkeypress: (e) => {
                                                 if (e.keyCode == 13) {
-                                                    CateterUci.agregarRegistro();
-                                                    console.log(CateterUci.getRegistros())
-                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
-                                                    CateterUci.nuevoRegistro = null;
+                                                    CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    if (CateterUci.nuevoRegistro.editar == null) {
+                                                        CateterUci.agregarRegistro();
+                                                        PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
+                                                        CateterUci.nuevoRegistro = null;
+                                                    } else {
+                                                        CateterUci.editarRegistro();
+                                                        PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
+                                                        CateterUci.nuevoRegistro = null;
+                                                    }
                                                 }
                                             },
                                             oninput: (e) => {
@@ -1344,7 +1351,8 @@ class PacientesUCI extends App {
                             ]),
                             m("tr.tx-uppercase.mg-t-20", [
                                 m("td[colspan='12']",
-                                    PacientesUCI.vTable('table-cateter', CateterUci.getRegistros(), PacientesUCI.arqTableCateter())
+                                    (CateterUci.show != false ? [PacientesUCI.vTable('table-cateter', AccesosUci.getAllRegistros(Array.from(document.getElementById('sec_Cateter').options)), PacientesUCI.arqTableCateter())] : [])
+
                                 ),
                             ]),
                         ]),
@@ -2521,7 +2529,7 @@ class PacientesUCI extends App {
                     mRender: function(data, type, full) {
                         return full.paciente;
                     },
-                    visible: true,
+                    visible: false,
                     aTargets: [3],
                     orderable: true,
                 },
@@ -2529,7 +2537,7 @@ class PacientesUCI extends App {
                     mRender: function(data, type, full) {
                         return full.especialidad;
                     },
-                    visible: true,
+                    visible: false,
                     aTargets: [4],
                     orderable: true,
 
@@ -3435,7 +3443,8 @@ class PacientesUCI extends App {
             cache: false,
             destroy: true,
             order: [
-                [0, 'desc']
+                [0, 'desc'],
+                [1, 'desc']
             ],
             columns: [{
                     title: "N° : ",
@@ -3461,11 +3470,19 @@ class PacientesUCI extends App {
                 }
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
+                    mRender: function(data, type, full) {
+                        return full.numeroTurno;
                     },
-                    visible: true,
+                    visible: false,
                     aTargets: [0],
+                    orderable: true,
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.nro;
+                    },
+                    visible: false,
+                    aTargets: [1],
                     orderable: true,
                 },
                 {
@@ -3474,7 +3491,7 @@ class PacientesUCI extends App {
                     },
 
                     visible: true,
-                    aTargets: [1],
+                    aTargets: [2],
                     orderable: true,
 
                 },
@@ -3483,23 +3500,13 @@ class PacientesUCI extends App {
                         return full.am;
                     },
                     visible: true,
-                    aTargets: [2],
+                    aTargets: [3],
                     orderable: true,
 
                 },
                 {
                     mRender: function(data, type, full) {
                         return full.pm;
-                    },
-                    visible: true,
-                    aTargets: [3],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.hs;
                     },
                     visible: true,
                     aTargets: [4],
@@ -3509,10 +3516,20 @@ class PacientesUCI extends App {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.observacion;
+                        return full.hs;
                     },
                     visible: true,
                     aTargets: [5],
+                    orderable: true,
+
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.observacion;
+                    },
+                    visible: true,
+                    aTargets: [6],
                     orderable: true,
 
 
@@ -3539,7 +3556,7 @@ class PacientesUCI extends App {
                         });
                     },
                     visible: true,
-                    aTargets: [6],
+                    aTargets: [7],
                     orderable: true,
 
                 }
