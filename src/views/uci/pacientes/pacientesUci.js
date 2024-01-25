@@ -71,10 +71,12 @@ class PacientesUCI extends App {
                     style: { "max-width": "100%" }
                 }, [
                     m("table.table.table-bordered.table-sm.tx-14", [
-                        m("thead",
+                        m("thead.bd.bd-2", {
+                                style: { "border-color": "#5173a1" }
+                            },
 
                             m("tr.tx-uppercase", {
-                                style: { "background-color": "#CCCCFF" }
+                                style: { "background-color": "#CCCCFF", }
                             }, [
                                 m("th[scope='col'][colspan='12']",
                                     "Registro de Turnos:"
@@ -82,9 +84,13 @@ class PacientesUCI extends App {
 
                             ])
                         ),
-                        m('tbody', [
+                        m('tbody.bd.bd-2', {
+                            style: { "border-color": "#5173a1" }
+                        }, [
 
-                            m("tr.text-right", [
+                            m("tr.bd.bd-2.text-right", {
+                                style: { "border-color": "#5173a1" }
+                            }, [
                                 m("td[colspan='6']", ),
                                 m("td[colspan='6']",
                                     m("button.btn.btn-xs.btn-primary.tx-semibold[type='button']", {
@@ -104,28 +110,29 @@ class PacientesUCI extends App {
                             ])
 
                         ]),
-                        m("thead.bd.bd-5.bd-color-05",
+                        m("thead.bd.bd-2", {
+                                style: { "border-color": "#5173a1" }
+                            },
 
                             m("tr.tx-uppercase", {
                                 style: { "background-color": "#CCCCFF" },
 
                                 class: (CuidadosUci.show ? '' : 'd-none')
                             }, [
-                                m("th.tx-semibold[scope='col'][colspan='4']",
+                                m("th.tx-semibold[scope='col'][colspan='12']",
                                     "CUIDADOS GENERALES: "
                                 ),
-                                m("th[colspan='8']",
-                                    ""
-                                ),
+
 
                             ])
 
                         ),
-                        m("tbody.bd-5", {
+                        m("tbody.bd.bd-2", {
+                            style: { "border-color": "#5173a1" },
                             class: (CuidadosUci.show ? '' : 'd-none')
                         }, [
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "rgb(238, 249, 200)" }
+                            m("tr.bd.bd-2.tx-uppercase", {
+                                style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" }
                             }, [
                                 m("th[scope='col'][colspan='3']",
                                     "CUIDADOS: "
