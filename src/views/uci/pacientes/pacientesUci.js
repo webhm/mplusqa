@@ -70,16 +70,6 @@ class PacientesUCI extends App {
                 m("div.container.mg-l-0.mg-r-0", {
                     style: { "max-width": "100%" }
                 }, [
-                    m("ol.breadcrumb.df-breadcrumbs", [
-                        m("li.breadcrumb-item",
-                            m(m.route.Link, { href: "/", }, [
-                                "MetroPlus"
-                            ]),
-                        ),
-                        m("li.breadcrumb-item.active[aria-current='page']",
-                            'BITÁCORA U.C.I. ADULTO'
-                        )
-                    ]),
                     m("table.table.table-bordered.table-sm.tx-14", [
                         m("thead",
 
@@ -114,191 +104,194 @@ class PacientesUCI extends App {
                             ])
 
                         ]),
+                        m('table.table-sm', [
+                            m("thead",
 
-                        m("thead",
+                                m("tr.tx-uppercase", {
+                                    style: { "background-color": "#CCCCFF" },
 
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "#CCCCFF" },
+                                    class: (CuidadosUci.show ? '' : 'd-none')
+                                }, [
+                                    m("th.tx-semibold[scope='col'][colspan='4']",
+                                        "CUIDADOS GENERALES: "
+                                    ),
+                                    m("th[colspan='8']",
+                                        ""
+                                    ),
 
+                                ])
+
+                            ),
+
+
+
+                            m("tbody", {
                                 class: (CuidadosUci.show ? '' : 'd-none')
                             }, [
-                                m("th.tx-semibold[scope='col'][colspan='4']",
-                                    "CUIDADOS GENERALES: "
-                                ),
-                                m("th[colspan='8']",
-                                    ""
-                                ),
+                                m("tr.tx-uppercase", {
+                                    style: { "background-color": "rgb(238, 249, 200)" }
+                                }, [
+                                    m("th[scope='col'][colspan='3']",
+                                        "CUIDADOS: "
+                                    ),
+                                    m("th[scope='col'][colspan='3']",
+                                        "FRECUENCIA: "
+                                    ),
+                                    m("th[scope='col'][colspan='2']",
+                                        "AM: "
+                                    ),
+                                    m("th[scope='col'][colspan='2']",
+                                        "PM: "
+                                    ),
+                                    m("th[scope='col'][colspan='2']",
+                                        "HS: "
+                                    ),
 
-                            ])
+                                ]),
+                                m("tr", [
 
-                        ),
-
-
-
-                        m("tbody", {
-                            class: (CuidadosUci.show ? '' : 'd-none')
-                        }, [
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "rgb(238, 249, 200)" }
-                            }, [
-                                m("th[scope='col'][colspan='3']",
-                                    "CUIDADOS: "
-                                ),
-                                m("th[scope='col'][colspan='3']",
-                                    "FRECUENCIA: "
-                                ),
-                                m("th[scope='col'][colspan='2']",
-                                    "AM: "
-                                ),
-                                m("th[scope='col'][colspan='2']",
-                                    "PM: "
-                                ),
-                                m("th[scope='col'][colspan='2']",
-                                    "HS: "
-                                ),
-
-                            ]),
-                            m("tr", [
-
-                                m("td.tx-14.tx-normal[colspan='3']",
-                                    m('select.tx-semibold', {
-                                        id: 'sec_CuidadosGenerales',
-                                        onchange: (e) => {
-                                            let _id = e.target.options[e.target.selectedIndex].id;
-                                            let _value = e.target.options[e.target.selectedIndex].value;
-                                            if (CuidadosUci.nuevoRegistro == null) {
-                                                CuidadosUci.iniciarRegistro();
-                                                CuidadosUci.nuevoRegistro.id = _id;
-                                                CuidadosUci.nuevoRegistro.cuidado = _value;
-                                            } else {
-                                                CuidadosUci.nuevoRegistro.id = _id;
-                                                CuidadosUci.nuevoRegistro.cuidado = _value;
-                                            }
-                                        },
-                                        class: "custom-select"
-                                    }, m('option', 'Seleccione...'), [{
-                                        id: "CambiosPosicion",
-                                        label: "CAMBIOS DE POSICIÓN"
-                                    }, {
-                                        id: "CuidadosPiel",
-                                        label: "CUIDADOS DE PIEL"
-                                    }, {
-                                        id: "HigieneOral",
-                                        label: "HIGIENE ORAL"
-                                    }, {
-                                        id: "TerapiaRespiratoria",
-                                        label: "TERAPIA RESPIRATORIA"
-                                    }, {
-                                        id: "AspiracionSecrreciones",
-                                        label: "ASPIRACIÓN DE SECRECIONES"
-                                    }, {
-                                        id: "ControlDrenajes",
-                                        label: "CONTROL DE DRENAJES"
-                                    }, {
-                                        id: "ControlSangrado",
-                                        label: "CONTROL DE SANGRADO"
-                                    }, {
-                                        id: "ControlNeurologico",
-                                        label: "CONTROL NEUROLÓGICO"
-                                    }, {
-                                        id: "EsquemaInsulima",
-                                        label: "ESQUEMA DE INSULINA"
-                                    }].map(x =>
-                                        m('option[id="' + x.id + '"]', x.label)
-                                    ))
-                                ),
-                                m("td.tx-14.tx-normal[colspan='3']",
-                                    (CuidadosUci.nuevoRegistro !== null ? [
-                                        m("input", {
-                                            id: "frecuencia" + CuidadosUci.nuevoRegistro.id,
-                                            class: "form-control tx-semibold tx-14",
-                                            type: "text",
-                                            placeholder: "...",
-                                            oninput: (e) => {
-                                                CuidadosUci.nuevoRegistro.frecuencia = e.target.value;
-                                            },
-                                            value: CuidadosUci.nuevoRegistro.frecuencia
-                                        })
-                                    ] : [])
-                                ),
-                                m("td.tx-14.tx-normal[colspan='2']",
-                                    (CuidadosUci.nuevoRegistro !== null ? [
-                                        m("input", {
-                                            id: "am" + CuidadosUci.nuevoRegistro.id,
-                                            class: "form-control tx-semibold tx-14",
-                                            type: "text",
-                                            placeholder: "...",
-                                            oninput: (e) => {
-                                                CuidadosUci.nuevoRegistro.am = e.target.value;
-                                            },
-                                            value: CuidadosUci.nuevoRegistro.am
-                                        })
-                                    ] : [])
-                                ),
-                                m("td.tx-14.tx-normal[colspan='2']",
-                                    (CuidadosUci.nuevoRegistro !== null ? [
-                                        m("input", {
-                                            id: "pm" + CuidadosUci.nuevoRegistro.id,
-                                            class: "form-control tx-semibold tx-14",
-                                            type: "text",
-                                            placeholder: "...",
-                                            oninput: (e) => {
-                                                CuidadosUci.nuevoRegistro.pm = e.target.value;
-                                            },
-                                            value: CuidadosUci.nuevoRegistro.pm
-                                        })
-                                    ] : [])
-                                ),
-
-                                m("td.tx-14.tx-normal[colspan='2']",
-                                    (CuidadosUci.nuevoRegistro !== null ? [
-                                        m("input", {
-                                            id: "hs" + CuidadosUci.nuevoRegistro.id,
-                                            class: "form-control tx-semibold tx-14",
-                                            type: "text",
-                                            placeholder: "...",
-                                            onkeypress: (e) => {
-                                                if (e.keyCode == 13) {
-                                                    CuidadosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    if (CuidadosUci.nuevoRegistro.editar == null) {
-                                                        CuidadosUci.agregarRegistro();
-                                                        FecthUci.registrarSeccion(CuidadosUci.nuevoRegistro);
-                                                        CuidadosUci.nuevoRegistro = null;
-                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
-                                                    } else {
-                                                        CuidadosUci.editarRegistro();
-                                                        FecthUci.actualizarSeccion(CuidadosUci.nuevoRegistro);
-                                                        CuidadosUci.nuevoRegistro = null;
-                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
-                                                    }
-
-
+                                    m("td.tx-14.tx-normal[colspan='3']",
+                                        m('select.tx-semibold', {
+                                            id: 'sec_CuidadosGenerales',
+                                            onchange: (e) => {
+                                                let _id = e.target.options[e.target.selectedIndex].id;
+                                                let _value = e.target.options[e.target.selectedIndex].value;
+                                                if (CuidadosUci.nuevoRegistro == null) {
+                                                    CuidadosUci.iniciarRegistro();
+                                                    CuidadosUci.nuevoRegistro.id = _id;
+                                                    CuidadosUci.nuevoRegistro.cuidado = _value;
+                                                } else {
+                                                    CuidadosUci.nuevoRegistro.id = _id;
+                                                    CuidadosUci.nuevoRegistro.cuidado = _value;
                                                 }
                                             },
-                                            oninput: (e) => {
-                                                CuidadosUci.nuevoRegistro.hs = e.target.value;
-                                            },
-                                            value: CuidadosUci.nuevoRegistro.hs
-                                        })
-                                    ] : [])
-                                ),
+                                            class: "custom-select"
+                                        }, m('option', 'Seleccione...'), [{
+                                            id: "CambiosPosicion",
+                                            label: "CAMBIOS DE POSICIÓN"
+                                        }, {
+                                            id: "CuidadosPiel",
+                                            label: "CUIDADOS DE PIEL"
+                                        }, {
+                                            id: "HigieneOral",
+                                            label: "HIGIENE ORAL"
+                                        }, {
+                                            id: "TerapiaRespiratoria",
+                                            label: "TERAPIA RESPIRATORIA"
+                                        }, {
+                                            id: "AspiracionSecrreciones",
+                                            label: "ASPIRACIÓN DE SECRECIONES"
+                                        }, {
+                                            id: "ControlDrenajes",
+                                            label: "CONTROL DE DRENAJES"
+                                        }, {
+                                            id: "ControlSangrado",
+                                            label: "CONTROL DE SANGRADO"
+                                        }, {
+                                            id: "ControlNeurologico",
+                                            label: "CONTROL NEUROLÓGICO"
+                                        }, {
+                                            id: "EsquemaInsulima",
+                                            label: "ESQUEMA DE INSULINA"
+                                        }].map(x =>
+                                            m('option[id="' + x.id + '"]', x.label)
+                                        ))
+                                    ),
+                                    m("td.tx-14.tx-normal[colspan='3']",
+                                        (CuidadosUci.nuevoRegistro !== null ? [
+                                            m("input", {
+                                                id: "frecuencia" + CuidadosUci.nuevoRegistro.id,
+                                                class: "form-control tx-semibold tx-14",
+                                                type: "text",
+                                                placeholder: "...",
+                                                oninput: (e) => {
+                                                    CuidadosUci.nuevoRegistro.frecuencia = e.target.value;
+                                                },
+                                                value: CuidadosUci.nuevoRegistro.frecuencia
+                                            })
+                                        ] : [])
+                                    ),
+                                    m("td.tx-14.tx-normal[colspan='2']",
+                                        (CuidadosUci.nuevoRegistro !== null ? [
+                                            m("input", {
+                                                id: "am" + CuidadosUci.nuevoRegistro.id,
+                                                class: "form-control tx-semibold tx-14",
+                                                type: "text",
+                                                placeholder: "...",
+                                                oninput: (e) => {
+                                                    CuidadosUci.nuevoRegistro.am = e.target.value;
+                                                },
+                                                value: CuidadosUci.nuevoRegistro.am
+                                            })
+                                        ] : [])
+                                    ),
+                                    m("td.tx-14.tx-normal[colspan='2']",
+                                        (CuidadosUci.nuevoRegistro !== null ? [
+                                            m("input", {
+                                                id: "pm" + CuidadosUci.nuevoRegistro.id,
+                                                class: "form-control tx-semibold tx-14",
+                                                type: "text",
+                                                placeholder: "...",
+                                                oninput: (e) => {
+                                                    CuidadosUci.nuevoRegistro.pm = e.target.value;
+                                                },
+                                                value: CuidadosUci.nuevoRegistro.pm
+                                            })
+                                        ] : [])
+                                    ),
+
+                                    m("td.tx-14.tx-normal[colspan='2']",
+                                        (CuidadosUci.nuevoRegistro !== null ? [
+                                            m("input", {
+                                                id: "hs" + CuidadosUci.nuevoRegistro.id,
+                                                class: "form-control tx-semibold tx-14",
+                                                type: "text",
+                                                placeholder: "...",
+                                                onkeypress: (e) => {
+                                                    if (e.keyCode == 13) {
+                                                        CuidadosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        if (CuidadosUci.nuevoRegistro.editar == null) {
+                                                            CuidadosUci.agregarRegistro();
+                                                            FecthUci.registrarSeccion(CuidadosUci.nuevoRegistro);
+                                                            CuidadosUci.nuevoRegistro = null;
+                                                            PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
+                                                        } else {
+                                                            CuidadosUci.editarRegistro();
+                                                            FecthUci.actualizarSeccion(CuidadosUci.nuevoRegistro);
+                                                            CuidadosUci.nuevoRegistro = null;
+                                                            PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
+                                                        }
+
+
+                                                    }
+                                                },
+                                                oninput: (e) => {
+                                                    CuidadosUci.nuevoRegistro.hs = e.target.value;
+                                                },
+                                                value: CuidadosUci.nuevoRegistro.hs
+                                            })
+                                        ] : [])
+                                    ),
+
+                                ]),
+                                m("tr.tx-uppercase", {
+                                    style: { "background-color": "#eaeff5" }
+                                }, [
+                                    m("th[scope='col'][colspan='12']",
+                                        "Registros: "
+                                    ),
+                                ]),
+                                m("tr.tx-uppercase.mg-t-20", [
+                                    m("td[colspan='12']",
+                                        (CuidadosUci.show != false ? [PacientesUCI.vTable('table-cuidados', CuidadosUci.getAllRegistros(Array.from(document.getElementById('sec_CuidadosGenerales').options)), PacientesUCI.arqTableCuidados())] : [])
+
+                                    ),
+                                ]),
 
                             ]),
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "#eaeff5" }
-                            }, [
-                                m("th[scope='col'][colspan='12']",
-                                    "Registros: "
-                                ),
-                            ]),
-                            m("tr.tx-uppercase.mg-t-20", [
-                                m("td[colspan='12']",
-                                    (CuidadosUci.show != false ? [PacientesUCI.vTable('table-cuidados', CuidadosUci.getAllRegistros(Array.from(document.getElementById('sec_CuidadosGenerales').options)), PacientesUCI.arqTableCuidados())] : [])
-
-                                ),
-                            ]),
-
                         ]),
+
+
                         // Vias
                         m("thead",
 
