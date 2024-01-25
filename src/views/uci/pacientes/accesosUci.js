@@ -15,6 +15,7 @@ class Acceso {
     curacion = null;
     condicion = null;
     observacion = null;
+    editar = null;
     constructor() {
         this.id = this.id;
         this.acceso = this.acceso;
@@ -25,6 +26,7 @@ class Acceso {
         this.curacion = this.curacion;
         this.condicion = this.condicion;
         this.observacion = this.observacion;
+        this.editar = this.editar;
     }
 }
 
@@ -40,11 +42,7 @@ class AccesosUci {
         AccesosUci.nuevoRegistro = new Acceso();
     }
     static agregarRegistro() {
-        let lasElement = { nro: 0 };
-        if (AccesosUci.registros.length > 0) {
-            lasElement = AccesosUci.registros[AccesosUci.registros.length - 1];
-        }
-        AccesosUci.nuevoRegistro.nro = (lasElement.nro + 2);
+
         AccesosUci.registros.push(AccesosUci.nuevoRegistro);
     }
     static verRegistro(registro) {
@@ -54,7 +52,7 @@ class AccesosUci {
     static editarRegistro() {
         AccesosUci.nuevoRegistro.editar = null;
         AccesosUci.registros.map((_v, _i) => {
-            if (_v.nro == AccesosUci.nuevoRegistro.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+            if (_v.nro == AccesosUci.nuevoRegistro.nro) {
                 AccesosUci.registros[_i] = AccesosUci.nuevoRegistro;
             }
         });
@@ -64,10 +62,8 @@ class AccesosUci {
 
         let res = [];
         AccesosUci.registros.map((_v, _i) => {
-            if (_v.numeroTurno !== PacientesUCI.numeroTurno) {
-                res.push(_v);
-            }
-            if (_v.nro !== obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+
+            if (_v.nro !== obj.nro) {
                 res.push(_v);
             }
 

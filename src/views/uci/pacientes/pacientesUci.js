@@ -293,7 +293,9 @@ class PacientesUCI extends App {
                                                 if (e.keyCode == 13) {
                                                     CuidadosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     if (CuidadosUci.nuevoRegistro.editar == null) {
+                                                        CuidadosUci.nuevoRegistro.nro = (CuidadosUci.registros.length == 0 ? 1 : (CuidadosUci.registros[CuidadosUci.registros.length - 1].nro + 1));
                                                         CuidadosUci.agregarRegistro();
+                                                        console.log(99, CuidadosUci.nuevoRegistro)
                                                         FecthUci.registrarSeccion(CuidadosUci.nuevoRegistro);
                                                         CuidadosUci.nuevoRegistro = null;
                                                         PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
@@ -642,6 +644,7 @@ class PacientesUCI extends App {
                                                 if (e.keyCode == 13) {
                                                     ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     if (ViasUci.nuevoRegistro.editar == null) {
+                                                        ViasUci.nuevoRegistro.nro = (ViasUci.registros.length == 0 ? 1 : (ViasUci.registros[ViasUci.registros.length - 1].nro + 1));
                                                         ViasUci.agregarRegistro();
                                                         FecthUci.registrarSeccion(ViasUci.nuevoRegistro);
                                                         ViasUci.nuevoRegistro = null;
@@ -1008,8 +1011,10 @@ class PacientesUCI extends App {
                                             value: AccesosUci.nuevoRegistro.observacion,
                                             onkeypress: (e) => {
                                                 if (e.keyCode == 13) {
+
                                                     AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     if (AccesosUci.nuevoRegistro.editar == null) {
+                                                        AccesosUci.nuevoRegistro.nro = (AccesosUci.registros.length == 0 ? 1 : (AccesosUci.registros[AccesosUci.registros.length - 1].nro + 1));
                                                         AccesosUci.agregarRegistro();
                                                         FecthUci.registrarSeccion(AccesosUci.nuevoRegistro);
                                                         PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
@@ -1699,8 +1704,10 @@ class PacientesUCI extends App {
                                                 placeholder: "...",
                                                 onkeypress: (e) => {
                                                     if (e.keyCode == 13) {
+
                                                         CultivosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                         if (CultivosUci.nuevoRegistro.editar == null) {
+                                                            CultivosUci.nuevoRegistro.nro = (CultivosUci.registros.length == 0 ? 1 : (CultivosUci.registros[CultivosUci.registros.length - 1].nro + 1));
                                                             CultivosUci.agregarRegistro();
                                                             FecthUci.registrarSeccion(CultivosUci.nuevoRegistro);
                                                             CultivosUci.nuevoRegistro = null;
@@ -1709,7 +1716,7 @@ class PacientesUCI extends App {
                                                             CultivosUci.editarRegistro();
                                                             FecthUci.actualizarSeccion(CultivosUci.nuevoRegistro);
                                                             CultivosUci.nuevoRegistro = null;
-                                                            PacientesUCI.vReloadTable('table-cuidados', CultivosUci.getRegistros());
+                                                            PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
                                                         }
 
 
@@ -1718,6 +1725,7 @@ class PacientesUCI extends App {
                                                 oninput: (e) => {
                                                     CultivosUci.nuevoRegistro.resultado = e.target.value;
                                                 },
+                                                value: CultivosUci.nuevoRegistro.resultado
                                             })
 
                                         ]),

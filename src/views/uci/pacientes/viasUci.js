@@ -45,13 +45,6 @@ class ViasUci {
     }
     static agregarRegistro() {
 
-
-
-        let lasElement = { nro: 0 };
-        if (ViasUci.registros.length > 0) {
-            lasElement = ViasUci.registros[ViasUci.registros.length - 1];
-        }
-        ViasUci.nuevoRegistro.nro = (lasElement.nro + 2);
         ViasUci.registros.push(ViasUci.nuevoRegistro);
     }
     static verRegistro(registro) {
@@ -61,7 +54,7 @@ class ViasUci {
     static editarRegistro() {
         ViasUci.nuevoRegistro.editar = null;
         ViasUci.registros.map((_v, _i) => {
-            if (_v.nro == ViasUci.nuevoRegistro.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+            if (_v.nro == ViasUci.nuevoRegistro.nro) {
                 ViasUci.registros[_i] = ViasUci.nuevoRegistro;
             }
         });
@@ -71,10 +64,8 @@ class ViasUci {
 
         let res = [];
         ViasUci.registros.map((_v, _i) => {
-            if (_v.numeroTurno !== PacientesUCI.numeroTurno) {
-                res.push(_v);
-            }
-            if (_v.nro !== obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+
+            if (_v.nro !== obj.nro) {
                 res.push(_v);
             }
 

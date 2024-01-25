@@ -36,11 +36,7 @@ class CuidadosUci {
         CuidadosUci.nuevoRegistro = new Cuidado();
     }
     static agregarRegistro() {
-        let lasElement = { nro: 0 };
-        if (CuidadosUci.registros.length > 0) {
-            lasElement = CuidadosUci.registros[CuidadosUci.registros.length - 1];
-        }
-        CuidadosUci.nuevoRegistro.nro = (lasElement.nro + 2);
+
         CuidadosUci.registros.push(CuidadosUci.nuevoRegistro);
     }
     static verRegistro(registro) {
@@ -50,7 +46,7 @@ class CuidadosUci {
     static editarRegistro() {
         CuidadosUci.nuevoRegistro.editar = null;
         CuidadosUci.registros.map((_v, _i) => {
-            if (_v.nro == CuidadosUci.nuevoRegistro.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+            if (_v.nro == CuidadosUci.nuevoRegistro.nro) {
                 CuidadosUci.registros[_i] = CuidadosUci.nuevoRegistro;
             }
         });
@@ -60,10 +56,8 @@ class CuidadosUci {
 
         let res = [];
         CuidadosUci.registros.map((_v, _i) => {
-            if (_v.numeroTurno !== PacientesUCI.numeroTurno) {
-                res.push(_v);
-            }
-            if (_v.nro !== obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+
+            if (_v.nro !== obj.nro) {
                 res.push(_v);
             }
 

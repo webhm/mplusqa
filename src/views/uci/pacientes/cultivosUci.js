@@ -9,11 +9,13 @@ class Cultivo {
     muestra = null;
     envio = null;
     resultado = null;
+    editar = null;
     constructor() {
         this.id = this.id;
         this.muestra = this.muestra;
         this.envio = this.envio;
         this.resultado = this.resultado;
+        this.editar = this.editar;
     }
 }
 
@@ -29,11 +31,7 @@ class CultivosUci {
         CultivosUci.nuevoRegistro = new Cultivo();
     }
     static agregarRegistro() {
-        let lasElement = { nro: 0 };
-        if (CultivosUci.registros.length > 0) {
-            lasElement = CultivosUci.registros[CultivosUci.registros.length - 1];
-        }
-        CultivosUci.nuevoRegistro.nro = (lasElement.nro + 2);
+
         CultivosUci.registros.push(CultivosUci.nuevoRegistro);
     }
     static verRegistro(registro) {
@@ -43,7 +41,7 @@ class CultivosUci {
     static editarRegistro() {
         CultivosUci.nuevoRegistro.editar = null;
         CultivosUci.registros.map((_v, _i) => {
-            if (_v.nro == CultivosUci.nuevoRegistro.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+            if (_v.nro == CultivosUci.nuevoRegistro.nro) {
                 CultivosUci.registros[_i] = CultivosUci.nuevoRegistro;
             }
         });
@@ -53,10 +51,8 @@ class CultivosUci {
 
         let res = [];
         CultivosUci.registros.map((_v, _i) => {
-            if (_v.numeroTurno !== PacientesUCI.numeroTurno) {
-                res.push(_v);
-            }
-            if (_v.nro !== obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+
+            if (_v.nro !== obj.nro) {
                 res.push(_v);
             }
 
