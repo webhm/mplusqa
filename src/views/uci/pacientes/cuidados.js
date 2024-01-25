@@ -3,7 +3,6 @@ import App from "../../../models/App";
 import Loader from "../../utils/loader";
 import Errors from "../../utils/errors";
 import PacientesUCI from "./pacientesUci";
-import FecthUci from "./fecthUci";
 
 class Cuidado {
     id = null;
@@ -37,58 +36,40 @@ class CuidadosUci {
         CuidadosUci.nuevoRegistro = new Cuidado();
     }
     static agregarRegistro() {
-        CuidadosUci.nuevoRegistro.nro = (CuidadosUci.registros.length > 0 ? (CuidadosUci.registros.length + 1) : 1);
-        let res = [];
-        CuidadosUci.registros.map((_v, _i) => {
-            res.push(_v);
-        });
-        res.push(CuidadosUci.nuevoRegistro);
-        CuidadosUci.registros = res;
+        let lasElement = { nro: 0 };
+        if (CuidadosUci.registros.length > 0) {
+            lasElement = CuidadosUci.registros[CuidadosUci.registros.length - 1];
+        }
+        CuidadosUci.nuevoRegistro.nro = lasElement.nro + 1;
+        CuidadosUci.registros.push(CuidadosUci.nuevoRegistro);
     }
     static verRegistro(registro) {
         registro.editar = true;
         CuidadosUci.nuevoRegistro = registro;
     }
     static editarRegistro() {
-
         CuidadosUci.nuevoRegistro.editar = null;
-        let res = [];
-        CuidadosUci.registros.map((_v) => {
-            if (_v.nro != CuidadosUci.nuevoRegistro.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
-                res.push(_v);
+        CuidadosUci.registros.map((_v, _i) => {
+            if (_v.nro == CuidadosUci.nuevoRegistro.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                CuidadosUci.registros[_i] = CuidadosUci.nuevoRegistro;
             }
         });
-        res.push(CuidadosUci.nuevoRegistro);
-        CuidadosUci.registros = res;
 
     }
     static eliminarRegistro(obj) {
 
         let res = [];
-        CuidadosUci.registros.map((_v) => {
-            if (_v.nro != obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+        CuidadosUci.registros.map((_v, _i) => {
+            if (_v.nro !== obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                res.push(_v);
+            }
+            if (_v.numeroTurno !== PacientesUCI.numeroTurno) {
                 res.push(_v);
             }
         });
+
         CuidadosUci.registros = res;
 
-    }
-    static parseSeccion(options) {
-
-        options.map((option) => {
-            FecthUci.dataSecciones.filter((obj) => {
-                let _obj = JSON.parse(obj.DATASECCION);
-                if (_obj.id === option.id) {
-                    CuidadosUci.registros.push(_obj);
-                }
-            });
-        });
-
-
-    }
-    static getAllRegistros(options) {
-        CuidadosUci.parseSeccion(options);
-        return CuidadosUci.registros;
     }
     static getRegistros() {
         return CuidadosUci.registros;

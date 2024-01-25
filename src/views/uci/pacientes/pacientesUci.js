@@ -50,13 +50,16 @@ class PacientesUCI extends App {
 
     static showSecciones() {
         CuidadosUci.show = true;
-        AccesosUci.show = true;
+        CuidadosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_CuidadosGenerales').options));
         ViasUci.show = true;
         ViasUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Vias').options));
+        AccesosUci.show = true;
+        AccesosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Accesos').options));
         CateterUci.show = true;
         VentilcacionUci.show = true;
         HemodialisisUci.show = true;
         CultivosUci.show = true;
+        CultivosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Cultivos').options));
         CuidadosUci.show = true;
         MarcapasosUci.show = true;
     }
@@ -286,8 +289,7 @@ class PacientesUCI extends App {
                             ]),
                             m("tr.tx-uppercase.mg-t-20", [
                                 m("td[colspan='12']",
-                                    (CuidadosUci.show != false ? [PacientesUCI.vTable('table-cuidados', CuidadosUci.getAllRegistros(Array.from(document.getElementById('sec_CuidadosGenerales').options)), PacientesUCI.arqTableCuidados())] : [])
-
+                                    (CuidadosUci.show != false ? [PacientesUCI.vTable('table-cuidados', CuidadosUci.getRegistros(), PacientesUCI.arqTableCuidados())] : [])
                                 ),
                             ]),
 
@@ -802,8 +804,8 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
                                                 id: "ifecha" + AccesosUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
-                                                    if (AccesosUci.nuevoRegistro.inicio_fecha != undefined) {
-                                                        el.dom.value = AccesosUci.nuevoRegistro.inicio_fecha;
+                                                    if (AccesosUci.nuevoRegistro.inicio != undefined) {
+                                                        el.dom.value = AccesosUci.nuevoRegistro.inicio;
                                                     }
                                                     setTimeout(() => {
                                                         new Cleave("#ifecha" + AccesosUci.nuevoRegistro.id, {
@@ -814,27 +816,7 @@ class PacientesUCI extends App {
                                                 },
                                                 oninput: (e) => {
                                                     setTimeout(() => {
-                                                        AccesosUci.nuevoRegistro.inicio_fecha = e.target.value;
-                                                    }, 50);
-                                                },
-                                            }),
-                                            m("input.form-control[type='text'][placeholder='hh:mm']", {
-                                                id: "ihora" + AccesosUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    if (AccesosUci.nuevoRegistro.inicio_hora != undefined) {
-                                                        el.dom.value = AccesosUci.nuevoRegistro.inicio_hora;
-                                                    }
-                                                    setTimeout(() => {
-                                                        new Cleave("#ihora" + AccesosUci.nuevoRegistro.id, {
-                                                            time: true,
-                                                            timePattern: ["h", "m"]
-                                                        });
-                                                    }, 50);
-                                                },
-                                                oninput: (e) => {
-                                                    setTimeout(() => {
-                                                        AccesosUci.nuevoRegistro.inicio_hora = e.target.value;
-                                                        AccesosUci.nuevoRegistro.inicio = AccesosUci.nuevoRegistro.inicio_fecha + " " + AccesosUci.nuevoRegistro.inicio_hora;
+                                                        AccesosUci.nuevoRegistro.inicio = e.target.value;
                                                     }, 50);
                                                 },
                                             })
@@ -842,14 +824,13 @@ class PacientesUCI extends App {
                                     ] : [])
                                 ),
                                 m("td.tx-14.tx-normal[colspan='3']",
-
                                     (AccesosUci.nuevoRegistro !== null ? [
                                         m('div.d-flex', [
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
                                                 id: "rfecha" + AccesosUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
-                                                    if (AccesosUci.nuevoRegistro.retiro_fecha != undefined) {
-                                                        el.dom.value = AccesosUci.nuevoRegistro.retiro_fecha;
+                                                    if (AccesosUci.nuevoRegistro.retiro != undefined) {
+                                                        el.dom.value = AccesosUci.nuevoRegistro.retiro;
                                                     }
                                                     setTimeout(() => {
                                                         new Cleave("#rfecha" + AccesosUci.nuevoRegistro.id, {
@@ -860,30 +841,11 @@ class PacientesUCI extends App {
                                                 },
                                                 oninput: (e) => {
                                                     setTimeout(() => {
-                                                        AccesosUci.nuevoRegistro.retiro_fecha = e.target.value;
-                                                    }, 50);
-                                                },
-                                            }),
-                                            m("input.form-control[type='text'][placeholder='hh:mm']", {
-                                                id: "rHora" + AccesosUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    if (AccesosUci.nuevoRegistro.retiro_hora != undefined) {
-                                                        el.dom.value = AccesosUci.nuevoRegistro.retiro_hora;
-                                                    }
-                                                    setTimeout(() => {
-                                                        new Cleave("#rHora" + AccesosUci.nuevoRegistro.id, {
-                                                            time: true,
-                                                            timePattern: ["h", "m"]
-                                                        });
-                                                    }, 50);
-                                                },
-                                                oninput: (e) => {
-                                                    setTimeout(() => {
-                                                        AccesosUci.nuevoRegistro.retiro_hora = e.target.value;
-                                                        AccesosUci.nuevoRegistro.retiro = AccesosUci.nuevoRegistro.retiro_fecha + " " + AccesosUci.nuevoRegistro.retiro_hora;
+                                                        AccesosUci.nuevoRegistro.retiro = e.target.value;
                                                     }, 50);
                                                 },
                                             })
+
                                         ])
 
 
@@ -898,8 +860,8 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
                                                 id: "cfecha" + AccesosUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
-                                                    if (AccesosUci.nuevoRegistro.cambio_fecha != undefined) {
-                                                        el.dom.value = AccesosUci.nuevoRegistro.cambio_fecha;
+                                                    if (AccesosUci.nuevoRegistro.cambio != undefined) {
+                                                        el.dom.value = AccesosUci.nuevoRegistro.cambio;
                                                     }
                                                     setTimeout(() => {
                                                         new Cleave("#cfecha" + AccesosUci.nuevoRegistro.id, {
@@ -910,30 +872,11 @@ class PacientesUCI extends App {
                                                 },
                                                 oninput: (e) => {
                                                     setTimeout(() => {
-                                                        AccesosUci.nuevoRegistro.cambio_fecha = e.target.value;
-                                                    }, 50);
-                                                },
-                                            }),
-                                            m("input.form-control[type='text'][placeholder='hh:mm']", {
-                                                id: "chora" + AccesosUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    if (AccesosUci.nuevoRegistro.cambio_hora != undefined) {
-                                                        el.dom.value = AccesosUci.nuevoRegistro.cambio_hora;
-                                                    }
-                                                    setTimeout(() => {
-                                                        new Cleave("#chora" + AccesosUci.nuevoRegistro.id, {
-                                                            time: true,
-                                                            timePattern: ["h", "m"]
-                                                        });
-                                                    }, 50);
-                                                },
-                                                oninput: (e) => {
-                                                    setTimeout(() => {
-                                                        AccesosUci.nuevoRegistro.cambio_hora = e.target.value;
-                                                        AccesosUci.nuevoRegistro.cambio = AccesosUci.nuevoRegistro.cambio_fecha + " " + AccesosUci.nuevoRegistro.cambio_hora;
+                                                        AccesosUci.nuevoRegistro.cambio = e.target.value;
                                                     }, 50);
                                                 },
                                             })
+
                                         ])
                                     ] : [
 
@@ -949,8 +892,8 @@ class PacientesUCI extends App {
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
                                                 id: "cufecha" + AccesosUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
-                                                    if (AccesosUci.nuevoRegistro.curacion_fecha != undefined) {
-                                                        el.dom.value = AccesosUci.nuevoRegistro.curacion_fecha;
+                                                    if (AccesosUci.nuevoRegistro.curacion != undefined) {
+                                                        el.dom.value = AccesosUci.nuevoRegistro.curacion;
                                                     }
                                                     setTimeout(() => {
                                                         new Cleave("#cufecha" + AccesosUci.nuevoRegistro.id, {
@@ -961,30 +904,10 @@ class PacientesUCI extends App {
                                                 },
                                                 oninput: (e) => {
                                                     setTimeout(() => {
-                                                        AccesosUci.nuevoRegistro.curacion_fecha = e.target.value;
+                                                        AccesosUci.nuevoRegistro.curacion = e.target.value;
                                                     }, 50);
                                                 },
                                             }),
-                                            m("input.form-control[type='text'][placeholder='hh:mm']", {
-                                                id: "cuhora" + AccesosUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    if (AccesosUci.nuevoRegistro.curacion_hora != undefined) {
-                                                        el.dom.value = AccesosUci.nuevoRegistro.curacion_hora;
-                                                    }
-                                                    setTimeout(() => {
-                                                        new Cleave("#cuhora" + AccesosUci.nuevoRegistro.id, {
-                                                            time: true,
-                                                            timePattern: ["h", "m"]
-                                                        });
-                                                    }, 50);
-                                                },
-                                                oninput: (e) => {
-                                                    setTimeout(() => {
-                                                        AccesosUci.nuevoRegistro.curacion_hora = e.target.value;
-                                                        AccesosUci.nuevoRegistro.curacion = AccesosUci.nuevoRegistro.curacion_fecha + " " + AccesosUci.nuevoRegistro.curacion_hora;
-                                                    }, 50);
-                                                },
-                                            })
                                         ])
                                     ] : [])
 
@@ -1036,10 +959,12 @@ class PacientesUCI extends App {
                                                     AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     if (AccesosUci.nuevoRegistro.editar == null) {
                                                         AccesosUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(AccesosUci.nuevoRegistro);
                                                         PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
                                                         AccesosUci.nuevoRegistro = null;
                                                     } else {
                                                         AccesosUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(AccesosUci.nuevoRegistro);
                                                         PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
                                                         AccesosUci.nuevoRegistro = null;
                                                     }
@@ -1062,12 +987,12 @@ class PacientesUCI extends App {
                             ]),
                             m("tr.tx-uppercase.mg-t-20", [
                                 m("td[colspan='12']",
-                                    (AccesosUci.show != false ? [PacientesUCI.vTable('table-accesos', AccesosUci.getAllRegistros(Array.from(document.getElementById('sec_Accesos').options)), PacientesUCI.arqTableAccesos())] : [])
+                                    (AccesosUci.show != false ? [PacientesUCI.vTable('table-accesos', AccesosUci.getRegistros(), PacientesUCI.arqTableAccesos())] : [])
                                 ),
                             ]),
                         ]),
                         // Cateter
-                        m("thead",
+                        m("thead.d-none",
 
                             m("tr.tx-uppercase", {
 
@@ -1081,7 +1006,7 @@ class PacientesUCI extends App {
 
                             ])
                         ),
-                        m("tbody", {
+                        m("tbody.d-none", {
                             class: (CateterUci.show ? '' : 'd-none')
                         }, [
 
@@ -1247,13 +1172,13 @@ class PacientesUCI extends App {
                             ]),
                             m("tr.tx-uppercase.mg-t-20", [
                                 m("td[colspan='12']",
-                                    (CateterUci.show != false ? [PacientesUCI.vTable('table-cateter', AccesosUci.getAllRegistros(Array.from(document.getElementById('sec_Cateter').options)), PacientesUCI.arqTableCateter())] : [])
+                                    (CateterUci.show != false ? [PacientesUCI.vTable('table-cateter', CateterUci.getRegistros(), PacientesUCI.arqTableCateter())] : [])
 
                                 ),
                             ]),
                         ]),
                         // Manejo de Ventilzacion
-                        m("thead",
+                        m("thead.d-none",
 
                             m("tr.tx-uppercase", {
 
@@ -1267,7 +1192,7 @@ class PacientesUCI extends App {
 
                             ])
                         ),
-                        m("tbody", {
+                        m("tbody.d-none ", {
                             class: (VentilcacionUci.show ? '' : 'd-none')
                         }, [
 
@@ -1433,7 +1358,7 @@ class PacientesUCI extends App {
                             ]),
                         ]),
                         // Hemodialisis
-                        m("thead",
+                        m("thead.d-none",
 
                             m("tr.tx-uppercase", {
 
@@ -1447,7 +1372,7 @@ class PacientesUCI extends App {
 
                             ])
                         ),
-                        m("tbody", {
+                        m("tbody.d-none", {
                             class: (HemodialisisUci.show ? '' : 'd-none')
                         }, [
 
@@ -1606,7 +1531,7 @@ class PacientesUCI extends App {
                             m("tr.tx-uppercase", {
 
                                 style: { "background-color": "#CCCCFF" },
-                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
+                                class: (CultivosUci.show ? '' : 'd-none')
 
                             }, [
                                 m("th.tx-semibold[scope='col'][colspan='12']",
@@ -1616,7 +1541,7 @@ class PacientesUCI extends App {
                             ])
                         ),
                         m("tbody", {
-                            class: (HemodialisisUci.show ? '' : 'd-none')
+                            class: (CultivosUci.show ? '' : 'd-none')
                         }, [
 
 
@@ -1639,12 +1564,18 @@ class PacientesUCI extends App {
 
                                 m("td.tx-14.tx-normal[colspan='4']",
                                     m('select.tx-semibold', {
+                                        id: 'sec_Cultivos',
                                         onchange: (e) => {
                                             let _id = e.target.options[e.target.selectedIndex].id;
                                             let _value = e.target.options[e.target.selectedIndex].value;
-                                            CultivosUci.iniciarRegistro();
-                                            CultivosUci.nuevoRegistro.id = _id;
-                                            CultivosUci.nuevoRegistro.muestra = _value;
+                                            if (CultivosUci.nuevoRegistro == null) {
+                                                CultivosUci.iniciarRegistro();
+                                                CultivosUci.nuevoRegistro.id = _id;
+                                                CultivosUci.nuevoRegistro.muestra = _value;
+                                            } else {
+                                                CultivosUci.nuevoRegistro.id = _id;
+                                                CultivosUci.nuevoRegistro.muestra = _value;
+                                            }
                                         },
                                         class: "custom-select"
                                     }, m('option', 'Seleccione...'), [{
@@ -1682,8 +1613,11 @@ class PacientesUCI extends App {
                                     (CultivosUci.nuevoRegistro !== null ? [
                                         m('div.d-flex', [
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
-                                                id: "cultivoEnvioFecha" + CultivosUci.nuevoRegistro.id,
+                                                id: "cultivoEnvio" + CultivosUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
+                                                    if (CultivosUci.nuevoRegistro.envio != undefined) {
+                                                        el.dom.value = CultivosUci.nuevoRegistro.envio;
+                                                    }
                                                     setTimeout(() => {
                                                         new Cleave("#cultivoEnvio" + CultivosUci.nuevoRegistro.id, {
                                                             date: true,
@@ -1693,24 +1627,7 @@ class PacientesUCI extends App {
                                                 },
                                                 oninput: (e) => {
                                                     setTimeout(() => {
-                                                        CultivosUci.nuevoRegistro.envio_fecha = e.target.value;
-                                                    }, 50);
-                                                },
-                                            }),
-                                            m("input.form-control[type='text'][placeholder='hh:mm']", {
-                                                id: "cultivoEnvioHora" + CultivosUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    setTimeout(() => {
-                                                        new Cleave("#cultivoEnvioHora" + CultivosUci.nuevoRegistro.id, {
-                                                            time: true,
-                                                            timePattern: ["h", "m"]
-                                                        });
-                                                    }, 50);
-                                                },
-                                                oninput: (e) => {
-                                                    setTimeout(() => {
-                                                        CultivosUci.nuevoRegistro.envio_hora = e.target.value;
-                                                        CultivosUci.nuevoRegistro.envio = CultivosUci.nuevoRegistro.envio_fecha + " " + CultivosUci.nuevoRegistro.envio_hora;
+                                                        CultivosUci.nuevoRegistro.envio = e.target.value;
                                                     }, 50);
                                                 },
                                             })
@@ -1725,6 +1642,24 @@ class PacientesUCI extends App {
                                                 class: "form-control tx-semibold tx-14",
                                                 type: "text",
                                                 placeholder: "...",
+                                                onkeypress: (e) => {
+                                                    if (e.keyCode == 13) {
+                                                        CultivosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        if (CultivosUci.nuevoRegistro.editar == null) {
+                                                            CultivosUci.agregarRegistro();
+                                                            FecthUci.registrarSeccion(CultivosUci.nuevoRegistro);
+                                                            CultivosUci.nuevoRegistro = null;
+                                                            PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
+                                                        } else {
+                                                            CultivosUci.editarRegistro();
+                                                            FecthUci.actualizarSeccion(CultivosUci.nuevoRegistro);
+                                                            CultivosUci.nuevoRegistro = null;
+                                                            PacientesUCI.vReloadTable('table-cuidados', CultivosUci.getRegistros());
+                                                        }
+
+
+                                                    }
+                                                },
                                                 oninput: (e) => {
                                                     CultivosUci.nuevoRegistro.resultado = e.target.value;
                                                 },
@@ -1743,17 +1678,16 @@ class PacientesUCI extends App {
                             ]),
                             m("tr.tx-uppercase.mg-t-20", [
                                 m("td[colspan='12']",
-                                    PacientesUCI.vTable('table-cultivos', CultivosUci.getRegistros(), PacientesUCI.arqTableCultivos())
+                                    (CultivosUci.show != false ? [PacientesUCI.vTable('table-cultivos', CultivosUci.getRegistros(), PacientesUCI.arqTableCultivos())] : [])
                                 ),
                             ]),
                         ]),
                         // Marcapasos
-                        m("thead",
+                        m("thead.d-none",
 
                             m("tr.tx-uppercase", {
 
                                 style: { "background-color": "#CCCCFF" },
-                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
 
                             }, [
                                 m("th.tx-semibold[scope='col'][colspan='12']",
@@ -1762,7 +1696,7 @@ class PacientesUCI extends App {
 
                             ])
                         ),
-                        m("tbody", {
+                        m("tbody.d-none", {
                             class: (MarcapasosUci.show ? '' : 'd-none')
                         }, [
 
@@ -1920,12 +1854,11 @@ class PacientesUCI extends App {
                             ]),
                         ]),
                         // Ventilatorios
-                        m("thead",
+                        m("thead.d-none",
 
                             m("tr.tx-uppercase", {
 
                                 style: { "background-color": "#CCCCFF" },
-                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
 
                             }, [
                                 m("th.tx-semibold[scope='col'][colspan='12']",
@@ -1934,7 +1867,7 @@ class PacientesUCI extends App {
 
                             ])
                         ),
-                        m("tbody", {
+                        m("tbody.d-none", {
                             class: (VentilcacionUci.show ? '' : 'd-none')
                         }, [
 
@@ -2581,10 +2514,10 @@ class PacientesUCI extends App {
                 [1, 'desc']
             ],
             columns: [{
-                    title: "N°:",
+                    title: "Order Turno°:",
 
                 }, {
-                    title: "Turno N°:",
+                    title: "Order N°:",
                 }, {
                     title: "Turno N°:",
                 },
@@ -3082,13 +3015,14 @@ class PacientesUCI extends App {
             cache: false,
             destroy: true,
             order: [
+                [0, 'desc'],
                 [1, 'desc']
             ],
             columns: [{
-                    title: "N° : ",
+                    title: "Order N°:",
                 },
                 {
-                    title: "Turno N° : ",
+                    title: "Order Turno:",
                 },
                 {
                     title: "Turno N° : ",
@@ -3127,8 +3061,8 @@ class PacientesUCI extends App {
                 }
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
+                    mRender: function(data, type, full) {
+                        return full.numeroTurno;
                     },
                     visible: false,
                     aTargets: [0],
@@ -3136,7 +3070,7 @@ class PacientesUCI extends App {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.numeroTurno;
+                        return full.nro;
                     },
 
                     visible: false,
@@ -3290,6 +3224,8 @@ class PacientesUCI extends App {
 
                                                     if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
                                                         AccesosUci.eliminarRegistro(oData);
+                                                        FecthUci.eliminarSeccion(oData);
+                                                        AccesosUci.nuevoRegistro = null;
                                                         PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
                                                     }
 
@@ -4079,10 +4015,17 @@ class PacientesUCI extends App {
             cache: false,
             destroy: true,
             order: [
-                [0, 'desc']
+                [0, 'desc'],
+                [1, 'desc']
             ],
             columns: [{
-                    title: "N° : ",
+                    title: "Order Turno: ",
+                },
+                {
+                    title: "Order N°: ",
+                },
+                {
+                    title: "Turno N°: ",
                 },
                 {
                     title: "Muestra:",
@@ -4098,38 +4041,19 @@ class PacientesUCI extends App {
                 }
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
+                    mRender: function(data, type, full) {
+                        return full.numeroTurno;
                     },
-                    visible: true,
+                    visible: false,
                     aTargets: [0],
                     orderable: true,
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.muestra;
+                        return full.nro;
                     },
-
-                    visible: true,
+                    visible: false,
                     aTargets: [1],
-                    orderable: true,
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.envio;
-                    },
-                    visible: true,
-                    aTargets: [2],
-                    orderable: true,
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.resultado;
-                    },
-                    visible: true,
-                    aTargets: [3],
                     orderable: true,
                 },
                 {
@@ -4137,14 +4061,11 @@ class PacientesUCI extends App {
                         return m.mount(nTd, {
                             view: () => {
                                 return [
-                                    m('div.text-center', [
-
-                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                                onclick: () => {
-
-                                                },
+                                    m('div.text-center.pd-5', [
+                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                                class: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'bg-light' : 'bg-warning')
                                             },
-                                            'Eliminar',
+                                            oData.numeroTurno
                                         ),
 
                                     ])
@@ -4153,8 +4074,95 @@ class PacientesUCI extends App {
                             }
                         });
                     },
+                    width: '6%',
+                    visible: true,
+                    aTargets: [2],
+                    orderable: false,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.muestra;
+                    },
+
+                    visible: true,
+                    aTargets: [3],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.envio;
+                    },
                     visible: true,
                     aTargets: [4],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.resultado;
+                    },
+                    visible: true,
+                    aTargets: [5],
+                    orderable: true,
+                },
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
+                                        m("button.btn.btn-xs.btn-success[type='button']", {
+                                                class: (oData.editar ? 'd-none' : ''),
+                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
+                                                onclick: () => {
+                                                    CultivosUci.nuevoRegistro = null
+                                                    CultivosUci.verRegistro(oData);
+                                                },
+                                            },
+                                            'Editar',
+                                        ),
+                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
+                                                class: (oData.editar ? '' : 'd-none'),
+                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
+
+                                                onclick: () => {
+                                                    oData.editar = null;
+                                                    CultivosUci.nuevoRegistro = null;
+                                                },
+                                            },
+                                            'Cancelar Edición',
+                                        ),
+                                        m("button.btn.btn-xs.btn-danger[type='button']", {
+                                                class: (oData.editar ? 'd-none' : ''),
+                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
+
+                                                onclick: () => {
+
+                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                                        CultivosUci.eliminarRegistro(oData);
+                                                        FecthUci.eliminarSeccion(oData);
+                                                        CultivosUci.nuevoRegistro = null;
+                                                        PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
+                                                    }
+
+
+
+
+                                                },
+                                            },
+                                            'Eliminar',
+                                        ),
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    width: '10%',
+                    visible: true,
+                    aTargets: [6],
                     orderable: true,
 
                 }
