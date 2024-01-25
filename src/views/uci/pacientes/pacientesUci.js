@@ -176,33 +176,66 @@ class PacientesUCI extends App {
                                         },
                                         class: "custom-select"
                                     }, m('option', 'Seleccione...'), [{
-                                        id: "CambiosPosicion",
-                                        label: "CAMBIOS DE POSICIÓN"
-                                    }, {
-                                        id: "CuidadosPiel",
-                                        label: "CUIDADOS DE PIEL"
-                                    }, {
-                                        id: "HigieneOral",
-                                        label: "HIGIENE ORAL"
-                                    }, {
-                                        id: "TerapiaRespiratoria",
-                                        label: "TERAPIA RESPIRATORIA"
-                                    }, {
-                                        id: "AspiracionSecrreciones",
-                                        label: "ASPIRACIÓN DE SECRECIONES"
-                                    }, {
-                                        id: "ControlDrenajes",
-                                        label: "CONTROL DE DRENAJES"
-                                    }, {
-                                        id: "ControlSangrado",
-                                        label: "CONTROL DE SANGRADO"
-                                    }, {
-                                        id: "ControlNeurologico",
-                                        label: "CONTROL NEUROLÓGICO"
-                                    }, {
-                                        id: "EsquemaInsulima",
-                                        label: "ESQUEMA DE INSULINA"
-                                    }].map(x =>
+                                            id: "CambiosPosicion",
+                                            label: "CAMBIOS DE POSICIÓN"
+                                        }, {
+                                            id: "CuidadosPiel",
+                                            label: "CUIDADOS DE PIEL"
+                                        }, {
+                                            id: "HigieneOral",
+                                            label: "HIGIENE ORAL"
+                                        }, {
+                                            id: "TerapiaRespiratoria",
+                                            label: "TERAPIA RESPIRATORIA"
+                                        }, {
+                                            id: "AspiracionSecrreciones",
+                                            label: "ASPIRACIÓN DE SECRECIONES"
+                                        }, {
+                                            id: "ControlDrenajes",
+                                            label: "CONTROL DE DRENAJES"
+                                        }, {
+                                            id: "ControlSangrado",
+                                            label: "CONTROL DE SANGRADO"
+                                        }, {
+                                            id: "ControlNeurologico",
+                                            label: "CONTROL NEUROLÓGICO"
+                                        }, {
+                                            id: "EsquemaInsulima",
+                                            label: "ESQUEMA DE INSULINA"
+                                        },
+                                        {
+                                            id: "Posicion",
+                                            label: "POSICIÓN"
+                                        },
+                                        {
+                                            id: "Asilamiento",
+                                            label: "AISLAMIENTO"
+                                        },
+                                        {
+                                            id: "ControlTemperaturaMediosFisicos",
+                                            label: "CONTROL DE TEMPERATURA POR MEDIOS FÍSICOS"
+                                        },
+                                        {
+                                            id: "ControlMarcapasos",
+                                            label: "CONTROL DE MARCAPASOS"
+                                        },
+                                        {
+                                            id: "ControlPresionVenosaCentral",
+                                            label: "CONTROL DE PRESION VENOSA CENTRAL"
+                                        },
+                                        {
+                                            id: "RehabilitacionMotora",
+                                            label: "REHABILITACIÓN MOTORA"
+                                        },
+                                        {
+                                            id: "EnemaEvacuante",
+                                            label: "ENEMA EVACUANTE"
+                                        },
+                                        {
+                                            id: "ControlPulsosDistales",
+                                            label: "CONTROL DE PULSOS DISTALES"
+                                        }
+                                    ].map(x =>
                                         m('option[id="' + x.id + '"]', x.label)
                                     ))
                                 ),
