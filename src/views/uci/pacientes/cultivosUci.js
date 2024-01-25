@@ -33,7 +33,7 @@ class CultivosUci {
         if (CultivosUci.registros.length > 0) {
             lasElement = CultivosUci.registros[CultivosUci.registros.length - 1];
         }
-        CultivosUci.nuevoRegistro.nro = lasElement.nro + 1;
+        CultivosUci.nuevoRegistro.nro = (lasElement.nro + 2);
         CultivosUci.registros.push(CultivosUci.nuevoRegistro);
     }
     static verRegistro(registro) {
@@ -53,12 +53,13 @@ class CultivosUci {
 
         let res = [];
         CultivosUci.registros.map((_v, _i) => {
-            if (_v.nro !== obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
-                res.push(_v);
-            }
             if (_v.numeroTurno !== PacientesUCI.numeroTurno) {
                 res.push(_v);
             }
+            if (_v.nro !== obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                res.push(_v);
+            }
+
         });
 
         CultivosUci.registros = res;

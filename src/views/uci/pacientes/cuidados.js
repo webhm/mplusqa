@@ -40,7 +40,7 @@ class CuidadosUci {
         if (CuidadosUci.registros.length > 0) {
             lasElement = CuidadosUci.registros[CuidadosUci.registros.length - 1];
         }
-        CuidadosUci.nuevoRegistro.nro = lasElement.nro + 1;
+        CuidadosUci.nuevoRegistro.nro = (lasElement.nro + 2);
         CuidadosUci.registros.push(CuidadosUci.nuevoRegistro);
     }
     static verRegistro(registro) {
@@ -60,12 +60,13 @@ class CuidadosUci {
 
         let res = [];
         CuidadosUci.registros.map((_v, _i) => {
-            if (_v.nro !== obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
-                res.push(_v);
-            }
             if (_v.numeroTurno !== PacientesUCI.numeroTurno) {
                 res.push(_v);
             }
+            if (_v.nro !== obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                res.push(_v);
+            }
+
         });
 
         CuidadosUci.registros = res;

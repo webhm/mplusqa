@@ -44,11 +44,14 @@ class ViasUci {
         ViasUci.nuevoRegistro = new Via();
     }
     static agregarRegistro() {
+
+
+
         let lasElement = { nro: 0 };
         if (ViasUci.registros.length > 0) {
             lasElement = ViasUci.registros[ViasUci.registros.length - 1];
         }
-        ViasUci.nuevoRegistro.nro = lasElement.nro + 1;
+        ViasUci.nuevoRegistro.nro = (lasElement.nro + 2);
         ViasUci.registros.push(ViasUci.nuevoRegistro);
     }
     static verRegistro(registro) {
@@ -68,12 +71,13 @@ class ViasUci {
 
         let res = [];
         ViasUci.registros.map((_v, _i) => {
-            if (_v.nro !== obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
-                res.push(_v);
-            }
             if (_v.numeroTurno !== PacientesUCI.numeroTurno) {
                 res.push(_v);
             }
+            if (_v.nro !== obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                res.push(_v);
+            }
+
         });
 
         ViasUci.registros = res;

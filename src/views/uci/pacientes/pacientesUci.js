@@ -113,6 +113,7 @@ class PacientesUCI extends App {
                             ])
 
                         ]),
+                        // Cuidados Generales
                         m("thead.bd.bd-2", {
                                 style: { "border-color": "#5173a1" }
                             },
@@ -154,7 +155,9 @@ class PacientesUCI extends App {
                                 ),
 
                             ]),
-                            m("tr", [
+                            m("tr.bd.bd-2", {
+                                style: { "border-color": "#5173a1" }
+                            }, [
 
                                 m("td.tx-14.tx-normal[colspan='3']",
                                     m('select.tx-semibold', {
@@ -295,7 +298,9 @@ class PacientesUCI extends App {
 
                         ]),
                         // Vias
-                        m("thead",
+                        m("thead.bd.bd-2", {
+                                style: { "border-color": "#5173a1" },
+                            },
 
                             m("tr.tx-uppercase", {
 
@@ -308,12 +313,13 @@ class PacientesUCI extends App {
 
                             ])
                         ),
-                        m("tbody", {
+                        m("tbody.bd.bd-2", {
+                            style: { "border-color": "#5173a1" },
                             class: (ViasUci.show ? '' : 'd-none')
                         }, [
 
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "rgb(238, 249, 200)" }
+                            m("tr.bd.bd-2.tx-uppercase", {
+                                style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" }
                             }, [
                                 m("th[scope='col'][colspan='4']",
                                     "VÍA: "
@@ -326,7 +332,10 @@ class PacientesUCI extends App {
                                 )
 
                             ]),
-                            m("tr", [
+                            m("tr.bd.bd-2", {
+
+                                style: { "border-color": "#5173a1" }
+                            }, [
                                 m("td.tx-14.tx-normal.wd-40p[colspan='4']",
                                     m('select.tx-semibold', {
                                         id: 'sec_Vias',
@@ -405,8 +414,9 @@ class PacientesUCI extends App {
                                 ),
 
                             ]),
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "rgb(238, 249, 200)" }
+                            m("tr.bd.bd-2.tx-uppercase", {
+
+                                style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" }
                             }, [
 
                                 m("th[scope='col'][colspan='3']",
@@ -425,7 +435,7 @@ class PacientesUCI extends App {
 
                             ]),
 
-                            m("tr", [
+                            m("tr.bd.bd-2", { style: { "border-color": "#5173a1" } }, [
                                 m("td.tx-14.tx-normal.wd-30p[colspan='3']",
                                     (ViasUci.nuevoRegistro !== null ? [
                                         m('div', [
@@ -544,8 +554,9 @@ class PacientesUCI extends App {
                                 ),
 
                             ]),
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "rgb(238, 249, 200)" }
+                            m("tr.bd.bd-2.tx-uppercase", {
+
+                                style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" }
                             }, [
 
 
@@ -557,7 +568,10 @@ class PacientesUCI extends App {
                                 ),
 
                             ]),
-                            m('tr', [
+                            m('tr.bd.bd-2', {
+                                style: { "border-color": "#5173a1" }
+
+                            }, [
                                 m("td.tx-14.tx-normal.wd-40p[colspan='4']",
                                     (ViasUci.nuevoRegistro !== null ? [
                                         m('select.tx-semibold', {
@@ -630,7 +644,9 @@ class PacientesUCI extends App {
                             ]),
                         ]),
                         //Accesos
-                        m("thead",
+                        m("thead.bd.bd-2", {
+                                style: { "border-color": "#5173a1" }
+                            },
 
                             m("tr.tx-uppercase", {
 
@@ -644,12 +660,13 @@ class PacientesUCI extends App {
 
                             ])
                         ),
-                        m("tbody", {
+                        m("tbody.bd.bd-2", {
+                            style: { "border-color": "#5173a1" },
                             class: (AccesosUci.show ? '' : 'd-none')
                         }, [
 
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "rgb(238, 249, 200)" }
+                            m("tr.bd.bd-2.tx-uppercase", {
+                                style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" }
                             }, [
                                 m("th[scope='col'][colspan='4']",
                                     "ACCESO: "
@@ -662,7 +679,9 @@ class PacientesUCI extends App {
                                 )
 
                             ]),
-                            m("tr", [
+                            m("tr.bd.bd-2", {
+                                style: { "border-color": "#5173a1" },
+                            }, [
                                 m("td.tx-14.tx-normal[colspan='4']",
                                     m('select.tx-semibold', {
                                         id: 'sec_Accesos',
@@ -1526,7 +1545,9 @@ class PacientesUCI extends App {
                             ]),
                         ]),
                         //Cultivos
-                        m("thead",
+                        m("thead.bd.bd-2", {
+                                style: { "border-color": "#5173a1" }
+                            },
 
                             m("tr.tx-uppercase", {
 
@@ -1540,7 +1561,8 @@ class PacientesUCI extends App {
 
                             ])
                         ),
-                        m("tbody", {
+                        m("tbody.bd.bd-2", {
+                            style: { "border-color": "#5173a1" },
                             class: (CultivosUci.show ? '' : 'd-none')
                         }, [
 
