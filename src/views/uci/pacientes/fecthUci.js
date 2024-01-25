@@ -78,7 +78,7 @@ class FecthUci {
 
     }
 
-    static eliminarRegistro(_dataSeccion) {
+    static eliminarSeccion(_dataSeccion) {
 
         return m.request({
             method: "POST",
@@ -99,7 +99,7 @@ class FecthUci {
 
     }
 
-    static actualizarRegistro(_dataSeccion) {
+    static actualizarSeccion(_dataSeccion) {
 
         return m.request({
             method: "POST",
@@ -136,6 +136,8 @@ class FecthUci {
                 "Content-Type": "application/json; charset=utf-8"
             }
         }).then(function(res) {
+
+            window.location.reload();
 
         }).catch(function(e) {
 

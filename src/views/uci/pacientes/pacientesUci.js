@@ -1,6 +1,5 @@
 import m from "mithril";
 import App from "../../../models/App";
-import HeaderPrivate from "../../layout/headerPrivate";
 import Sidebar from "../sidebarUci";
 import Loader from "../../utils/loader";
 import Errors from "../../utils/errors";
@@ -40,14 +39,9 @@ class PacientesUCI extends App {
     }
     oncreate(_data) {
 
-        console.log(_data)
-
-
     }
 
-    static vHeader() {
-        return m(HeaderPrivate, { userName: App.userName });
-    }
+
 
     static validarAtencion() {
 
@@ -58,6 +52,7 @@ class PacientesUCI extends App {
         CuidadosUci.show = true;
         AccesosUci.show = true;
         ViasUci.show = true;
+        ViasUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Vias').options));
         CateterUci.show = true;
         VentilcacionUci.show = true;
         HemodialisisUci.show = true;
@@ -66,10 +61,11 @@ class PacientesUCI extends App {
         MarcapasosUci.show = true;
     }
 
+
     static vMainProfile() {
         return [
             m("div.content.content-components", {
-                    style: { "margin-right": "0px", "margin-left": "0px" }
+                    style: { "margin-right": "0px", "margin-left": "0px", "margin-top": "0px" }
                 },
                 m("div.container.mg-l-0.mg-r-0", {
                     style: { "max-width": "100%" }
@@ -80,25 +76,13 @@ class PacientesUCI extends App {
                                 "MetroPlus"
                             ]),
                         ),
-                        m("li.breadcrumb-item",
-                            m(m.route.Link, { href: "/uci", }, [
-                                'U.C.I.'
-                            ]),
-                        ),
                         m("li.breadcrumb-item.active[aria-current='page']",
-                            PacientesUCI.title
+                            'BITÁCORA U.C.I. ADULTO'
                         )
                     ]),
                     m("table.table.table-bordered.table-sm.tx-14", [
                         m("thead",
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "#CCCCFF" }
-                            }, [
-                                m("th[scope='col'][colspan='12']",
-                                    "BITÁCORA U.C.I. ADULTO:"
-                                ),
 
-                            ]),
                             m("tr.tx-uppercase", {
                                 style: { "background-color": "#CCCCFF" }
                             }, [
@@ -116,7 +100,7 @@ class PacientesUCI extends App {
                                     m("button.btn.btn-xs.btn-primary.tx-semibold[type='button']", {
                                         onclick: () => {
                                             TurnosUci.iniciarTurno();
-                                            PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
+                                            PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos().reverse());
                                         }
                                     }, "Registar Nuevo Turno")
                                 ),
@@ -283,7 +267,7 @@ class PacientesUCI extends App {
                                                         PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
                                                     } else {
                                                         CuidadosUci.editarRegistro();
-                                                        FecthUci.actualizarRegistro(CuidadosUci.nuevoRegistro);
+                                                        FecthUci.actualizarSeccion(CuidadosUci.nuevoRegistro);
                                                         CuidadosUci.nuevoRegistro = null;
                                                         PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
                                                     }
@@ -348,7 +332,7 @@ class PacientesUCI extends App {
 
                             ]),
                             m("tr", [
-                                m("td.tx-14.tx-normal[colspan='4']",
+                                m("td.tx-14.tx-normal.wd-40p[colspan='4']",
                                     m('select.tx-semibold', {
                                         id: 'sec_Vias',
                                         onchange: (e) => {
@@ -394,7 +378,7 @@ class PacientesUCI extends App {
                                     ))
 
                                 ),
-                                m("td.tx-10.tx-normal[colspan='4']",
+                                m("td.tx-10.tx-normal.wd-40p[colspan='4']",
                                     (ViasUci.nuevoRegistro !== null ? [
                                         m("input", {
                                             id: "ubicacion" + ViasUci.nuevoRegistro.id,
@@ -410,7 +394,7 @@ class PacientesUCI extends App {
 
 
                                 ),
-                                m("td.tx-14.tx-normal[colspan='4']",
+                                m("td.tx-14.tx-normal.wd-40p[colspan='4']",
                                     (ViasUci.nuevoRegistro !== null ? [
                                         m("input", {
                                             id: "tipo" + ViasUci.nuevoRegistro.id,
@@ -447,16 +431,14 @@ class PacientesUCI extends App {
                             ]),
 
                             m("tr", [
-
-
-                                m("td.tx-14.tx-normal[colspan='3']",
+                                m("td.tx-14.tx-normal.wd-30p[colspan='3']",
                                     (ViasUci.nuevoRegistro !== null ? [
-                                        m('div.d-flex', [
+                                        m('div', [
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
                                                 id: "ifecha" + ViasUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
-                                                    if (ViasUci.nuevoRegistro.inicio_fecha !== undefined) {
-                                                        el.dom.value = ViasUci.nuevoRegistro.inicio_fecha;
+                                                    if (ViasUci.nuevoRegistro.inicio !== undefined) {
+                                                        el.dom.value = ViasUci.nuevoRegistro.inicio;
                                                     }
                                                     setTimeout(() => {
                                                         new Cleave("#ifecha" + ViasUci.nuevoRegistro.id, {
@@ -467,43 +449,22 @@ class PacientesUCI extends App {
                                                 },
                                                 oninput: (e) => {
                                                     setTimeout(() => {
-                                                        ViasUci.nuevoRegistro.inicio_fecha = e.target.value;
+                                                        ViasUci.nuevoRegistro.inicio = e.target.value;
                                                     }, 50);
                                                 },
                                             }),
-                                            m("input.form-control[type='text'][placeholder='hh:mm']", {
-                                                id: "ihora" + ViasUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    if (ViasUci.nuevoRegistro.inicio_hora !== undefined) {
-                                                        el.dom.value = ViasUci.nuevoRegistro.inicio_hora;
-                                                    }
-                                                    setTimeout(() => {
-                                                        new Cleave("#ihora" + ViasUci.nuevoRegistro.id, {
-                                                            time: true,
-                                                            timePattern: ["h", "m"]
-                                                        });
-                                                    }, 50);
-                                                },
-                                                oninput: (e) => {
-                                                    setTimeout(() => {
-                                                        ViasUci.nuevoRegistro.inicio_hora = e.target.value;
-                                                        ViasUci.nuevoRegistro.inicio = ViasUci.nuevoRegistro.inicio_fecha + " " + ViasUci.nuevoRegistro.inicio_hora;
-                                                    }, 50);
-                                                },
-
-                                            })
                                         ]),
                                     ] : [])
                                 ),
-                                m("td.tx-14.tx-normal[colspan='3']",
+                                m("td.tx-14.tx-normal.wd-30p[colspan='3']",
 
                                     (ViasUci.nuevoRegistro !== null ? [
-                                        m('div.d-flex', [
+                                        m('div', [
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
                                                 id: "rfecha" + ViasUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
-                                                    if (ViasUci.nuevoRegistro.retiro_fecha !== undefined) {
-                                                        el.dom.value = ViasUci.nuevoRegistro.retiro_fecha;
+                                                    if (ViasUci.nuevoRegistro.retiro !== undefined) {
+                                                        el.dom.value = ViasUci.nuevoRegistro.retiro;
                                                     }
                                                     setTimeout(() => {
                                                         new Cleave("#rfecha" + ViasUci.nuevoRegistro.id, {
@@ -514,30 +475,10 @@ class PacientesUCI extends App {
                                                 },
                                                 oninput: (e) => {
                                                     setTimeout(() => {
-                                                        ViasUci.nuevoRegistro.retiro_fecha = e.target.value;
+                                                        ViasUci.nuevoRegistro.retiro = e.target.value;
                                                     }, 50);
                                                 },
                                             }),
-                                            m("input.form-control[type='text'][placeholder='hh:mm']", {
-                                                id: "rHora" + ViasUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    if (ViasUci.nuevoRegistro.retiro_hora !== undefined) {
-                                                        el.dom.value = ViasUci.nuevoRegistro.retiro_hora;
-                                                    }
-                                                    setTimeout(() => {
-                                                        new Cleave("#rHora" + ViasUci.nuevoRegistro.id, {
-                                                            time: true,
-                                                            timePattern: ["h", "m"]
-                                                        });
-                                                    }, 50);
-                                                },
-                                                oninput: (e) => {
-                                                    setTimeout(() => {
-                                                        ViasUci.nuevoRegistro.retiro_hora = e.target.value;
-                                                        ViasUci.nuevoRegistro.retiro = ViasUci.nuevoRegistro.retiro_fecha + " " + ViasUci.nuevoRegistro.retiro_hora;
-                                                    }, 50);
-                                                },
-                                            })
                                         ])
 
 
@@ -545,15 +486,15 @@ class PacientesUCI extends App {
 
 
                                 ),
-                                m("td.tx-14.tx-normal[colspan='3']",
+                                m("td.tx-14.tx-normal.wd-30p[colspan='3']",
 
                                     (ViasUci.nuevoRegistro !== null ? [
-                                        m('div.d-flex', [
+                                        m('div', [
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
                                                 id: "cfecha" + ViasUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
-                                                    if (ViasUci.nuevoRegistro.cambio_fecha !== undefined) {
-                                                        el.dom.value = ViasUci.nuevoRegistro.cambio_fecha;
+                                                    if (ViasUci.nuevoRegistro.cambio !== undefined) {
+                                                        el.dom.value = ViasUci.nuevoRegistro.cambio;
                                                     }
                                                     setTimeout(() => {
                                                         new Cleave("#cfecha" + ViasUci.nuevoRegistro.id, {
@@ -564,30 +505,11 @@ class PacientesUCI extends App {
                                                 },
                                                 oninput: (e) => {
                                                     setTimeout(() => {
-                                                        ViasUci.nuevoRegistro.cambio_fecha = e.target.value;
+                                                        ViasUci.nuevoRegistro.cambio = e.target.value;
                                                     }, 50);
                                                 },
                                             }),
-                                            m("input.form-control[type='text'][placeholder='hh:mm']", {
-                                                id: "chora" + ViasUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    if (ViasUci.nuevoRegistro.cambio_hora !== undefined) {
-                                                        el.dom.value = ViasUci.nuevoRegistro.cambio_hora;
-                                                    }
-                                                    setTimeout(() => {
-                                                        new Cleave("#chora" + ViasUci.nuevoRegistro.id, {
-                                                            time: true,
-                                                            timePattern: ["h", "m"]
-                                                        });
-                                                    }, 50);
-                                                },
-                                                oninput: (e) => {
-                                                    setTimeout(() => {
-                                                        ViasUci.nuevoRegistro.cambio_hora = e.target.value;
-                                                        ViasUci.nuevoRegistro.cambio = ViasUci.nuevoRegistro.cambio_fecha + " " + ViasUci.nuevoRegistro.cambio_hora;
-                                                    }, 50);
-                                                },
-                                            })
+
                                         ])
                                     ] : [
 
@@ -596,14 +518,14 @@ class PacientesUCI extends App {
 
 
                                 ),
-                                m("td.tx-14.tx-normal[colspan='3']",
+                                m("td.tx-14.tx-normal.wd-30p[colspan='3']",
 
                                     (ViasUci.nuevoRegistro !== null ? [
-                                        m('div.d-flex', [
+                                        m('div', [
                                             m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
                                                 id: "cufecha" + ViasUci.nuevoRegistro.id,
                                                 oncreate: (el) => {
-                                                    if (ViasUci.nuevoRegistro.curacion_fecha !== undefined) {
+                                                    if (ViasUci.nuevoRegistro.curacion !== undefined) {
                                                         el.dom.value = ViasUci.nuevoRegistro.curacion_fecha;
                                                     }
                                                     setTimeout(() => {
@@ -615,30 +537,11 @@ class PacientesUCI extends App {
                                                 },
                                                 oninput: (e) => {
                                                     setTimeout(() => {
-                                                        ViasUci.nuevoRegistro.curacion_fecha = e.target.value;
+                                                        ViasUci.nuevoRegistro.curacion = e.target.value;
                                                     }, 50);
                                                 },
                                             }),
-                                            m("input.form-control[type='text'][placeholder='hh:mm']", {
-                                                id: "cuhora" + ViasUci.nuevoRegistro.id,
-                                                oncreate: (el) => {
-                                                    if (ViasUci.nuevoRegistro.curacion_hora !== undefined) {
-                                                        el.dom.value = ViasUci.nuevoRegistro.curacion_hora;
-                                                    }
-                                                    setTimeout(() => {
-                                                        new Cleave("#cuhora" + ViasUci.nuevoRegistro.id, {
-                                                            time: true,
-                                                            timePattern: ["h", "m"]
-                                                        });
-                                                    }, 50);
-                                                },
-                                                oninput: (e) => {
-                                                    setTimeout(() => {
-                                                        ViasUci.nuevoRegistro.curacion_hora = e.target.value;
-                                                        ViasUci.nuevoRegistro.curacion = ViasUci.nuevoRegistro.curacion_fecha + " " + ViasUci.nuevoRegistro.curacion_hora;
-                                                    }, 50);
-                                                },
-                                            })
+
                                         ])
                                     ] : [])
 
@@ -660,7 +563,7 @@ class PacientesUCI extends App {
 
                             ]),
                             m('tr', [
-                                m("td.tx-14.tx-normal[colspan='4']",
+                                m("td.tx-14.tx-normal.wd-40p[colspan='4']",
                                     (ViasUci.nuevoRegistro !== null ? [
                                         m('select.tx-semibold', {
                                             id: "condicion" + ViasUci.nuevoRegistro.id,
@@ -686,7 +589,7 @@ class PacientesUCI extends App {
 
 
                                 ),
-                                m("td.tx-14.tx-normal[colspan='8']",
+                                m("td.tx-14.tx-normal.wd-80p[colspan='8']",
                                     (ViasUci.nuevoRegistro !== null ? [
                                         m("input", {
                                             id: "observacion" + ViasUci.nuevoRegistro.id,
@@ -703,7 +606,7 @@ class PacientesUCI extends App {
                                                         PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
                                                     } else {
                                                         ViasUci.editarRegistro();
-                                                        FecthUci.actualizarRegistro(ViasUci.nuevoRegistro);
+                                                        FecthUci.actualizarSeccion(ViasUci.nuevoRegistro);
                                                         ViasUci.nuevoRegistro = null;
                                                         PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
                                                     }
@@ -727,7 +630,7 @@ class PacientesUCI extends App {
                             ]),
                             m("tr.tx-uppercase.mg-t-20", [
                                 m("td[colspan='12']",
-                                    (ViasUci.show != false ? [PacientesUCI.vTable('table-vias', ViasUci.getAllRegistros(Array.from(document.getElementById('sec_Vias').options)), PacientesUCI.arqTableVias())] : [])
+                                    (ViasUci.show != false ? [PacientesUCI.vTable('table-vias', ViasUci.getRegistros(), PacientesUCI.arqTableVias())] : [])
                                 ),
                             ]),
                         ]),
@@ -2227,6 +2130,20 @@ class PacientesUCI extends App {
     static vMenu() {
         return m(Sidebar, { page: 'uci/pacientes' });
     }
+
+    static parseSeccion(options) {
+        let res = [];
+        options.map((option) => {
+            FecthUci.dataSecciones.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id) {
+                    res.push(_obj);
+                }
+            });
+        });
+        return res;
+    }
+
     static reloadData(idFiltro) {
         PacientesUCI.pacientes = null;
         PacientesUCI.idFiltro = idFiltro;
@@ -2469,7 +2386,7 @@ class PacientesUCI extends App {
             cache: false,
             destroy: true,
             order: [
-                [0, 'asc']
+                [0, 'Asc']
             ],
             columns: [{
                     title: "N° : ",
@@ -2826,7 +2743,7 @@ class PacientesUCI extends App {
 
                                                     if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
                                                         CuidadosUci.eliminarRegistro(oData);
-                                                        FecthUci.eliminarRegistro(oData);
+                                                        FecthUci.eliminarSeccion(oData);
                                                         CuidadosUci.nuevoRegistro = null;
                                                         PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
                                                     }
@@ -2895,10 +2812,10 @@ class PacientesUCI extends App {
                 [1, 'desc']
             ],
             columns: [{
-                    title: "Turno:",
+                    title: "order Turno:",
                 },
                 {
-                    title: "N°:",
+                    title: "order N°:",
                 },
                 {
                     title: "Turno:",
@@ -2985,7 +2902,7 @@ class PacientesUCI extends App {
                         return full.nro;
                     },
 
-                    visible: true,
+                    visible: false,
                     aTargets: [3],
                     orderable: false,
 
@@ -3111,7 +3028,7 @@ class PacientesUCI extends App {
                                                 onclick: () => {
                                                     if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
                                                         ViasUci.eliminarRegistro(oData);
-                                                        FecthUci.eliminarRegistro(oData);
+                                                        FecthUci.eliminarSeccion(oData);
                                                         ViasUci.nuevoRegistro = null;
                                                         PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
                                                     }
@@ -4270,7 +4187,6 @@ class PacientesUCI extends App {
 
     static page() {
         return [
-            PacientesUCI.vHeader(),
             PacientesUCI.vMainProfile()
         ];
     }

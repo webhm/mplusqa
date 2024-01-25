@@ -44,66 +44,46 @@ class ViasUci {
         ViasUci.nuevoRegistro = new Via();
     }
     static agregarRegistro() {
-        ViasUci.nuevoRegistro.nro = (ViasUci.registros.length > 0 ? (ViasUci.registros.length + 1) : 1);
-        let res = [];
-        ViasUci.registros.map((_v, _i) => {
-            res.push(_v);
-        });
-        res.push(ViasUci.nuevoRegistro);
-        ViasUci.registros = res;
-
+        let lasElement = { nro: 0 };
+        if (ViasUci.registros.length > 0) {
+            lasElement = ViasUci.registros[ViasUci.registros.length - 1];
+        }
+        ViasUci.nuevoRegistro.nro = lasElement.nro + 1;
+        ViasUci.registros.push(ViasUci.nuevoRegistro);
     }
     static verRegistro(registro) {
         registro.editar = true;
         ViasUci.nuevoRegistro = registro;
     }
     static editarRegistro() {
-
         ViasUci.nuevoRegistro.editar = null;
-        let res = [];
-        ViasUci.registros.map((_v) => {
-            if (_v.nro != ViasUci.nuevoRegistro.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
-                res.push(_v);
+        ViasUci.registros.map((_v, _i) => {
+            if (_v.nro == ViasUci.nuevoRegistro.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                ViasUci.registros[_i] = ViasUci.nuevoRegistro;
             }
         });
-        res.push(ViasUci.nuevoRegistro);
-        ViasUci.registros = res;
 
     }
     static eliminarRegistro(obj) {
 
         let res = [];
-        ViasUci.registros.map((_v) => {
-            if (_v.nro != obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+        ViasUci.registros.map((_v, _i) => {
+            if (_v.nro !== obj.nro && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                res.push(_v);
+            }
+            if (_v.numeroTurno !== PacientesUCI.numeroTurno) {
                 res.push(_v);
             }
         });
+
         ViasUci.registros = res;
 
-    }
-    static parseSeccion(options) {
-
-
-        options.map((option) => {
-            FecthUci.dataSecciones.filter((obj) => {
-                let _obj = JSON.parse(obj.DATASECCION);
-                if (_obj.id === option.id) {
-                    ViasUci.registros.push(_obj);
-                }
-            });
-        });
-
-
-
-
-    }
-    static getAllRegistros(options) {
-        ViasUci.parseSeccion(options);
-        return ViasUci.registros;
     }
     static getRegistros() {
         return ViasUci.registros;
     }
+
+
 }
 
 export default ViasUci;
