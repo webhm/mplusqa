@@ -104,7 +104,7 @@ class PacientesUCI extends App {
                             ])
 
                         ]),
-                        m("thead.bd-5",
+                        m("thead.bd.bd-5.bd-color-05",
 
                             m("tr.tx-uppercase", {
                                 style: { "background-color": "#CCCCFF" },
