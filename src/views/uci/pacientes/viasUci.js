@@ -7,6 +7,7 @@ import PacientesUCI from "./pacientesUci";
 
 class Via {
     id = null;
+    nro = null;
     via = null;
     ubicacion = null;
     tipo = null;
@@ -20,6 +21,7 @@ class Via {
     editar = null;
     constructor() {
         this.id = this.id;
+        this.nro = this.nro;
         this.via = this.via;
         this.ubicacion = this.ubicacion;
         this.tipo = this.tipo;
@@ -44,8 +46,13 @@ class ViasUci {
         ViasUci.nuevoRegistro = new Via();
     }
     static agregarRegistro() {
-
-        ViasUci.registros.push(ViasUci.nuevoRegistro);
+        if (ViasUci.registros.length == 0) {
+            ViasUci.nuevoRegistro.nro = 1;
+            ViasUci.registros.push(ViasUci.nuevoRegistro);
+        } else {
+            ViasUci.nuevoRegistro.nro = (ViasUci.registros[ViasUci.registros.length - 1].nro + 1);
+            ViasUci.registros.push(ViasUci.nuevoRegistro);
+        }
     }
     static verRegistro(registro) {
         registro.editar = true;

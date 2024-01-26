@@ -6,12 +6,14 @@ import PacientesUCI from "./pacientesUci";
 
 class Cultivo {
     id = null;
+    nro = null;
     muestra = null;
     envio = null;
     resultado = null;
     editar = null;
     constructor() {
         this.id = this.id;
+        this.nro = this.nro;
         this.muestra = this.muestra;
         this.envio = this.envio;
         this.resultado = this.resultado;
@@ -31,8 +33,13 @@ class CultivosUci {
         CultivosUci.nuevoRegistro = new Cultivo();
     }
     static agregarRegistro() {
-
-        CultivosUci.registros.push(CultivosUci.nuevoRegistro);
+        if (CultivosUci.registros.length == 0) {
+            CultivosUci.nuevoRegistro.nro = 1;
+            CultivosUci.registros.push(CultivosUci.nuevoRegistro);
+        } else {
+            CultivosUci.nuevoRegistro.nro = (CultivosUci.registros[CultivosUci.registros.length - 1].nro + 1);
+            CultivosUci.registros.push(CultivosUci.nuevoRegistro);
+        }
     }
     static verRegistro(registro) {
         registro.editar = true;

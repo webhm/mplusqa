@@ -42,8 +42,13 @@ class AccesosUci {
         AccesosUci.nuevoRegistro = new Acceso();
     }
     static agregarRegistro() {
-
-        AccesosUci.registros.push(AccesosUci.nuevoRegistro);
+        if (AccesosUci.registros.length == 0) {
+            AccesosUci.nuevoRegistro.nro = 1;
+            AccesosUci.registros.push(AccesosUci.nuevoRegistro);
+        } else {
+            AccesosUci.nuevoRegistro.nro = (AccesosUci.registros[AccesosUci.registros.length - 1].nro + 1);
+            AccesosUci.registros.push(AccesosUci.nuevoRegistro);
+        }
     }
     static verRegistro(registro) {
         registro.editar = true;

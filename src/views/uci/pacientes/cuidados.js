@@ -6,6 +6,7 @@ import PacientesUCI from "./pacientesUci";
 
 class Cuidado {
     id = null;
+    nro = null;
     cuidado = null;
     frecuencia = null;
     am = null;
@@ -14,6 +15,7 @@ class Cuidado {
     editar = null;
     constructor() {
         this.id = this.id;
+        this.nro = this.nro;
         this.cuidado = this.cuidado;
         this.frecuencia = this.frecuencia;
         this.am = this.pm;
@@ -37,7 +39,15 @@ class CuidadosUci {
     }
     static agregarRegistro() {
 
-        CuidadosUci.registros.push(CuidadosUci.nuevoRegistro);
+        if (CuidadosUci.registros.length == 0) {
+            CuidadosUci.nuevoRegistro.nro = 1;
+            CuidadosUci.registros.push(CuidadosUci.nuevoRegistro);
+        } else {
+            CuidadosUci.nuevoRegistro.nro = (CuidadosUci.registros[CuidadosUci.registros.length - 1].nro + 1);
+            CuidadosUci.registros.push(CuidadosUci.nuevoRegistro);
+        }
+
+
     }
     static verRegistro(registro) {
         registro.editar = true;
