@@ -14,14 +14,17 @@ class FecthUci {
     static fecha = null;
     static usuario = null;
     static dataTurnos = null;
-    static dataSecciones = null;
+    static dataSecciones = [];
 
     static setTurnos(dataTurnos) {
 
         dataTurnos.map((_v) => {
             TurnosUci.setTurno({
-                fechaTurno: moment().format('DD-MM-YYYY HH:mm'),
-                usuarioTurno: 'MCHANG',
+                fechaHoraTurno: _v.FECHA,
+                usuarioTurno: _v.USUARIO,
+                numeroHistoriaClinica: _v.NHC,
+                numeroAtencion: _v.ATENCION,
+                numeroTurno: parseInt(_v.PK_TURNO),
                 paciente: 'PACIENTE PRUEBA MV',
                 especialidad: 'MEDICINA INTERNA',
                 status: parseInt(_v.STATUS),
@@ -40,9 +43,10 @@ class FecthUci {
             method: "POST",
             url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/registrar-turno",
             body: {
-                numeroHistoriaClinica: PacientesUCI.numeroHistoriaClinica,
-                numeroAtencion: PacientesUCI.numeroAtencion,
-                numeroTurno: PacientesUCI.numeroTurno,
+                numeroHistoriaClinica: TurnosUci.nuevoTurno.numeroHistoriaClinica,
+                numeroAtencion: TurnosUci.nuevoTurno.numeroAtencion,
+                numeroTurno: TurnosUci.nuevoTurno.numeroTurno,
+                fechaHoraTurno: TurnosUci.nuevoTurno.fechaHoraTurno,
                 status: 1
             },
             headers: {
@@ -87,6 +91,27 @@ class FecthUci {
                 numeroAtencion: PacientesUCI.numeroAtencion,
                 numeroTurno: PacientesUCI.numeroTurno,
                 nro: _dataSeccion.nro,
+            },
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        }).then(function(res) {
+
+        }).catch(function(e) {
+
+        });
+
+    }
+
+    static actualizarHoraAtencion() {
+
+        return m.request({
+            method: "POST",
+            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/actualizar-atencion",
+            body: {
+                numeroAtencion: PacientesUCI.numeroAtencion,
+                numeroTurno: PacientesUCI.numeroTurno,
+                fechaHoraTurno: TurnosUci.nuevoTurno.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno,
             },
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
