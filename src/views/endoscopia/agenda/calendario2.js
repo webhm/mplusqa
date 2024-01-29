@@ -1921,13 +1921,14 @@ class Calendario extends App {
     static validarAgendamiento(track) {
 
 
-        if (track == 'Reagendar' && Cita.data.tipo == 1 && Cita.data.sinDatos == false && Cita.data.email != document.getElementById('correoCitaUpdate').value) {
+        if (track == 'Reagendar' && Cita.data.tipo == 1 && Cita.data.sinDatos == false && document.getElementById('correoCitaUpdate') != undefined && Cita.data.email != document.getElementById('correoCitaUpdate').value) {
             Cita.data.email = document.getElementById('correoCitaUpdate').value;
         }
 
-        if (track == 'Agendar' && Cita.data.tipo == 1 && Cita.data.sinDatos == false && Cita.data.email != document.getElementById('correoCreaCita').value) {
+        if (track == 'Agendar' && Cita.data.tipo == 1 && Cita.data.sinDatos == false && document.getElementById('correoCreaCita') != undefined && Cita.data.email != document.getElementById('correoCreaCita').value) {
             Cita.data.email = document.getElementById('correoCreaCita').value;
         }
+
 
         Cita.validarCita();
 

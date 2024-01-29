@@ -202,25 +202,6 @@ class Cita {
             throw Cita.error;
         }
 
-        if (Cita.data.id_estudio == undefined) {
-            $("#modalCreateEvent").animate({
-                scrollTop: 0
-            }, "slow");
-            Cita.error = "No existe datos de estudio.";
-            m.redraw();
-            throw Cita.error;
-        }
-
-
-        if (Cita.data.paciente == undefined) {
-            $("#modalCreateEvent").animate({
-                scrollTop: 0
-            }, "slow");
-            Cita.error = "No existe datos de paciente.";
-            m.redraw();
-            throw Cita.error;
-        }
-
         if (Cita.data.tipo == 1 && Cita.data.sinDatos !== undefined && Cita.data.sinDatos == false) {
 
             if (Cita.data.id_estudio == undefined) {
@@ -363,6 +344,7 @@ class Cita {
         Cita.data = null;
         Cita.data = {};
         Cita.data.tipo = 1;
+        Cita.data.sinDatos = false;
         Cita.data.comentarios = "";
         Cita.data.hashCita = startDate.format("YYYY-MM-DD HH:mm") + "." + endDate.format("YYYY-MM-DD HH:mm");
         Cita.data.start = startDate.format("dddd, DD-MM-YYYY HH:mm");
