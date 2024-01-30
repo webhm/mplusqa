@@ -382,6 +382,14 @@ class CuidadosUci {
                             class: "custom-select",
                             value: (CuidadosUci.nuevoRegistro !== null ? CuidadosUci.nuevoRegistro.cuidado : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
+                                id: "Posicion",
+                                label: "POSICIÓN"
+                            },
+                            {
+                                id: "Asilamiento",
+                                label: "AISLAMIENTO"
+                            },
+                            {
                                 id: "CambiosPosicion",
                                 label: "CAMBIOS DE POSICIÓN"
                             }, {
@@ -396,7 +404,17 @@ class CuidadosUci {
                             }, {
                                 id: "AspiracionSecrreciones",
                                 label: "ASPIRACIÓN DE SECRECIONES"
-                            }, {
+                            },
+                            {
+                                id: "ControlTemperaturaMediosFisicos",
+                                label: "CONTROL DE TEMPERATURA POR MEDIOS FÍSICOS"
+                            },
+
+                            {
+                                id: "ControlMarcapasos",
+                                label: "CONTROL DE MARCAPASOS"
+                            },
+                            {
                                 id: "ControlDrenajes",
                                 label: "CONTROL DE DRENAJES"
                             }, {
@@ -405,29 +423,14 @@ class CuidadosUci {
                             }, {
                                 id: "ControlNeurologico",
                                 label: "CONTROL NEUROLÓGICO"
-                            }, {
-                                id: "EsquemaInsulima",
-                                label: "ESQUEMA DE INSULINA"
-                            },
-                            {
-                                id: "Posicion",
-                                label: "POSICIÓN"
-                            },
-                            {
-                                id: "Asilamiento",
-                                label: "AISLAMIENTO"
-                            },
-                            {
-                                id: "ControlTemperaturaMediosFisicos",
-                                label: "CONTROL DE TEMPERATURA POR MEDIOS FÍSICOS"
-                            },
-                            {
-                                id: "ControlMarcapasos",
-                                label: "CONTROL DE MARCAPASOS"
                             },
                             {
                                 id: "ControlPresionVenosaCentral",
                                 label: "CONTROL DE PRESION VENOSA CENTRAL"
+                            },
+                            {
+                                id: "EsquemaInsulima",
+                                label: "ESQUEMA DE INSULINA"
                             },
                             {
                                 id: "RehabilitacionMotora",

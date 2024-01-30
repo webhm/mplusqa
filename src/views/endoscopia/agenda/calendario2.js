@@ -1097,6 +1097,7 @@ class Calendario extends App {
                                             m("button.btn.btn-primary[type='button']", {
                                                 onclick: (e) => {
                                                     Cita.error = null;
+                                                    Cita.data.sinDatos = false;
                                                     Cita.buscarPacientes = !Cita.buscarPacientes;
                                                 }
                                             }, [

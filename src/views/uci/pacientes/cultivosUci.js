@@ -126,7 +126,7 @@ class CultivosUci {
                     title: "Muestra:",
                 },
                 {
-                    title: "Fecha de Envío:",
+                    title: "Fecha Envío:",
                 },
                 {
                     title: "Resultado de Germen Aislado:",

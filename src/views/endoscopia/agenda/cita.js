@@ -344,7 +344,6 @@ class Cita {
         Cita.data = null;
         Cita.data = {};
         Cita.data.tipo = 1;
-        Cita.data.sinDatos = false;
         Cita.data.comentarios = "";
         Cita.data.hashCita = startDate.format("YYYY-MM-DD HH:mm") + "." + endDate.format("YYYY-MM-DD HH:mm");
         Cita.data.start = startDate.format("dddd, DD-MM-YYYY HH:mm");

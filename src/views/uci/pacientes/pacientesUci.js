@@ -9,12 +9,13 @@ import TurnosUci from "./turnosUci";
 import ViasUci from "./viasUci";
 import AccesosUci from "./accesosUci";
 import CateterUci from "./catetarUci";
-import VentilcacionUci from "./ventilacionUci";
+import VentilacionUci from "./ventilacionUci";
 import HemodialisisUci from "./hemodialisis";
 import CultivosUci from "./cultivosUci";
 import CuidadosUci from "./cuidados";
 import MarcapasosUci from "./marcapasos";
 import FecthUci from "./fecthUci";
+import VentilatoriosUci from "./ventilatorios";
 
 
 // Pacientes UCI
@@ -52,18 +53,32 @@ class PacientesUCI extends App {
     static showSecciones() {
         CuidadosUci.show = true;
         CuidadosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_CuidadosGenerales').options));
+
         ViasUci.show = true;
         ViasUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Vias').options));
+
         AccesosUci.show = true;
         AccesosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Accesos').options));
+
         CateterUci.show = true;
-        CateterUci.registros = PacientesUCI.setSeccion(Array.from(document.getElementById('sec_Cateter').options));
-        VentilcacionUci.show = true;
+        CateterUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Cateter').options));
+
+        VentilacionUci.show = true;
+        VentilacionUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Ventilacion').options));
+
         HemodialisisUci.show = true;
+        HemodialisisUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Hemodialisis').options));
+
         CultivosUci.show = true;
         CultivosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Cultivos').options));
-        CuidadosUci.show = true;
+
         MarcapasosUci.show = true;
+        MarcapasosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Marcapasos').options));
+
+        VentilatoriosUci.show = true;
+        VentilatoriosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Ventilatorios').options));
+
+
     }
 
 
@@ -122,729 +137,24 @@ class PacientesUCI extends App {
                             m('br')
 
                         ]),
-                        //Cuidados Generales
+                        // Cuidados Generales
                         m(CuidadosUci),
-                        //Vias
+                        // Vias
                         m(ViasUci),
-                        //Accesos
+                        // Accesos
                         m(AccesosUci),
-                        //Cateter
+                        // Cateter
                         m(CateterUci),
                         // Manejo de Ventilzacion
-                        m("thead.d-none",
-
-                            m("tr.tx-uppercase", {
-
-                                style: { "background-color": "#CCCCFF" },
-                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
-
-                            }, [
-                                m("th.tx-semibold[scope='col'][colspan='12']",
-                                    "MANEJO DE VENTILIZACIÓN:"
-                                ),
-
-                            ])
-                        ),
-                        m("tbody.d-none ", {
-                            class: (VentilcacionUci.show ? '' : 'd-none')
-                        }, [
-
-
-
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "rgb(238, 249, 200)" }
-                            }, [
-                                m("th[scope='col'][colspan='3']",
-                                    "MANEJO DE VENTILIZACIÓN: "
-                                ),
-                                m("th[scope='col'][colspan='3']",
-                                    "AM: "
-                                ),
-                                m("th[scope='col'][colspan='3']",
-                                    "PM: "
-                                ),
-                                m("th[scope='col'][colspan='3']",
-                                    "HS: "
-                                ),
-
-                            ]),
-                            m("tr", [
-
-                                m("td.tx-14.tx-normal[colspan='3']",
-                                    m('select.tx-semibold', {
-                                        onchange: (e) => {
-                                            let _id = e.target.options[e.target.selectedIndex].id;
-                                            let _value = e.target.options[e.target.selectedIndex].value;
-                                            VentilcacionUci.iniciarRegistro();
-                                            VentilcacionUci.nuevoRegistro.id = _id;
-                                            VentilcacionUci.nuevoRegistro.ventilacion = _value;
-                                        },
-                                        class: "custom-select"
-                                    }, m('option', 'Seleccione...'), [{
-                                            id: "PosicionSemifowler",
-                                            label: "POSICION SEMIFOWLER"
-                                        }, {
-                                            id: "BolsaReanimacion",
-                                            label: "BOLSA DE REANIMACION"
-                                        },
-                                        {
-                                            id: "CorrugadoSinVaporCondesado",
-                                            label: "CORRUGADO SIN VAPOR CONDENSADO"
-                                        },
-                                        {
-                                            id: "FiltroFinalRespiratorio",
-                                            label: "USO DE FILTRO FINAL RESPIRATORIO"
-                                        },
-                                        {
-                                            id: "RegistroRotacionTetHoras",
-                                            label: "REGISTRO DE ROTACION DE TET CADA 12 HORAS"
-                                        },
-                                        {
-                                            id: "RegistroCambioCircuito",
-                                            label: "REGISTRO DE CAMBIO DE CIRCUITO"
-                                        },
-                                        {
-                                            id: "CambioFiltroHoras",
-                                            label: "CAMBIO DE FILTRO CADA 12 HORAS"
-                                        },
-                                        {
-                                            id: "RegistroDiasEnfermeria",
-                                            label: "REGISTRO DIAS VM HOJA DE ENFERMERIA"
-                                        }
-                                    ].map(x =>
-                                        m('option[id="' + x.id + '"]', x.label)
-                                    ))
-                                ),
-                                m("td.tx-14.tx-normal[colspan='3']",
-                                    (VentilcacionUci.nuevoRegistro !== null ? [
-                                        m('div.d-flex', [
-                                            m("input", {
-                                                id: "am" + VentilcacionUci.nuevoRegistro.id,
-                                                class: "form-control tx-semibold tx-14",
-                                                type: "text",
-                                                placeholder: "...",
-                                                oninput: (e) => {
-                                                    VentilcacionUci.nuevoRegistro.am = e.target.value;
-                                                },
-                                            })
-
-                                        ]),
-                                    ] : [])
-                                ),
-                                m("td.tx-14.tx-normal[colspan='3']",
-                                    (VentilcacionUci.nuevoRegistro !== null ? [
-                                        m('div.d-flex', [
-                                            m("input", {
-                                                id: "pm" + VentilcacionUci.nuevoRegistro.id,
-                                                class: "form-control tx-semibold tx-14",
-                                                type: "text",
-                                                placeholder: "...",
-                                                oninput: (e) => {
-                                                    VentilcacionUci.nuevoRegistro.pm = e.target.value;
-                                                },
-                                            })
-
-                                        ]),
-                                    ] : [])
-                                ),
-
-                                m("td.tx-14.tx-normal[colspan='3']",
-                                    (VentilcacionUci.nuevoRegistro !== null ? [
-                                        m('div.d-flex', [
-                                            m("input", {
-                                                id: "hs" + VentilcacionUci.nuevoRegistro.id,
-                                                class: "form-control tx-semibold tx-14",
-                                                type: "text",
-                                                placeholder: "...",
-                                                oninput: (e) => {
-                                                    VentilcacionUci.nuevoRegistro.hs = e.target.value;
-                                                },
-                                            })
-
-                                        ]),
-                                    ] : [])
-                                ),
-                            ]),
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "rgb(238, 249, 200)" }
-                            }, [
-                                m("th[scope='col'][colspan='12']",
-                                    "OBSERVACIÓN: "
-                                ),
-
-
-                            ]),
-                            m('tr', [
-                                m("td.tx-14.tx-normal[colspan='12']",
-                                    (VentilcacionUci.nuevoRegistro !== null ? [
-                                        m("input", {
-                                            id: "observacion" + VentilcacionUci.nuevoRegistro.id,
-                                            class: "form-control tx-semibold tx-14",
-                                            type: "text",
-                                            placeholder: "...",
-
-                                            onkeypress: (e) => {
-                                                if (e.keyCode == 13) {
-                                                    VentilcacionUci.agregarRegistro();
-                                                    PacientesUCI.vReloadTable('table-ventilacion', VentilcacionUci.getRegistros());
-                                                    VentilcacionUci.nuevoRegistro = null;
-                                                }
-                                            },
-                                            oninput: (e) => {
-                                                VentilcacionUci.nuevoRegistro.observacion = e.target.value;
-                                            },
-                                        })
-                                    ] : [])
-                                ),
-                            ]),
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "#eaeff5" }
-                            }, [
-                                m("th[scope='col'][colspan='12']",
-                                    "Registros: "
-                                ),
-                            ]),
-                            m("tr.tx-uppercase.mg-t-20", [
-                                m("td[colspan='12']",
-                                    PacientesUCI.vTable('table-ventilacion', VentilcacionUci.getRegistros(), PacientesUCI.arqTableVentilacion())
-                                ),
-                            ]),
-                        ]),
+                        m(VentilacionUci),
                         // Hemodialisis
-                        m("thead.d-none",
-
-                            m("tr.tx-uppercase", {
-
-                                style: { "background-color": "#CCCCFF" },
-                                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none')
-
-                            }, [
-                                m("th.tx-semibold[scope='col'][colspan='12']",
-                                    "CATETER VIA CENTRAL O HEMODIALISIS:"
-                                ),
-
-                            ])
-                        ),
-                        m("tbody.d-none", {
-                            class: (HemodialisisUci.show ? '' : 'd-none')
-                        }, [
-
-
-
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "rgb(238, 249, 200)" }
-                            }, [
-                                m("th[scope='col'][colspan='3']",
-                                    "CATETER VIA CENTRAL O HEMODIALISIS: "
-                                ),
-                                m("th[scope='col'][colspan='3']",
-                                    "AM: "
-                                ),
-                                m("th[scope='col'][colspan='3']",
-                                    "PM: "
-                                ),
-                                m("th[scope='col'][colspan='3']",
-                                    "HS: "
-                                ),
-
-                            ]),
-                            m("tr", [
-
-                                m("td.tx-14.tx-normal[colspan='3']",
-                                    m('select.tx-semibold', {
-                                        onchange: (e) => {
-                                            let _id = e.target.options[e.target.selectedIndex].id;
-                                            let _value = e.target.options[e.target.selectedIndex].value;
-                                            HemodialisisUci.iniciarRegistro();
-                                            HemodialisisUci.nuevoRegistro.id = _id;
-                                            HemodialisisUci.nuevoRegistro.ventilacion = _value;
-                                        },
-                                        class: "custom-select"
-                                    }, m('option', 'Seleccione...'), [{
-                                            id: "ParcheLimpioSeco",
-                                            label: "PARCHE LIMPIO Y SECO"
-                                        }, {
-                                            id: "FechaCuracionParche",
-                                            label: "FECHA DE CURACION SOBRE PARCHE"
-                                        },
-                                        {
-                                            id: "TodosAccesosTapados",
-                                            label: "TODOS LOS ACCESOS TAPADOS"
-                                        },
-                                        {
-                                            id: "RegistroNumerosDias",
-                                            label: "REGISTRO DE NUMEROS DE DIAS"
-                                        },
-                                        {
-                                            id: "RegistroCambioEquipo",
-                                            label: "REGISTRO DE CAMBIO DE EQUIPO"
-                                        }
-                                    ].map(x =>
-                                        m('option[id="' + x.id + '"]', x.label)
-                                    ))
-                                ),
-                                m("td.tx-14.tx-normal[colspan='3']",
-                                    (HemodialisisUci.nuevoRegistro !== null ? [
-                                        m('div.d-flex', [
-                                            m("input", {
-                                                id: "am" + HemodialisisUci.nuevoRegistro.id,
-                                                class: "form-control tx-semibold tx-14",
-                                                type: "text",
-                                                placeholder: "...",
-                                                oninput: (e) => {
-                                                    HemodialisisUci.nuevoRegistro.am = e.target.value;
-                                                },
-                                            })
-
-                                        ]),
-                                    ] : [])
-                                ),
-                                m("td.tx-14.tx-normal[colspan='3']",
-                                    (HemodialisisUci.nuevoRegistro !== null ? [
-                                        m('div.d-flex', [
-                                            m("input", {
-                                                id: "pm" + HemodialisisUci.nuevoRegistro.id,
-                                                class: "form-control tx-semibold tx-14",
-                                                type: "text",
-                                                placeholder: "...",
-                                                oninput: (e) => {
-                                                    HemodialisisUci.nuevoRegistro.pm = e.target.value;
-                                                },
-                                            })
-
-                                        ]),
-                                    ] : [])
-                                ),
-
-                                m("td.tx-14.tx-normal[colspan='3']",
-                                    (HemodialisisUci.nuevoRegistro !== null ? [
-                                        m('div.d-flex', [
-                                            m("input", {
-                                                id: "hs" + HemodialisisUci.nuevoRegistro.id,
-                                                class: "form-control tx-semibold tx-14",
-                                                type: "text",
-                                                placeholder: "...",
-                                                oninput: (e) => {
-                                                    HemodialisisUci.nuevoRegistro.hs = e.target.value;
-                                                },
-                                            })
-
-                                        ]),
-                                    ] : [])
-                                ),
-                            ]),
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "rgb(238, 249, 200)" }
-                            }, [
-                                m("th[scope='col'][colspan='12']",
-                                    "OBSERVACIÓN: "
-                                ),
-
-
-                            ]),
-                            m('tr', [
-                                m("td.tx-14.tx-normal[colspan='12']",
-                                    (HemodialisisUci.nuevoRegistro !== null ? [
-                                        m("input", {
-                                            id: "observacion" + HemodialisisUci.nuevoRegistro.id,
-                                            class: "form-control tx-semibold tx-14",
-                                            type: "text",
-                                            placeholder: "...",
-
-                                            onkeypress: (e) => {
-                                                if (e.keyCode == 13) {
-                                                    HemodialisisUci.agregarRegistro();
-                                                    PacientesUCI.vReloadTable('table-hemodialisis', VentilcacionUci.getRegistros());
-                                                    HemodialisisUci.nuevoRegistro = null;
-                                                }
-                                            },
-                                            oninput: (e) => {
-                                                HemodialisisUci.nuevoRegistro.observacion = e.target.value;
-                                            },
-                                        })
-                                    ] : [])
-                                ),
-                            ]),
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "#eaeff5" }
-                            }, [
-                                m("th[scope='col'][colspan='12']",
-                                    "Registros: "
-                                ),
-                            ]),
-                            m("tr.tx-uppercase.mg-t-20", [
-                                m("td[colspan='12']",
-                                    PacientesUCI.vTable('table-hemodialisis', HemodialisisUci.getRegistros(), PacientesUCI.arqTableHemodialisis())
-                                ),
-                            ]),
-                        ]),
-                        //Cultivos
+                        m(HemodialisisUci),
+                        // Cultivos
                         m(CultivosUci),
                         // Marcapasos
-                        m("thead.d-none",
-
-                            m("tr.tx-uppercase", {
-
-                                style: { "background-color": "#CCCCFF" },
-
-                            }, [
-                                m("th.tx-semibold[scope='col'][colspan='12']",
-                                    "MARCAPASOS:"
-                                ),
-
-                            ])
-                        ),
-                        m("tbody.d-none", {
-                            class: (MarcapasosUci.show ? '' : 'd-none')
-                        }, [
-
-
-
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "rgb(238, 249, 200)" }
-                            }, [
-                                m("th[scope='col'][colspan='3']",
-                                    "HORA:"
-                                ),
-                                m("th[scope='col'][colspan='3']",
-                                    "AM: "
-                                ),
-                                m("th[scope='col'][colspan='3']",
-                                    "PM: "
-                                ),
-                                m("th[scope='col'][colspan='3']",
-                                    "HS: "
-                                ),
-
-                            ]),
-                            m("tr", [
-
-                                m("td.tx-14.tx-normal[colspan='3']",
-                                    m('select.tx-semibold', {
-                                        onchange: (e) => {
-                                            let _id = e.target.options[e.target.selectedIndex].id;
-                                            let _value = e.target.options[e.target.selectedIndex].value;
-                                            MarcapasosUci.iniciarRegistro();
-                                            MarcapasosUci.nuevoRegistro.id = _id;
-                                            MarcapasosUci.nuevoRegistro.hora = _value;
-                                        },
-                                        class: "custom-select"
-                                    }, m('option', 'Seleccione...'), [{
-                                            id: "Frecuencia",
-                                            label: "Frecuencia"
-                                        }, {
-                                            id: "Unipolar",
-                                            label: "UNIPOLAR"
-                                        },
-                                        {
-                                            id: "Bipolar",
-                                            label: "BIPOLAR"
-                                        },
-                                        {
-                                            id: "Miliamperios",
-                                            label: "MILIAMPERIOS"
-                                        },
-                                        {
-                                            id: "Milivoltios",
-                                            label: "MILIVOLTIOS"
-                                        },
-                                        {
-                                            id: "Sensibilidad",
-                                            label: "SENSIBILIDAD"
-                                        }
-                                    ].map(x =>
-                                        m('option[id="' + x.id + '"]', x.label)
-                                    ))
-                                ),
-                                m("td.tx-14.tx-normal[colspan='3']",
-                                    (MarcapasosUci.nuevoRegistro !== null ? [
-                                        m('div.d-flex', [
-                                            m("input", {
-                                                id: "am" + MarcapasosUci.nuevoRegistro.id,
-                                                class: "form-control tx-semibold tx-14",
-                                                type: "text",
-                                                placeholder: "...",
-                                                oninput: (e) => {
-                                                    MarcapasosUci.nuevoRegistro.am = e.target.value;
-                                                },
-                                            })
-
-                                        ]),
-                                    ] : [])
-                                ),
-                                m("td.tx-14.tx-normal[colspan='3']",
-                                    (MarcapasosUci.nuevoRegistro !== null ? [
-                                        m('div.d-flex', [
-                                            m("input", {
-                                                id: "pm" + MarcapasosUci.nuevoRegistro.id,
-                                                class: "form-control tx-semibold tx-14",
-                                                type: "text",
-                                                placeholder: "...",
-                                                oninput: (e) => {
-                                                    MarcapasosUci.nuevoRegistro.pm = e.target.value;
-                                                },
-                                            })
-
-                                        ]),
-                                    ] : [])
-                                ),
-
-                                m("td.tx-14.tx-normal[colspan='3']",
-                                    (MarcapasosUci.nuevoRegistro !== null ? [
-                                        m('div.d-flex', [
-                                            m("input", {
-                                                id: "hs" + MarcapasosUci.nuevoRegistro.id,
-                                                class: "form-control tx-semibold tx-14",
-                                                type: "text",
-                                                placeholder: "...",
-                                                oninput: (e) => {
-                                                    MarcapasosUci.nuevoRegistro.hs = e.target.value;
-                                                },
-                                            })
-
-                                        ]),
-                                    ] : [])
-                                ),
-                            ]),
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "rgb(238, 249, 200)" }
-                            }, [
-                                m("th[scope='col'][colspan='12']",
-                                    "OBSERVACIÓN: "
-                                ),
-
-
-                            ]),
-                            m('tr', [
-                                m("td.tx-14.tx-normal[colspan='12']",
-                                    (MarcapasosUci.nuevoRegistro !== null ? [
-                                        m("input", {
-                                            id: "observacion" + MarcapasosUci.nuevoRegistro.id,
-                                            class: "form-control tx-semibold tx-14",
-                                            type: "text",
-                                            placeholder: "...",
-
-                                            onkeypress: (e) => {
-                                                if (e.keyCode == 13) {
-                                                    MarcapasosUci.agregarRegistro();
-                                                    PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
-                                                    MarcapasosUci.nuevoRegistro = null;
-                                                }
-                                            },
-                                            oninput: (e) => {
-                                                MarcapasosUci.nuevoRegistro.observacion = e.target.value;
-                                            },
-                                        })
-                                    ] : [])
-                                ),
-                            ]),
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "#eaeff5" }
-                            }, [
-                                m("th[scope='col'][colspan='12']",
-                                    "Registros: "
-                                ),
-                            ]),
-                            m("tr.tx-uppercase.mg-t-20", [
-                                m("td[colspan='12']",
-                                    PacientesUCI.vTable('table-marcapasos', MarcapasosUci.getRegistros(), PacientesUCI.arqTableMarcapasos())
-                                ),
-                            ]),
-                        ]),
+                        m(MarcapasosUci),
                         // Ventilatorios
-                        m("thead.d-none",
-
-                            m("tr.tx-uppercase", {
-
-                                style: { "background-color": "#CCCCFF" },
-
-                            }, [
-                                m("th.tx-semibold[scope='col'][colspan='12']",
-                                    "MODOS VENTILATORIOS / VARIABLES"
-                                ),
-
-                            ])
-                        ),
-                        m("tbody.d-none", {
-                            class: (VentilcacionUci.show ? '' : 'd-none')
-                        }, [
-
-
-
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "rgb(238, 249, 200)" }
-                            }, [
-                                m("th[scope='col'][colspan='4']",
-                                    "VENTILATORIOS/VARIABLES:"
-                                ),
-                                m("th[scope='col'][colspan='4']",
-                                    "CONDICIÓN: "
-                                ),
-                                m("th[scope='col'][colspan='4']",
-                                    "HORA: "
-                                ),
-
-
-                            ]),
-                            m("tr", [
-
-                                m("td.tx-14.tx-normal[colspan='4']",
-                                    m('select.tx-semibold', {
-                                        onchange: (e) => {
-                                            let _id = e.target.options[e.target.selectedIndex].id;
-                                            let _value = e.target.options[e.target.selectedIndex].value;
-                                            VentilcacionUci.iniciarRegistro();
-                                            VentilcacionUci.nuevoRegistro.id = _id;
-                                            VentilcacionUci.nuevoRegistro.ventilatorio = _value;
-                                        },
-                                        class: "custom-select"
-                                    }, m('option', 'Seleccione...'), [{
-                                            id: "ModoVentilatorio",
-                                            label: "MODO VENTILARIO"
-                                        }, {
-                                            id: "PresionInspiratoria",
-                                            label: "PRESION INSPIRATORIA"
-                                        }, {
-                                            id: "VolumenCorriente",
-                                            label: "VOLUMEN CORRIENTE"
-                                        }, {
-                                            id: "VolumenCorrientePack",
-                                            label: "VOLUMEN CORRIENTE PACK"
-                                        },
-                                        {
-                                            id: "PresionSoporte",
-                                            label: "PRESION SOPORTE"
-                                        },
-                                        {
-                                            id: "PEEP",
-                                            label: "PEEP"
-                                        },
-                                        {
-                                            id: "FVR",
-                                            label: "FVR"
-                                        },
-                                        {
-                                            id: "FRPT",
-                                            label: "FRPT"
-                                        },
-                                        {
-                                            id: "FIO2",
-                                            label: "FIO2"
-                                        },
-                                        {
-                                            id: "PAFI",
-                                            label: "PAFI"
-                                        },
-                                        {
-                                            id: "RelacionIE",
-                                            label: "RELACION I:E"
-                                        },
-                                        {
-                                            id: "TInspiracion",
-                                            label: "T. INSPIRACION"
-                                        },
-                                        {
-                                            id: "PresionPico",
-                                            label: "PRESION PICO"
-                                        },
-                                        {
-                                            id: "PresionMedia",
-                                            label: "PRESION MEDIA"
-                                        },
-                                        {
-                                            id: "Compliance",
-                                            label: "COMPLIANCE"
-                                        },
-                                        {
-                                            id: "ResistenciaPulmonar",
-                                            label: "RESISTENCIA PULMONAR"
-                                        },
-                                        {
-                                            id: "Hercios",
-                                            label: "HERCIOS"
-                                        },
-                                        {
-                                            id: "PresionMediaVia",
-                                            label: "PRESION MEDIA VIA"
-                                        },
-                                        {
-                                            id: "Flujo",
-                                            label: "FLUJO"
-                                        },
-                                        {
-                                            id: "Amplitud",
-                                            label: "AMPLITUD"
-                                        },
-                                        {
-                                            id: "DO2",
-                                            label: "DO2"
-                                        },
-                                        {
-                                            id: "DCO2",
-                                            label: "DCO2"
-                                        },
-                                        {
-                                            id: "VolumenAltaHere",
-                                            label: "VOLUMEN ALTA HERE"
-                                        },
-                                        {
-                                            id: "FijacionTet",
-                                            label: "FIJACION TET"
-                                        }
-                                    ].map(x =>
-                                        m('option[id="' + x.id + '"]', x.label)
-                                    ))
-                                ),
-                                m("td.tx-14.tx-normal[colspan='4']",
-                                    (VentilcacionUci.nuevoRegistro !== null ? [
-                                        m('div.d-flex', [
-                                            m("input", {
-                                                id: "condicion" + VentilcacionUci.nuevoRegistro.id,
-                                                class: "form-control tx-semibold tx-14",
-                                                type: "text",
-                                                placeholder: "...",
-                                                oninput: (e) => {
-                                                    VentilcacionUci.nuevoRegistro.condicion = e.target.value;
-                                                },
-                                            })
-
-                                        ]),
-                                    ] : [])
-                                ),
-                                m("td.tx-14.tx-normal[colspan='4']",
-                                    (VentilcacionUci.nuevoRegistro !== null ? [
-                                        m('div.d-flex', [
-                                            m("input", {
-                                                id: "hora" + VentilcacionUci.nuevoRegistro.id,
-                                                class: "form-control tx-semibold tx-14",
-                                                type: "text",
-                                                placeholder: "...",
-                                                oninput: (e) => {
-                                                    VentilcacionUci.nuevoRegistro.hora = e.target.value;
-                                                },
-                                            })
-
-                                        ]),
-                                    ] : [])
-                                ),
-
-
-                            ]),
-
-
-                            m("tr.tx-uppercase", {
-                                style: { "background-color": "#eaeff5" }
-                            }, [
-                                m("th[scope='col'][colspan='12']",
-                                    "Registros: "
-                                ),
-                            ]),
-                            m("tr.tx-uppercase.mg-t-20", [
-                                m("td[colspan='12']",
-                                    PacientesUCI.vTable('table-ventilatorios', VentilcacionUci.getRegistros(), PacientesUCI.arqTableVentilatorios())
-                                ),
-                            ]),
-                        ]),
+                        m(VentilatoriosUci),
 
                     ])
                 ])
@@ -882,46 +192,218 @@ class PacientesUCI extends App {
         return _arr;
     }
 
-    static setSeccion(options) {
+    static setTurnoSeccionCateter(_options, _class) {
+
         let res = [];
         let result = [];
         let _arr = [];
         let hash = {};
+        let crear = false;
 
-        console.log(33, options)
+        if (_class.registros.length == 0) {
+            crear = true;
+        }
 
-        options.map((option) => {
-            if (option.value != 0) {
-                CateterUci.iniciarRegistro();
-                CateterUci.nuevoRegistro.id = option.id;
-                CateterUci.nuevoRegistro.cateter = option.value;
-                CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                CateterUci.agregarRegistro();
-                res.push(CateterUci.nuevoRegistro);
-                CateterUci.nuevoRegistro = null;
+        if (_class.registros.length > 0) {
+            let registros = _class.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
+            if (registros.length == 0) {
+                crear = true;
             }
+        }
 
-        });
+        if (crear) {
+            _options.map((option) => {
+                if (option.value != 0) {
+                    _class.iniciarRegistro();
+                    _class.nuevoRegistro.id = option.id;
+                    _class.nuevoRegistro.cateter = option.value;
+                    _class.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                    _class.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    _class.agregarRegistro();
+                    FecthUci.registrarSeccion(_class.nuevoRegistro);
+                    res.push(_class.nuevoRegistro);
+                    _class.nuevoRegistro = null;
+                }
+
+            });
+        }
 
         // Quitar duplicados
         result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
-        // console.log(33, result);
-
-
         // Ordenar desc
         _arr = result.sort((a, b) => a.nro - b.nro);
-        // console.log(22, _arr)
+        return _arr;
+    }
 
-        _arr.map((_v, _i) => {
-            FecthUci.dataSecciones.filter((obj) => {
-                let _obj = JSON.parse(obj.DATASECCION);
-                if (_obj.id === _v.id) {
-                    _arr[_i] = _obj;
+    static setTurnoSeccionVentilacion(_options, _class) {
+
+        let res = [];
+        let result = [];
+        let _arr = [];
+        let hash = {};
+        let crear = false;
+
+        if (_class.registros.length == 0) {
+            crear = true;
+        }
+
+        if (_class.registros.length > 0) {
+            let registros = _class.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
+            if (registros.length == 0) {
+                crear = true;
+            }
+        }
+
+        if (crear) {
+            _options.map((option) => {
+                if (option.value != 0) {
+                    _class.iniciarRegistro();
+                    _class.nuevoRegistro.id = option.id;
+                    _class.nuevoRegistro.ventilacion = option.value;
+                    _class.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                    _class.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    _class.agregarRegistro();
+                    FecthUci.registrarSeccion(_class.nuevoRegistro);
+                    res.push(_class.nuevoRegistro);
+                    _class.nuevoRegistro = null;
                 }
-            });
-        });
 
+            });
+        }
+
+        // Quitar duplicados
+        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+        // Ordenar desc
+        _arr = result.sort((a, b) => a.nro - b.nro);
+        return _arr;
+    }
+
+    static setTurnoSeccionHemodialisis(_options, _class) {
+
+        let res = [];
+        let result = [];
+        let _arr = [];
+        let hash = {};
+        let crear = false;
+
+        if (_class.registros.length == 0) {
+            crear = true;
+        }
+
+        if (_class.registros.length > 0) {
+            let registros = _class.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
+            if (registros.length == 0) {
+                crear = true;
+            }
+        }
+
+        if (crear) {
+            _options.map((option) => {
+                if (option.value != 0) {
+                    _class.iniciarRegistro();
+                    _class.nuevoRegistro.id = option.id;
+                    _class.nuevoRegistro.hemo = option.value;
+                    _class.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                    _class.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    _class.agregarRegistro();
+                    FecthUci.registrarSeccion(_class.nuevoRegistro);
+                    res.push(_class.nuevoRegistro);
+                    _class.nuevoRegistro = null;
+                }
+
+            });
+        }
+
+        // Quitar duplicados
+        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+        // Ordenar desc
+        _arr = result.sort((a, b) => a.nro - b.nro);
+        return _arr;
+    }
+
+    static setTurnoSeccionMarcapasos(_options, _class) {
+
+        let res = [];
+        let result = [];
+        let _arr = [];
+        let hash = {};
+        let crear = false;
+
+        if (_class.registros.length == 0) {
+            crear = true;
+        }
+
+        if (_class.registros.length > 0) {
+            let registros = _class.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
+            if (registros.length == 0) {
+                crear = true;
+            }
+        }
+
+        if (crear) {
+            _options.map((option) => {
+                if (option.value != 0) {
+                    _class.iniciarRegistro();
+                    _class.nuevoRegistro.id = option.id;
+                    _class.nuevoRegistro.hora = option.value;
+                    _class.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                    _class.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    _class.agregarRegistro();
+                    FecthUci.registrarSeccion(_class.nuevoRegistro);
+                    res.push(_class.nuevoRegistro);
+                    _class.nuevoRegistro = null;
+                }
+
+            });
+        }
+
+        // Quitar duplicados
+        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+        // Ordenar desc
+        _arr = result.sort((a, b) => a.nro - b.nro);
+        return _arr;
+    }
+
+    static setTurnoSeccionVentilatorios(_options, _class) {
+
+        let res = [];
+        let result = [];
+        let _arr = [];
+        let hash = {};
+        let crear = false;
+
+        if (_class.registros.length == 0) {
+            crear = true;
+        }
+
+        if (_class.registros.length > 0) {
+            let registros = _class.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
+            if (registros.length == 0) {
+                crear = true;
+            }
+        }
+
+        if (crear) {
+            _options.map((option) => {
+                if (option.value != 0) {
+                    _class.iniciarRegistro();
+                    _class.nuevoRegistro.id = option.id;
+                    _class.nuevoRegistro.ventilatorio = option.value;
+                    _class.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                    _class.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    _class.agregarRegistro();
+                    FecthUci.registrarSeccion(_class.nuevoRegistro);
+                    res.push(_class.nuevoRegistro);
+                    _class.nuevoRegistro = null;
+                }
+
+            });
+        }
+
+        // Quitar duplicados
+        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+        // Ordenar desc
+        _arr = result.sort((a, b) => a.nro - b.nro);
         return _arr;
     }
 
@@ -1200,8 +682,23 @@ class PacientesUCI extends App {
                 }
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, full) {
-                        return full.numeroTurno;
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center.pd-5', [
+                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                                class: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'bg-light' : 'bg-warning')
+                                            },
+                                            (oData.numeroTurno == 1 ? 'AM' : ''),
+                                            (oData.numeroTurno == 2 ? 'PM' : ''),
+                                            (oData.numeroTurno == 3 ? 'HS' : ''),
+                                        ),
+                                    ])
+
+                                ]
+                            }
+                        });
                     },
 
                     visible: true,
@@ -1311,7 +808,7 @@ class PacientesUCI extends App {
                                         disabled: 'disabled',
                                         oncreate: (el) => {
                                             if (oData.usuarioTurno !== undefined) {
-                                                el.dom.value = oData.usuarioTurno;
+                                                el.dom.value = 'ENFERMERA';
                                             }
                                         },
                                     }),
@@ -1381,6 +878,12 @@ class PacientesUCI extends App {
                                                     oData.iniciarGestion();
                                                     PacientesUCI.fechaHoraTurno = oData.fechaTurno + ' ' + oData.horaTurno;
                                                     PacientesUCI.showSecciones();
+                                                    PacientesUCI.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options), CateterUci);
+                                                    PacientesUCI.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options), VentilacionUci);
+                                                    PacientesUCI.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options), HemodialisisUci);
+                                                    PacientesUCI.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options), MarcapasosUci);
+                                                    PacientesUCI.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options), VentilatoriosUci);
+
                                                 },
                                             },
                                             'Gestionar',
@@ -1426,579 +929,6 @@ class PacientesUCI extends App {
                     visible: true,
                     aTargets: [8],
                     orderable: false,
-
-                }
-
-
-            ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-
-            },
-        };
-    }
-
-
-
-
-
-
-    static arqTableMarcapasos() {
-        return {
-            data: null,
-            dom: 'ltp',
-            language: {
-                searchPlaceholder: "Buscar...",
-                sSearch: "",
-                lengthMenu: "Mostrar _MENU_ registros por página",
-                sProcessing: "Procesando...",
-                sZeroRecords: "Todavía no tienes resultados disponibles.",
-                sEmptyTable: "Ningún dato disponible en esta tabla",
-                sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
-                sInfoPostFix: "",
-                sUrl: "",
-                sInfoThousands: ",",
-                sLoadingRecords: "Cargando...",
-                oPaginate: {
-                    sFirst: "Primero",
-                    sLast: "Último",
-                    sNext: "Siguiente",
-                    sPrevious: "Anterior",
-                },
-                oAria: {
-                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
-                    sSortDescending: ": Activar para ordenar la columna de manera descendente",
-                },
-            },
-            cache: false,
-            destroy: true,
-            order: [
-                [0, 'desc']
-            ],
-            columns: [{
-                    title: "N° : ",
-                },
-                {
-                    title: "Hora:",
-                },
-                {
-                    title: "AM:",
-                },
-                {
-                    title: "PM:",
-                },
-                {
-                    title: "HS:",
-                },
-
-                {
-                    title: "Observación:",
-                },
-                {
-                    title: "Opciones:",
-                }
-            ],
-            aoColumnDefs: [{
-                    mRender: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                    visible: true,
-                    aTargets: [0],
-                    orderable: true,
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.hora;
-                    },
-
-                    visible: true,
-                    aTargets: [1],
-                    orderable: true,
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.am;
-                    },
-                    visible: true,
-                    aTargets: [2],
-                    orderable: true,
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.pm;
-                    },
-                    visible: true,
-                    aTargets: [3],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.hs;
-                    },
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.observacion;
-                    },
-                    visible: true,
-                    aTargets: [5],
-                    orderable: true,
-
-
-                },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center', [
-
-                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                                onclick: () => {
-
-                                                },
-                                            },
-                                            'Eliminar',
-                                        ),
-
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    visible: true,
-                    aTargets: [6],
-                    orderable: true,
-
-                }
-
-
-            ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-
-            },
-        };
-    }
-
-    static arqTableVentilatorios() {
-        return {
-            data: null,
-            dom: 'ltp',
-            language: {
-                searchPlaceholder: "Buscar...",
-                sSearch: "",
-                lengthMenu: "Mostrar _MENU_ registros por página",
-                sProcessing: "Procesando...",
-                sZeroRecords: "Todavía no tienes resultados disponibles.",
-                sEmptyTable: "Ningún dato disponible en esta tabla",
-                sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
-                sInfoPostFix: "",
-                sUrl: "",
-                sInfoThousands: ",",
-                sLoadingRecords: "Cargando...",
-                oPaginate: {
-                    sFirst: "Primero",
-                    sLast: "Último",
-                    sNext: "Siguiente",
-                    sPrevious: "Anterior",
-                },
-                oAria: {
-                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
-                    sSortDescending: ": Activar para ordenar la columna de manera descendente",
-                },
-            },
-            cache: false,
-            destroy: true,
-            order: [
-                [0, 'desc']
-            ],
-            columns: [{
-                    title: "N° : ",
-                },
-                {
-                    title: "Ventilatorio:",
-                },
-                {
-                    title: "Condición:",
-                },
-                {
-                    title: "Hora:",
-                },
-
-
-                {
-                    title: "Opciones:",
-                }
-            ],
-            aoColumnDefs: [{
-                    mRender: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                    visible: true,
-                    aTargets: [0],
-                    orderable: true,
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.ventilatorio;
-                    },
-
-                    visible: true,
-                    aTargets: [1],
-                    orderable: true,
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.condicion;
-                    },
-                    visible: true,
-                    aTargets: [2],
-                    orderable: true,
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.hora;
-                    },
-                    visible: true,
-                    aTargets: [3],
-                    orderable: true,
-
-
-                },
-
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center', [
-
-                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                                onclick: () => {
-
-                                                },
-                                            },
-                                            'Eliminar',
-                                        ),
-
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
-
-                }
-
-
-            ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-
-            },
-        };
-    }
-
-    static arqTableVentilacion() {
-        return {
-            data: null,
-            dom: 'ltp',
-            language: {
-                searchPlaceholder: "Buscar...",
-                sSearch: "",
-                lengthMenu: "Mostrar _MENU_ registros por página",
-                sProcessing: "Procesando...",
-                sZeroRecords: "Todavía no tienes resultados disponibles.",
-                sEmptyTable: "Ningún dato disponible en esta tabla",
-                sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
-                sInfoPostFix: "",
-                sUrl: "",
-                sInfoThousands: ",",
-                sLoadingRecords: "Cargando...",
-                oPaginate: {
-                    sFirst: "Primero",
-                    sLast: "Último",
-                    sNext: "Siguiente",
-                    sPrevious: "Anterior",
-                },
-                oAria: {
-                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
-                    sSortDescending: ": Activar para ordenar la columna de manera descendente",
-                },
-            },
-            cache: false,
-            destroy: true,
-            order: [
-                [0, 'desc']
-            ],
-            columns: [{
-                    title: "N° : ",
-                },
-                {
-                    title: "Ventilación:",
-                },
-                {
-                    title: "AM:",
-                },
-                {
-                    title: "PM:",
-                },
-
-                {
-                    title: "HS:",
-                },
-                {
-                    title: "Observación:",
-                },
-                {
-                    title: "Opciones:",
-                }
-            ],
-            aoColumnDefs: [{
-                    mRender: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                    visible: true,
-                    aTargets: [0],
-                    orderable: true,
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.ventilacion;
-                    },
-
-                    visible: true,
-                    aTargets: [1],
-                    orderable: true,
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.am;
-                    },
-                    visible: true,
-                    aTargets: [2],
-                    orderable: true,
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.pm;
-                    },
-                    visible: true,
-                    aTargets: [3],
-                    orderable: true,
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.hs;
-                    },
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.observacion;
-                    },
-                    visible: true,
-                    aTargets: [6],
-                    orderable: true,
-
-
-                },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center', [
-
-                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                                onclick: () => {
-
-                                                },
-                                            },
-                                            'Eliminar',
-                                        ),
-
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    visible: true,
-                    aTargets: [7],
-                    orderable: true,
-
-                }
-
-
-            ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-
-            },
-        };
-    }
-
-    static arqTableHemodialisis() {
-        return {
-            data: null,
-            dom: 'ltp',
-            language: {
-                searchPlaceholder: "Buscar...",
-                sSearch: "",
-                lengthMenu: "Mostrar _MENU_ registros por página",
-                sProcessing: "Procesando...",
-                sZeroRecords: "Todavía no tienes resultados disponibles.",
-                sEmptyTable: "Ningún dato disponible en esta tabla",
-                sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
-                sInfoPostFix: "",
-                sUrl: "",
-                sInfoThousands: ",",
-                sLoadingRecords: "Cargando...",
-                oPaginate: {
-                    sFirst: "Primero",
-                    sLast: "Último",
-                    sNext: "Siguiente",
-                    sPrevious: "Anterior",
-                },
-                oAria: {
-                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
-                    sSortDescending: ": Activar para ordenar la columna de manera descendente",
-                },
-            },
-            cache: false,
-            destroy: true,
-            order: [
-                [0, 'desc']
-            ],
-            columns: [{
-                    title: "N° : ",
-                },
-                {
-                    title: "Ventilación:",
-                },
-                {
-                    title: "AM:",
-                },
-                {
-                    title: "PM:",
-                },
-
-                {
-                    title: "HS:",
-                },
-                {
-                    title: "Observación:",
-                },
-                {
-                    title: "Opciones:",
-                }
-            ],
-            aoColumnDefs: [{
-                    mRender: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                    visible: true,
-                    aTargets: [0],
-                    orderable: true,
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.ventilacion;
-                    },
-
-                    visible: true,
-                    aTargets: [1],
-                    orderable: true,
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.am;
-                    },
-                    visible: true,
-                    aTargets: [2],
-                    orderable: true,
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.pm;
-                    },
-                    visible: true,
-                    aTargets: [3],
-                    orderable: true,
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.hs;
-                    },
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.observacion;
-                    },
-                    visible: true,
-                    aTargets: [6],
-                    orderable: true,
-
-
-                },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center', [
-
-                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                                onclick: () => {
-
-                                                },
-                                            },
-                                            'Eliminar',
-                                        ),
-
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    visible: true,
-                    aTargets: [7],
-                    orderable: true,
 
                 }
 
