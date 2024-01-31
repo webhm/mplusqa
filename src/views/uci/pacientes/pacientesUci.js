@@ -61,22 +61,22 @@ class PacientesUCI extends App {
         AccesosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Accesos').options));
 
         CateterUci.show = true;
-        CateterUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Cateter').options));
+        CateterUci.registros = PacientesUCI.parseSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
 
         VentilacionUci.show = true;
-        VentilacionUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Ventilacion').options));
+        VentilacionUci.registros = PacientesUCI.parseSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
 
         HemodialisisUci.show = true;
-        HemodialisisUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Hemodialisis').options));
+        HemodialisisUci.registros = PacientesUCI.parseSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
 
         CultivosUci.show = true;
         CultivosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Cultivos').options));
 
         MarcapasosUci.show = true;
-        MarcapasosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Marcapasos').options));
+        MarcapasosUci.registros = PacientesUCI.parseSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
 
         VentilatoriosUci.show = true;
-        VentilatoriosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Ventilatorios').options));
+        VentilatoriosUci.registros = PacientesUCI.parseSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
 
 
     }
@@ -165,6 +165,96 @@ class PacientesUCI extends App {
         return m(Sidebar, { page: 'uci/pacientes' });
     }
 
+    static parseSeccionCateter(options) {
+        let res = [];
+        let result = [];
+        let _arr = [];
+        let hash = {};
+
+        options.map((option) => {
+            FecthUci.dataSecciones.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id) {
+                    res.push(_obj);
+                }
+            });
+        });
+
+        return res;
+    }
+
+    static parseSeccionVentilacion(options) {
+        let res = [];
+        let result = [];
+        let _arr = [];
+        let hash = {};
+
+        options.map((option) => {
+            FecthUci.dataSecciones.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id) {
+                    res.push(_obj);
+                }
+            });
+        });
+
+        return res;
+    }
+
+    static parseSeccionHemodialisis(options) {
+        let res = [];
+        let result = [];
+        let _arr = [];
+        let hash = {};
+
+        options.map((option) => {
+            FecthUci.dataSecciones.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id) {
+                    res.push(_obj);
+                }
+            });
+        });
+
+        return res;
+    }
+
+    static parseSeccionMarcapasos(options) {
+        let res = [];
+        let result = [];
+        let _arr = [];
+        let hash = {};
+
+        options.map((option) => {
+            FecthUci.dataSecciones.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id) {
+                    res.push(_obj);
+                }
+            });
+        });
+
+        return res;
+    }
+
+    static parseSeccionVentilatorios(options) {
+        let res = [];
+        let result = [];
+        let _arr = [];
+        let hash = {};
+
+        options.map((option) => {
+            FecthUci.dataSecciones.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id) {
+                    res.push(_obj);
+                }
+            });
+        });
+
+        return res;
+    }
+
     static parseSeccion(options) {
         let res = [];
         let result = [];
@@ -229,10 +319,10 @@ class PacientesUCI extends App {
         }
 
         // Quitar duplicados
-        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+        // result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
         // Ordenar desc
-        _arr = result.sort((a, b) => a.nro - b.nro);
-        return _arr;
+        //  _arr = result.sort((a, b) => a.nro - b.nro);
+        return res;
     }
 
     static setTurnoSeccionVentilacion(_options, _class) {
@@ -272,10 +362,10 @@ class PacientesUCI extends App {
         }
 
         // Quitar duplicados
-        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+        // result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
         // Ordenar desc
-        _arr = result.sort((a, b) => a.nro - b.nro);
-        return _arr;
+        // _arr = result.sort((a, b) => a.nro - b.nro);
+        return res;
     }
 
     static setTurnoSeccionHemodialisis(_options, _class) {
@@ -315,10 +405,10 @@ class PacientesUCI extends App {
         }
 
         // Quitar duplicados
-        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+        // result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
         // Ordenar desc
-        _arr = result.sort((a, b) => a.nro - b.nro);
-        return _arr;
+        // _arr = result.sort((a, b) => a.nro - b.nro);
+        return res;
     }
 
     static setTurnoSeccionMarcapasos(_options, _class) {
@@ -358,10 +448,10 @@ class PacientesUCI extends App {
         }
 
         // Quitar duplicados
-        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+        // result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
         // Ordenar desc
-        _arr = result.sort((a, b) => a.nro - b.nro);
-        return _arr;
+        // _arr = result.sort((a, b) => a.nro - b.nro);
+        return res;
     }
 
     static setTurnoSeccionVentilatorios(_options, _class) {
@@ -401,10 +491,10 @@ class PacientesUCI extends App {
         }
 
         // Quitar duplicados
-        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+        // result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
         // Ordenar desc
-        _arr = result.sort((a, b) => a.nro - b.nro);
-        return _arr;
+        // _arr = result.sort((a, b) => a.nro - b.nro);
+        return res;
     }
 
     static reloadData(idFiltro) {
@@ -648,9 +738,6 @@ class PacientesUCI extends App {
             },
             cache: false,
             destroy: true,
-            order: [
-                [0, 'Asc']
-            ],
             columns: [{
                     title: "N° : ",
                 },
@@ -686,9 +773,9 @@ class PacientesUCI extends App {
                         return m.mount(nTd, {
                             view: () => {
                                 return [
-                                    m('div.text-center.pd-5', [
-                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                                class: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'bg-light' : 'bg-warning')
+                                    m('div.text-center', [
+                                        m("button.btn-xs.btn-block.tx-semibold.tx-15[type='button']", {
+                                                class: (PacientesUCI.numeroTurno == oData.numeroTurno ? 'bg-warning' : 'bg-light')
                                             },
                                             (oData.numeroTurno == 1 ? 'AM' : ''),
                                             (oData.numeroTurno == 2 ? 'PM' : ''),
@@ -847,7 +934,7 @@ class PacientesUCI extends App {
                             view: () => {
                                 return [
                                     m('div.text-center', [
-                                        m("button.btn-xs.btn-block.tx-13[type='button']", {
+                                        m("button.btn-xs.btn-block.tx-semibold.tx-13[type='button']", {
                                                 class: (oData.status == 1 ? 'bg-warning' : 'bg-success'),
                                             },
                                             (oData.status == 1 ? 'Turno Abierto' : ''),

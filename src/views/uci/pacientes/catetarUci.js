@@ -117,8 +117,7 @@ class CateterUci {
             cache: false,
             destroy: true,
             order: [
-                [0, 'desc'],
-                [1, 'desc']
+                [0, 'desc']
             ],
             columns: [{
                     title: "Turno: ",
@@ -248,7 +247,7 @@ class CateterUci {
                                     m("div.btn-block.btn-group.wd-100p.pd-5", [
                                         m("button.btn.btn-xs.btn-success[type='button']", {
                                                 class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
                                                     CateterUci.nuevoRegistro = null
                                                     CateterUci.verRegistro(oData);
