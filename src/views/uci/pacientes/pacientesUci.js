@@ -180,6 +180,8 @@ class PacientesUCI extends App {
             });
         });
 
+        console.log(88, res)
+
         return res;
     }
 
@@ -317,6 +319,8 @@ class PacientesUCI extends App {
 
             });
         }
+
+        console.log(99, res)
 
         // Quitar duplicados
         // result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
