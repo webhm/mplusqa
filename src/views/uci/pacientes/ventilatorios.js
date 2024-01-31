@@ -348,13 +348,10 @@ class VentilatoriosUci {
                                 label: "PEEP"
                             },
                             {
-                                id: "FVR",
-                                label: "FVR"
+                                id: "FVRFRPT",
+                                label: "FVR / FRPT"
                             },
-                            {
-                                id: "FRPT",
-                                label: "FRPT"
-                            },
+
                             {
                                 id: "FIO2",
                                 label: "FIO2"
@@ -364,28 +361,16 @@ class VentilatoriosUci {
                                 label: "PAFI"
                             },
                             {
-                                id: "RelacionIE",
-                                label: "RELACION I:E"
+                                id: "RelacionIETInspiracion",
+                                label: "RELACION I:E / T. INSPIRACION"
                             },
                             {
-                                id: "TInspiracion",
-                                label: "T. INSPIRACION"
+                                id: "PresionPicoPresionMedia",
+                                label: "PRESION PICO / PRESION MEDIA"
                             },
                             {
-                                id: "PresionPico",
-                                label: "PRESION PICO"
-                            },
-                            {
-                                id: "PresionMedia",
-                                label: "PRESION MEDIA"
-                            },
-                            {
-                                id: "Compliance",
-                                label: "COMPLIANCE"
-                            },
-                            {
-                                id: "ResistenciaPulmonar",
-                                label: "RESISTENCIA PULMONAR"
+                                id: "ComplianceResistenciaPulmonar",
+                                label: "COMPLIANCE / RESISTENCIA PULMONAR"
                             },
                             {
                                 id: "Hercios",
@@ -400,12 +385,8 @@ class VentilatoriosUci {
                                 label: "FLUJO"
                             },
                             {
-                                id: "Amplitud",
-                                label: "AMPLITUD"
-                            },
-                            {
-                                id: "DO2",
-                                label: "DO2"
+                                id: "AmplitudDO2",
+                                label: "AMPLITUD / DO2"
                             },
                             {
                                 id: "DCO2",

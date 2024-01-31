@@ -40,6 +40,7 @@ class PacientesUCI extends App {
 
     }
     oncreate(_data) {
+        console.log('data', _data);
 
     }
 
