@@ -798,7 +798,7 @@ class PacientesUCI extends App {
                         return m.mount(nTd, {
                             view: () => {
                                 return [
-                                    m("input.form-control.tx-13.tx-semibold[type='text'][placeholder='DD/MM/YYYY]", {
+                                    m("input.form-control.tx-13.tx-semibold[type='text'][placeholder='DD/MM/YYYY']", {
                                         id: 'fechaTurno',
                                         disabled: true,
                                         oncreate: (el) => {

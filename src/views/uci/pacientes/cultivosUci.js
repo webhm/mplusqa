@@ -12,7 +12,10 @@ class Cultivo {
     fechaHoraTurno = null;
     muestra = null;
     envio = null;
+    envio_fecha = null;
+    envio_hora = null;
     resultado = null;
+    observacion = null;
     editar = null;
     seccion = 'Cultivos';
     constructor() {
@@ -21,7 +24,10 @@ class Cultivo {
         this.fechaHoraTurno = this.fechaHoraTurno;
         this.muestra = this.muestra;
         this.envio = this.envio;
+        this.envio_fecha = this.envio_fecha;
+        this.envio_hora = this.envio_hora;
         this.resultado = this.resultado;
+        this.observacion = this.observacion;
         this.editar = this.editar;
         this.seccion = this.seccion;
     }
@@ -132,6 +138,9 @@ class CultivosUci {
                     title: "Resultado de Germen Aislado:",
                 },
                 {
+                    title: "Observaciones:",
+                },
+                {
                     title: "Opciones:",
                 }
             ],
@@ -205,6 +214,14 @@ class CultivosUci {
                     orderable: true,
                 },
                 {
+                    mRender: function(data, type, full) {
+                        return (full.observacion != null ? full.observacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    },
+                    visible: true,
+                    aTargets: [6],
+                    orderable: true,
+                },
+                {
                     fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                         return m.mount(nTd, {
                             view: () => {
@@ -259,7 +276,7 @@ class CultivosUci {
                     },
                     width: '10%',
                     visible: true,
-                    aTargets: [6],
+                    aTargets: [7],
                     orderable: true,
 
                 }
@@ -340,7 +357,7 @@ class CultivosUci {
 
                         }, m("option[value='0']", 'Seleccione...'), [{
                                 id: "Sangre",
-                                label: "SANGRE"
+                                label: "HEMOCULTIVO VIA CENTRAL / HEMOCULTIVO VIA PERIFERICA / HEMOCULTIVO LINEA ARTERIA"
                             }, {
                                 id: "Orina",
                                 label: "ORINA"
@@ -372,11 +389,11 @@ class CultivosUci {
                     m("td.tx-14.tx-normal[colspan='4']",
                         (CultivosUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
-                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
+                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY']", {
                                     id: "cultivoEnvio" + CultivosUci.nuevoRegistro.id,
                                     oncreate: (el) => {
-                                        if (CultivosUci.nuevoRegistro.envio != undefined) {
-                                            el.dom.value = CultivosUci.nuevoRegistro.envio;
+                                        if (CultivosUci.nuevoRegistro.envio_fecha != undefined) {
+                                            el.dom.value = CultivosUci.nuevoRegistro.envio_fecha;
                                         }
                                         setTimeout(() => {
                                             new Cleave("#cultivoEnvio" + CultivosUci.nuevoRegistro.id, {
@@ -387,11 +404,32 @@ class CultivosUci {
                                     },
                                     oninput: (e) => {
                                         setTimeout(() => {
-                                            CultivosUci.nuevoRegistro.envio = e.target.value;
+                                            CultivosUci.nuevoRegistro.envio_fecha = e.target.value;
                                         }, 50);
                                     },
-                                })
-                            ])
+                                }),
+                                m("input.form-control[type='text'][placeholder='HH:mm']", {
+                                    id: "cultivoEnvioHora" + CultivosUci.nuevoRegistro.id,
+                                    oncreate: (el) => {
+                                        if (CultivosUci.nuevoRegistro.envio_hora != undefined) {
+                                            el.dom.value = CultivosUci.nuevoRegistro.envio_hora;
+                                        }
+                                        setTimeout(() => {
+                                            new Cleave("#cultivoEnvioHora" + CultivosUci.nuevoRegistro.id, {
+                                                time: true,
+                                                timePattern: ['h', 'm']
+                                            });
+                                        }, 50);
+                                    },
+                                    oninput: (e) => {
+                                        setTimeout(() => {
+                                            CultivosUci.nuevoRegistro.envio_hora = e.target.value;
+                                            CultivosUci.nuevoRegistro.envio = CultivosUci.nuevoRegistro.envio_fecha + ' ' + CultivosUci.nuevoRegistro.envio_hora;
+                                        }, 50);
+                                    },
+                                }),
+                            ]),
+
                         ] : [])
                     ),
                     m("td.tx-14.tx-normal[colspan='4']",
@@ -402,27 +440,6 @@ class CultivosUci {
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
-                                    onkeypress: (e) => {
-                                        if (e.keyCode == 13) {
-                                            CultivosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            CultivosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                            if (CultivosUci.nuevoRegistro.editar == null) {
-                                                CultivosUci.agregarRegistro();
-                                                FecthUci.registrarSeccion(CultivosUci.nuevoRegistro);
-                                                PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
-                                                CultivosUci.nuevoRegistro = null;
-
-                                            } else {
-                                                CultivosUci.editarRegistro();
-                                                FecthUci.actualizarSeccion(CultivosUci.nuevoRegistro);
-                                                PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
-                                                CultivosUci.nuevoRegistro = null;
-
-                                            }
-
-
-                                        }
-                                    },
                                     oninput: (e) => {
                                         CultivosUci.nuevoRegistro.resultado = e.target.value;
                                     },
@@ -430,6 +447,47 @@ class CultivosUci {
                                 })
 
                             ]),
+                        ] : [])
+                    ),
+                ]),
+                m("tr.bd.bd-2", {
+                    style: { "border-color": "#5173a1" },
+                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+                }, [
+                    m("td.tx-14.tx-normal[colspan='12']",
+                        (CultivosUci.nuevoRegistro !== null ? [
+                            m("input", {
+                                id: "observacion" + CultivosUci.nuevoRegistro.id,
+                                class: "form-control tx-semibold tx-14",
+                                type: "text",
+                                placeholder: "...",
+                                onkeypress: (e) => {
+                                    if (e.keyCode == 13) {
+                                        CultivosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                        CultivosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        if (CultivosUci.nuevoRegistro.editar == null) {
+                                            CultivosUci.agregarRegistro();
+                                            FecthUci.registrarSeccion(CultivosUci.nuevoRegistro);
+                                            PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
+                                            CultivosUci.nuevoRegistro = null;
+
+                                        } else {
+                                            CultivosUci.editarRegistro();
+                                            FecthUci.actualizarSeccion(CultivosUci.nuevoRegistro);
+                                            PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
+                                            CultivosUci.nuevoRegistro = null;
+
+                                        }
+
+
+                                    }
+                                },
+                                oninput: (e) => {
+                                    CultivosUci.nuevoRegistro.observacion = e.target.value;
+                                },
+                                value: CultivosUci.nuevoRegistro.observacion
+
+                            })
                         ] : [])
                     ),
                 ]),
