@@ -356,9 +356,19 @@ class CultivosUci {
                             value: (CultivosUci.nuevoRegistro !== null ? CultivosUci.nuevoRegistro.muestra : 0),
 
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                id: "Sangre",
-                                label: "HEMOCULTIVO VIA CENTRAL / HEMOCULTIVO VIA PERIFERICA / HEMOCULTIVO LINEA ARTERIA"
-                            }, {
+                                id: "HemocultivoViaCentral",
+                                label: "HEMOCULTIVO VIA CENTRAL"
+                            },
+                            {
+                                id: "HemocultivoViaPeriferica",
+                                label: "HEMOCULTIVO VIA PERIFERICA"
+                            },
+                            {
+                                id: "HemocultivoLineaArterial",
+                                label: "HEMOCULTIVO LINEA ARTERIAL"
+                            },
+
+                            {
                                 id: "Orina",
                                 label: "ORINA"
                             },
