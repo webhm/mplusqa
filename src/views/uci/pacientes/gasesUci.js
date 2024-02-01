@@ -309,7 +309,7 @@ class GasesUci {
 
                 }, [
                     m("th[scope='col'][colspan='4']",
-                        "GASOMETRIAS / HORAS:"
+                        "GASOMETRIAS:"
                     ),
                     m("th[scope='col'][colspan='4']",
                         "FECHA Y HORA:"
