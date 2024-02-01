@@ -50,6 +50,8 @@ class MarcapasosUci {
             MarcapasosUci.nuevoRegistro.nro = (MarcapasosUci.registros[MarcapasosUci.registros.length - 1].nro + 1);
             MarcapasosUci.registros.push(MarcapasosUci.nuevoRegistro);
         }
+        FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
+
     }
     static verRegistro(registro) {
         registro.editar = true;

@@ -50,6 +50,8 @@ class HemodialisisUci {
             HemodialisisUci.nuevoRegistro.nro = (HemodialisisUci.registros[HemodialisisUci.registros.length - 1].nro + 1);
             HemodialisisUci.registros.push(HemodialisisUci.nuevoRegistro);
         }
+        FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
+
     }
     static verRegistro(registro) {
         registro.editar = true;

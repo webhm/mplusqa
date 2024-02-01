@@ -6,6 +6,7 @@ import TurnosUci from "./turnosUci";
 class Cuidado {
     id = null;
     nro = null;
+    fechaHoraTurno = null;
     cuidado = null;
     frecuencia = null;
     am = null;
@@ -13,10 +14,10 @@ class Cuidado {
     hs = null;
     editar = null;
     seccion = 'CuidadosGenerales';
-    fechaHoraTurno = null;
     constructor() {
         this.id = this.id;
         this.nro = this.nro;
+        this.fechaHoraTurno = this.fechaHoraTurno;
         this.cuidado = this.cuidado;
         this.frecuencia = this.frecuencia;
         this.am = this.pm;
@@ -24,7 +25,7 @@ class Cuidado {
         this.hs = this.hs;
         this.editar = this.editar;
         this.seccion = this.seccion;
-        this.fechaHoraTurno = this.fechaHoraTurno;
+
     }
 }
 

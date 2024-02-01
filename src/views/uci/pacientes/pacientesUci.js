@@ -16,6 +16,7 @@ import CuidadosUci from "./cuidados";
 import MarcapasosUci from "./marcapasos";
 import FecthUci from "./fecthUci";
 import VentilatoriosUci from "./ventilatorios";
+import GasesUci from "./gasesUci";
 
 
 // Pacientes UCI
@@ -84,6 +85,8 @@ class PacientesUCI extends App {
         VentilatoriosUci.show = true;
         VentilatoriosUci.registros = PacientesUCI.parseSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
 
+        GasesUci.show = true;
+        GasesUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Gases').options));
 
     }
 
@@ -161,6 +164,8 @@ class PacientesUCI extends App {
                         m(MarcapasosUci),
                         // Ventilatorios
                         m(VentilatoriosUci),
+                        // Gasometrias / Horas
+                        m(GasesUci),
 
                     ])
                 ])
@@ -188,6 +193,12 @@ class PacientesUCI extends App {
         });
 
         console.log(88, res)
+
+        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+
+        console.log(99, result)
+
+
 
         return res;
     }
@@ -291,20 +302,17 @@ class PacientesUCI extends App {
         return _arr;
     }
 
-    static setTurnoSeccionCateter(_options, _class) {
+    static setTurnoSeccionCateter(_options) {
 
-        let res = [];
-        let result = [];
-        let _arr = [];
-        let hash = {};
+
         let crear = false;
 
-        if (_class.registros.length == 0) {
+        if (CateterUci.registros.length == 0) {
             crear = true;
         }
 
-        if (_class.registros.length > 0) {
-            let registros = _class.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
+        if (CateterUci.registros.length > 0) {
+            let registros = CateterUci.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -313,43 +321,41 @@ class PacientesUCI extends App {
         if (crear) {
             _options.map((option) => {
                 if (option.value != 0) {
-                    _class.iniciarRegistro();
-                    _class.nuevoRegistro.id = option.id;
-                    _class.nuevoRegistro.cateter = option.value;
-                    _class.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                    _class.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                    _class.agregarRegistro();
-                    FecthUci.registrarSeccion(_class.nuevoRegistro);
-                    res.push(_class.nuevoRegistro);
-                    _class.nuevoRegistro = null;
+                    CateterUci.iniciarRegistro();
+                    CateterUci.nuevoRegistro.id = option.id;
+                    CateterUci.nuevoRegistro.cateter = option.value;
+                    CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                    CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    CateterUci.agregarRegistro();
+                    CateterUci.nuevoRegistro = null;
                 }
-
             });
+
+
         }
 
-        console.log(99, res)
-
         // Quitar duplicados
-        // result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+        //result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+
+        // console.log(66, result)
+
         // Ordenar desc
+
         //  _arr = result.sort((a, b) => a.nro - b.nro);
-        return res;
+        // return result;
     }
 
-    static setTurnoSeccionVentilacion(_options, _class) {
+    static setTurnoSeccionVentilacion(_options) {
 
-        let res = [];
-        let result = [];
-        let _arr = [];
-        let hash = {};
+
         let crear = false;
 
-        if (_class.registros.length == 0) {
+        if (VentilacionUci.registros.length == 0) {
             crear = true;
         }
 
-        if (_class.registros.length > 0) {
-            let registros = _class.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
+        if (VentilacionUci.registros.length > 0) {
+            let registros = VentilacionUci.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -358,15 +364,13 @@ class PacientesUCI extends App {
         if (crear) {
             _options.map((option) => {
                 if (option.value != 0) {
-                    _class.iniciarRegistro();
-                    _class.nuevoRegistro.id = option.id;
-                    _class.nuevoRegistro.ventilacion = option.value;
-                    _class.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                    _class.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                    _class.agregarRegistro();
-                    FecthUci.registrarSeccion(_class.nuevoRegistro);
-                    res.push(_class.nuevoRegistro);
-                    _class.nuevoRegistro = null;
+                    VentilacionUci.iniciarRegistro();
+                    VentilacionUci.nuevoRegistro.id = option.id;
+                    VentilacionUci.nuevoRegistro.ventilacion = option.value;
+                    VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                    VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    VentilacionUci.agregarRegistro();
+                    VentilacionUci.nuevoRegistro = null;
                 }
 
             });
@@ -376,23 +380,20 @@ class PacientesUCI extends App {
         // result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
         // Ordenar desc
         // _arr = result.sort((a, b) => a.nro - b.nro);
-        return res;
+        // return res;
     }
 
-    static setTurnoSeccionHemodialisis(_options, _class) {
+    static setTurnoSeccionHemodialisis(_options) {
 
-        let res = [];
-        let result = [];
-        let _arr = [];
-        let hash = {};
+
         let crear = false;
 
-        if (_class.registros.length == 0) {
+        if (HemodialisisUci.registros.length == 0) {
             crear = true;
         }
 
-        if (_class.registros.length > 0) {
-            let registros = _class.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
+        if (HemodialisisUci.registros.length > 0) {
+            let registros = HemodialisisUci.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -401,15 +402,13 @@ class PacientesUCI extends App {
         if (crear) {
             _options.map((option) => {
                 if (option.value != 0) {
-                    _class.iniciarRegistro();
-                    _class.nuevoRegistro.id = option.id;
-                    _class.nuevoRegistro.hemo = option.value;
-                    _class.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                    _class.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                    _class.agregarRegistro();
-                    FecthUci.registrarSeccion(_class.nuevoRegistro);
-                    res.push(_class.nuevoRegistro);
-                    _class.nuevoRegistro = null;
+                    HemodialisisUci.iniciarRegistro();
+                    HemodialisisUci.nuevoRegistro.id = option.id;
+                    HemodialisisUci.nuevoRegistro.hemo = option.value;
+                    HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                    HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    HemodialisisUci.agregarRegistro();
+                    HemodialisisUci.nuevoRegistro = null;
                 }
 
             });
@@ -419,23 +418,20 @@ class PacientesUCI extends App {
         // result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
         // Ordenar desc
         // _arr = result.sort((a, b) => a.nro - b.nro);
-        return res;
+        // return res;
     }
 
-    static setTurnoSeccionMarcapasos(_options, _class) {
+    static setTurnoSeccionMarcapasos(_options) {
 
-        let res = [];
-        let result = [];
-        let _arr = [];
-        let hash = {};
+
         let crear = false;
 
-        if (_class.registros.length == 0) {
+        if (MarcapasosUci.registros.length == 0) {
             crear = true;
         }
 
-        if (_class.registros.length > 0) {
-            let registros = _class.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
+        if (MarcapasosUci.registros.length > 0) {
+            let registros = MarcapasosUci.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -444,15 +440,13 @@ class PacientesUCI extends App {
         if (crear) {
             _options.map((option) => {
                 if (option.value != 0) {
-                    _class.iniciarRegistro();
-                    _class.nuevoRegistro.id = option.id;
-                    _class.nuevoRegistro.hora = option.value;
-                    _class.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                    _class.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                    _class.agregarRegistro();
-                    FecthUci.registrarSeccion(_class.nuevoRegistro);
-                    res.push(_class.nuevoRegistro);
-                    _class.nuevoRegistro = null;
+                    MarcapasosUci.iniciarRegistro();
+                    MarcapasosUci.nuevoRegistro.id = option.id;
+                    MarcapasosUci.nuevoRegistro.hora = option.value;
+                    MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                    MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    MarcapasosUci.agregarRegistro();
+                    MarcapasosUci.nuevoRegistro = null;
                 }
 
             });
@@ -462,23 +456,20 @@ class PacientesUCI extends App {
         // result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
         // Ordenar desc
         // _arr = result.sort((a, b) => a.nro - b.nro);
-        return res;
+        // return res;
     }
 
-    static setTurnoSeccionVentilatorios(_options, _class) {
+    static setTurnoSeccionVentilatorios(_options) {
 
-        let res = [];
-        let result = [];
-        let _arr = [];
-        let hash = {};
+
         let crear = false;
 
-        if (_class.registros.length == 0) {
+        if (VentilatoriosUci.registros.length == 0) {
             crear = true;
         }
 
-        if (_class.registros.length > 0) {
-            let registros = _class.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
+        if (VentilatoriosUci.registros.length > 0) {
+            let registros = VentilatoriosUci.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -487,15 +478,13 @@ class PacientesUCI extends App {
         if (crear) {
             _options.map((option) => {
                 if (option.value != 0) {
-                    _class.iniciarRegistro();
-                    _class.nuevoRegistro.id = option.id;
-                    _class.nuevoRegistro.ventilatorio = option.value;
-                    _class.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                    _class.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                    _class.agregarRegistro();
-                    FecthUci.registrarSeccion(_class.nuevoRegistro);
-                    res.push(_class.nuevoRegistro);
-                    _class.nuevoRegistro = null;
+                    VentilatoriosUci.iniciarRegistro();
+                    VentilatoriosUci.nuevoRegistro.id = option.id;
+                    VentilatoriosUci.nuevoRegistro.ventilatorio = option.value;
+                    VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                    VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    VentilatoriosUci.agregarRegistro();
+                    VentilatoriosUci.nuevoRegistro = null;
                 }
 
             });
@@ -505,7 +494,7 @@ class PacientesUCI extends App {
         // result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
         // Ordenar desc
         // _arr = result.sort((a, b) => a.nro - b.nro);
-        return res;
+        // return res;
     }
 
     static arqTableTurnos() {
@@ -766,11 +755,11 @@ class PacientesUCI extends App {
                                                     oData.iniciarGestion();
                                                     PacientesUCI.fechaHoraTurno = oData.fechaTurno + ' ' + oData.horaTurno;
                                                     PacientesUCI.showSecciones();
-                                                    PacientesUCI.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options), CateterUci);
-                                                    PacientesUCI.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options), VentilacionUci);
-                                                    PacientesUCI.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options), HemodialisisUci);
-                                                    PacientesUCI.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options), MarcapasosUci);
-                                                    PacientesUCI.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options), VentilatoriosUci);
+                                                    PacientesUCI.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
+                                                    PacientesUCI.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
+                                                    PacientesUCI.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
+                                                    PacientesUCI.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
+                                                    PacientesUCI.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
 
                                                 },
                                             },
