@@ -20,28 +20,33 @@ import VentilatoriosUci from "./ventilatorios";
 
 // Pacientes UCI
 class PacientesUCI extends App {
+
     static pacientes = null;
     static dataPte = null;
     static numeroHistoriaClinica = null;
     static numeroAtencion = null;
     static numeroTurno = null;
+    static usuarioTurno = null;
     static fechaHoraTurno = null;
     static idFiltro = 1;
     static fechaHasta = null;
     static fechaDesde = null;
+
     constructor(_data) {
+
         super();
         App.setTitle("Pacientes U.C.I.");
         this.view = PacientesUCI.page;
         PacientesUCI.numeroHistoriaClinica = _data.attrs.numeroHistoriaClinica;
         PacientesUCI.numeroAtencion = _data.attrs.numeroAtencion;
         PacientesUCI.numeroTurno = (_data.attrs.numeroTurno !== undefined ? _data.attrs.numeroTurno : null);
+        PacientesUCI.usuarioTurno = _data.attrs.usuario;
         PacientesUCI.validarAtencion();
 
     }
+
     oncreate(_data) {
         console.log('data', _data);
-
     }
 
 
@@ -83,7 +88,7 @@ class PacientesUCI extends App {
     }
 
 
-    static vMainProfile() {
+    static vMain() {
         return [
             m("div.content.content-components", {
                     style: { "margin-right": "0px", "margin-left": "0px", "margin-top": "0px" }
@@ -162,6 +167,7 @@ class PacientesUCI extends App {
             ),
         ];
     }
+
     static vMenu() {
         return m(Sidebar, { page: 'uci/pacientes' });
     }
@@ -502,216 +508,6 @@ class PacientesUCI extends App {
         return res;
     }
 
-    static reloadData(idFiltro) {
-        PacientesUCI.pacientes = null;
-        PacientesUCI.idFiltro = idFiltro;
-    }
-    static fetchProfile() {
-
-
-        if (PacientesUCI.pacientes !== null && PacientesUCI.pacientes.status) {
-            return PacientesUCI.pacientes.data.map(function(_val, _i, _contentData) {
-                if (PacientesUCI.numeroHistoriaClinica == _val.HC) {
-                    PacientesUCI.dataPte = _val;
-                }
-            })
-        }
-
-
-    }
-    static fetchData() {
-
-        let _queryString = '?idFiltro=' + PacientesUCI.idFiltro;
-
-        if (PacientesUCI.idFiltro == 2 && PacientesUCI.fechaDesde !== null) {
-            _queryString += '&fechaDesde=' + PacientesUCI.fechaDesde + '&fechaHasta=' + PacientesUCI.fechaHasta;
-        }
-
-        return m.request({
-                method: "GET",
-                url: ApiHTTP.apiUrl + "/v2/pasaportes/generados" + _queryString,
-                headers: {
-                    "Content-Type": "application/json; charset=utf-8",
-                },
-            })
-            .then(function(result) {
-                return result;
-            })
-            .catch(function(e) {
-                return {
-                    'status': null,
-                    'message': e
-                };
-            });
-
-    }
-    static arqTable() {
-        return {
-            data: null,
-            dom: 'ltp',
-            language: {
-                searchPlaceholder: "Buscar...",
-                sSearch: "",
-                lengthMenu: "Mostrar _MENU_ registros por página",
-                sProcessing: "Procesando...",
-                sZeroRecords: "Todavía no tienes resultados disponibles.",
-                sEmptyTable: "Ningún dato disponible en esta tabla",
-                sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
-                sInfoPostFix: "",
-                sUrl: "",
-                sInfoThousands: ",",
-                sLoadingRecords: "Cargando...",
-                oPaginate: {
-                    sFirst: "Primero",
-                    sLast: "Último",
-                    sNext: "Siguiente",
-                    sPrevious: "Anterior",
-                },
-                oAria: {
-                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
-                    sSortDescending: ": Activar para ordenar la columna de manera descendente",
-                },
-            },
-            cache: false,
-            destroy: true,
-            columns: [{
-                    title: "N° : ",
-                },
-                {
-                    title: "NHC:",
-                },
-                {
-                    title: "Fecha de Admisión:",
-                },
-                {
-                    title: "Paciente:",
-                },
-
-                {
-                    title: "Especialidad:",
-                },
-
-                {
-                    title: "Opciones:",
-                }
-            ],
-            aoColumnDefs: [{
-                    mRender: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                    visible: true,
-                    aTargets: [0],
-                    orderable: false,
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.HC;
-                    },
-                    visible: true,
-                    aTargets: [1],
-                    orderable: true,
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.FECHA_ADMISION;
-                    },
-                    visible: true,
-                    aTargets: [2],
-                    orderable: true,
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.NOMBRE;
-
-                    },
-                    visible: true,
-                    aTargets: [3],
-                    orderable: true,
-                    width: '40%'
-                }, {
-                    mRender: function(data, type, full) {
-                        return full.ESPECIALIDAD;
-
-                    },
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return ''
-
-                    },
-                    visible: true,
-                    aTargets: [5],
-                    orderable: true,
-
-                }
-
-
-            ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-
-                m.mount(nRow, {
-                    view: () => {
-                        return [
-                            m("td", [
-                                (iDisplayIndexFull + 1)
-                            ]),
-                            m("td", [
-                                aData.HC
-                            ]),
-
-                            m("td", [
-                                aData.FECHA_ADMISION
-                            ]),
-                            m("td", [
-                                aData.NOMBRE
-                            ]),
-                            m("td", [
-                                aData.ESPECIALIDAD,
-
-                            ]),
-
-
-                            m("td", [
-
-                                m('button.btn.btn-block.btn-secondary.tx-12', {
-                                    style: { "background-color": "#185b98" },
-                                    onclick: () => {
-
-                                        m.route.set('/uci/pacientes/', {
-                                            numeroHistoriaClinica: aData.HC
-                                        })
-
-                                    }
-
-                                }, [
-                                    " Ver Paciente "
-                                ]),
-                            ])
-
-
-
-
-
-
-                        ];
-                    },
-                });
-
-
-
-            },
-        };
-    }
-
     static arqTableTurnos() {
         return {
             data: null,
@@ -900,7 +696,7 @@ class PacientesUCI extends App {
                                         disabled: 'disabled',
                                         oncreate: (el) => {
                                             if (oData.usuarioTurno !== undefined) {
-                                                el.dom.value = 'ENFERMERA';
+                                                el.dom.value = oData.usuarioTurno;
                                             }
                                         },
                                     }),
@@ -1032,12 +828,9 @@ class PacientesUCI extends App {
         };
     }
 
-
-
     static vReloadTable(idTable, _data) {
         $('#' + idTable).DataTable().clear().rows.add(_data).draw();
     }
-
 
     static vTable(idTable, dataTable, arqTable) {
         return [
@@ -1047,7 +840,7 @@ class PacientesUCI extends App {
 
     static page() {
         return [
-            PacientesUCI.vMainProfile()
+            PacientesUCI.vMain()
         ];
     }
 }

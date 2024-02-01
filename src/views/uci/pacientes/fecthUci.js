@@ -46,6 +46,7 @@ class FecthUci {
                 numeroHistoriaClinica: TurnosUci.nuevoTurno.numeroHistoriaClinica,
                 numeroAtencion: TurnosUci.nuevoTurno.numeroAtencion,
                 numeroTurno: TurnosUci.nuevoTurno.numeroTurno,
+                usuarioTurno: TurnosUci.nuevoTurno.usuarioTurno,
                 fechaHoraTurno: TurnosUci.nuevoTurno.fechaHoraTurno,
                 status: 1
             },
@@ -193,12 +194,15 @@ class FecthUci {
                 m.route.set("/uci/pacientes/", {
                     numeroHistoriaClinica: res.data.numeroHistoriaClinica,
                     numeroAtencion: res.data.numeroAtencion,
+                    usuario: PacientesUCI.usuarioTurno,
                     numeroTurno: res.data.numeroTurno
                 });
+
                 if (res.data.dataTurnos.length > 0) {
                     TurnosUci.turnos = FecthUci.setTurnos(res.data.dataTurnos);
                     PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
                 }
+
                 FecthUci.loadSecciones();
 
             }

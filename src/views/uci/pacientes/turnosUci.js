@@ -75,11 +75,12 @@ class TurnosUci {
         TurnosUci.nuevoTurno.fechaTurno = moment().format('DD-MM-YYYY');
         TurnosUci.nuevoTurno.horaTurno = moment().format('HH:mm');
         TurnosUci.nuevoTurno.fechaHoraTurno = TurnosUci.nuevoTurno.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno;
-        TurnosUci.nuevoTurno.usuarioTurno = 'MCHANG';
+        TurnosUci.nuevoTurno.usuarioTurno = PacientesUCI.usuarioTurno;
         FecthUci.registrarTurno();
         TurnosUci.nuevoTurno.abrirTurno();
         TurnosUci.turnos.push(TurnosUci.nuevoTurno);
     }
+
     static validarInicioTurno() {
         for (let index = 0; index < TurnosUci.turnos.length; index++) {
             let element = TurnosUci.turnos[index];
@@ -89,6 +90,7 @@ class TurnosUci {
             }
         }
     }
+
     static getTurnos() {
         return TurnosUci.turnos;
     }
