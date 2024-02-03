@@ -81,8 +81,13 @@ class PacientesUCI extends App {
                                 m("td[colspan='6']",
                                     m("button.btn.btn-xs.btn-primary[type='button']", {
                                         onclick: () => {
-                                            TurnosUci.iniciarTurno();
-                                            PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
+                                            if (TurnosUci.getTurnos().length < 2) {
+                                                TurnosUci.iniciarTurno();
+                                                PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
+                                            } else {
+                                                alert('Ya no se puede registrar un nuevo turno.');
+                                            }
+
                                         }
                                     }, "Registar Turno")
                                 ),
