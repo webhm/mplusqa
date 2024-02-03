@@ -8,18 +8,10 @@ import Cita from "./cita";
 import EventosCalendario from "./eventosCalendar";
 import { ProximasCitas, ProximosEventos, CitasAnteriores, BuscadorItems, BuscadorPacientes } from "./widgets";
 import WebRTCConnection from "../../../models/P2PMessage";
-import { UNDERLINE } from "construct-ui/lib/esm/components/icon/generated/IconNames";
 
 
 class OptionSelect {
     static idFilter = "";
-    static reloadSelect() {
-        OptionSelect.idFilter = "";
-        setTimeout(() => {
-            OptionSelect.idFilter = Calendario.idCalendar;
-            m.redraw();
-        }, 50);
-    }
 
     static selectInit() {
         $("#agendas").select2({
@@ -51,14 +43,15 @@ class OptionSelect {
                 idCalendar = idCalendar.substring(0, idCalendar.length - 1);
 
                 if (tree.length > 0) {
-                    Calendario.idCalendar = idCalendar;
+                    Calendario.idFilterCalendar = idCalendar;
                     m.route.set("/endoscopia/agendas/calendario/", {
-                        idCalendar: encodeURIComponent(Calendario.idCalendar)
+                        idCalendar: encodeURIComponent(Calendario.idFilterCalendar)
                     });
                     FetchCalendario.reloadFetchAgenda();
+
                 } else {
                     m.route.set("/endoscopia/agendas/calendario");
-                    Calendario.idCalendar = null;
+                    Calendario.idFilterCalendar = null;
                     Calendario.warning = "No se han aplicado filtros para la búsqueda.";
                 }
 
@@ -81,23 +74,27 @@ class OptionSelect {
             }, [
                 Calendario.calendarios.map(function(_v, _i, _contentData) {
 
-                    if (Calendario.idCalendar !== null) {
-                        let _agendas = Calendario.idCalendar.split(',');
-                        return [
-                            m("option.tx-10[value='" + _v.IDCALENDAR + "']", {
-                                oncreate: (el) => {
-                                    if (_agendas.includes(_v.IDCALENDAR)) {
-                                        el.dom.selected = true;
+                    if (_v.TIPO == 2) {
+                        if (Calendario.idFilterCalendar !== null) {
+                            let _agendas = Calendario.idFilterCalendar.split(',');
+                            return [
+                                m("option.tx-10[value='" + _v.IDCALENDAR + "']", {
+                                    oncreate: (el) => {
+                                        if (_agendas.includes(_v.IDCALENDAR)) {
+                                            el.dom.selected = true;
+                                        }
                                     }
-                                }
-                            }, _v.CALENDAR),
-                        ];
+                                }, _v.CALENDAR),
+                            ];
 
-                    } else {
-                        return [
-                            m("option.tx-10[value='" + _v.IDCALENDAR + "']", _v.CALENDAR),
-                        ];
+                        } else {
+                            return [
+                                m("option.tx-10[value='" + _v.IDCALENDAR + "']", _v.CALENDAR),
+                            ];
+                        }
                     }
+
+
 
 
 
@@ -109,7 +106,6 @@ class OptionSelect {
     }
 }
 
-
 class BadgeAgendas {
 
     onupdate() {
@@ -118,8 +114,8 @@ class BadgeAgendas {
 
     view() {
         return Calendario.calendarios.map((_v, _i) => {
-            if (Calendario.idCalendar !== null) {
-                let _agendas = Calendario.idCalendar.split(',');
+            if (Calendario.idFilterCalendar !== null) {
+                let _agendas = Calendario.idFilterCalendar.split(',');
                 if (_agendas.includes(_v.IDCALENDAR)) {
                     return m("span.badge.badge-primary.mg-r-2", _v.CALENDAR);
                 }
@@ -133,15 +129,15 @@ class BadgeAgendas {
 class BadgeAgendasCita {
 
     view() {
+
         if (Cita.data !== null && Cita.data.calendarios !== undefined) {
             return Object.keys(Cita.data.calendarios).map((_i) => {
-                return m("span.badge.badge-primary.mg-r-2", Cita.data.calendarios[_i].CALENDAR);
+                return m("span.badge.badge-danger.mg-r-2", Cita.data.calendarios[_i].CALENDAR);
             });
         }
 
     }
 }
-
 
 class FetchCalendario {
     static events = null;
@@ -174,7 +170,6 @@ class FetchCalendario {
                 colorsCalendar: res.colorsCalendar
             };
             Calendario.setSidebar();
-            Calendario.setCalendar();
             setTimeout(() => {
                 if (FetchCalendario.peerId == null) {
                     OnlineCalendar.status = "Offline";
@@ -182,7 +177,6 @@ class FetchCalendario {
                     OnlineCalendar.status = "Online";
                 }
                 m.redraw();
-
             }, 5000);
         }).catch(function(e) {
             Calendario.setLoader();
@@ -192,8 +186,6 @@ class FetchCalendario {
             };
         });
     }
-
-
 
     static reloadFetchAgenda() {
         try {
@@ -216,15 +208,13 @@ class FetchCalendario {
                             data: res.citasAgendadas,
                             colorsCalendar: res.colorsCalendar
                         };
-                        Calendario.reloadCalendar();
-                        OptionSelect.reloadSelect();
+                        Calendario.reloadAllCalendars();
                         Calendario.reloadSidebarCitas();
                     } else {
                         Calendario.setLoader();
                         Calendario.citas = {
                             status: res.status,
                             message: res.message
-
                         };
                     }
 
@@ -264,9 +254,6 @@ class FetchCalendario {
                     if (Calendario.idCalendar == null) {
                         Calendario.idCalendar = res.data.agendas;
                     }
-                    m.route.set("/endoscopia/agendas/calendario/", {
-                        idCalendar: encodeURIComponent(Calendario.idCalendar)
-                    });
                     FetchCalendario.fetch();
                 } else {
                     Calendario.setLoader();
@@ -324,6 +311,227 @@ class OnlineCalendar {
     }
 }
 
+class TableCalendarios {
+
+    static cal = {
+        id: 1,
+        idFilter: 0,
+    };
+
+    static calendarios = [];
+
+    static eliminarNuevoCal(id) {
+
+        let res = [];
+
+        TableCalendarios.calendarios.map((_v, _i) => {
+            if (_v.id != id) {
+                res.push(_v);
+            }
+
+        });
+
+        TableCalendarios.calendarios = res;
+        TableCalendarios.calendarios.map((_v, _i) => {
+            TableCalendarios.calendarios[_i].id = (_i + 1);
+        });
+
+        if (TableCalendarios.calendarios.length > 1) {
+
+            let idc = '';
+            TableCalendarios.calendarios.map((_v, _i) => {
+                idc += _v.idFilter + ",";
+            });
+
+            let _idc = idc.substring(0, idc.length - 1);
+
+            Calendario.idFilterCalendar = _idc;
+
+            m.route.set("/endoscopia/agendas/calendario/", {
+                idCalendar: encodeURIComponent(Calendario.idFilterCalendar)
+            });
+
+            FetchCalendario.reloadFetchAgenda();
+
+        } else {
+
+            Calendario.idFilterCalendar = TableCalendarios.calendarios[0].idFilter;
+            m.route.set("/endoscopia/agendas/calendario/", {
+                idCalendar: encodeURIComponent(Calendario.idFilterCalendar)
+            });
+
+            FetchCalendario.reloadFetchAgenda();
+        }
+
+
+    }
+
+    static agregarNuevoCal() {
+
+        TableCalendarios.calendarios.push({
+            id: (TableCalendarios.calendarios.length + 1),
+            idFilter: 0,
+        });
+        let lastCal = TableCalendarios.calendarios[TableCalendarios.calendarios.length - 1];
+        Calendario.setCalendar('calendar' + lastCal.id);
+
+    };
+
+    static setFilterCal(id, idFilter) {
+
+        // Validacion is ya existe widget calendario
+        TableCalendarios.calendarios.map((_v) => {
+            if (_v.idFilter == idFilter) {
+                alert('Ya existe un calendario con ese Id.');
+                throw 'Ya existe un calendario con ese Id.';
+            }
+
+        });
+
+        TableCalendarios.calendarios.map((_v, _i) => {
+            if (_v.id == id) {
+                TableCalendarios.calendarios[_i].idFilter = idFilter;
+                console.log(99, TableCalendarios.calendarios)
+            }
+        });
+    }
+
+    static filterCitas(idCalendar) {
+        let res = [];
+        let _i = 0;
+        Calendario.citas.data.events.map((_v) => {
+            if (_v.idCalendar.includes(idCalendar)) {
+                res.push(_v);
+                _i++;
+            }
+        });
+        return res;
+    }
+
+
+
+    oninit() {
+        if (Calendario.idFilterCalendar != null) {
+
+            let _agendas = Calendario.idFilterCalendar.split(',');
+            _agendas.map(function(_v, _i, _contentData) {
+                TableCalendarios.calendarios.push({
+                    id: (_i + 1),
+                    idFilter: _v
+                });
+                Calendario.setCalendar('calendar' + (_i + 1));
+            });
+
+            FetchCalendario.reloadFetchAgenda();
+
+        } else {
+            TableCalendarios.calendarios.push(TableCalendarios.cal);
+            Calendario.setCalendar('calendar1');
+        }
+
+    }
+
+    view() {
+
+        return [
+            m("table.table.tx-10", [
+                m("tbody", [
+
+                    m("tr", [
+                        TableCalendarios.calendarios.map(a =>
+                            m("td", {
+                                    style: { "width": "30px" }
+                                },
+                                m('div', [
+                                    m("div.input-group", [
+                                        m('select.tx-semibold.tx-primary', {
+                                                onchange: (e) => {
+                                                    try {
+
+                                                        let idCalendar = e.target.options[e.target.options.selectedIndex].value;
+
+
+
+                                                        if (idCalendar != 0) {
+
+                                                            TableCalendarios.setFilterCal(a.id, idCalendar);
+
+                                                            if (TableCalendarios.calendarios.length > 1) {
+
+                                                                let idc = '';
+                                                                TableCalendarios.calendarios.map((_v, _i) => {
+                                                                    idc += _v.idFilter + ",";
+                                                                });
+
+                                                                let _idc = idc.substring(0, idc.length - 1);
+
+                                                                Calendario.idFilterCalendar = _idc;
+
+                                                                m.route.set("/endoscopia/agendas/calendario/", {
+                                                                    idCalendar: encodeURIComponent(Calendario.idFilterCalendar)
+                                                                });
+
+                                                                FetchCalendario.reloadFetchAgenda();
+
+                                                            } else {
+
+                                                                Calendario.idFilterCalendar = TableCalendarios.calendarios[0].idFilter;
+                                                                m.route.set("/endoscopia/agendas/calendario/", {
+                                                                    idCalendar: encodeURIComponent(Calendario.idFilterCalendar)
+                                                                });
+
+                                                                FetchCalendario.reloadFetchAgenda();
+                                                            }
+
+                                                        }
+
+                                                    } catch (error) {
+                                                        e.preventDefault();
+                                                    }
+
+                                                },
+                                                class: "custom-select",
+                                                value: a.idFilter,
+                                            }, m("option[value='0']", 'Seleccione...'),
+                                            Calendario.calendarios.map(x =>
+                                                (x.TIPO == 1 ? [m('option', {
+                                                    id: a.id,
+                                                    value: x.IDCALENDAR,
+                                                }, x.CALENDAR)] : [])
+                                            )
+                                        ),
+                                        (a.id !== 1 ? [m("div.input-group-append", [
+                                            m("button.btn.btn-outline-light[type='button']", {
+                                                    onclick: () => {
+                                                        TableCalendarios.eliminarNuevoCal(a.id);
+                                                    }
+                                                },
+                                                m("i.fas.fa-times-circle")
+                                            )
+                                        ])] : [])
+
+                                    ])
+                                ]),
+                                m('div.ht-600', [
+                                    m("div.calendar-content-body", {
+                                        id: 'calendar' + a.id,
+
+                                    }),
+                                ])
+
+                            ),
+                        ),
+
+
+
+                    ]),
+
+                ])
+            ])
+        ]
+    }
+}
+
 
 // Calendario
 class Calendario extends App {
@@ -335,6 +543,8 @@ class Calendario extends App {
     static cita = null;
     static citas = null;
     static idCalendar = null;
+    static idSala = null;
+    static idMedico = null;
     static calendarios = [];
     static typeAlert = null;
     static messageAlert = null;
@@ -373,7 +583,9 @@ class Calendario extends App {
             selectOtherMonths: true,
             dateFormat: "yy-mm-dd",
             onSelect: function(dateText, inst) {
-                $("#calendar").fullCalendar("gotoDate", dateText);
+                TableCalendarios.calendarios.map((_v, _i) => {
+                    $("#calendar" + _v.id).fullCalendar("gotoDate", dateText);
+                });
 
             },
             beforeShowDay: function(date) { // add leading zero to single digit date
@@ -411,7 +623,7 @@ class Calendario extends App {
             }
         });
 
-        OptionSelect.idFilter = Calendario.idCalendar;
+        OptionSelect.idFilter = 1;
         ProximasCitas.citas = Calendario.filterCitas('Hoy');
         ProximosEventos.citas = Calendario.filterEventos('Hoy');
         CitasAnteriores.citas = Calendario.filterCitasAnteriores('Hoy');
@@ -427,31 +639,33 @@ class Calendario extends App {
 
     }
 
-    static setCalendar() { // Initialize fullCalendar
+    static setCalendar(idCal) { // Initialize fullCalendar
 
         setTimeout(() => {
 
-            $("#calendar").fullCalendar({
+            $("#" + idCal).fullCalendar({
                 height: "parent",
                 header: {
                     left: "prev,next today",
                     center: "title",
-                    right: "month,agendaWeek,agendaDay,listWeek"
+                    right: ""
                 },
                 navLinks: true,
                 selectable: true,
                 defaultDate: moment().format("YYYY-MM-DD"),
+
                 selectLongPressDelay: 100,
                 nowIndicator: true,
                 editable: false,
-                defaultView: "agendaWeek",
+                defaultView: "agendaDay",
                 minTime: "07:00:00",
                 maxTime: "23:40:00",
-                slotDuration: "00:30:00",
-                slotLabelInterval: 30,
+                slotDuration: "00:10:00",
+                slotLabelInterval: 10,
                 slotLabelFormat: "HH:mma",
-                slotMinutes: 30,
+                slotMinutes: 10,
                 timeFormat: "HH:mma",
+                allDaySlot: false,
                 views: {
                     agenda: {
                         columnHeaderHtml: function(mom) {
@@ -477,8 +691,9 @@ class Calendario extends App {
                         titleFormat: "MMMM YYYY"
                     }
                 },
-                eventSources: [Calendario.citas.data],
+                eventSources: [],
                 eventAfterAllRender: function(view) {
+
                     if (view.name === "listMonth" || view.name === "listWeek") {
                         var dates = view.el.find(".fc-list-heading-main");
                         dates.each(function() {
@@ -494,24 +709,14 @@ class Calendario extends App {
 
                     }
 
-                    if (Cita.data == null) {
-                        if ($("#calendar .fc-event").length > 0) {
-                            var op = 999999;
-                            $("#calendar .fc-content-col").each(function(index) {
-                                if ($(this).find('.fc-event:first').length > 0) {
-                                    var ot = $(this).find('.fc-event:first').position().top;
-                                    if (ot < op) {
-                                        op = ot;
-                                    }
-                                }
-                            });
-                            if (op < 999999) {
-                                $("#calendar .fc-scroller").animate({
-                                    scrollTop: op
-                                }, 800);
-                            }
-                        }
-                    }
+                    /*
+                    let horaScroll = moment().format('HH:00:00');
+                    $("#" + idCal + " .fc-scroller").animate({
+                        scrollTop: $('[data-time="' + horaScroll + '"]').position().top // Scroll to 01:00 pm
+                    }, 2500);
+
+                    */
+
 
 
 
@@ -520,15 +725,10 @@ class Calendario extends App {
                     });
 
 
+
+
                 },
                 eventRender: function(event, element) {
-                    /*
-                                                      if (event.description) {
-                                                      element.find('.fc-list-item-title').append('<span class="fc-desc">' + event.description + '</span>');
-                                                      element.find('.fc-content').append('<span class="fc-desc">' + event.description + '</span>');
-                                                  }
-                                                  */
-
 
                     let nacimiento = moment(event.fecha_nacimiento, "DD/MM/YYYY");
                     let hoy = moment();
@@ -579,13 +779,12 @@ class Calendario extends App {
                                 Cita.setUpdate(calEvent);
                             }, 50);
                         } else {
-                            Calendario.reloadCalendar();
+                            Calendario.reloadAllCalendars();
                         }
                     }
 
 
                 },
-
                 eventResize: function(calEvent) {
                     if (calEvent.editable) {
                         if (calEvent.userEdit !== undefined && calEvent.userEdit == App.userName) {
@@ -593,23 +792,21 @@ class Calendario extends App {
                                 Cita.setUpdate(calEvent);
                             }, 50);
                         } else {
-                            Calendario.reloadCalendar();
+                            Calendario.reloadAllCalendars();
                         }
                     }
                 },
-                viewSkeletonRender: function(info) {
-                    info.view.calendar.scrollToTime((new Date()) - calendar.state.dateProfile.renderRange.start);
-                }
+
             });
 
 
             $(".select2-modal").select2({ minimumResultsForSearch: Infinity, dropdownCssClass: "select2-dropdown-modal" });
 
 
-            Calendario.calendar = $("#calendar").fullCalendar("getCalendar");
+            let _c = $("#" + idCal).fullCalendar("getCalendar");
 
             // Display calendar event modal
-            Calendario.calendar.on("eventClick", function(calEvent, jsEvent, view) {
+            _c.on("eventClick", function(calEvent, jsEvent, view) {
 
                 if (calEvent.tipo == 1 && !calEvent.editable) {
                     Cita.verCita(calEvent);
@@ -621,50 +818,15 @@ class Calendario extends App {
                             Cita.verUpdate(calEvent);
                         }, 50);
                     }
-
-
                 }
 
                 if (calEvent.tipo > 1 && !calEvent.editable) {
                     Cita.verEvento(calEvent);
                 }
 
-
-
             });
 
-
-
-
-            // change view to week when in tablet
-            if (window.matchMedia("(min-width: 576px)").matches) {
-                try {
-                    // Calendario.calendar.changeView("agendaWeek");
-                    Calendario.calendar.changeView("agendaWeek");
-                } catch (error) {
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-                }
-            }
-
-            // change view to month when in desktop
-            if (window.matchMedia("(min-width: 992px)").matches) {
-                try {
-                    // Calendario.calendar.changeView("agendaWeek");
-                    Calendario.calendar.changeView("agendaWeek");
-                } catch (error) {
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-                }
-            }
-
-
-
-            // display current date
-            // let dateNow = Calendario.calendar.getDate();
-            Calendario.calendar.option("select", function(startDate, endDate) {
+            _c.option("select", function(startDate, endDate) {
 
                 if (Calendario.idCalendar !== null) {
                     let fecha = moment(startDate).format("DD/MM/YYYY HH:mm");
@@ -678,7 +840,13 @@ class Calendario extends App {
 
 
 
+
+
+
         }, 50);
+
+
+
 
 
 
@@ -732,29 +900,56 @@ class Calendario extends App {
                     m("div.calendar-sidebar-header", [
                         m("i[data-feather='search']"), m("div.search-form", [
                             m("input.form-control[type='search'][placeholder='Buscar por NHC o Apellidos y Nombres'][title='Buscar por NHC o Apellidos y Nombres']", {
+                                value: (Calendario.searchPaciente !== null && Calendario.searchPaciente.length !== 0 ? Calendario.searchPaciente : ''),
                                 onkeypress: (e) => {
                                     if (Calendario.searchPaciente.length !== 0) {
                                         if (e.keyCode == 13) {
                                             m.route.set("/endoscopia/agendas/calendario/", {
-                                                idCalendar: encodeURIComponent(Calendario.idCalendar),
+                                                idCalendar: encodeURIComponent(Calendario.idFilterCalendar),
                                                 searchPaciente: encodeURIComponent(Calendario.searchPaciente)
                                             });
                                             FetchCalendario.reloadFetchAgenda();
+
+                                            /*
+
+                                            if (Cita.data == null && Calendario.searchPaciente !== null && Calendario.searchPaciente.length !== 0) {
+                                                if ($(".fc-event").length > 0) {
+                                                    var op = 999999;
+                                                    $(".fc-content-col").each(function(index) {
+                                                        if ($(this).find('.fc-event:first').length > 0) {
+                                                            var ot = $(this).find('.fc-event:first').position().top;
+                                                            if (ot < op) {
+                                                                op = ot;
+                                                            }
+                                                        }
+                                                    });
+                                                    if (op < 999999) {
+                                                        $(".fc-scroller").animate({
+                                                            scrollTop: op
+                                                        }, 800);
+                                                    }
+                                                }
+                                            }
+
+                                            */
                                         }
                                     } else {
                                         m.route.set("/endoscopia/agendas/calendario/", {
-                                            idCalendar: encodeURIComponent(Calendario.idCalendar)
+                                            idCalendar: encodeURIComponent(Calendario.idFilterCalendar)
                                         });
                                         FetchCalendario.reloadFetchAgenda();
                                     }
                                 },
+
                                 oninput: (e) => {
                                     Calendario.searchPaciente = e.target.value;
                                     if (Calendario.searchPaciente.length == 0) {
                                         m.route.set("/endoscopia/agendas/calendario/", {
-                                            idCalendar: encodeURIComponent(Calendario.idCalendar)
+                                            idCalendar: encodeURIComponent(Calendario.idFilterCalendar)
                                         });
                                         FetchCalendario.reloadFetchAgenda();
+                                    } else {
+                                        e.preventDefault();
                                     }
                                 }
                             }),
@@ -762,11 +957,7 @@ class Calendario extends App {
                         m("a.btn btn-sm btn-primary btn-icon calendar-add", {
                             onclick: (e) => {
                                 e.preventDefault();
-
                                 Cita.crearCita(moment(moment().format("YYYY-MM-DD HH:00:00")), moment(moment().format("YYYY-MM-DD HH:10:00")));
-
-
-
                             }
                         }, [
                             m("div[data-toggle='tooltip']", [m("i.tx-white[data-feather='plus']"), ]),
@@ -775,10 +966,27 @@ class Calendario extends App {
                     m("div.calendar-sidebar-body.ht-auto.pos-relative[id='calendarSidebarBody']", [
                         m("div.calendar-inline", m("div[id='calendarInline']")),
                         m("div.pd-t-0.pd-l-20.pd-r-20", [
-                            m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03.mg-b-15", {
+                            m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03", [
+                                "Status Calendario: ", m(OnlineCalendar)
+                            ]),
 
-                            }, ["Filtro Agendas/Calendarios: ", m(OnlineCalendar)]),
+                        ]),
+                        m("div.pd-t-0.pd-l-20.pd-r-20", [
+                            m("button.btn.btn-block.btn-light.mg-b-10[type='button']", {
+                                    onclick: () => {
+                                        TableCalendarios.agregarNuevoCal();
+                                    }
+                                },
+                                m("i.fas.fa-plus.tx-12"),
+                                " Agregar Salas"
+                            ),
 
+                        ]),
+
+                        m("div.pd-t-0.pd-l-20.pd-r-20", [
+                            m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03", [
+                                "Médicos: ",
+                            ]),
                             m("div.schedule-group",
                                 m(OptionSelect)
                             )
@@ -806,7 +1014,7 @@ class Calendario extends App {
                     ]),
                 ]),
 
-                m("div.calendar-content", [Calendario.loader && Calendario.citas !== null && Calendario.citas.status && Calendario.citas.data.length !== 0 ? [
+                m("div.calendar-content", [
                     m("div.pd-20.mg-b-0", {
                         class: Calendario.error != null ? "" : "d-none"
                     }, [
@@ -845,16 +1053,10 @@ class Calendario extends App {
                             }, m("span[aria-hidden='true']", "×")),
                         ]),
                     ]),
+                    m(TableCalendarios)
 
-                    m("div.calendar-content-body[id='calendar']"),
-                ] : !Calendario.loader && Calendario.citas !== null && (!Calendario.citas.status || Calendario.citas.status == null) ? [
-                    m("div.pd-20", [
-                        m(Errors, {
-                            type: !Calendario.citas.status ? 1 : 0,
-                            error: Calendario.citas
-                        }),
-                    ]),
-                ] : [m("div.pd-20", [m(Loader)])], ]),
+                    //m("div.calendar-content-body[id='calendar']")
+                ]),
             ]),
 
             m(".modal.calendar-modal-create[id='modalCreateEvent'][role='dialog'][aria-hidden='true']", m(".modal-dialog.modal-dialog-centered.modal-xl[role='document']", m("div.modal-content", [
@@ -1097,7 +1299,6 @@ class Calendario extends App {
                                             m("button.btn.btn-primary[type='button']", {
                                                 onclick: (e) => {
                                                     Cita.error = null;
-                                                    Cita.data.sinDatos = false;
                                                     Cita.buscarPacientes = !Cita.buscarPacientes;
                                                 }
                                             }, [
@@ -1141,8 +1342,6 @@ class Calendario extends App {
                                                 oninput: (e) => {
                                                     setTimeout(() => {
                                                         Cita.data.fecha_nacimiento = e.target.value;
-
-
                                                     }, 50);
                                                 },
                                                 oncreate: (e) => {
@@ -1852,11 +2051,13 @@ class Calendario extends App {
         return res;
     }
 
+
+
     static filterCitasAnteriores(parametro) {
         let res = [];
         let _i = 0;
         Calendario.citas.data.events.map((_v) => {
-            if (_v.tipo == 1 && moment(_v.inicio, "DD/MM/YYYY HH:mm").unix() < moment().unix() && _i <= 4) {
+            if (_v.tipo == 1 && moment(_v.inicio, "DD/MM/YYYY HH:mm").unix() < moment().unix()) {
                 res.push(_v);
                 _i++;
             }
@@ -1878,8 +2079,9 @@ class Calendario extends App {
     }
 
     static _goToDate(fecha) {
-        $("#calendar").fullCalendar("gotoDate", moment(fecha, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD"));
-
+        TableCalendarios.calendarios.map((_v, _i) => {
+            $("#calendar" + _v.id).fullCalendar("gotoDate", moment(fecha, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD"));
+        });
     }
 
     static reloadSidebarCitas() {
@@ -1891,11 +2093,17 @@ class Calendario extends App {
         CitasAnteriores.citas = Calendario.filterCitasAnteriores('Hoy');
     }
 
-    static reloadCalendar() {
-        $('[data-toggle="tooltip"]').tooltip("hide");
-        $("#calendar").fullCalendar("removeEvents");
-        $("#calendar").fullCalendar("addEventSource", Calendario.citas.data);
-        $("#calendar").fullCalendar("rerenderEvents");
+
+    static reloadAllCalendars() {
+
+        TableCalendarios.calendarios.map((_v, _i) => {
+            $('[data-toggle="tooltip"]').tooltip("hide");
+            $("#calendar" + _v.id).fullCalendar("removeEvents");
+            $("#calendar" + _v.id).fullCalendar("addEventSource", TableCalendarios.filterCitas(_v.idFilter));
+            $("#calendar" + _v.id).fullCalendar("rerenderEvents");
+        });
+
+
     }
 
     static clearAlertCalendar() {
@@ -1929,7 +2137,6 @@ class Calendario extends App {
         if (track == 'Agendar' && Cita.data.tipo == 1 && Cita.data.sinDatos == false && document.getElementById('correoCreaCita') != undefined && Cita.data.email != document.getElementById('correoCreaCita').value) {
             Cita.data.email = document.getElementById('correoCreaCita').value;
         }
-
 
         Cita.validarCita();
 
@@ -1988,20 +2195,26 @@ class Calendario extends App {
             Cita.reagendarCitaHttp(Calendario);
         }
 
-
     }
 
     oninit(_data) {
-        if (_data.attrs.searchPaciente !== undefined) {
-            Calendario.searchPaciente = decodeURIComponent(_data.attrs.searchPaciente);
-        }
 
         if (_data.attrs.idCalendar !== undefined) {
-            Calendario.idCalendar = decodeURIComponent(_data.attrs.idCalendar);
+            Calendario.idFilterCalendar = decodeURIComponent(_data.attrs.idCalendar);
             FetchCalendario.fetchPerfilAgenda();
         } else {
             FetchCalendario.fetchPerfilAgenda();
         }
+
+        if (_data.attrs.searchPaciente !== undefined) {
+            Calendario.searchPaciente = decodeURIComponent(_data.attrs.searchPaciente);
+
+            m.route.set("/endoscopia/agendas/calendario/", {
+                idCalendar: Calendario.idFilterCalendar,
+                searchPaciente: Calendario.searchPaciente
+            });
+        }
+
     }
 
     oncreate() {
@@ -2014,10 +2227,10 @@ class Calendario extends App {
     }
 }
 
-class CalendarioEndo2 extends Calendario {
+class CalendarioEndo3 extends Calendario {
     constructor() {
         super();
     }
 }
 
-export default CalendarioEndo2;
+export default CalendarioEndo3;
