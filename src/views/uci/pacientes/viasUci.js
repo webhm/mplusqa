@@ -319,7 +319,7 @@ class ViasUci {
                                     m("div.btn-block.btn-group.wd-100p.pd-5", [
                                         m("button.btn.btn-xs.btn-success[type='button']", {
                                                 class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
                                                     ViasUci.nuevoRegistro = null
                                                     ViasUci.verRegistro(oData);
@@ -340,7 +340,7 @@ class ViasUci {
                                         ),
                                         m("button.btn.btn-xs.btn-danger[type='button']", {
                                                 class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
                                                     if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
                                                         ViasUci.eliminarRegistro(oData);
