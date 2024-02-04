@@ -61,6 +61,28 @@ class FecthUci {
 
     }
 
+    static registrarAllSeccion(_dataAllSeccion) {
+
+        return m.request({
+            method: "POST",
+            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/registrar-allseccion",
+            body: {
+                numeroAtencion: PacientesUCI.numeroAtencion,
+                numeroTurno: PacientesUCI.numeroTurno,
+                fechaHoraTurno: PacientesUCI.fechaHoraTurno,
+                dataSeccion: _dataAllSeccion
+            },
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        }).then(function(res) {
+
+        }).catch(function(e) {
+
+        });
+
+    }
+
     static registrarSeccion(_dataSeccion) {
 
         return m.request({

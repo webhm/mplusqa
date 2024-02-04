@@ -39,15 +39,7 @@ class VentilatoriosUci {
         VentilatoriosUci.nuevoRegistro = new Ventilatorio();
     }
     static agregarRegistro() {
-        if (VentilatoriosUci.registros.length == 0) {
-            VentilatoriosUci.nuevoRegistro.nro = 1;
-            VentilatoriosUci.registros.push(VentilatoriosUci.nuevoRegistro);
-        } else {
-            VentilatoriosUci.nuevoRegistro.nro = (VentilatoriosUci.registros[VentilatoriosUci.registros.length - 1].nro + 1);
-            VentilatoriosUci.registros.push(VentilatoriosUci.nuevoRegistro);
-        }
         FecthUci.registrarSeccion(VentilatoriosUci.nuevoRegistro);
-
     }
     static verRegistro(registro) {
         registro.editar = true;
