@@ -284,7 +284,7 @@ class PacientesUCI extends App {
         let _arr = [];
         let hash = {};
 
-        // console.log(33, FecthUci.dataSecciones)
+        console.log(33, FecthUci.dataSecciones)
 
         options.map((option) => {
             FecthUci.dataSecciones.filter((obj) => {
