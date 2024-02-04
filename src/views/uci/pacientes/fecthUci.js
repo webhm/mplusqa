@@ -114,6 +114,8 @@ class FecthUci {
                 numeroAtencion: PacientesUCI.numeroAtencion,
                 numeroTurno: PacientesUCI.numeroTurno,
                 nro: _dataSeccion.nro,
+                seccion: _dataSeccion.seccion,
+
             },
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
