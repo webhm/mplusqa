@@ -112,9 +112,10 @@ class FecthUci {
             url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/eliminar-seccion",
             body: {
                 numeroAtencion: PacientesUCI.numeroAtencion,
-                numeroTurno: PacientesUCI.numeroTurno,
+                numeroTurno: _dataSeccion.numeroTurno,
                 nro: _dataSeccion.nro,
                 seccion: _dataSeccion.seccion,
+                fecha: _dataSeccion.fechaHoraTurno,
 
             },
             headers: {
