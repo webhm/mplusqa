@@ -8,18 +8,27 @@ import Cita from "./cita";
 import EventosCalendario from "./eventosCalendar";
 import { ProximasCitas, ProximosEventos, CitasAnteriores, BuscadorItems, BuscadorPacientes } from "./widgets";
 import WebRTCConnection from "../../../models/P2PMessage";
-import { UNDERLINE } from "construct-ui/lib/esm/components/icon/generated/IconNames";
 
 
-class OptionSelect {
-    static idFilter = "";
-    static reloadSelect() {
-        OptionSelect.idFilter = "";
-        setTimeout(() => {
-            OptionSelect.idFilter = Calendario.idCalendar;
-            m.redraw();
-        }, 50);
+class RouteCal {
+
+    static setRoute(param, id) {
+
+        if (id == 'idCalendar') {
+            m.route.set("/endoscopia/agendas/calendario/", {
+                idCalendar: encodeURIComponent(param),
+            });
+        }
+
     }
+
+}
+
+class SelectMedicos {
+
+    static idFilter = null;
+    static medicos = [];
+    static calendarios = [];
 
     static selectInit() {
         $("#agendas").select2({
@@ -38,74 +47,234 @@ class OptionSelect {
             .on("change", function(e) {
 
                 Calendario.warning = null;
-                Calendario.error = null;
-                ProximasCitas.citas = null;
-                ProximosEventos.citas = null;
-                CitasAnteriores.citas = null;
 
-                let idCalendar = "";
-                let tree = $(this).val();
-                $.each(tree, function(index, value) {
-                    idCalendar += value + ",";
-                });
-                idCalendar = idCalendar.substring(0, idCalendar.length - 1);
+                let medicos = $(this).val();
+                let salas = $('#agendasPtes').val();
 
-                if (tree.length > 0) {
-                    Calendario.idCalendar = idCalendar;
-                    m.route.set("/endoscopia/agendas/calendario/", {
-                        idCalendar: encodeURIComponent(Calendario.idCalendar)
-                    });
-                    FetchCalendario.reloadFetchAgenda();
-                } else {
+                if (medicos.length == 0 && salas.length == 0) {
+                    $("#calendar").fullCalendar("removeEvents");
+                    CitasAnteriores.citas = [];
+                    ProximasCitas.citas = [];
+                    ProximosEventos.citas = [];
                     m.route.set("/endoscopia/agendas/calendario");
-                    Calendario.idCalendar = null;
                     Calendario.warning = "No se han aplicado filtros para la búsqueda.";
+                } else {
+                    Calendario.setFilterRouteMedicos(medicos);
                 }
 
+
             });
+    }
 
+    oninit(_data) {
 
+        SelectMedicos.idFilter = _data.attrs.idFilter;
+        SelectMedicos.calendarios = _data.attrs.calendarios;
+        SelectMedicos.calendarios.map((_v) => {
+            if (_v.TIPO == 2) {
+                SelectMedicos.medicos.push(_v);
+            }
+        });
+
+        SelectMedicos.medicos.push({
+            TIPO: 2,
+            IDCALENDAR: '-1',
+            CALENDAR: 'TODOS LOS MÉDICOS'
+        });
 
 
 
     }
 
     view() {
-        if (OptionSelect.idFilter !== "") {
-            return m("select.tx-5.form-control.select2-limit[multiple='multiple'][id='agendas']", {
-                oncreate: (el) => {
-                    setTimeout(() => {
-                        OptionSelect.selectInit();
-                    }, 50);
-                }
-            }, [
-                Calendario.calendarios.map(function(_v, _i, _contentData) {
 
-                    if (Calendario.idCalendar !== null) {
-                        let _agendas = Calendario.idCalendar.split(',');
-                        return [
-                            m("option.tx-10[value='" + _v.IDCALENDAR + "']", {
-                                oncreate: (el) => {
+        let _agendasMedicos = [];
+
+        SelectMedicos.medicos.map(function(_v, _i, _contentData) {
+
+            if (SelectMedicos.idFilter !== null && SelectMedicos.idFilter.indexOf(',') > 0) {
+                let _agendas = SelectMedicos.idFilter.split(',');
+                if (_agendas.includes(_v.IDCALENDAR)) {
+                    _agendasMedicos.push(_v.IDCALENDAR);
+                }
+            }
+
+        });
+
+        return m("select.tx-5.form-control.select2-limit[multiple='multiple'][id='agendas']", {
+            oncreate: (el) => {
+                setTimeout(() => {
+                    SelectMedicos.selectInit();
+                }, 50);
+            }
+        }, [
+            SelectMedicos.medicos.map(function(_v, _i, _contentData) {
+
+
+                if (SelectMedicos.idFilter !== null && SelectMedicos.idFilter.indexOf(',') > 0) {
+
+                    let _agendas = SelectMedicos.idFilter.split(',');
+
+                    return [
+                        m("option.tx-10[value='" + _v.IDCALENDAR + "']", {
+                            oncreate: (el) => {
+                                if ((_agendasMedicos.length + 1) == SelectMedicos.medicos.length && _v.IDCALENDAR == '-1') {
+                                    el.dom.selected = true;
+                                } else if ((_agendasMedicos.length + 1) != SelectMedicos.medicos.length) {
                                     if (_agendas.includes(_v.IDCALENDAR)) {
                                         el.dom.selected = true;
                                     }
                                 }
-                            }, _v.CALENDAR),
-                        ];
+                            }
+                        }, _v.CALENDAR),
+                    ];
 
-                    } else {
-                        return [
-                            m("option.tx-10[value='" + _v.IDCALENDAR + "']", _v.CALENDAR),
-                        ];
-                    }
+                } else if (SelectMedicos.idFilter !== null && SelectMedicos.idFilter.indexOf(',') < 0) {
+
+                    return [
+                        m("option.tx-10[value='" + _v.IDCALENDAR + "']", {
+                            oncreate: (el) => {
+                                if (SelectMedicos.idFilter == _v.IDCALENDAR) {
+                                    el.dom.selected = true;
+                                }
+                            }
+                        }, _v.CALENDAR),
+                    ];
+
+                } else {
+                    return [
+                        m("option.tx-10[value='" + _v.IDCALENDAR + "']", _v.CALENDAR),
+                    ];
+                }
+
+            }),
+        ]);
+
+    }
+}
+
+class SelectPacientes {
+
+    static idFilter = null;
+    static salas = [];
+    static calendarios = [];
+
+    static selectInit() {
+        $("#agendasPtes").select2({
+                templateSelection: function(data, container) {
+                    container[0].style["font-size"] = "10px";
+                    container[0].style["padding-left"] = "5px";
+                    container[0].children[0].remove();
+                    // container[0].style.backgroundColor = Calendario.setColor(data.id);
+                    return data.text;
+                },
+                placeholder: "Seleccione...",
+                searchInputPlaceholder: "Buscar",
+                allowClear: true
+
+            })
+            .on("change", function(e) {
+
+                Calendario.warning = null;
+
+                let salas = $(this).val();
+                let medicos = $('#agendas').val();
+
+                if (medicos.length == 0 && salas.length == 0) {
+                    $("#calendar").fullCalendar("removeEvents");
+                    CitasAnteriores.citas = [];
+                    ProximasCitas.citas = [];
+                    ProximosEventos.citas = [];
+                    m.route.set("/endoscopia/agendas/calendario");
+                    Calendario.warning = "No se han aplicado filtros para la búsqueda.";
+                } else {
+                    Calendario.setFilterRouteSalas(salas);
+                }
 
 
+            });
+    }
 
-                }),
-            ]);
-        } else {
-            return m(Loader);
-        }
+    oninit(_data) {
+
+        SelectPacientes.idFilter = _data.attrs.idFilter;
+        SelectPacientes.calendarios = _data.attrs.calendarios;
+        SelectPacientes.calendarios.map((_v) => {
+            if (_v.TIPO == 1) {
+                SelectPacientes.salas.push(_v);
+            }
+        });
+
+
+        SelectPacientes.salas.push({
+            TIPO: 1,
+            IDCALENDAR: '-1',
+            CALENDAR: 'TODOS LOS SALAS'
+        });
+
+    }
+
+    view() {
+
+        let _agendasSalas = [];
+
+        SelectPacientes.salas.map(function(_v, _i, _contentData) {
+
+            if (SelectPacientes.idFilter !== null && SelectPacientes.idFilter.indexOf(',') > 0) {
+                let _agendas = SelectPacientes.idFilter.split(',');
+                if (_agendas.includes(_v.IDCALENDAR)) {
+                    _agendasSalas.push(_v.IDCALENDAR);
+                }
+            }
+
+        });
+
+        return m("select.tx-5.form-control.select2-limit[multiple='multiple'][id='agendasPtes']", {
+            oncreate: (el) => {
+                setTimeout(() => {
+                    SelectPacientes.selectInit();
+                }, 50);
+            }
+        }, [
+            SelectPacientes.salas.map(function(_v, _i, _contentData) {
+
+                if (SelectPacientes.idFilter !== null && SelectPacientes.idFilter.indexOf(',') > 0) {
+                    let _agendas = SelectPacientes.idFilter.split(',');
+                    return [
+                        m("option.tx-10[value='" + _v.IDCALENDAR + "']", {
+                            oncreate: (el) => {
+                                if ((_agendasSalas.length + 1) == SelectPacientes.salas.length && _v.IDCALENDAR == '-1') {
+                                    el.dom.selected = true;
+                                } else if ((_agendasSalas.length + 1) != SelectPacientes.salas.length && _v.IDCALENDAR !== '-1') {
+                                    if (_agendas.includes(_v.IDCALENDAR)) {
+                                        el.dom.selected = true;
+                                    }
+                                }
+                            }
+                        }, _v.CALENDAR),
+                    ];
+
+                } else if (SelectPacientes.idFilter !== null && SelectPacientes.idFilter.indexOf(',') < 0) {
+
+                    return [
+                        m("option.tx-10[value='" + _v.IDCALENDAR + "']", {
+                            oncreate: (el) => {
+                                if (SelectPacientes.idFilter == _v.IDCALENDAR) {
+                                    el.dom.selected = true;
+                                }
+                            }
+                        }, _v.CALENDAR),
+                    ];
+
+                } else {
+                    return [
+                        m("option.tx-10[value='" + _v.IDCALENDAR + "']", _v.CALENDAR),
+                    ];
+                }
+
+            }),
+        ]);
+
     }
 }
 
@@ -217,8 +386,8 @@ class FetchCalendario {
                             colorsCalendar: res.colorsCalendar
                         };
                         Calendario.reloadCalendar();
-                        OptionSelect.reloadSelect();
-                        Calendario.reloadSidebarCitas();
+                        Calendario.reloadCitasSidebar();
+
                     } else {
                         Calendario.setLoader();
                         Calendario.citas = {
@@ -260,7 +429,9 @@ class FetchCalendario {
                 }
             }).then(function(res) {
                 if (res.status) {
+
                     Calendario.calendarios = res.data.calendarios;
+
                     if (Calendario.idCalendar == null) {
                         Calendario.idCalendar = res.data.agendas;
                     }
@@ -358,7 +529,153 @@ class Calendario extends App {
         return m(HeaderCalendar, { userName: App.userName });
     }
 
+    static setFilterRouteMedicos(medicos) {
 
+        let resSalas = [];
+        let res = [];
+
+
+        if (medicos[0] == '-1') {
+
+            let resMedicos = [];
+
+            if (Calendario.idCalendar.indexOf(',') > 0) {
+                let _agendas = Calendario.idCalendar.split(',');
+                Calendario.calendarios.map((_v) => {
+                    if (_v.TIPO == 1 && _agendas.includes(_v.IDCALENDAR)) {
+                        resSalas.push(_v.IDCALENDAR);
+                    }
+                });
+
+            } else {
+                Calendario.calendarios.map((_v) => {
+                    if (_v.TIPO == 1 && Calendario.idCalendar == _v.IDCALENDAR) {
+                        resSalas.push(_v.IDCALENDAR);
+                    }
+                });
+            }
+
+            Calendario.calendarios.map((_v) => {
+
+                if (_v.TIPO == 2) {
+                    resMedicos.push(_v.IDCALENDAR);
+                }
+            });
+
+            res = resSalas.concat(resMedicos);
+            console.log(4, res)
+            Calendario.idCalendar = res.join(',');
+            RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
+        } else {
+            if (Calendario.idCalendar.indexOf(',') > 0) {
+                let _agendas = Calendario.idCalendar.split(',');
+                Calendario.calendarios.map((_v) => {
+                    if (_v.TIPO == 1 && _agendas.includes(_v.IDCALENDAR)) {
+                        resSalas.push(_v.IDCALENDAR);
+                    }
+                });
+
+                res = resSalas.concat(medicos);
+                console.log(3, res)
+                Calendario.idCalendar = res.join(',');
+                RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
+            } else {
+                Calendario.calendarios.map((_v) => {
+                    if (_v.TIPO == 1 && Calendario.idCalendar == _v.IDCALENDAR) {
+                        resSalas.push(_v.IDCALENDAR);
+                    }
+                });
+                res = resSalas.concat(medicos);
+                console.log(4, res)
+                Calendario.idCalendar = res.join(',');
+                RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
+            }
+        }
+
+
+
+        setTimeout(() => {
+            Calendario.reloadFetchAgenda();
+        }, 50);
+
+
+
+
+    }
+
+    static setFilterRouteSalas(salas) {
+
+        let resMedicos = [];
+        let res = [];
+
+        if (salas[0] == '-1') {
+
+            let resSalas = [];
+
+            if (Calendario.idCalendar.indexOf(',') > 0) {
+                let _agendas = Calendario.idCalendar.split(',');
+                Calendario.calendarios.map((_v) => {
+                    if (_v.TIPO == 2 && _agendas.includes(_v.IDCALENDAR)) {
+                        resMedicos.push(_v.IDCALENDAR);
+                    }
+                });
+
+            } else {
+                Calendario.calendarios.map((_v) => {
+                    if (_v.TIPO == 2 && Calendario.idCalendar == _v.IDCALENDAR) {
+                        resMedicos.push(_v.IDCALENDAR);
+                    }
+                });
+            }
+
+            Calendario.calendarios.map((_v) => {
+
+                if (_v.TIPO == 1) {
+                    resSalas.push(_v.IDCALENDAR);
+                }
+            });
+
+            res = resMedicos.concat(resSalas);
+            console.log(4, res)
+            Calendario.idCalendar = res.join(',');
+            RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
+        } else {
+            if (Calendario.idCalendar.indexOf(',') > 0) {
+                let _agendas = Calendario.idCalendar.split(',');
+                Calendario.calendarios.map((_v) => {
+                    if (_v.TIPO == 2 && _agendas.includes(_v.IDCALENDAR)) {
+                        resMedicos.push(_v.IDCALENDAR);
+                    }
+                });
+
+                res = resMedicos.concat(salas);
+                console.log(3, res)
+                Calendario.idCalendar = res.join(',');
+                RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
+            } else {
+                Calendario.calendarios.map((_v) => {
+                    if (_v.TIPO == 2 && Calendario.idCalendar == _v.IDCALENDAR) {
+                        resMedicos.push(_v.IDCALENDAR);
+                    }
+                });
+                res = resMedicos.concat(salas);
+                console.log(4, res)
+                Calendario.idCalendar = res.join(',');
+                RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
+            }
+
+        }
+
+        console.log(5, res)
+
+
+        setTimeout(() => {
+            Calendario.reloadFetchAgenda();
+        }, 50);
+
+
+
+    }
 
     static reloadFetchAgenda() {
 
@@ -410,11 +727,6 @@ class Calendario extends App {
                 }
             }
         });
-
-        OptionSelect.idFilter = Calendario.idCalendar;
-        ProximasCitas.citas = Calendario.filterCitas('Hoy');
-        ProximosEventos.citas = Calendario.filterEventos('Hoy');
-        CitasAnteriores.citas = Calendario.filterCitasAnteriores('Hoy');
 
 
         // Scroll to bottom on div.
@@ -739,13 +1051,13 @@ class Calendario extends App {
                                                 idCalendar: encodeURIComponent(Calendario.idCalendar),
                                                 searchPaciente: encodeURIComponent(Calendario.searchPaciente)
                                             });
-                                            FetchCalendario.reloadFetchAgenda();
+                                            Calendario.reloadFetchAgenda();
                                         }
                                     } else {
                                         m.route.set("/endoscopia/agendas/calendario/", {
                                             idCalendar: encodeURIComponent(Calendario.idCalendar)
                                         });
-                                        FetchCalendario.reloadFetchAgenda();
+                                        Calendario.reloadFetchAgenda();
                                     }
                                 },
                                 oninput: (e) => {
@@ -754,7 +1066,7 @@ class Calendario extends App {
                                         m.route.set("/endoscopia/agendas/calendario/", {
                                             idCalendar: encodeURIComponent(Calendario.idCalendar)
                                         });
-                                        FetchCalendario.reloadFetchAgenda();
+                                        Calendario.reloadFetchAgenda();
                                     }
                                 }
                             }),
@@ -775,33 +1087,86 @@ class Calendario extends App {
                     m("div.calendar-sidebar-body.ht-auto.pos-relative[id='calendarSidebarBody']", [
                         m("div.calendar-inline", m("div[id='calendarInline']")),
                         m("div.pd-t-0.pd-l-20.pd-r-20", [
-                            m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03.mg-b-15", {
+                            m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03.mg-b-5", {
 
-                            }, ["Filtro Agendas/Calendarios: ", m(OnlineCalendar)]),
+                            }, ["Status: ", m(OnlineCalendar)]),
+
+                        ]),
+                        m("div.pd-t-0.pd-l-20.pd-r-20", [
+                            m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03.mg-b-5", {
+
+                            }, "Médicos/Prestadores: "),
+
+                            m("div.schedule-group.mg-b-5",
+                                (Calendario.calendarios.length !== 0 ? [
+                                    m(SelectMedicos, {
+                                        idFilter: Calendario.idCalendar,
+                                        calendarios: Calendario.calendarios
+                                    })
+                                ] : [
+                                    m(Loader)
+                                ])
+
+                            )
+
+                        ]),
+
+                        m("div.pd-t-0.pd-l-20.pd-r-20", [
+                            m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03.mg-b-5", {
+
+                            }, "Salas/Recursos: "),
 
                             m("div.schedule-group",
-                                m(OptionSelect)
+                                (Calendario.calendarios.length !== 0 ? [
+                                    m(SelectPacientes, {
+                                        idFilter: Calendario.idCalendar,
+                                        calendarios: Calendario.calendarios
+                                    })
+                                ] : [
+                                    m(Loader)
+                                ])
                             )
 
                         ]),
                         m("div.pd-t-20.pd-l-20.pd-r-20", [
                             m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03.mg-b-15", "Próximas Citas:"),
                             m("div.schedule-group.mg-b-5",
-                                m(ProximasCitas)
+                                (Calendario.citas !== null && Calendario.citas.status ? [
+                                    m(ProximasCitas, {
+                                        citas: Calendario.citas.data,
+                                    })
+                                ] : [
+                                    m(Loader)
+                                ])
                             ),
+                        ]),
+
+                        m("div.pd-t-5.pd-l-20.pd-r-20", [
+                            m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03.mg-b-15", "Citas Anteriores:"),
+                            m("div.schedule-group.mg-b-5",
+                                (Calendario.citas !== null && Calendario.citas.status ? [
+                                    m(CitasAnteriores, {
+                                        citas: Calendario.citas.data,
+                                    })
+                                ] : [
+                                    m(Loader)
+                                ])
+                            ),
+
                         ]),
                         m("div.pd-t-5.pd-l-20.pd-r-20", [
                             m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03.mg-b-15", "Próximos Eventos/Bloqueos:"),
                             m("div.schedule-group.mg-b-5",
-                                m(ProximosEventos)
+                                (Calendario.citas !== null && Calendario.citas.status ? [
+                                    m(ProximosEventos, {
+                                        citas: Calendario.citas.data,
+                                    })
+                                ] : [
+                                    m(Loader)
+                                ])
                             ),
+                            m('br')
                         ]),
-                        m("div.pd-t-5.pd-l-20.pd-r-20", [
-                            m("label.tx-uppercase.tx-sans.tx-10.tx-medium.tx-spacing-1.tx-color-03.mg-b-15", "Citas Anteriores:"),
-                            m("div.schedule-group.mg-b-5",
-                                m(CitasAnteriores)
-                            ),
-                        ])
 
                     ]),
                 ]),
@@ -959,7 +1324,7 @@ class Calendario extends App {
                                         }
                                     }),
                                     m("div.input-group-append",
-                                        m("button.btn.btn-outline-light[type='button']", {
+                                        m("button.btn.btn-light[type='button']", {
                                             onclick: (e) => {
                                                 if (BuscadorPacientes.searchField.length !== 0) {
                                                     BuscadorPacientes.fetchSearch();
@@ -974,7 +1339,8 @@ class Calendario extends App {
 
                                                 }
                                             }
-                                        }, "Buscar"), m("button.btn.btn-outline-light[type='button']", {
+                                        }, "Buscar"), m("button.btn.btn-light[type='button']", {
+                                            title: "Cerrar",
                                             onclick: (e) => {
                                                 Cita.error = null;
                                                 Cita.buscarPacientes = !Cita.buscarPacientes;
@@ -1010,7 +1376,7 @@ class Calendario extends App {
                                             BuscadorItems.searchField = e.target.value;
                                         }
                                     }),
-                                    m("div.input-group-append", m("button.btn.btn-outline-light[type='button']", {
+                                    m("div.input-group-append", m("button.btn.btn-light[type='button']", {
                                         onclick: (e) => {
                                             if (BuscadorItems.searchField.length !== 0) {
                                                 BuscadorItems.fetchSearch();
@@ -1023,7 +1389,8 @@ class Calendario extends App {
                                                 Cita.buscarItems = true;
                                             }
                                         }
-                                    }, "Buscar"), m("button.btn.btn-outline-light[type='button']", {
+                                    }, "Buscar"), m("button.btn.btn-light[type='button']", {
+                                        title: "Cerrar",
                                         onclick: (e) => {
                                             Cita.error = null;
                                             Cita.buscarItems = !Cita.buscarItems;
@@ -1104,13 +1471,13 @@ class Calendario extends App {
                                                 m("i.fas.fa-search.mg-r-2"), " Buscar Pacientes ",
                                             ]),
                                             m("button.btn.btn-light[type='button']", {
-                                                class: (Cita.data.sinDatos !== undefined && Cita.data.sinDatos == false ? 'd-none' : ''),
+                                                class: (Cita.data.paciente !== undefined ? 'd-none' : ''),
                                                 onclick: () => {
                                                     Cita.error = null;
                                                     Cita.data.sinDatos = true;
                                                 }
                                             }, [
-                                                m("i.fas.fa-edit.mg-r-2"), " Agendar Sin Historia Clínica ",
+                                                m("i.fas.fa-edit.mg-r-2"), "Agendar Sin Historia Clínica",
                                             ])
 
 
@@ -1125,11 +1492,31 @@ class Calendario extends App {
                                     }, [
                                         m("div.col-12.mg-b-10", [
                                             m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Apellidos y Nombres del Paciente:"),
-                                            m("input.form-control[type='text'][placeholder='Apellidos y Nombres del Paciente'][autofocus]", {
-                                                oninput: (e) => {
-                                                    Cita.data.paciente = e.target.value;
-                                                }
-                                            }),
+                                            m("div.input-group", [
+                                                m("input.form-control[type='text'][placeholder='Apellidos y Nombres del Paciente'][autofocus]", {
+                                                    oninput: (e) => {
+                                                        Cita.data.paciente = e.target.value;
+                                                    }
+                                                }),
+                                                m("div.input-group-append", m("button.btn.btn-light[type='button']", {
+                                                    title: "Cerrar",
+                                                    onclick: (e) => {
+                                                        Cita.error = null;
+                                                        Cita.data.sinDatos = false;
+
+                                                        // Set Filter valores
+                                                        delete Cita.data.paciente;
+                                                        delete Cita.data.fecha_nacimiento;
+                                                        delete Cita.data.sexo;
+                                                        delete Cita.data.telefono;
+                                                        delete Cita.data.email;
+
+                                                        console.log(Cita.data)
+
+
+                                                    }
+                                                }, m("i.fas.fa-times-circle"))),
+                                            ]),
                                         ]),
                                     ]),
                                     m("div.input-group", {
@@ -1840,56 +2227,15 @@ class Calendario extends App {
         return m(Sidebar);
     }
 
-    static filterCitas(parametro) {
-        let res = [];
-        let _i = 0;
-        Calendario.citas.data.events.map((_v) => {
-            if (_v.tipo == 1 && moment(_v.inicio, "DD/MM/YYYY HH:mm").unix() > moment().unix() && _i <= 4) {
-                res.push(_v);
-                _i++;
-            }
-        });
-        return res;
-    }
 
-    static filterCitasAnteriores(parametro) {
-        let res = [];
-        let _i = 0;
-        Calendario.citas.data.events.map((_v) => {
-            if (_v.tipo == 1 && moment(_v.inicio, "DD/MM/YYYY HH:mm").unix() < moment().unix() && _i <= 4) {
-                res.push(_v);
-                _i++;
-            }
-        });
-        return res;
-    }
 
-    static filterEventos(parametro) {
-        let res = [];
-        let _i = 0;
-        Calendario.citas.data.events.map((_v) => {
-            if (_v.tipo == 2 && moment(_v.inicio, "DD/MM/YYYY HH:mm").unix() > moment().unix() && _i <= 4) {
-                res.push(_v);
-                _i++;
-
-            }
-        });
-        return res;
-    }
 
     static _goToDate(fecha) {
-        $("#calendar").fullCalendar("gotoDate", moment(fecha, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD"));
 
+        let formatFecha = moment(fecha, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD");
+        $("#calendar").fullCalendar("gotoDate", formatFecha);
     }
 
-    static reloadSidebarCitas() {
-        ProximasCitas.citas = null;
-        ProximasCitas.citas = Calendario.filterCitas('Hoy');
-        ProximosEventos.citas = null;
-        ProximosEventos.citas = Calendario.filterEventos('Hoy');
-        CitasAnteriores.citas = null;
-        CitasAnteriores.citas = Calendario.filterCitasAnteriores('Hoy');
-    }
 
     static reloadCalendar() {
         $('[data-toggle="tooltip"]').tooltip("hide");
@@ -1897,6 +2243,16 @@ class Calendario extends App {
         $("#calendar").fullCalendar("addEventSource", Calendario.citas.data);
         $("#calendar").fullCalendar("rerenderEvents");
     }
+
+    static reloadCitasSidebar() {
+        CitasAnteriores.citas = [];
+        CitasAnteriores.orderCitas(Calendario.citas.data);
+        ProximasCitas.citas = [];
+        ProximasCitas.orderCitas(Calendario.citas.data);
+        ProximosEventos.citas = [];
+        ProximosEventos.orderCitas(Calendario.citas.data);
+    }
+
 
     static clearAlertCalendar() {
         setTimeout(() => {

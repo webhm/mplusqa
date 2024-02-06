@@ -1,14 +1,50 @@
 import m from "mithril";
-import Loader from "../../utils/loader";
-import Calendario from "./calendario3";
-
-
+import Calendario from "./calendario2";
 
 class ProximasCitas {
-    static citas = null;
+
+    static citas = [];
+
+    static orderCitas(citas) {
+
+        let filter = [];
+        let res = [];
+
+        citas.events.map((_v, _i) => {
+            if (_v.tipo == 1 && moment(_v.inicio, "DD/MM/YYYY HH:mm").unix() > moment().unix()) {
+                let idUnix = moment(_v.inicio, "DD/MM/YYYY HH:mm").unix();
+                _v.idUnixDate = idUnix;
+                filter.push(_v);
+            }
+        });
+
+        function compareByDate(a, b) {
+            return a.idUnixDate - b.idUnixDate;
+        }
+
+        filter.sort(compareByDate);
+
+        let _i = 0;
+        let data = filter;
+        data.map((_v) => {
+            if (_i <= 4) {
+                res.push(_v);
+                _i++;
+            }
+        });
+
+        ProximasCitas.citas = res;
+
+    }
+
+    oninit(_data) {
+
+        ProximasCitas.orderCitas(_data.attrs.citas);
+
+    }
 
     view() {
-        if (ProximasCitas.citas !== null && ProximasCitas.citas.length > 0) {
+        if (ProximasCitas.citas.length !== 0) {
             return ProximasCitas.citas.map((_v, _i) => {
                 if (_v.tipo == 1 && _i <= 5) {
                     return [
@@ -34,57 +70,55 @@ class ProximasCitas {
                     ];
                 }
             });
-        } else if (ProximasCitas.citas !== null && ProximasCitas.citas.length == 0) {
-            return m(".alert.alert-secondary[role='alert']", "No existen próximas citas.");
         } else {
-            return m(Loader);
+            return m(".alert.alert-secondary[role='alert']", "No existen próximas citas.");
         }
     }
 }
 
 class ProximosEventos {
-    static citas = null;
 
-    view() {
-        if (ProximosEventos.citas !== null && ProximosEventos.citas.length > 0) {
-            return ProximosEventos.citas.map((_v, _i) => {
-                if (_v.tipo == 2 && _i <= 5) {
-                    return [
-                        m("a.schedule-item.bd-l.bd-2", {
-                            style: {
-                                "cursor": "pointer",
-                            },
-                            onclick: (e) => {
-                                e.preventDefault();
-                                Calendario._goToDate(_v.inicio);
-                            }
-                        }, [
-                            m("span.tx-5.wd-100p.pd-1.pd-r-2.pd-l-5.mg-b-5.tx-semibold", {
-                                style: {
-                                    "background-color": _v.borderColor,
-                                    color: "#fff"
-                                }
-                            }, _v.tipo == 1 ? " Cita Médica " : _v.tipo == 2 ? " Evento" : " Nota"),
-                            m("h6.tx-10", _v.title),
-                            m("span.tx-5.text-capitalize", moment(_v.inicio, "DD/MM/YYYY HH:mm").format("HH:mm") + " - " + moment(_v.fin, "DD/MM/YYYY HH:mm").format("HH:mm") + " " + moment(_v.fin, "DD/MM/YYYY HH:mm").format("dddd, DD/MM/YYYY")),
-                        ]),
-                    ];
-                }
-            });
-        } else if (ProximosEventos.citas !== null && ProximosEventos.citas.length == 0) {
-            return m(".alert.alert-secondary[role='alert']", "No existen próximos eventos.");
-        } else {
-            return m(Loader);
+    static citas = [];
+
+    static orderCitas(citas) {
+
+        let filter = [];
+        let res = [];
+
+        citas.events.map((_v, _i) => {
+            if (_v.tipo != 1 && moment(_v.inicio, "DD/MM/YYYY HH:mm").unix() > moment().unix()) {
+                let idUnix = moment(_v.inicio, "DD/MM/YYYY HH:mm").unix();
+                _v.idUnixDate = idUnix;
+                filter.push(_v);
+            }
+        });
+
+        function compareByDate(a, b) {
+            return a.idUnixDate - b.idUnixDate;
         }
+
+        filter.sort(compareByDate);
+
+        let _i = 0;
+        let data = filter;
+        data.map((_v) => {
+            if (_i <= 4) {
+                res.push(_v);
+                _i++;
+            }
+        });
+
+        ProximosEventos.citas = res;
+
     }
-}
 
-class CitasAnteriores {
-    static citas = null;
+    oninit(_data) {
+        ProximosEventos.orderCitas(_data.attrs.citas);
+    }
+
     view() {
-        if (CitasAnteriores.citas !== null && CitasAnteriores.citas.length > 0) {
-
-            return CitasAnteriores.citas.map((_v, _i) => {
+        if (ProximosEventos.citas.length !== 0) {
+            return ProximosEventos.citas.map((_v, _i) => {
                 if (_v.tipo == 1 && _i <= 5) {
                     return [
                         m("a.schedule-item.bd-l.bd-2", {
@@ -109,14 +143,88 @@ class CitasAnteriores {
                     ];
                 }
             });
-        } else if (CitasAnteriores.citas !== null && CitasAnteriores.citas.length == 0) {
-            return m(".alert.alert-secondary[role='alert']", "No existen citas anteriores.");
         } else {
-            return m(Loader);
+            return m(".alert.alert-secondary[role='alert']", "No existen próximos eventos.");
         }
     }
 }
 
+class CitasAnteriores {
+
+    static citas = [];
+
+    static orderCitas(citas) {
+
+        let filter = [];
+        let res = [];
+
+        citas.events.map((_v, _i) => {
+            if (_v.tipo == 1 && moment(_v.inicio, "DD/MM/YYYY HH:mm").unix() < moment().unix()) {
+                let idUnix = moment(_v.inicio, "DD/MM/YYYY HH:mm").unix();
+                _v.idUnixDate = idUnix;
+                filter.push(_v);
+            }
+        });
+
+        function compareByDate(a, b) {
+            return a.idUnixDate - b.idUnixDate;
+        }
+
+        filter.sort(compareByDate);
+
+        let _i = 0;
+        let data = filter.reverse();
+        data.map((_v) => {
+            if (_i <= 4) {
+                res.push(_v);
+                _i++;
+            }
+        });
+
+        CitasAnteriores.citas = res;
+
+    }
+
+
+
+    oninit(_data) {
+
+        CitasAnteriores.orderCitas(_data.attrs.citas);
+
+    }
+
+    view() {
+        if (CitasAnteriores.citas.length !== 0) {
+            return CitasAnteriores.citas.map((_v, _i) => {
+                if (_v.tipo == 1 && _i <= 5) {
+                    return [
+                        m("a.schedule-item.bd-l.bd-2", {
+                            style: {
+                                "cursor": "pointer",
+                            },
+                            onclick: (e) => {
+                                e.preventDefault();
+                                Calendario._goToDate(_v.inicio);
+
+                            }
+                        }, [
+                            m("span.tx-5.wd-100p.pd-1.pd-r-2.pd-l-5.mg-b-5.tx-semibold", {
+                                style: {
+                                    "background-color": '#e3e7ed',
+
+                                }
+                            }, _v.tipo == 1 ? " Cita Médica " : _v.tipo == 2 ? " Evento" : " Nota"),
+                            m("h6.tx-10", _v.paciente),
+                            m("span.tx-5.text-capitalize", moment(_v.inicio, "DD/MM/YYYY HH:mm").format("HH:mm") + " - " + moment(_v.fin, "DD/MM/YYYY HH:mm").format("HH:mm") + " " + moment(_v.fin, "DD/MM/YYYY HH:mm").format("dddd, DD/MM/YYYY")),
+                        ]),
+                    ];
+                }
+            });
+        } else {
+            return m(".alert.alert-secondary[role='alert']", "No existen citas anteriores.");
+        }
+    }
+}
 
 class BuscadorItems {
     static searchField = "";

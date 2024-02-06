@@ -180,6 +180,9 @@ class MenuFlebot {
                                                     onchange: (event) => {
                                                         InicioFlebotomista.idToma = "TOMA1";
                                                         localStorage.setItem("peerId", InicioFlebotomista.idToma);
+                                                        m.route.set('laboratorio/flebotomista/inicio', {
+                                                            idToma: InicioFlebotomista.idToma
+                                                        });
                                                     },
                                                 }
                                             ),
@@ -195,6 +198,9 @@ class MenuFlebot {
                                                     onchange: (event) => {
                                                         InicioFlebotomista.idToma = "TOMA2";
                                                         localStorage.setItem("peerId", InicioFlebotomista.idToma);
+                                                        m.route.set('laboratorio/flebotomista/inicio', {
+                                                            idToma: InicioFlebotomista.idToma
+                                                        });
                                                     },
                                                 }
                                             ),
@@ -210,6 +216,9 @@ class MenuFlebot {
                                                     onchange: (event) => {
                                                         InicioFlebotomista.idToma = "TOMA3";
                                                         localStorage.setItem("peerId", InicioFlebotomista.idToma);
+                                                        m.route.set('laboratorio/flebotomista/inicio', {
+                                                            idToma: InicioFlebotomista.idToma
+                                                        });
                                                     },
                                                 }
                                             ),
@@ -225,6 +234,9 @@ class MenuFlebot {
                                                     onchange: (event) => {
                                                         InicioFlebotomista.idToma = "TOMA4";
                                                         localStorage.setItem("peerId", InicioFlebotomista.idToma);
+                                                        m.route.set('laboratorio/flebotomista/inicio', {
+                                                            idToma: InicioFlebotomista.idToma
+                                                        });
                                                     },
                                                 }
                                             ),
@@ -241,6 +253,9 @@ class MenuFlebot {
 
                                                         InicioFlebotomista.idToma = "TOMA5";
                                                         localStorage.setItem("peerId", InicioFlebotomista.idToma);
+                                                        m.route.set('laboratorio/flebotomista/inicio', {
+                                                            idToma: InicioFlebotomista.idToma
+                                                        });
 
                                                     },
                                                 }
@@ -574,7 +589,14 @@ class InicioFlebotomista extends App {
 
     };
 
+    oncreate(_data) {
 
+        if (_data.attrs.idToma != undefined) {
+            InicioFlebotomista.idToma = _data.attrs.idToma;
+            localStorage.setItem("peerId", InicioFlebotomista.idToma);
+        }
+
+    }
 
     getConnectRTC() {
         return new Promise(function(resolve, reject) {
@@ -593,7 +615,7 @@ class InicioFlebotomista extends App {
     }
 
     vHeader() {
-        return m(HeaderPublic);
+        return [m(HeaderPublic)];
     }
 
     vMain() {

@@ -261,7 +261,8 @@ class MenuFlebot {
                                     "" : "d-none",
                             }, [
                                 m(
-                                    "li.list-item.bg-success.wd-100p", {
+                                    "li.list-item.bg-success.wd-100p[role='button']", {
+                                        style: { "cursor": "pointer" },
                                         class: Flebotomista.showGestionados ? 'd-none' : '',
                                         onclick: () => {
                                             Flebotomista.showPendientes = !Flebotomista.showPendientes;
@@ -280,7 +281,7 @@ class MenuFlebot {
                                             m("div.media-body.mg-l-15", [
                                                 m(
                                                     "p.tx-40.mg-b-0.tx-white",
-                                                    "Pendientes"
+                                                    "Tomas Pendientes"
                                                 ),
                                             ]),
                                         ]),
@@ -291,11 +292,11 @@ class MenuFlebot {
                                 }, [
 
                                     m("div.d-flex.bg-gray-200", [
-                                        m("div.pd-10.bg-gray-300.flex-grow-1",
+                                        m("div.pd-10.bg-gray-300.flex-grow-1.tx-semibold",
                                             "Usuario: " + Flebotomista.getUsrToma()
                                         ),
 
-                                        m("div.pd-10.bg-gray-500", {
+                                        m("div.pd-10.bg-gray-500.tx-semibold[role='button']", {
                                                 style: { "cursor": "pointer" },
                                                 onclick: () => {
                                                     Flebotomista.pedidos = null;
@@ -322,7 +323,8 @@ class MenuFlebot {
 
                                 ]),
                                 m(
-                                    "li.list-item.bg-white.wd-100p", {
+                                    "li.list-item.bg-white.wd-100p[role='button']", {
+                                        style: { "cursor": "pointer" },
                                         class: Flebotomista.showPendientes ? 'd-none' : '',
                                         onclick: () => {
                                             Flebotomista.showGestionados = !Flebotomista.showGestionados;
@@ -336,14 +338,14 @@ class MenuFlebot {
                                             m("div.media-body.mg-l-15", [
                                                 m(
                                                     "p.tx-40.mg-b-0",
-                                                    "Gestionados"
+                                                    "Mis Pedidos"
                                                 ),
                                             ]),
                                         ]),
                                     ]),
                                 m(
                                     "li.list-item.bg-white.wd-100p", {
-                                        class: Flebotomista.showPendientes ? 'd-none' : '',
+                                        class: Flebotomista.showPendientes || Flebotomista.showGestionados ? 'd-none' : '',
                                     }, [
                                         m("div.media.wd-100p", [
                                             m(
