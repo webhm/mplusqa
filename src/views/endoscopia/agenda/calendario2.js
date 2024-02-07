@@ -466,7 +466,17 @@ class FetchCalendario {
             }).then(function(res) {
                 if (res.status) {
 
-                    Calendario.calendarios = res.data.calendarios;
+                    let _calendars = res.data.calendarios.sort(function(a, b) {
+                        if (a.CALENDAR < b.CALENDAR) {
+                            return -1;
+                        }
+                        if (a.CALENDAR > b.CALENDAR) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+
+                    Calendario.calendarios = _calendars;
 
                     if (Calendario.idCalendar == null) {
                         Calendario.idCalendar = res.data.agendas;
@@ -2104,7 +2114,7 @@ class Calendario extends App {
                                             m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Agenda(s):"),
                                             m("p", [
 
-                                                m(BadgeAgendas)
+                                                m(BadgeAgendasCita)
 
                                             ]),
                                         ]),
