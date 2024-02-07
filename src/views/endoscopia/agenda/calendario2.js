@@ -47,21 +47,16 @@ class SelectMedicos {
             .on("change", function(e) {
 
                 Calendario.warning = null;
-
                 let medicos = $(this).val();
                 let salas = $('#agendasPtes').val();
-
                 if (medicos.length == 0 && salas.length == 0) {
                     $("#calendar").fullCalendar("removeEvents");
-                    CitasAnteriores.citas = [];
-                    ProximasCitas.citas = [];
-                    ProximosEventos.citas = [];
-                    m.route.set("/endoscopia/agendas/calendario");
+                    Calendario.reloadCitasSidebar();
                     Calendario.warning = "No se han aplicado filtros para la búsqueda.";
+                    m.route.set("/endoscopia/agendas/calendario");
                 } else {
                     Calendario.setFilterRouteMedicos(medicos);
                 }
-
 
             });
     }
@@ -120,7 +115,9 @@ class SelectMedicos {
                             oncreate: (el) => {
                                 if ((_agendasMedicos.length + 1) == SelectMedicos.medicos.length && _v.IDCALENDAR == '-1') {
                                     el.dom.selected = true;
-                                } else if ((_agendasMedicos.length + 1) != SelectMedicos.medicos.length) {
+                                }
+
+                                if ((_agendasMedicos.length + 1) != SelectMedicos.medicos.length && _v.IDCALENDAR !== '-1') {
                                     if (_agendas.includes(_v.IDCALENDAR)) {
                                         el.dom.selected = true;
                                     }
@@ -142,9 +139,11 @@ class SelectMedicos {
                     ];
 
                 } else {
+
                     return [
                         m("option.tx-10[value='" + _v.IDCALENDAR + "']", _v.CALENDAR),
                     ];
+
                 }
 
             }),
@@ -182,11 +181,9 @@ class SelectPacientes {
 
                 if (medicos.length == 0 && salas.length == 0) {
                     $("#calendar").fullCalendar("removeEvents");
-                    CitasAnteriores.citas = [];
-                    ProximasCitas.citas = [];
-                    ProximosEventos.citas = [];
-                    m.route.set("/endoscopia/agendas/calendario");
+                    Calendario.reloadCitasSidebar();
                     Calendario.warning = "No se han aplicado filtros para la búsqueda.";
+                    m.route.set("/endoscopia/agendas/calendario");
                 } else {
                     Calendario.setFilterRouteSalas(salas);
                 }
@@ -238,6 +235,8 @@ class SelectPacientes {
         }, [
             SelectPacientes.salas.map(function(_v, _i, _contentData) {
 
+
+
                 if (SelectPacientes.idFilter !== null && SelectPacientes.idFilter.indexOf(',') > 0) {
                     let _agendas = SelectPacientes.idFilter.split(',');
                     return [
@@ -247,7 +246,7 @@ class SelectPacientes {
                                     el.dom.selected = true;
                                 } else if ((_agendasSalas.length + 1) != SelectPacientes.salas.length && _v.IDCALENDAR !== '-1') {
                                     if (_agendas.includes(_v.IDCALENDAR)) {
-                                        el.dom.selected = true;
+                                        // el.dom.selected = true;
                                     }
                                 }
                             }
@@ -286,15 +285,36 @@ class BadgeAgendas {
     }
 
     view() {
-        return Calendario.calendarios.map((_v, _i) => {
-            if (Calendario.idCalendar !== null) {
-                let _agendas = Calendario.idCalendar.split(',');
-                if (_agendas.includes(_v.IDCALENDAR)) {
-                    return m("span.badge.badge-primary.mg-r-2", _v.CALENDAR);
-                }
-            }
+        return [
+            m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03.mg-0", "SALA(S)/RECURSO(S):"),
+            m('p.mg-0.pd-0', [
+                Calendario.calendarios.map((_v, _i) => {
+                    if (_v.TIPO == 1) {
+                        if (Calendario.idCalendar !== null) {
+                            let _agendas = Calendario.idCalendar.split(',');
+                            if (_agendas.includes(_v.IDCALENDAR)) {
+                                return m("span.badge.badge-primary.mg-r-2", _v.CALENDAR);
+                            }
+                        }
+                    }
+                }),
+            ]),
+            m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03.mg-0", "MÉDICO(S)/PRESTADORE(S):"),
+            m('p.mg-0.pd-0', [
+                Calendario.calendarios.map((_v, _i) => {
+                    if (_v.TIPO == 2) {
+                        if (Calendario.idCalendar !== null) {
+                            let _agendas = Calendario.idCalendar.split(',');
+                            if (_agendas.includes(_v.IDCALENDAR)) {
+                                return m("span.badge.badge-primary.mg-r-2", _v.CALENDAR);
+                            }
+                        }
+                    }
+                })
+            ])
 
-        });
+
+        ];
 
     }
 }
@@ -303,9 +323,25 @@ class BadgeAgendasCita {
 
     view() {
         if (Cita.data !== null && Cita.data.calendarios !== undefined) {
-            return Object.keys(Cita.data.calendarios).map((_i) => {
-                return m("span.badge.badge-primary.mg-r-2", Cita.data.calendarios[_i].CALENDAR);
-            });
+            return [
+                m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03.mg-0", "SALA(S)/RECURSO(S):"),
+                m('p.mg-0.pd-0', [
+                    Object.keys(Cita.data.calendarios).map((_i) => {
+                        if (Cita.data.calendarios[_i].TIPO == 1) {
+                            return m("span.badge.badge-primary.mg-r-2", Cita.data.calendarios[_i].CALENDAR);
+                        }
+                    }),
+                ]),
+                m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03.mg-0", "MÉDICO(S)/PRESTADORE(S):"),
+                m('p.mg-0.pd-0', [
+                    Object.keys(Cita.data.calendarios).map((_i) => {
+                        if (Cita.data.calendarios[_i].TIPO == 2) {
+                            return m("span.badge.badge-primary.mg-r-2", Cita.data.calendarios[_i].CALENDAR);
+                        }
+                    }),
+                ])
+
+            ];
         }
 
     }
@@ -567,6 +603,11 @@ class Calendario extends App {
             Calendario.idCalendar = res.join(',');
             RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
         } else {
+
+            let filterMedicos = medicos.filter(item => item != '-1');
+
+            $("#agendas").val(filterMedicos).trigger("change.select2");
+
             if (Calendario.idCalendar.indexOf(',') > 0) {
                 let _agendas = Calendario.idCalendar.split(',');
                 Calendario.calendarios.map((_v) => {
@@ -575,7 +616,7 @@ class Calendario extends App {
                     }
                 });
 
-                res = resSalas.concat(medicos);
+                res = resSalas.concat(filterMedicos);
                 console.log(3, res)
                 Calendario.idCalendar = res.join(',');
                 RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
@@ -585,7 +626,7 @@ class Calendario extends App {
                         resSalas.push(_v.IDCALENDAR);
                     }
                 });
-                res = resSalas.concat(medicos);
+                res = resSalas.concat(filterMedicos);
                 console.log(4, res)
                 Calendario.idCalendar = res.join(',');
                 RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
@@ -640,6 +681,10 @@ class Calendario extends App {
             Calendario.idCalendar = res.join(',');
             RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
         } else {
+
+            let filterSalas = salas.filter(item => item != '-1');
+            $("#agendasPtes").val(filterSalas).trigger("change.select2");
+
             if (Calendario.idCalendar.indexOf(',') > 0) {
                 let _agendas = Calendario.idCalendar.split(',');
                 Calendario.calendarios.map((_v) => {
@@ -648,7 +693,7 @@ class Calendario extends App {
                     }
                 });
 
-                res = resMedicos.concat(salas);
+                res = resMedicos.concat(filterSalas);
                 console.log(3, res)
                 Calendario.idCalendar = res.join(',');
                 RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
@@ -658,7 +703,7 @@ class Calendario extends App {
                         resMedicos.push(_v.IDCALENDAR);
                     }
                 });
-                res = resMedicos.concat(salas);
+                res = resMedicos.concat(filterSalas);
                 console.log(4, res)
                 Calendario.idCalendar = res.join(',');
                 RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
@@ -666,7 +711,6 @@ class Calendario extends App {
 
         }
 
-        console.log(5, res)
 
 
         setTimeout(() => {
@@ -1409,7 +1453,7 @@ class Calendario extends App {
 
                                 m("div.row", [
                                     m("div.col-12", [
-                                        m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Agenda(s):"),
+                                        m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03.mg-0", "Agenda(s):"),
                                         m("p", [
 
                                             m(BadgeAgendas)
@@ -1876,7 +1920,7 @@ class Calendario extends App {
 
                             m("div.row", [
                                 m("div.col-12", [
-                                    m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Agenda(s):"),
+                                    m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03.mg-0", "Agenda(s):"),
                                     m("p", [
                                         m(BadgeAgendasCita)
                                     ]),
