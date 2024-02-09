@@ -57,7 +57,16 @@ class PacientesUCI extends App {
         FecthUci.validarAtencion();
     }
 
+    static extraerFechaHoraTurnoVigente() {
+        let turnos = TurnosUci.getTurnos();
+        let lastTurno = turnos[turnos.length - 1];
+        PacientesUCI.fechaHoraTurno = lastTurno.fechaHoraTurno;
+    }
+
     static showSecciones() {
+
+        PacientesUCI.extraerFechaHoraTurnoVigente();
+
         CuidadosUci.show = true;
         CuidadosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_CuidadosGenerales').options));
 
@@ -124,12 +133,8 @@ class PacientesUCI extends App {
                                 m("td[colspan='6']",
                                     m("button.btn.btn-xs.btn-primary.tx-semibold.tx-14.mg-r-2[type='button']", {
                                         onclick: () => {
-                                            if (TurnosUci.getTurnos().length < 3) {
-                                                TurnosUci.iniciarTurno();
-                                                PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
-                                            } else {
-                                                alert('Ya no se puede registrar un nuevo turno.');
-                                            }
+                                            TurnosUci.iniciarTurno();
+                                            PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
 
                                         }
                                     }, "Registrar Nuevo Turno"),
@@ -566,6 +571,7 @@ class PacientesUCI extends App {
             },
             cache: false,
             destroy: true,
+            // pageLength: 3,
             columns: [{
                     title: "N° : ",
                 },
@@ -598,12 +604,14 @@ class PacientesUCI extends App {
             ],
             aoColumnDefs: [{
                     fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+
+
                         return m.mount(nTd, {
                             view: () => {
                                 return [
                                     m('div.text-center', [
                                         m("button.btn-xs.btn-block.tx-semibold.tx-15[type='button']", {
-                                                class: (PacientesUCI.numeroTurno == oData.numeroTurno ? 'bg-warning' : 'bg-light')
+                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
                                             },
                                             (oData.numeroTurno == 1 ? 'AM' : ''),
                                             (oData.numeroTurno == 2 ? 'PM' : ''),
@@ -615,7 +623,7 @@ class PacientesUCI extends App {
                             }
                         });
                     },
-
+                    width: '5%',
                     visible: true,
                     aTargets: [0],
                     orderable: false,
@@ -654,6 +662,7 @@ class PacientesUCI extends App {
                 {
                     fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
 
+
                         let _d = true;
                         return m.mount(nTd, {
                             view: () => {
@@ -661,14 +670,14 @@ class PacientesUCI extends App {
 
                                     m("div.input-group", [
                                         m("input.form-control.tx-13.tx-semibold[type='text'][placeholder='HH:mm]", {
-                                            id: 'horaTurno',
+                                            id: 'horaTurno' + iRow,
                                             disabled: _d,
                                             oncreate: (el) => {
                                                 if (oData.horaTurno !== undefined) {
                                                     el.dom.value = oData.horaTurno;
                                                 }
                                                 setTimeout(() => {
-                                                    new Cleave("#horaTurno", {
+                                                    new Cleave("#horaTurno" + iRow, {
                                                         time: true,
                                                         timePattern: ['h', 'm']
                                                     });
@@ -696,6 +705,7 @@ class PacientesUCI extends App {
                                                     title: "Editar Hora",
                                                     onclick: () => {
                                                         _d = !_d;
+
                                                     }
                                                 },
                                                 m("i.fas.fa-edit")

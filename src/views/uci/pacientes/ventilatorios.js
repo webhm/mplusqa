@@ -324,14 +324,20 @@ class VentilatoriosUci {
                                 id: "ModoVentilatorio",
                                 label: "MODO VENTILARIO"
                             }, {
-                                id: "PresionInspiratoria",
-                                label: "PRESION INSPIRATORIA"
+                                id: "ResistenciaInspiratoria",
+                                label: "RESISTENCIA INSPIRATORIA"
                             }, {
-                                id: "VolumenCorriente",
-                                label: "VOLUMEN CORRIENTE"
+                                id: "VolumenTidalEspiradoMaquina",
+                                label: "VOLUMEN TIDAL ESPIRADO MÁQUINA"
                             }, {
-                                id: "VolumenCorrientePack",
-                                label: "VOLUMEN CORRIENTE PACK"
+                                id: "VolumenTidalEspiradoPaciente",
+                                label: "VOLUMEN TIDAL ESPIRADO PACIENTE"
+                            }, {
+                                id: "VolumenMinutoEspiradoMaquina",
+                                label: "VOLUMEN MINUTO ESPIRADO MÁQUINA"
+                            }, {
+                                id: "VolumenMinutoEspiradoPaciente",
+                                label: "VOLUMEN MINUTO ESPIRADO PACIENTE"
                             },
                             {
                                 id: "PresionSoporte",
@@ -342,8 +348,12 @@ class VentilatoriosUci {
                                 label: "PEEP"
                             },
                             {
-                                id: "FVRFRPT",
-                                label: "FVR / FRPT"
+                                id: "FRV",
+                                label: "FRECUENCIA RESPIRATORIA MÁQUINA"
+                            },
+                            {
+                                id: "FRPT",
+                                label: "FRECUENCIA RESPIRATORIA ESPONTÁNEA"
                             },
 
                             {
@@ -392,8 +402,20 @@ class VentilatoriosUci {
                             },
                             {
                                 id: "FijacionTet",
-                                label: "FIJACION TET"
-                            }
+                                label: "NIVEL TUBO OROTRAQUEAL / FIJACION TET"
+                            },
+                            {
+                                id: "AutoPeep",
+                                label: "AUTO PEEP"
+                            },
+                            {
+                                id: "VolumenFugas",
+                                label: "VOLUMEN FUGAS"
+                            },
+                            {
+                                id: "PresionBalonTuboOrotraqueal",
+                                label: "PRESIÓN DE BALÓN TUBO OROTRAQUEAL"
+                            },
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
                         ))
@@ -418,13 +440,23 @@ class VentilatoriosUci {
                     m("td.tx-14.tx-normal[colspan='4']",
                         (VentilatoriosUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
-                                m("input", {
-                                    id: "hora" + VentilatoriosUci.nuevoRegistro.id,
-                                    class: "form-control tx-semibold tx-14",
-                                    type: "text",
-                                    placeholder: "...",
+                                m("input.form-control[type='text'][placeholder='HH:mm']", {
+                                    id: "horaVentilatorio" + VentilatoriosUci.nuevoRegistro.id,
+                                    oncreate: (el) => {
+                                        if (VentilatoriosUci.nuevoRegistro.hora != undefined) {
+                                            el.dom.value = moment(VentilatoriosUci.nuevoRegistro.hora, 'DD-MM-YYYY HH:mm').format('HH:mm');
+                                        }
+                                        setTimeout(() => {
+                                            new Cleave("#horaVentilatorio" + VentilatoriosUci.nuevoRegistro.id, {
+                                                time: true,
+                                                timePattern: ['h', 'm']
+                                            });
+                                        }, 50);
+                                    },
                                     oninput: (e) => {
-                                        VentilatoriosUci.nuevoRegistro.hora = e.target.value;
+                                        setTimeout(() => {
+                                            VentilatoriosUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                        }, 50);
                                     },
                                     onkeypress: (e) => {
                                         if (e.keyCode == 13) {
@@ -443,10 +475,7 @@ class VentilatoriosUci {
                                             }
                                         }
                                     },
-                                    value: VentilatoriosUci.nuevoRegistro.hora
-
-                                })
-
+                                }),
                             ]),
                         ] : [])
                     ),

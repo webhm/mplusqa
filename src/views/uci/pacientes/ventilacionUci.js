@@ -375,7 +375,8 @@ class VentilacionUci {
                             {
                                 id: "RegistroDiasEnfermeria",
                                 label: "REGISTRO DIAS VM HOJA DE ENFERMERIA"
-                            }
+                            },
+
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
                         ))

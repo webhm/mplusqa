@@ -195,7 +195,7 @@ class ViasUci {
                                 return [
                                     m('div.text-center.pd-5', [
                                         m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                                class: (PacientesUCI.numeroTurno !== oData.numeroTurno ? 'bg-light' : 'bg-warning')
+                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
                                             },
                                             (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
                                             (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),

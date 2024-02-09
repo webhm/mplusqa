@@ -88,6 +88,11 @@ class TurnosUci {
                 alert("Ya existe un turno abierto");
                 throw "Ya existe un turno abierto";
             }
+            if (element.numeroTurno == PacientesUCI.numeroTurno && moment(element.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY')) {
+                alert("Ya existe un turno generado. Espere la hora del siguiente turno para generar nuevos registros. ");
+                window.location.reload();
+                throw "Ya existe un turno generado. Espere la hora del siguiente turno para generar nuevos registros.";
+            }
         }
     }
 

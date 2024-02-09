@@ -348,6 +348,10 @@ class GasesUci {
                                 label: "PH"
                             },
                             {
+                                id: "PaO2",
+                                label: "PaO2"
+                            },
+                            {
                                 id: "PaCO2",
                                 label: "PaCO2"
                             },
@@ -379,6 +383,18 @@ class GasesUci {
                             {
                                 id: "IndiceOxigenacion",
                                 label: "INDICE DE OXIGENACIÓN"
+                            },
+                            {
+                                id: "Lactato",
+                                label: "LACTATO"
+                            },
+                            {
+                                id: "Na",
+                                label: "Na"
+                            },
+                            {
+                                id: "K",
+                                label: "K"
                             }
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
@@ -447,15 +463,13 @@ class GasesUci {
                                                 FecthUci.registrarSeccion(GasesUci.nuevoRegistro);
                                                 PacientesUCI.vReloadTable('table-gases', GasesUci.getRegistros());
                                                 GasesUci.nuevoRegistro = null;
-
                                             } else {
                                                 GasesUci.editarRegistro();
                                                 FecthUci.actualizarSeccion(GasesUci.nuevoRegistro);
                                                 PacientesUCI.vReloadTable('table-gases', GasesUci.getRegistros());
                                                 GasesUci.nuevoRegistro = null;
-
                                             }
-
+                                            // Para las cosas de las cosas que no se peude ver
 
                                         }
                                     },
