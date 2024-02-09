@@ -173,7 +173,7 @@ class ViasUci {
             ],
             aoColumnDefs: [{
                     mRender: function(data, type, full) {
-                        return full.numeroTurno;
+                        return full.fechaHoraTurno;
                     },
                     visible: false,
                     aTargets: [0],

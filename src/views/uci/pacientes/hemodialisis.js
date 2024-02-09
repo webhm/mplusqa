@@ -43,7 +43,15 @@ class HemodialisisUci {
         HemodialisisUci.nuevoRegistro = new Hemodialisis();
     }
     static agregarRegistro() {
+        if (HemodialisisUci.registros.length == 0) {
+            HemodialisisUci.nuevoRegistro.nro = 1;
+            HemodialisisUci.registros.push(HemodialisisUci.nuevoRegistro);
+        } else {
+            HemodialisisUci.nuevoRegistro.nro = (HemodialisisUci.registros[HemodialisisUci.registros.length - 1].nro + 1);
+            HemodialisisUci.registros.push(HemodialisisUci.nuevoRegistro);
+        }
         FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
+
     }
     static verRegistro(registro) {
         registro.editar = true;
@@ -138,7 +146,7 @@ class HemodialisisUci {
             ],
             aoColumnDefs: [{
                     mRender: function(data, type, full) {
-                        return full.numeroTurno;
+                        return full.fechaHoraTurno;
                     },
                     visible: false,
                     aTargets: [0],
@@ -160,7 +168,7 @@ class HemodialisisUci {
                                 return [
                                     m('div.text-center.pd-5', [
                                         m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                                class: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'bg-light' : 'bg-warning')
+                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
                                             },
                                             (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
                                             (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),

@@ -117,12 +117,9 @@ class CuidadosUci {
             destroy: true,
             order: [
                 [0, 'desc'],
-                [1, 'desc']
+                [1, 'desc'],
             ],
             columns: [{
-                    title: "Order Turno°:",
-
-                }, {
                     title: "Order N°:",
                 }, {
                     title: "Turno:",
@@ -152,20 +149,18 @@ class CuidadosUci {
             ],
             aoColumnDefs: [{
                     mRender: function(data, type, full) {
-                        return full.numeroTurno;
+                        return full.fechaHoraTurno;
                     },
                     visible: false,
                     aTargets: [0],
                     orderable: true,
-                },
-                {
+                }, {
                     mRender: function(data, type, full) {
                         return full.nro;
                     },
                     visible: false,
                     aTargets: [1],
                     orderable: true,
-
                 },
                 {
 
@@ -387,28 +382,50 @@ class CuidadosUci {
                                 label: "POSICIÓN"
                             },
                             {
+                                id: "ReposoRelativo",
+                                label: "REPOSO RELATIVO"
+                            },
+                            {
+                                id: "Levantarlo",
+                                label: "LEVANTARLO"
+                            },
+                            {
+                                id: "CuidadoOjos",
+                                label: "CUIDADO DE OJOS"
+                            },
+                            {
                                 id: "Asilamiento",
                                 label: "AISLAMIENTO"
                             },
                             {
                                 id: "CambiosPosicion",
                                 label: "CAMBIOS DE POSICIÓN"
-                            }, {
+                            },
+                            {
+                                id: "Bano",
+                                label: "BAÑO"
+                            },
+                            {
                                 id: "CuidadosPiel",
                                 label: "CUIDADOS DE PIEL"
-                            }, {
+                            },
+                            {
+                                id: "AsePerianal",
+                                label: "ASEO PERIANAL"
+                            },
+                            {
                                 id: "HigieneOral",
                                 label: "HIGIENE ORAL"
                             }, {
                                 id: "TerapiaRespiratoria",
-                                label: "TERAPIA RESPIRATORIA"
+                                label: "TERAPIA RESPIRATORIA / NEBULIZACIONES"
                             }, {
                                 id: "AspiracionSecrreciones",
-                                label: "ASPIRACIÓN DE SECRECIONES"
+                                label: "ASPIRACIÓN DE SECRECIONES / CUIDADOS DE TUBO TRAQUEAL"
                             },
                             {
                                 id: "ControlTemperaturaMediosFisicos",
-                                label: "CONTROL DE TEMPERATURA POR MEDIOS FÍSICOS"
+                                label: "CONTROL FIEBRE MEDIOS FISICOS"
                             },
 
                             {
@@ -444,6 +461,10 @@ class CuidadosUci {
                             {
                                 id: "ControlPulsosDistales",
                                 label: "CONTROL DE PULSOS DISTALES"
+                            },
+                            {
+                                id: "RiesgoTromboembolismo",
+                                label: "RIESGO DE TROMBOEMBOLISMO"
                             }
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
