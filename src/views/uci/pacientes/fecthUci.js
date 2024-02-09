@@ -165,6 +165,7 @@ class FecthUci {
                 "Content-Type": "application/json; charset=utf-8"
             }
         }).then(function(res) {
+            // El resultado
 
         }).catch(function(e) {
 
