@@ -418,10 +418,17 @@ class CuidadosUci {
                                 label: "HIGIENE ORAL"
                             }, {
                                 id: "TerapiaRespiratoria",
-                                label: "TERAPIA RESPIRATORIA / NEBULIZACIONES"
+                                label: "TERAPIA RESPIRATORIA"
+                            }, {
+                                id: "Nebulizaciones",
+                                label: "NEBULIZACIONES"
                             }, {
                                 id: "AspiracionSecrreciones",
-                                label: "ASPIRACIÓN DE SECRECIONES / CUIDADOS DE TUBO TRAQUEAL"
+                                label: "ASPIRACIÓN DE SECRECIONES"
+                            },
+                            {
+                                id: "CuidadosTuboTraqueal",
+                                label: "CUIDADOS DE TUBO TRAQUEAL"
                             },
                             {
                                 id: "ControlTemperaturaMediosFisicos",

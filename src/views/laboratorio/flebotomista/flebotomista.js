@@ -296,7 +296,7 @@ class MenuFlebot {
                                             "Usuario: " + Flebotomista.getUsrToma()
                                         ),
 
-                                        m("div.pd-10.bg-gray-500.tx-semibold[role='button']", {
+                                        m("div.pd-10.bg-gray-500.tx-semibold.wd-30p.text-center[role='button']", {
                                                 style: { "cursor": "pointer" },
                                                 onclick: () => {
                                                     Flebotomista.pedidos = null;
@@ -472,7 +472,7 @@ class Flebotomista extends App {
 
         return m.request({
                 method: "GET",
-                url: "https://lisa.hospitalmetropolitano.org/v1/listar?type=ingresadasFlebotomia&idFiltro=4" + _query,
+                url: "https://lisa.hospitalmetropolitano.org/v1/listar?type=ingresadasFlebotomia&idFiltro=5" + _query,
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
                 },
@@ -722,7 +722,7 @@ class Flebotomista extends App {
                             view: () => {
                                 return [
                                     m("a.btn-xs.btn-block.text-white.text-center[role='button']", {
-                                            href: "https://metroplus.hospitalmetropolitano.org/laboratorio/flebotomista/pedido?numeroHistoriaClinica=" + oData.numeroHistoriaClinica + "&numeroAtencion=" + oData.cdAtendimento + "&numeroPedido=" + oData.codigoPedido + "&idTimeRecord=0&track=view",
+                                            href: "/laboratorio/flebotomista/pedido?numeroHistoriaClinica=" + oData.numeroHistoriaClinica + "&numeroAtencion=" + oData.cdAtendimento + "&numeroPedido=" + oData.codigoPedido + "&idTimeRecord=0&track=view",
                                             target: "_blank",
                                             style: { "background-color": "#185b98" },
                                         },
