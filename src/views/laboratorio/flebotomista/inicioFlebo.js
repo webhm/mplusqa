@@ -134,7 +134,7 @@ class MenuFlebot {
 
                         m("div.d-flex", [
                             m("div.flex-grow-1",
-                                m("h1.df-title.mg-t-20.mg-b-0", [
+                                m("h1.df-title.mg-t-0.mg-b-0", [
                                     "Laboratorio: Toma de Muestras:",
 
                                 ])
@@ -142,152 +142,150 @@ class MenuFlebot {
 
                             m("div.d-flex.mg-l-auto",
 
-                                m("div[id='reloj'].df-title.mg-t-20.mg-b-10", {
+                                m("div[id='reloj'].df-title.mg-t-0.mg-b-0", {
                                     oncreate: () => {
                                         return new Reloj("reloj");
                                     },
                                 }),
                                 m("i", {
                                     title: " Editar ",
-                                    class: "fas fa-clock mg-l-4 mg-t-30 tx-32 tx-light",
+                                    class: "fas fa-clock mg-l-4 mg-t-10 tx-32 tx-light",
                                 })
                             ),
                         ]),
 
 
-                        m(
-                            "div.row.mg-t-20", {
-                                class: InicioFlebotomista.showConfigToma == undefined ||
-                                    InicioFlebotomista.showConfigToma == false ?
-                                    "" : "d-none",
-                            }, [
-                                m(
-                                    "li.list-item.bg-success.wd-100p[role='button']", {
-                                        style: { "cursor": "pointer" },
-                                        class: InicioFlebotomista.showGestionados ? 'd-none' : '',
-                                        onclick: () => {
-                                            InicioFlebotomista.showPendientes = !InicioFlebotomista.showPendientes;
-                                            InicioFlebotomista.reLoader = !InicioFlebotomista.reLoader;
-                                            if (InicioFlebotomista.pedidos == null) {
-                                                InicioFlebotomista.fetchPendientes();
-                                            }
+                        m("div.row.mg-t-20", {
+                            class: InicioFlebotomista.showConfigToma == undefined ||
+                                InicioFlebotomista.showConfigToma == false ?
+                                "" : "d-none",
+                        }, [
+                            m(
+                                "li.list-item.bg-success.wd-100p[role='button']", {
+                                    style: { "cursor": "pointer" },
+                                    class: InicioFlebotomista.showGestionados ? 'd-none' : '',
+                                    onclick: () => {
+                                        InicioFlebotomista.showPendientes = !InicioFlebotomista.showPendientes;
+                                        InicioFlebotomista.reLoader = !InicioFlebotomista.reLoader;
+                                        if (InicioFlebotomista.pedidos == null) {
+                                            InicioFlebotomista.fetchPendientes();
+                                        }
 
-                                        },
-                                    }, [
-                                        m("div.media", [
-                                            m(
-                                                "div.wd-60.tx-center.pd-10 bg-litecoin",
-                                                m("i.fas.fa-flask.tx-20.tx-white")
-                                            ),
-                                            m("div.media-body.mg-l-15[role='button']", [
-                                                m(
-                                                    "p.tx-30.mg-b-0.tx-white[role='button']",
-                                                    (InicioFlebotomista.pedidos != null ? InicioFlebotomista.pedidos.data.length : '') + " Pendientes"
-                                                ),
-                                            ]),
-                                        ]),
-
-                                    ]),
-                                m('div.bg-white.wd-100p.pd-2', {
-                                    class: InicioFlebotomista.showPendientes ? '' : 'd-none'
+                                    },
                                 }, [
-                                    m("div.d-flex.bg-gray-200", [
-                                        m("div.pd-10.wd-10p.tx-center.tx-semibold[role='button']", {
-                                                style: { "cursor": "pointer" },
-                                                class: (InicioFlebotomista.classToma[0] ? 'bg-gray-200' : 'bg-gray-500'),
-                                                onclick: () => {
-                                                    InicioFlebotomista.resetClassToma();
-                                                    InicioFlebotomista.classToma[0] = true;
-                                                    InicioFlebotomista.idToma = "TOMA1";
-                                                },
-                                            },
-                                            "TOMA 1"
+                                    m("div.media", [
+                                        m(
+                                            "div.wd-60.tx-center.pd-10 bg-litecoin",
+                                            m("i.fas.fa-flask.tx-20.tx-white")
                                         ),
-                                        m("div.pd-10.wd-10p.tx-center.tx-semibold[role='button']", {
-                                                style: { "cursor": "pointer" },
-                                                class: (InicioFlebotomista.classToma[1] ? 'bg-gray-200' : 'bg-gray-500'),
-                                                onclick: () => {
-                                                    InicioFlebotomista.resetClassToma();
-                                                    InicioFlebotomista.classToma[1] = true;
-                                                    InicioFlebotomista.idToma = "TOMA2";
-                                                },
-                                            },
-                                            "TOMA 2"
-                                        ),
-                                        m("div.pd-10.wd-10p.tx-center.tx-semibold[role='button']", {
-                                                style: { "cursor": "pointer" },
-                                                class: (InicioFlebotomista.classToma[2] ? 'bg-gray-200' : 'bg-gray-500'),
-                                                onclick: () => {
-                                                    InicioFlebotomista.resetClassToma();
-                                                    InicioFlebotomista.classToma[2] = true;
-                                                    InicioFlebotomista.idToma = "TOMA3";
-                                                },
-                                            },
-                                            "TOMA 3"
-                                        ),
-                                        m("div.pd-10.wd-10p.tx-center.tx-semibold[role='button']", {
-                                                style: { "cursor": "pointer" },
-                                                class: (InicioFlebotomista.classToma[3] ? 'bg-gray-200' : 'bg-gray-500'),
-                                                onclick: () => {
-                                                    InicioFlebotomista.resetClassToma();
-                                                    InicioFlebotomista.classToma[3] = true;
-                                                    InicioFlebotomista.idToma = "TOMA4";
-                                                },
-                                            },
-                                            "TOMA 4"
-                                        ),
-                                        m("div.pd-10.wd-10p.tx-center.tx-semibold[role='button']", {
-                                                style: { "cursor": "pointer" },
-                                                class: (InicioFlebotomista.classToma[4] ? 'bg-gray-200' : 'bg-gray-500'),
-                                                onclick: () => {
-                                                    InicioFlebotomista.resetClassToma();
-                                                    InicioFlebotomista.classToma[4] = true;
-                                                    InicioFlebotomista.idToma = "TOMA5";
-                                                },
-                                            },
-                                            "TOMA 5"
-                                        ),
-                                        m("div.pd-10 .wd-30p.tx-center.tx-semibold[role='button']", {
-                                                style: { "cursor": "pointer" },
-                                                class: (InicioFlebotomista.classToma[5] ? 'bg-gray-200' : 'bg-gray-500'),
-                                                onclick: () => {
-                                                    InicioFlebotomista.resetClassToma();
-                                                    InicioFlebotomista.classToma[5] = true;
-                                                },
-                                            },
-                                            "Tomas Pendientes"
-                                        ),
-                                        m("div.pd-10.bg-gray-500.wd-20p.tx-center.tx-semibold[role='button']", {
-                                                style: { "cursor": "pointer" },
-                                                onclick: () => {
-                                                    InicioFlebotomista.pedidos = null;
-                                                    InicioFlebotomista.fetchPendientes();
-                                                }
-                                            },
-                                            "Actualizar"
-                                        )
-                                    ]),
-                                    m('div.pd-5', [
-                                        m(Stopwatch)
-                                    ]),
-
-
-                                    m("div.wd-100p.bg-white.pd-10", [
-                                        (InicioFlebotomista.pedidos !== null && InicioFlebotomista.pedidos.status) ? [
-
-                                            InicioFlebotomista.vTablePedidos('table-pedidos', InicioFlebotomista.pedidos.data, InicioFlebotomista.arqTablePedidos())
-                                        ] : (InicioFlebotomista.pedidos !== null && (!InicioFlebotomista.pedidos.status || InicioFlebotomista.pedidos.status == null)) ? [
-                                            m(Errors, { type: (!InicioFlebotomista.pedidos.status ? 1 : 0), error: InicioFlebotomista.pedidos })
-                                        ] : [
-                                            m(Loader)
-                                        ]
+                                        m("div.media-body.mg-l-15[role='button']", [
+                                            m(
+                                                "p.tx-30.mg-b-0.tx-white[role='button']",
+                                                (InicioFlebotomista.pedidos != null ? InicioFlebotomista.pedidos.data.length : '') + " Pendientes"
+                                            ),
+                                        ]),
                                     ]),
 
                                 ]),
+                            m('div.bg-white.wd-100p.pd-2', {
+                                class: InicioFlebotomista.showPendientes ? '' : 'd-none'
+                            }, [
+                                m("div.d-flex.bg-gray-200", [
+                                    m("div.pd-10.wd-10p.tx-center.tx-semibold[role='button']", {
+                                            style: { "cursor": "pointer" },
+                                            class: (InicioFlebotomista.classToma[0] ? 'bg-gray-200' : 'bg-gray-500'),
+                                            onclick: () => {
+                                                InicioFlebotomista.resetClassToma();
+                                                InicioFlebotomista.classToma[0] = true;
+                                                InicioFlebotomista.idToma = "TOMA1";
+                                            },
+                                        },
+                                        "TOMA 1"
+                                    ),
+                                    m("div.pd-10.wd-10p.tx-center.tx-semibold[role='button']", {
+                                            style: { "cursor": "pointer" },
+                                            class: (InicioFlebotomista.classToma[1] ? 'bg-gray-200' : 'bg-gray-500'),
+                                            onclick: () => {
+                                                InicioFlebotomista.resetClassToma();
+                                                InicioFlebotomista.classToma[1] = true;
+                                                InicioFlebotomista.idToma = "TOMA2";
+                                            },
+                                        },
+                                        "TOMA 2"
+                                    ),
+                                    m("div.pd-10.wd-10p.tx-center.tx-semibold[role='button']", {
+                                            style: { "cursor": "pointer" },
+                                            class: (InicioFlebotomista.classToma[2] ? 'bg-gray-200' : 'bg-gray-500'),
+                                            onclick: () => {
+                                                InicioFlebotomista.resetClassToma();
+                                                InicioFlebotomista.classToma[2] = true;
+                                                InicioFlebotomista.idToma = "TOMA3";
+                                            },
+                                        },
+                                        "TOMA 3"
+                                    ),
+                                    m("div.pd-10.wd-10p.tx-center.tx-semibold[role='button']", {
+                                            style: { "cursor": "pointer" },
+                                            class: (InicioFlebotomista.classToma[3] ? 'bg-gray-200' : 'bg-gray-500'),
+                                            onclick: () => {
+                                                InicioFlebotomista.resetClassToma();
+                                                InicioFlebotomista.classToma[3] = true;
+                                                InicioFlebotomista.idToma = "TOMA4";
+                                            },
+                                        },
+                                        "TOMA 4"
+                                    ),
+                                    m("div.pd-10.wd-10p.tx-center.tx-semibold[role='button']", {
+                                            style: { "cursor": "pointer" },
+                                            class: (InicioFlebotomista.classToma[4] ? 'bg-gray-200' : 'bg-gray-500'),
+                                            onclick: () => {
+                                                InicioFlebotomista.resetClassToma();
+                                                InicioFlebotomista.classToma[4] = true;
+                                                InicioFlebotomista.idToma = "TOMA5";
+                                            },
+                                        },
+                                        "TOMA 5"
+                                    ),
+                                    m("div.pd-10 .wd-30p.tx-center.tx-semibold[role='button']", {
+                                            style: { "cursor": "pointer" },
+                                            class: (InicioFlebotomista.classToma[5] ? 'bg-gray-200' : 'bg-gray-500'),
+                                            onclick: () => {
+                                                InicioFlebotomista.resetClassToma();
+                                                InicioFlebotomista.classToma[5] = true;
+                                            },
+                                        },
+                                        "Tomas Pendientes"
+                                    ),
+                                    m("div.pd-10.bg-gray-500.wd-20p.tx-center.tx-semibold[role='button']", {
+                                            style: { "cursor": "pointer" },
+                                            onclick: () => {
+                                                InicioFlebotomista.pedidos = null;
+                                                InicioFlebotomista.fetchPendientes();
+                                            }
+                                        },
+                                        "Actualizar"
+                                    )
+                                ]),
+                                m('div.pd-5', [
+                                    m(Stopwatch)
+                                ]),
 
 
-                            ]
-                        ),
+                                m("div.wd-100p.bg-white.pd-10", [
+                                    (InicioFlebotomista.pedidos !== null && InicioFlebotomista.pedidos.status) ? [
+
+                                        InicioFlebotomista.vTablePedidos('table-pedidos', InicioFlebotomista.pedidos.data, InicioFlebotomista.arqTablePedidos())
+                                    ] : (InicioFlebotomista.pedidos !== null && (!InicioFlebotomista.pedidos.status || InicioFlebotomista.pedidos.status == null)) ? [
+                                        m(Errors, { type: (!InicioFlebotomista.pedidos.status ? 1 : 0), error: InicioFlebotomista.pedidos })
+                                    ] : [
+                                        m(Loader)
+                                    ]
+                                ]),
+
+                            ]),
+
+
+                        ]),
                     ]
                 )
             ),

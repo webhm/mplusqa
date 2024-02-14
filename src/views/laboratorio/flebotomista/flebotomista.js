@@ -667,8 +667,8 @@ class Flebotomista extends App {
                             view: () => {
 
                                 return [
-                                    m('.d-inline.tx-14.tx-semibold.tx-danger', [
-                                        m('i.fas.fa-file.mg-r-5.tx-12'),
+                                    m('.d-inline.tx-16.tx-semibold.tx-danger', [
+                                        m('i.fas.fa-file.mg-r-5.tx-15'),
                                         (Flebotomista.listaAtenciones[iRow].nro !== undefined ? Flebotomista.listaAtenciones[iRow].nro + ' de ' + Flebotomista.listaAtenciones[iRow].pedidos : '')
                                     ]),
                                     m('br'),
@@ -734,6 +734,7 @@ class Flebotomista extends App {
                             }
                         });
                     },
+                    width: '5%',
                     visible: true,
                     aTargets: [4],
                     orderable: true,
