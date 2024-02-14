@@ -323,7 +323,7 @@ class MenuFlebot {
 
                                 ]),
                                 m(
-                                    "li.list-item.bg-white.wd-100p[role='button']", {
+                                    "li.list-item.bg-white.wd-100p.d-none[role='button']", {
                                         style: { "cursor": "pointer" },
                                         class: Flebotomista.showPendientes ? 'd-none' : '',
                                         onclick: () => {
