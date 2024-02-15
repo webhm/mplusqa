@@ -27,6 +27,7 @@ import Contratos from "../views/admisiones/contratos/contratos";
 import NuevoContrato from "../views/admisiones/contratos/nuevoContrato";
 import VerContrato from "../views/admisiones/contratos/verContrato";
 import CalendarioEndo2 from "../views/endoscopia/agenda/calendario2";
+import PedidoFlebotomista from "../views/laboratorio/flebotomista/pedidoFlebo";
 
 // Routes here
 const Routes = {
@@ -46,6 +47,7 @@ const Routes = {
     "/hospitalizacion/pasaporte": VerPasaporte,
     "/laboratorio": Laboratorio,
     "/laboratorio/flebotomista": Flebotomista,
+    "/laboratorio/flebotomista/pedido": PedidoFlebotomista,
     "/laboratorio/flebotomista/inicio": InicioFlebotomista,
     "/step-passport": StepPassport,
     "/imagen": Imagen,

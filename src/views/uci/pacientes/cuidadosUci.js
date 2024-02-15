@@ -25,7 +25,6 @@ class Cuidado {
         this.hs = this.hs;
         this.editar = this.editar;
         this.seccion = this.seccion;
-
     }
 }
 
@@ -246,7 +245,7 @@ class CuidadosUci {
                                     m("div.btn-block.btn-group.wd-100p.pd-5", [
                                         m("button.btn.btn-xs.btn-success[type='button']", {
                                                 class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : '') : 'disabled'),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
                                                     CuidadosUci.nuevoRegistro = null
                                                     CuidadosUci.verRegistro(oData);
@@ -254,9 +253,10 @@ class CuidadosUci {
                                             },
                                             'Editar',
                                         ),
+
                                         m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
                                                 class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
+                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
 
                                                 onclick: () => {
                                                     oData.editar = null;
@@ -267,7 +267,7 @@ class CuidadosUci {
                                         ),
                                         m("button.btn.btn-xs.btn-danger[type='button']", {
                                                 class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : '') : 'disabled'),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
 
                                                 onclick: () => {
 
@@ -284,6 +284,31 @@ class CuidadosUci {
                                                 },
                                             },
                                             'Eliminar',
+                                        ),
+                                        m("button.btn.btn-xs.btn-dark[type='button']", {
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : '') : 'disabled'),
+                                                onclick: () => {
+                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
+                                                        let _data = oData;
+                                                        console.log(85, _data)
+                                                        _data.am = null;
+                                                        _data.pm = null;
+                                                        _data.hs = null;
+                                                        _data.frecuencia = null;
+                                                        _data.editar = null;
+                                                        _data.nro = null;
+                                                        CuidadosUci.nuevoRegistro = _data;
+                                                        CuidadosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        CuidadosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        CuidadosUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(CuidadosUci.nuevoRegistro);
+                                                        CuidadosUci.nuevoRegistro = null;
+                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
+                                                    }
+
+                                                },
+                                            },
+                                            'Copiar',
                                         ),
                                     ])
 
@@ -418,10 +443,17 @@ class CuidadosUci {
                                 label: "HIGIENE ORAL"
                             }, {
                                 id: "TerapiaRespiratoria",
-                                label: "TERAPIA RESPIRATORIA / NEBULIZACIONES"
+                                label: "TERAPIA RESPIRATORIA"
+                            }, {
+                                id: "Nebulizaciones",
+                                label: "NEBULIZACIONES"
                             }, {
                                 id: "AspiracionSecrreciones",
-                                label: "ASPIRACIÓN DE SECRECIONES / CUIDADOS DE TUBO TRAQUEAL"
+                                label: "ASPIRACIÓN DE SECRECIONES"
+                            },
+                            {
+                                id: "CuidadosTuboTraqueal",
+                                label: "CUIDADOS DE TUBO TRAQUEAL"
                             },
                             {
                                 id: "ControlTemperaturaMediosFisicos",
@@ -478,7 +510,7 @@ class CuidadosUci {
                                 type: "text",
                                 placeholder: "...",
                                 oninput: (e) => {
-                                    CuidadosUci.nuevoRegistro.frecuencia = e.target.value;
+                                    CuidadosUci.nuevoRegistro.frecuencia = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
                                 value: CuidadosUci.nuevoRegistro.frecuencia
                             })
@@ -492,7 +524,7 @@ class CuidadosUci {
                                 type: "text",
                                 placeholder: "...",
                                 oninput: (e) => {
-                                    CuidadosUci.nuevoRegistro.am = e.target.value;
+                                    CuidadosUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
                                 value: CuidadosUci.nuevoRegistro.am
                             })
@@ -506,7 +538,7 @@ class CuidadosUci {
                                 type: "text",
                                 placeholder: "...",
                                 oninput: (e) => {
-                                    CuidadosUci.nuevoRegistro.pm = e.target.value;
+                                    CuidadosUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
                                 value: CuidadosUci.nuevoRegistro.pm
                             })
@@ -540,7 +572,7 @@ class CuidadosUci {
                                     }
                                 },
                                 oninput: (e) => {
-                                    CuidadosUci.nuevoRegistro.hs = e.target.value;
+                                    CuidadosUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
                                 value: CuidadosUci.nuevoRegistro.hs
                             })

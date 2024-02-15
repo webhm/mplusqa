@@ -888,12 +888,13 @@ class Calendario extends App {
 
                 },
                 eventRender: function(event, element) {
-                    /*
-                                                      if (event.description) {
-                                                      element.find('.fc-list-item-title').append('<span class="fc-desc">' + event.description + '</span>');
-                                                      element.find('.fc-content').append('<span class="fc-desc">' + event.description + '</span>');
-                                                  }
-                                                  */
+
+                    /* if (event.description) {
+                         element.find('.fc-list-item-title').append('<span class="fc-desc">' + event.description + '</span>');
+                         element.find('.fc-content').append('<span class="fc-desc">' + event.description + '</span>');
+                     }
+                     */
+
 
 
                     let nacimiento = moment(event.fecha_nacimiento, "DD/MM/YYYY");
@@ -901,14 +902,17 @@ class Calendario extends App {
                     let anios = hoy.diff(nacimiento, "years");
                     let eBorderColor = event.borderColor ? event.borderColor : event.borderColor;
                     let _calendarios = "";
+                    let _cales = [];
 
                     if (event.calendarios !== undefined && Object.keys(event.calendarios).length !== 0) {
                         for (let i = 0; i < Object.keys(event.calendarios).length; i++) {
                             let key = Object.keys(event.calendarios)[i];
+                            _cales.push(event.calendarios[key].CALENDAR);
                             _calendarios += i + 1 + ".- " + event.calendarios[key].CALENDAR + " <br> ";
                         }
                     }
 
+                    element.find('.fc-title').html('<span>' + _cales[0].substring(0, _cales[0].length - 3) + ': ' + event.paciente + '</span>');
                     element.find(".fc-title").parent().attr("data-toggle", "tooltip");
                     element.find(".fc-title").parent().attr("data-html", "true");
                     element.find(".fc-title").parent().attr("data-placement", "left");
