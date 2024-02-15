@@ -12,11 +12,12 @@ import CateterUci from "./catetarUci";
 import VentilacionUci from "./ventilacionUci";
 import HemodialisisUci from "./hemodialisis";
 import CultivosUci from "./cultivosUci";
-import CuidadosUci from "./cuidados";
+import CuidadosUci from "./cuidadosUci";
 import MarcapasosUci from "./marcapasos";
 import FecthUci from "./fecthUci";
 import VentilatoriosUci from "./ventilatorios";
 import GasesUci from "./gasesUci";
+import OxigenacionUci from "./oxigenacionUci";
 
 
 // Pacientes UCI
@@ -97,6 +98,10 @@ class PacientesUCI extends App {
         GasesUci.show = true;
         GasesUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Gases').options));
 
+        OxigenacionUci.show = true;
+        OxigenacionUci.registros = PacientesUCI.parseSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
+
+
     }
 
 
@@ -176,6 +181,8 @@ class PacientesUCI extends App {
                         m(VentilatoriosUci),
                         // Gasometrias / Horas
                         m(GasesUci),
+                        // Oxigenación
+                        m(OxigenacionUci),
 
                     ])
                 ])
@@ -264,6 +271,25 @@ class PacientesUCI extends App {
         return result;
     }
 
+    static parseSeccionOxigenacion(options) {
+        let res = [];
+        let result = [];
+        let hash = {};
+
+        options.map((option) => {
+            FecthUci.dataSecciones.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id) {
+                    res.push(_obj);
+                }
+            });
+        });
+
+        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+
+        return result;
+    }
+
     static parseSeccionVentilatorios(options) {
         let res = [];
         let result = [];
@@ -320,7 +346,7 @@ class PacientesUCI extends App {
         }
 
         if (CateterUci.registros.length > 0) {
-            let registros = CateterUci.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
+            let registros = CateterUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCI.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -366,7 +392,7 @@ class PacientesUCI extends App {
         }
 
         if (VentilacionUci.registros.length > 0) {
-            let registros = VentilacionUci.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
+            let registros = VentilacionUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCI.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -412,7 +438,7 @@ class PacientesUCI extends App {
         }
 
         if (HemodialisisUci.registros.length > 0) {
-            let registros = HemodialisisUci.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
+            let registros = HemodialisisUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCI.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -459,7 +485,7 @@ class PacientesUCI extends App {
         }
 
         if (MarcapasosUci.registros.length > 0) {
-            let registros = MarcapasosUci.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
+            let registros = MarcapasosUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCI.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -495,6 +521,52 @@ class PacientesUCI extends App {
 
     }
 
+    static setTurnoSeccionOxigenacion(_options) {
+
+        let res = [];
+        let crear = false;
+
+        if (OxigenacionUci.registros.length == 0) {
+            crear = true;
+        }
+
+        if (OxigenacionUci.registros.length > 0) {
+            let registros = OxigenacionUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCI.fechaHoraTurno);
+            if (registros.length == 0) {
+                crear = true;
+            }
+        }
+
+        if (crear) {
+            _options.map((option) => {
+                if (option.value != 0) {
+                    OxigenacionUci.iniciarRegistro();
+                    OxigenacionUci.nuevoRegistro.id = option.id;
+                    OxigenacionUci.nuevoRegistro.oxi = option.value;
+                    OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                    OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    res.push(OxigenacionUci.nuevoRegistro);
+                    OxigenacionUci.nuevoRegistro = null;
+                }
+            });
+
+            OxigenacionUci.registros.push.apply(OxigenacionUci.registros, res);
+
+            // Asignar Nro
+            OxigenacionUci.registros.map((_v, _i) => {
+                OxigenacionUci.registros[_i].nro = (_i + 1);
+            });
+
+            console.log(88, OxigenacionUci.registros)
+
+            FecthUci.registrarAllSeccion(OxigenacionUci.registros);
+
+
+
+        }
+
+    }
+
     static setTurnoSeccionVentilatorios(_options) {
 
         let res = [];
@@ -505,7 +577,7 @@ class PacientesUCI extends App {
         }
 
         if (VentilatoriosUci.registros.length > 0) {
-            let registros = VentilatoriosUci.registros.filter(_v => _v.numeroTurno == PacientesUCI.numeroTurno);
+            let registros = VentilatoriosUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCI.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -808,6 +880,7 @@ class PacientesUCI extends App {
                                                     PacientesUCI.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
                                                     PacientesUCI.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
                                                     PacientesUCI.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
+                                                    PacientesUCI.setTurnoSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
 
                                                 },
                                             },

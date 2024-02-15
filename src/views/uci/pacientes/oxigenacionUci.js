@@ -6,80 +6,74 @@ import PacientesUCI from "./pacientesUci";
 import FecthUci from "./fecthUci";
 import TurnosUci from "./turnosUci";
 
-class Cateter {
+class Oxi {
     id = null;
     nro = null;
     fechaHoraTurno = null;
-    cateter = null;
+    oxi = null;
     am = null;
     pm = null;
     hs = null;
-    editar = null;
     observacion = null;
-    seccion = 'Cateter';
+    editar = null;
+    seccion = 'Oxigenacion';
     constructor() {
         this.id = this.id;
         this.nro = this.nro;
         this.fechaHoraTurno = this.fechaHoraTurno;
-        this.cateter = this.cateter;
+        this.oxi = this.oxi;
         this.am = this.am;
         this.pm = this.pm;
         this.hs = this.hs;
-        this.editar = this.editar;
         this.observacion = this.observacion;
+        this.editar = this.editar;
         this.seccion = this.seccion;
-
     }
 }
 
 
-class CateterUci {
-
+class OxigenacionUci {
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
-
     static validarRegistro() {
 
     }
     static iniciarRegistro() {
-        CateterUci.nuevoRegistro = new Cateter();
+        OxigenacionUci.nuevoRegistro = new Oxi();
     }
     static agregarRegistro() {
-        FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
+        FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
 
     }
     static verRegistro(registro) {
         registro.editar = true;
-        CateterUci.nuevoRegistro = registro;
-        console.log(CateterUci.nuevoRegistro)
+        OxigenacionUci.nuevoRegistro = registro;
+        console.log(OxigenacionUci.nuevoRegistro)
     }
     static editarRegistro() {
-        CateterUci.nuevoRegistro.editar = null;
-        CateterUci.registros.map((_v, _i) => {
-            if (_v.nro == CateterUci.nuevoRegistro.nro) {
-                CateterUci.registros[_i] = CateterUci.nuevoRegistro;
+        OxigenacionUci.nuevoRegistro.editar = null;
+        OxigenacionUci.registros.map((_v, _i) => {
+            if (_v.nro == OxigenacionUci.nuevoRegistro.nro) {
+                OxigenacionUci.registros[_i] = OxigenacionUci.nuevoRegistro;
             }
         });
 
     }
     static eliminarRegistro(obj) {
-
         let res = [];
-        CateterUci.registros.map((_v, _i) => {
+        OxigenacionUci.registros.map((_v, _i) => {
 
             if (_v.nro !== obj.nro) {
                 res.push(_v);
             }
-
         });
-
-        CateterUci.registros = res;
-
+        OxigenacionUci.registros = res;
     }
     static getRegistros() {
-        return CateterUci.registros;
+        return OxigenacionUci.registros;
     }
+
     static arqTable() {
         return {
             data: null,
@@ -124,7 +118,7 @@ class CateterUci {
                     title: "Turno: ",
                 },
                 {
-                    title: "Cateter:",
+                    title: "Oxigenación:",
                 },
                 {
                     title: "AM:",
@@ -132,10 +126,10 @@ class CateterUci {
                 {
                     title: "PM:",
                 },
+
                 {
                     title: "HS:",
                 },
-
                 {
                     title: "Observación:",
                 },
@@ -167,7 +161,7 @@ class CateterUci {
                                 return [
                                     m('div.text-center.pd-5', [
                                         m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                                class: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'bg-light' : 'bg-warning')
+                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
                                             },
                                             (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
                                             (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
@@ -187,7 +181,7 @@ class CateterUci {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.cateter;
+                        return full.oxi;
                     },
 
                     visible: true,
@@ -211,8 +205,6 @@ class CateterUci {
                     visible: true,
                     aTargets: [5],
                     orderable: true,
-
-
                 },
                 {
                     mRender: function(data, type, full) {
@@ -244,8 +236,8 @@ class CateterUci {
                                                 class: (oData.editar ? 'd-none' : ''),
                                                 disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
-                                                    CateterUci.nuevoRegistro = null
-                                                    CateterUci.verRegistro(oData);
+                                                    OxigenacionUci.nuevoRegistro = null
+                                                    OxigenacionUci.verRegistro(oData);
                                                 },
                                             },
                                             'Editar',
@@ -256,7 +248,7 @@ class CateterUci {
 
                                                 onclick: () => {
                                                     oData.editar = null;
-                                                    CateterUci.nuevoRegistro = null;
+                                                    OxigenacionUci.nuevoRegistro = null;
                                                 },
                                             },
                                             'Cancelar Edición',
@@ -284,36 +276,34 @@ class CateterUci {
     }
 
     view() {
+
         return [
             m("thead.bd.bd-2", {
                     style: { "border-color": "#5173a1" },
                 },
-
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (CateterUci.show ? '' : 'd-none')
+                    class: (OxigenacionUci.show ? '' : 'd-none')
+
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "CATETER URINARIO:"
+                        "Oxigenación:"
                     ),
 
                 ])
             ),
             m("tbody.bd.bd-2", {
                 style: { "border-color": "#5173a1" },
-                class: (CateterUci.show ? '' : 'd-none')
+                class: (OxigenacionUci.show ? '' : 'd-none')
             }, [
-
-
-
                 m("tr.bd.bd-2.tx-uppercase", {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
                     m("th[scope='col'][colspan='3']",
-                        "CATETER: "
+                        "Oxigenación:"
                     ),
                     m("th[scope='col'][colspan='3']",
                         "AM: "
@@ -331,14 +321,14 @@ class CateterUci {
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
                     m("td.tx-14.tx-normal[colspan='3']",
-                        (CateterUci.nuevoRegistro !== null ? [
+                        (OxigenacionUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     disabled: true,
-                                    value: CateterUci.nuevoRegistro.cateter,
+                                    value: OxigenacionUci.nuevoRegistro.oxi,
                                 })
 
                             ]),
@@ -346,52 +336,49 @@ class CateterUci {
                     ),
                     m("td.tx-14.tx-normal.d-none[colspan='3']",
                         m('select.tx-semibold', {
-                            id: 'sec_Cateter',
+                            id: 'sec_Oxigenacion',
                             disabled: true,
                             onchange: (e) => {
                                 let _id = e.target.options[e.target.selectedIndex].id;
                                 let _value = e.target.options[e.target.selectedIndex].value;
+                                OxigenacionUci.iniciarRegistro();
+                                OxigenacionUci.nuevoRegistro.id = _id;
+                                OxigenacionUci.nuevoRegistro.oxi = _value;
                             },
                             class: "custom-select",
-                            value: (CateterUci.nuevoRegistro !== null ? CateterUci.nuevoRegistro.cateter : 0),
+                            value: (OxigenacionUci.nuevoRegistro !== null ? OxigenacionUci.nuevoRegistro.oxi : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                id: "RecoletcorVejiga",
-                                label: "RECOLECTOR MAS ABAJO QUE VEJIGA"
+                                id: "AireAmbiente",
+                                label: "AIRE AMBIENTE"
                             }, {
-                                id: "RecolectorNoTocaPiso",
-                                label: "RECOLECTOR NO TOCA PISO"
-                            }, {
-                                id: "OrinaRecolector",
-                                label: "ORINA HASTA 50% EN RECOLECTOR"
+                                id: "CateterNasal",
+                                label: "CATETER NASAL"
                             },
                             {
-                                id: "SondaFijadaMuslo",
-                                label: "SONDA FIJADA EN MUSLO"
+                                id: "Mascarilla",
+                                label: "MASCARILLA"
                             },
                             {
-                                id: "RegistroAseoGenital",
-                                label: "REGISTRO DE ASEO GENITAL"
+                                id: "TuboenT",
+                                label: "TUBO EN T"
                             },
-                            {
-                                id: "RegistroDiasCateter",
-                                label: "REGISTRO N° DE DIAS DE CATETER"
-                            }
+
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
                         ))
                     ),
                     m("td.tx-14.tx-normal[colspan='3']",
-                        (CateterUci.nuevoRegistro !== null ? [
+                        (OxigenacionUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "am" + CateterUci.nuevoRegistro.id,
+                                    id: "am" + OxigenacionUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        CateterUci.nuevoRegistro.am = e.target.value;
+                                        OxigenacionUci.nuevoRegistro.am = e.target.value;
                                     },
-                                    value: CateterUci.nuevoRegistro.am,
+                                    value: OxigenacionUci.nuevoRegistro.am
 
                                 })
 
@@ -399,17 +386,17 @@ class CateterUci {
                         ] : [])
                     ),
                     m("td.tx-14.tx-normal[colspan='3']",
-                        (CateterUci.nuevoRegistro !== null ? [
+                        (OxigenacionUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "pm" + CateterUci.nuevoRegistro.id,
+                                    id: "pm" + OxigenacionUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        CateterUci.nuevoRegistro.pm = e.target.value;
+                                        OxigenacionUci.nuevoRegistro.pm = e.target.value;
                                     },
-                                    value: CateterUci.nuevoRegistro.pm,
+                                    value: OxigenacionUci.nuevoRegistro.pm
 
                                 })
 
@@ -418,17 +405,17 @@ class CateterUci {
                     ),
 
                     m("td.tx-14.tx-normal[colspan='3']",
-                        (CateterUci.nuevoRegistro !== null ? [
+                        (OxigenacionUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "hs" + CateterUci.nuevoRegistro.id,
+                                    id: "hs" + OxigenacionUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        CateterUci.nuevoRegistro.hs = e.target.value;
+                                        OxigenacionUci.nuevoRegistro.hs = e.target.value;
                                     },
-                                    value: CateterUci.nuevoRegistro.hs,
+                                    value: OxigenacionUci.nuevoRegistro.hs
 
                                 })
 
@@ -439,7 +426,6 @@ class CateterUci {
                 m("tr.bd.bd-2.tx-uppercase", {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
-
                 }, [
                     m("th[scope='col'][colspan='12']",
                         "OBSERVACIÓN: "
@@ -447,39 +433,40 @@ class CateterUci {
 
 
                 ]),
-                m('tr.bd.bd-2', {
+                m("tr.bd.bd-2", {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
                     m("td.tx-14.tx-normal[colspan='12']",
-                        (CateterUci.nuevoRegistro !== null ? [
+                        (OxigenacionUci.nuevoRegistro !== null ? [
                             m("input", {
-                                id: "observacion" + CateterUci.nuevoRegistro.id,
+                                id: "observacion" + OxigenacionUci.nuevoRegistro.id,
                                 class: "form-control tx-semibold tx-14",
                                 type: "text",
                                 placeholder: "...",
 
                                 onkeypress: (e) => {
                                     if (e.keyCode == 13) {
-                                        CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                        CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                        if (CateterUci.nuevoRegistro.editar == null) {
-                                            CateterUci.agregarRegistro();
-                                            FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
-                                            PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
-                                            CateterUci.nuevoRegistro = null;
+                                        OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                        OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        if (OxigenacionUci.nuevoRegistro.editar == null) {
+                                            OxigenacionUci.agregarRegistro();
+                                            FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
+                                            PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+                                            OxigenacionUci.nuevoRegistro = null;
                                         } else {
-                                            CateterUci.editarRegistro();
-                                            FecthUci.actualizarSeccion(CateterUci.nuevoRegistro);
-                                            PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
-                                            CateterUci.nuevoRegistro = null;
+                                            OxigenacionUci.editarRegistro();
+                                            FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
+                                            PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+                                            OxigenacionUci.nuevoRegistro = null;
                                         }
                                     }
                                 },
                                 oninput: (e) => {
-                                    CateterUci.nuevoRegistro.observacion = e.target.value;
+                                    OxigenacionUci.nuevoRegistro.observacion = e.target.value;
                                 },
-                                value: CateterUci.nuevoRegistro.observacion,
+                                value: OxigenacionUci.nuevoRegistro.observacion
+
                             })
                         ] : [])
                     ),
@@ -493,13 +480,13 @@ class CateterUci {
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12']",
-                        (CateterUci.show != false ? [PacientesUCI.vTable('table-cateter', CateterUci.getRegistros(), CateterUci.arqTable())] : [])
-
+                        (OxigenacionUci.show != false ? [PacientesUCI.vTable('table-oxigenacion', OxigenacionUci.getRegistros(), OxigenacionUci.arqTable())] : [])
                     ),
                 ]),
             ]),
         ]
+
     }
 }
 
-export default CateterUci;
+export default OxigenacionUci;
