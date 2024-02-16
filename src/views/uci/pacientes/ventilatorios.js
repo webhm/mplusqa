@@ -32,6 +32,9 @@ class VentilatoriosUci {
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
+    static setHora = null;
+    static setCondicion = null;
+
     static validarRegistro() {
 
     }
@@ -428,8 +431,14 @@ class VentilatoriosUci {
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
+                                    oncreate: (el) => {
+                                        if (VentilatoriosUci.setCondicion != undefined) {
+                                            el.dom.value = VentilatoriosUci.setCondicion;
+                                        }
+                                    },
                                     oninput: (e) => {
-                                        VentilatoriosUci.nuevoRegistro.condicion = e.target.value;
+                                        VentilatoriosUci.setCondicion = (e.target.value.length !== 0 ? e.target.value : null);
+                                        VentilatoriosUci.nuevoRegistro.condicion = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: VentilatoriosUci.nuevoRegistro.condicion
                                 })
@@ -444,7 +453,10 @@ class VentilatoriosUci {
                                     id: "horaVentilatorio" + VentilatoriosUci.nuevoRegistro.id,
                                     oncreate: (el) => {
                                         if (VentilatoriosUci.nuevoRegistro.hora != undefined) {
-                                            el.dom.value = moment(VentilatoriosUci.nuevoRegistro.hora, 'DD-MM-YYYY HH:mm').format('HH:mm');
+                                            el.dom.value = VentilatoriosUci.nuevoRegistro.hora;
+                                        }
+                                        if (VentilatoriosUci.setHora != undefined) {
+                                            el.dom.value = VentilatoriosUci.setHora;
                                         }
                                         setTimeout(() => {
                                             new Cleave("#horaVentilatorio" + VentilatoriosUci.nuevoRegistro.id, {
@@ -455,7 +467,10 @@ class VentilatoriosUci {
                                     },
                                     oninput: (e) => {
                                         setTimeout(() => {
-                                            VentilatoriosUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                            //VentilatoriosUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                            VentilatoriosUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            VentilatoriosUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+
                                         }, 50);
                                     },
                                     onkeypress: (e) => {

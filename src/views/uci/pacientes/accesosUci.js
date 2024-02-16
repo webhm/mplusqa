@@ -340,6 +340,23 @@ class AccesosUci {
                                             },
                                             'Eliminar',
                                         ),
+                                        m("button.btn.btn-xs.btn-dark[type='button']", {
+                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                                onclick: () => {
+                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
+                                                        AccesosUci.iniciarRegistro();
+                                                        AccesosUci.nuevoRegistro.id = oData.id;
+                                                        AccesosUci.nuevoRegistro.acceso = oData.acceso;
+                                                        AccesosUci.nuevoRegistro.ubicacion = oData.ubicacion;
+                                                        AccesosUci.nuevoRegistro.tipo = oData.tipo;
+                                                        AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    }
+
+                                                },
+                                            },
+                                            'Copiar',
+                                        ),
                                     ])
 
                                 ]
@@ -510,7 +527,7 @@ class AccesosUci {
                                 type: "text",
                                 placeholder: "...",
                                 oninput: (e) => {
-                                    AccesosUci.nuevoRegistro.tipo = e.target.value;
+                                    AccesosUci.nuevoRegistro.tipo = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
                                 value: AccesosUci.nuevoRegistro.tipo
                             })
@@ -691,7 +708,7 @@ class AccesosUci {
                                 placeholder: "...",
                                 value: AccesosUci.nuevoRegistro.condicion,
                                 oninput: (e) => {
-                                    AccesosUci.nuevoRegistro.condicion = e.target.value;
+                                    AccesosUci.nuevoRegistro.condicion = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
                             })
                         ] : [])
@@ -724,7 +741,7 @@ class AccesosUci {
                                     }
                                 },
                                 oninput: (e) => {
-                                    AccesosUci.nuevoRegistro.observacion = e.target.value;
+                                    AccesosUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
                             })
                         ] : [])

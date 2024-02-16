@@ -384,7 +384,7 @@ class HemodialisisUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        HemodialisisUci.nuevoRegistro.am = e.target.value;
+                                        HemodialisisUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: HemodialisisUci.nuevoRegistro.am
 
@@ -402,7 +402,7 @@ class HemodialisisUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        HemodialisisUci.nuevoRegistro.pm = e.target.value;
+                                        HemodialisisUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: HemodialisisUci.nuevoRegistro.pm
 
@@ -421,7 +421,7 @@ class HemodialisisUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        HemodialisisUci.nuevoRegistro.hs = e.target.value;
+                                        HemodialisisUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: HemodialisisUci.nuevoRegistro.hs
 
@@ -471,7 +471,7 @@ class HemodialisisUci {
                                     }
                                 },
                                 oninput: (e) => {
-                                    HemodialisisUci.nuevoRegistro.observacion = e.target.value;
+                                    HemodialisisUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
                                 value: HemodialisisUci.nuevoRegistro.observacion
                             })

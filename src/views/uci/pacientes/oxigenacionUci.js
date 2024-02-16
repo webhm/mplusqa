@@ -376,7 +376,7 @@ class OxigenacionUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        OxigenacionUci.nuevoRegistro.am = e.target.value;
+                                        OxigenacionUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: OxigenacionUci.nuevoRegistro.am
 
@@ -394,7 +394,7 @@ class OxigenacionUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        OxigenacionUci.nuevoRegistro.pm = e.target.value;
+                                        OxigenacionUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: OxigenacionUci.nuevoRegistro.pm
 
@@ -413,7 +413,7 @@ class OxigenacionUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        OxigenacionUci.nuevoRegistro.hs = e.target.value;
+                                        OxigenacionUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: OxigenacionUci.nuevoRegistro.hs
 
@@ -463,7 +463,7 @@ class OxigenacionUci {
                                     }
                                 },
                                 oninput: (e) => {
-                                    OxigenacionUci.nuevoRegistro.observacion = e.target.value;
+                                    OxigenacionUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
                                 value: OxigenacionUci.nuevoRegistro.observacion
 

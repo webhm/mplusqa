@@ -14,6 +14,7 @@ class Cultivo {
     envio = null;
     envio_fecha = null;
     envio_hora = null;
+    resultado_fecha = null;
     resultado = null;
     observacion = null;
     editar = null;
@@ -26,6 +27,7 @@ class Cultivo {
         this.envio = this.envio;
         this.envio_fecha = this.envio_fecha;
         this.envio_hora = this.envio_hora;
+        this.resultado_fecha = this.resultado_fecha;
         this.resultado = this.resultado;
         this.observacion = this.observacion;
         this.editar = this.editar;
@@ -132,7 +134,10 @@ class CultivosUci {
                     title: "Muestra:",
                 },
                 {
-                    title: "Fecha Envío:",
+                    title: "Fecha y Hora Envío:",
+                },
+                {
+                    title: "Fecha y Hora Resultado:",
                 },
                 {
                     title: "Resultado de Germen Aislado:",
@@ -207,10 +212,19 @@ class CultivosUci {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return (full.resultado != null ? full.resultado : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                        return (full.resultado_fecha != null ? full.resultado_fecha : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                     },
                     visible: true,
                     aTargets: [5],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return (full.resultado != null ? full.resultado : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    },
+                    visible: true,
+                    aTargets: [6],
                     orderable: true,
                 },
                 {
@@ -218,7 +232,7 @@ class CultivosUci {
                         return (full.observacion != null ? full.observacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                     },
                     visible: true,
-                    aTargets: [6],
+                    aTargets: [7],
                     orderable: true,
                 },
                 {
@@ -276,7 +290,7 @@ class CultivosUci {
                     },
                     width: '10%',
                     visible: true,
-                    aTargets: [7],
+                    aTargets: [8],
                     orderable: true,
 
                 }
@@ -319,13 +333,16 @@ class CultivosUci {
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
                 }, [
-                    m("th[scope='col'][colspan='4']",
+                    m("th[scope='col'][colspan='3']",
                         "MUESTRA: "
                     ),
-                    m("th[scope='col'][colspan='4']",
+                    m("th[scope='col'][colspan='3']",
                         "FECHA Y HORA DE ENVÍO: "
                     ),
-                    m("th[scope='col'][colspan='4']",
+                    m("th[scope='col'][colspan='3']",
+                        "FECHA Y HORA DE RESULTADO: "
+                    ),
+                    m("th[scope='col'][colspan='3']",
                         "RESULTADO DE GERMEN AISLADO: "
                     ),
 
@@ -337,7 +354,7 @@ class CultivosUci {
 
                 }, [
 
-                    m("td.tx-14.tx-normal[colspan='4']",
+                    m("td.tx-14.tx-normal[colspan='']",
                         m('select.tx-semibold', {
                             id: 'sec_Cultivos',
                             onchange: (e) => {
@@ -396,7 +413,7 @@ class CultivosUci {
                             m('option[id="' + x.id + '"]', x.label)
                         ))
                     ),
-                    m("td.tx-14.tx-normal[colspan='4']",
+                    m("td.tx-14.tx-normal[colspan='3']",
                         (CultivosUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input.form-control[type='text'][placeholder='DD/MM/YYYY']", {
@@ -442,7 +459,53 @@ class CultivosUci {
 
                         ] : [])
                     ),
-                    m("td.tx-14.tx-normal[colspan='4']",
+                    m("td.tx-14.tx-normal[colspan='3']",
+                        (CultivosUci.nuevoRegistro !== null ? [
+                            m('div.d-flex', [
+                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY']", {
+                                    id: "cultivoResultado" + CultivosUci.nuevoRegistro.id,
+                                    oncreate: (el) => {
+                                        if (CultivosUci.nuevoRegistro.fecha_resultado != undefined) {
+                                            el.dom.value = CultivosUci.nuevoRegistro.fecha_resultado;
+                                        }
+                                        setTimeout(() => {
+                                            new Cleave("#cultivoResultado" + CultivosUci.nuevoRegistro.id, {
+                                                date: true,
+                                                datePattern: ["d", "m", "Y"]
+                                            });
+                                        }, 50);
+                                    },
+                                    oninput: (e) => {
+                                        setTimeout(() => {
+                                            CultivosUci.nuevoRegistro.fecha_resultado = (e.target.value.length !== 0 ? e.target.value : null);
+                                        }, 50);
+                                    },
+                                }),
+                                m("input.form-control[type='text'][placeholder='HH:mm']", {
+                                    id: "cultivoResultadoHora" + CultivosUci.nuevoRegistro.id,
+                                    oncreate: (el) => {
+                                        if (CultivosUci.nuevoRegistro.hora_resultado != undefined) {
+                                            el.dom.value = CultivosUci.nuevoRegistro.hora_resultado;
+                                        }
+                                        setTimeout(() => {
+                                            new Cleave("#cultivoResultadoHora" + CultivosUci.nuevoRegistro.id, {
+                                                time: true,
+                                                timePattern: ['h', 'm']
+                                            });
+                                        }, 50);
+                                    },
+                                    oninput: (e) => {
+                                        setTimeout(() => {
+                                            CultivosUci.nuevoRegistro.hora_resultado = (e.target.value.length !== 0 ? e.target.value : null);
+                                            CultivosUci.nuevoRegistro.resultado_fecha = CultivosUci.nuevoRegistro.fecha_resultado + ' ' + CultivosUci.nuevoRegistro.hora_resultado;
+                                        }, 50);
+                                    },
+                                }),
+                            ]),
+
+                        ] : [])
+                    ),
+                    m("td.tx-14.tx-normal[colspan='3']",
                         (CultivosUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
@@ -451,7 +514,7 @@ class CultivosUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        CultivosUci.nuevoRegistro.resultado = e.target.value;
+                                        CultivosUci.nuevoRegistro.resultado = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: CultivosUci.nuevoRegistro.resultado
                                 })
@@ -493,7 +556,7 @@ class CultivosUci {
                                     }
                                 },
                                 oninput: (e) => {
-                                    CultivosUci.nuevoRegistro.observacion = e.target.value;
+                                    CultivosUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
                                 value: CultivosUci.nuevoRegistro.observacion
 

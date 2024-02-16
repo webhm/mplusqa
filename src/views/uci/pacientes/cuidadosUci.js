@@ -123,6 +123,9 @@ class CuidadosUci {
                 }, {
                     title: "Turno:",
                 },
+                {
+                    title: "Turno:",
+                },
 
                 {
                     title: "Cuidado:",
@@ -286,24 +289,15 @@ class CuidadosUci {
                                             'Eliminar',
                                         ),
                                         m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : '') : 'disabled'),
+                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                                 onclick: () => {
                                                     if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        let _data = oData;
-                                                        console.log(85, _data)
-                                                        _data.am = null;
-                                                        _data.pm = null;
-                                                        _data.hs = null;
-                                                        _data.frecuencia = null;
-                                                        _data.editar = null;
-                                                        _data.nro = null;
-                                                        CuidadosUci.nuevoRegistro = _data;
+                                                        CuidadosUci.iniciarRegistro();
+                                                        CuidadosUci.nuevoRegistro.id = oData.id;
+                                                        CuidadosUci.nuevoRegistro.cuidado = oData.cuidado;
+                                                        CuidadosUci.nuevoRegistro.frecuencia = oData.frecuencia;
                                                         CuidadosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                         CuidadosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                        CuidadosUci.agregarRegistro();
-                                                        FecthUci.registrarSeccion(CuidadosUci.nuevoRegistro);
-                                                        CuidadosUci.nuevoRegistro = null;
-                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci.getRegistros());
                                                     }
 
                                                 },

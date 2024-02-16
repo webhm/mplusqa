@@ -390,7 +390,7 @@ class VentilacionUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        VentilacionUci.nuevoRegistro.am = e.target.value;
+                                        VentilacionUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: VentilacionUci.nuevoRegistro.am
                                 })
@@ -407,7 +407,7 @@ class VentilacionUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        VentilacionUci.nuevoRegistro.pm = e.target.value;
+                                        VentilacionUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: VentilacionUci.nuevoRegistro.pm
                                 })
@@ -425,7 +425,7 @@ class VentilacionUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        VentilacionUci.nuevoRegistro.hs = e.target.value;
+                                        VentilacionUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: VentilacionUci.nuevoRegistro.hs
                                 })
@@ -471,7 +471,7 @@ class VentilacionUci {
                                     }
                                 },
                                 oninput: (e) => {
-                                    VentilacionUci.nuevoRegistro.observacion = e.target.value;
+                                    VentilacionUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
                                 value: VentilacionUci.nuevoRegistro.observacion,
                             })
