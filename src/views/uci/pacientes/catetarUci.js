@@ -167,7 +167,7 @@ class CateterUci {
                                 return [
                                     m('div.text-center.pd-5', [
                                         m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                                class: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'bg-light' : 'bg-warning')
+                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'bg-light' : 'bg-warning')
                                             },
                                             (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
                                             (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
@@ -242,7 +242,7 @@ class CateterUci {
                                     m("div.btn-block.btn-group.wd-100p.pd-5", [
                                         m("button.btn.btn-xs.btn-success[type='button']", {
                                                 class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : '') : 'disabled'),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
                                                     CateterUci.nuevoRegistro = null
                                                     CateterUci.verRegistro(oData);
@@ -252,7 +252,7 @@ class CateterUci {
                                         ),
                                         m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
                                                 class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
+                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
 
                                                 onclick: () => {
                                                     oData.editar = null;

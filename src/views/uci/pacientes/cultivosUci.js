@@ -243,7 +243,7 @@ class CultivosUci {
                                     m("div.btn-block.btn-group.wd-100p.pd-5", [
                                         m("button.btn.btn-xs.btn-success[type='button']", {
                                                 class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : '') : 'disabled'),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
                                                     CultivosUci.nuevoRegistro = null
                                                     CultivosUci.verRegistro(oData);
@@ -264,7 +264,7 @@ class CultivosUci {
                                         ),
                                         m("button.btn.btn-xs.btn-danger[type='button']", {
                                                 class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : '') : 'disabled'),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
 
                                                 onclick: () => {
 
