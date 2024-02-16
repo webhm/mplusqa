@@ -757,14 +757,13 @@ class PacientesUCI extends App {
                                             },
                                             oninput: (e) => {
                                                 setTimeout(() => {
-                                                    oData.horaTurno = e.target.value;
                                                     TurnosUci.nuevoTurno.horaTurno = e.target.value;
                                                 }, 50);
                                             },
                                             onkeypress: (e) => {
                                                 if (e.keyCode == 13) {
                                                     _d = true;
-                                                    PacientesUCI.fechaHoraTurno = oData.fechaTurno + ' ' + oData.horaTurno;
+                                                    PacientesUCI.fechaHoraTurno = oData.fechaHoraTurno;
                                                     FecthUci.actualizarHoraAtencion();
                                                     PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
                                                 }

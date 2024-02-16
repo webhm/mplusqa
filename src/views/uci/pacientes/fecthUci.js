@@ -137,14 +137,15 @@ class FecthUci {
             body: {
                 numeroAtencion: PacientesUCI.numeroAtencion,
                 numeroTurno: PacientesUCI.numeroTurno,
-                fechaHoraTurno: TurnosUci.nuevoTurno.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno,
+                fechaHoraTurno: PacientesUCI.fechaHoraTurno,
+                nuevaFechaHoraTurno: TurnosUci.nuevoTurno.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno,
+
             },
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
         }).then(function(res) {
             window.location.reload();
-
         }).catch(function(e) {
 
         });
