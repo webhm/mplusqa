@@ -677,13 +677,15 @@ class PacientesUCI extends App {
             aoColumnDefs: [{
                     fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
 
+                        console.log(55, oData)
+
 
                         return m.mount(nTd, {
                             view: () => {
                                 return [
                                     m('div.text-center', [
                                         m("button.btn-xs.btn-block.tx-semibold.tx-15[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno && oData.gestion == 1 ? 'bg-warning' : 'bg-light')
                                             },
                                             (oData.numeroTurno == 1 ? 'AM' : ''),
                                             (oData.numeroTurno == 2 ? 'PM' : ''),
@@ -765,7 +767,6 @@ class PacientesUCI extends App {
                                                     _d = true;
                                                     PacientesUCI.fechaHoraTurno = oData.fechaHoraTurno;
                                                     FecthUci.actualizarHoraAtencion();
-                                                    PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
                                                 }
                                             },
                                         }),
