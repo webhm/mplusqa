@@ -383,7 +383,7 @@ class MarcapasosUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        MarcapasosUci.nuevoRegistro.am = e.target.value;
+                                        MarcapasosUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: MarcapasosUci.nuevoRegistro.am
 
@@ -401,7 +401,7 @@ class MarcapasosUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        MarcapasosUci.nuevoRegistro.pm = e.target.value;
+                                        MarcapasosUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: MarcapasosUci.nuevoRegistro.pm
 
@@ -420,7 +420,7 @@ class MarcapasosUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        MarcapasosUci.nuevoRegistro.hs = e.target.value;
+                                        MarcapasosUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: MarcapasosUci.nuevoRegistro.hs
 
@@ -470,7 +470,7 @@ class MarcapasosUci {
                                     }
                                 },
                                 oninput: (e) => {
-                                    MarcapasosUci.nuevoRegistro.observacion = e.target.value;
+                                    MarcapasosUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
                                 value: MarcapasosUci.nuevoRegistro.observacion
 

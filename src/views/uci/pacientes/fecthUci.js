@@ -143,6 +143,7 @@ class FecthUci {
                 "Content-Type": "application/json; charset=utf-8"
             }
         }).then(function(res) {
+            window.location.reload();
 
         }).catch(function(e) {
 

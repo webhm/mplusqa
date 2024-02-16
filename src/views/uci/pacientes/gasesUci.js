@@ -36,6 +36,9 @@ class GasesUci {
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
+    static setFecha = null;
+    static setHora = null;
+    static setValores = null;
     static validarRegistro() {
 
     }
@@ -400,7 +403,7 @@ class GasesUci {
                             m('option[id="' + x.id + '"]', x.label)
                         ))
                     ),
-                    m("td.tx-14.tx-normal[colspan='4']",
+                    m("td.tx-14.tx-normal.wd-40p[colspan='4']",
                         (GasesUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input.form-control[type='text'][placeholder='DD/MM/YYYY']", {
@@ -408,6 +411,9 @@ class GasesUci {
                                     oncreate: (el) => {
                                         if (GasesUci.nuevoRegistro.fecha != undefined) {
                                             el.dom.value = GasesUci.nuevoRegistro.fecha;
+                                        }
+                                        if (GasesUci.setFecha != undefined) {
+                                            el.dom.value = GasesUci.setFecha;
                                         }
                                         setTimeout(() => {
                                             new Cleave("#gasesFecha" + GasesUci.nuevoRegistro.id, {
@@ -418,6 +424,7 @@ class GasesUci {
                                     },
                                     oninput: (e) => {
                                         setTimeout(() => {
+                                            GasesUci.setFecha = e.target.value;
                                             GasesUci.nuevoRegistro.fecha = e.target.value;
                                         }, 50);
                                     },
@@ -428,6 +435,9 @@ class GasesUci {
                                         if (GasesUci.nuevoRegistro.hora != undefined) {
                                             el.dom.value = GasesUci.nuevoRegistro.hora;
                                         }
+                                        if (GasesUci.setHora != undefined) {
+                                            el.dom.value = GasesUci.setHora;
+                                        }
                                         setTimeout(() => {
                                             new Cleave("#gasesHora" + GasesUci.nuevoRegistro.id, {
                                                 time: true,
@@ -437,6 +447,7 @@ class GasesUci {
                                     },
                                     oninput: (e) => {
                                         setTimeout(() => {
+                                            GasesUci.setHora = e.target.value;
                                             GasesUci.nuevoRegistro.hora = e.target.value;
                                             GasesUci.nuevoRegistro.fechaHora = GasesUci.nuevoRegistro.fecha + ' ' + GasesUci.nuevoRegistro.hora;
                                         }, 50);
@@ -446,7 +457,7 @@ class GasesUci {
 
                         ] : [])
                     ),
-                    m("td.tx-14.tx-normal[colspan='4']",
+                    m("td.tx-14.tx-normal.wd-40p[colspan='4']",
                         (GasesUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
@@ -454,6 +465,11 @@ class GasesUci {
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
+                                    oncreate: (el) => {
+                                        if (GasesUci.setValores != undefined) {
+                                            el.dom.value = GasesUci.setValores;
+                                        }
+                                    },
                                     onkeypress: (e) => {
                                         if (e.keyCode == 13) {
                                             GasesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
@@ -474,7 +490,8 @@ class GasesUci {
                                         }
                                     },
                                     oninput: (e) => {
-                                        GasesUci.nuevoRegistro.valores = e.target.value;
+                                        GasesUci.setValores = (e.target.value.length !== 0 ? e.target.value : null);
+                                        GasesUci.nuevoRegistro.valores = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: GasesUci.nuevoRegistro.valores
                                 })

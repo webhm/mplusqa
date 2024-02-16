@@ -389,7 +389,7 @@ class CateterUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        CateterUci.nuevoRegistro.am = e.target.value;
+                                        CateterUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: CateterUci.nuevoRegistro.am,
 
@@ -407,7 +407,7 @@ class CateterUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        CateterUci.nuevoRegistro.pm = e.target.value;
+                                        CateterUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: CateterUci.nuevoRegistro.pm,
 
@@ -426,7 +426,7 @@ class CateterUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        CateterUci.nuevoRegistro.hs = e.target.value;
+                                        CateterUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: CateterUci.nuevoRegistro.hs,
 
@@ -477,7 +477,7 @@ class CateterUci {
                                     }
                                 },
                                 oninput: (e) => {
-                                    CateterUci.nuevoRegistro.observacion = e.target.value;
+                                    CateterUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
                                 value: CateterUci.nuevoRegistro.observacion,
                             })
