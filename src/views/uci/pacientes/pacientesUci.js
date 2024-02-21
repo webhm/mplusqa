@@ -12,7 +12,7 @@ import CateterUci from "./catetarUci";
 import VentilacionUci from "./ventilacionUci";
 import HemodialisisUci from "./hemodialisis";
 import CultivosUci from "./cultivosUci";
-import CuidadosUci from "./cuidadosUci";
+import CuidadosUci2 from "./cuidadosUci2";
 import MarcapasosUci from "./marcapasos";
 import FecthUci from "./fecthUci";
 import VentilatoriosUci from "./ventilatorios";
@@ -68,8 +68,8 @@ class PacientesUCI extends App {
 
         PacientesUCI.extraerFechaHoraTurnoVigente();
 
-        CuidadosUci.show = true;
-        CuidadosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_CuidadosGenerales').options));
+        CuidadosUci2.show = true;
+        CuidadosUci2.registros = PacientesUCI.parseSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options));
 
         ViasUci.show = true;
         ViasUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Vias').options));
@@ -162,7 +162,7 @@ class PacientesUCI extends App {
 
                         ]),
                         // Cuidados Generales
-                        m(CuidadosUci),
+                        m(CuidadosUci2),
                         // Vias
                         m(ViasUci),
                         // Accesos
@@ -309,13 +309,56 @@ class PacientesUCI extends App {
         return result;
     }
 
+    static extractSeccion(options) {
+
+        let res = [];
+        let result = [];
+
+        options.map((option) => {
+            FecthUci.dataSecciones.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id) {
+                    res.push(_obj);
+                }
+            });
+        });
+
+        result = res.sort((a, b) => b.nro - a.nro);
+        return result;
+
+    }
+
+    static parseSeccionCuidadosGenerales(options) {
+        let res = [];
+        let result = [];
+        let resultId = [];
+        let _arr = [];
+        let hash = {};
+
+        options.map((option) => {
+            FecthUci.dataSecciones.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id) {
+                    res.push(_obj);
+                }
+            });
+        });
+
+        result = res.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
+        // Ordenar desc
+        _arr = resultId.sort((a, b) => a.nro - b.nro);
+
+        return _arr;
+    }
+
     static parseSeccion(options) {
         let res = [];
         let result = [];
         let _arr = [];
         let hash = {};
 
-        console.log(33, FecthUci.dataSecciones)
 
         options.map((option) => {
             FecthUci.dataSecciones.filter((obj) => {
@@ -335,6 +378,7 @@ class PacientesUCI extends App {
         // console.log(22, _arr)
         return _arr;
     }
+
 
     static setTurnoSeccionCateter(_options) {
 
