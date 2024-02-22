@@ -414,11 +414,13 @@ class InicioFlebotomista extends App {
                 },
             })
             .then(function(result) {
-
+                let _arr = [];
                 let hash = {};
                 let res = result;
                 let filtrados = res.data.filter(o => hash[o.paciente] ? false : hash[o.paciente] = true);
-                res.data = filtrados
+                _arr = filtrados.sort((a, b) => a.wid - b.wid);
+                console.log(22, _arr)
+                res.data = _arr;
                 InicioFlebotomista.pedidos = res;
                 return result;
 
@@ -556,9 +558,7 @@ class InicioFlebotomista extends App {
             cache: false,
             pageLength: 100,
             destroy: true,
-            order: [
-                [1, 'desc']
-            ],
+            order: false,
             columns: [{
                     title: "LLAMAR",
                 },

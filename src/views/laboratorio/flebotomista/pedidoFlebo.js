@@ -1083,7 +1083,7 @@ const TomaMuestras = {
 
                                                     // 393
                                                     m("td.tx-16.tx-normal[colspan='1']",
-                                                        m("div.custom-control.custom-checkbox.tx-16", [
+                                                        m("div.custom-control.custom-checkbox.tx-16.mg-b-20", [
                                                             m("input.custom-control-input.tx-16[type='checkbox'][id='" + _val.CD_EXA_LAB + "_SI']", {
                                                                 checked: StatusPedido.data[_i]['customCheked'],
                                                                 onupdate: function(e) {
@@ -1109,7 +1109,7 @@ const TomaMuestras = {
                                                             m("label.custom-control-label.tx-16[for='" + _val.CD_EXA_LAB + "_SI']", {
                                                                     class: (StatusPedido.data[_i]['STATUS_TOMA'].length == 0 ? '' : (StatusPedido.data[_i]['STATUS_TOMA'].length !== 0 && StatusPedido.data[_i]['STATUS_TOMA'] == '1' ? '' : 'd-none'))
                                                                 },
-                                                                (StatusPedido.data[_i]['STATUS_TOMA'].length !== 0) ? StatusPedido.data[_i]['FECHA_TOMA'] : 'Si',
+                                                                (StatusPedido.data[_i]['STATUS_TOMA'].length !== 0) ? 'Si: ' + StatusPedido.data[_i]['FECHA_TOMA'] : 'Si',
 
                                                             )
                                                         ]),
@@ -1139,7 +1139,7 @@ const TomaMuestras = {
                                                             m("label.custom-control-label.tx-16[for='" + _val.CD_EXA_LAB + "_NO']", {
                                                                     class: (StatusPedido.data[_i]['STATUS_TOMA'].length == 0 ? '' : (StatusPedido.data[_i]['STATUS_TOMA'].length !== 0 && StatusPedido.data[_i]['STATUS_TOMA'] == '2' ? '' : 'd-none'))
                                                                 },
-                                                                (StatusPedido.data[_i]['STATUS_TOMA'].length !== 0) ? StatusPedido.data[_i]['FECHA_TOMA'] : 'No',
+                                                                (StatusPedido.data[_i]['STATUS_TOMA'].length !== 0) ? 'No: ' + StatusPedido.data[_i]['FECHA_TOMA'] : 'No',
 
                                                             )
                                                         ])
