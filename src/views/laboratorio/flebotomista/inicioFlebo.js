@@ -257,8 +257,9 @@ class MenuFlebot {
                                             onclick: () => {
                                                 InicioFlebotomista.resetClassToma();
                                                 InicioFlebotomista.classToma[5] = true;
-                                                InicioFlebotomista.tomasPendientes = null;
-                                                InicioFlebotomista.fetchTomasPendientes();
+                                                if (InicioFlebotomista.tomasPendientes == null) {
+                                                    InicioFlebotomista.fetchTomasPendientes();
+                                                }
 
                                             },
                                         }, ["Tomas Pendientes ",
@@ -436,7 +437,7 @@ class InicioFlebotomista extends App {
 
         return m.request({
                 method: "GET",
-                url: "https://lisa.hospitalmetropolitano.org/v1/listar?type=ingresadasFlebotomia&idFiltro=4",
+                url: "https://lisa.hospitalmetropolitano.org/v1/listar?type=ingresadasFlebotomia&idFiltro=6",
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
                 },
@@ -659,7 +660,7 @@ class InicioFlebotomista extends App {
                                     m("button.btn.btn-xs.btn-outline-danger.btn-block.tx-semibold[type='button']", {
                                             onclick: (e) => {
                                                 if (confirm("¿Esta Ud. seguro de confirmar este pedido como Pendiente?") == true) {
-                                                    InicioFlebotomista.tomaPendiente(oData.numeroPedido)
+                                                    InicioFlebotomista.tomaPendiente(oData.codigoPedido)
                                                 } else {
                                                     alert('Ok. Operación Cancelada')
                                                 }
@@ -825,13 +826,13 @@ class InicioFlebotomista extends App {
                                     m("button.btn.btn-xs.btn-outline-danger.btn-block.tx-semibold[type='button']", {
                                             onclick: (e) => {
                                                 if (confirm("¿Esta Ud. seguro de confirmar este pedido como Pendiente?") == true) {
-                                                    InicioFlebotomista.deshacerTomaPendiente(oData.numeroPedido)
+                                                    InicioFlebotomista.deshacerTomaPendiente(oData.codigoPedido)
                                                 } else {
                                                     alert('Ok. Operación Cancelada')
                                                 }
                                             }
                                         },
-                                        "Dejar Pendiente"
+                                        "Deshacer Pendiente"
                                     )
                                 ]
                             }

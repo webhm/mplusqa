@@ -1047,39 +1047,36 @@ const TomaMuestras = {
                                                 ),
 
                                                 // 393
-                                                (_val.CD_EXA_LAB !== '393' ? [
-                                                    m("td.tx-16.tx-normal[colspan='1']",
-                                                        m("div.custom-control.custom-checkbox.tx-16", [
-                                                            m("input.custom-control-input.tx-16[type='checkbox'][id='" + _val.CD_EXA_LAB + "']", {
-                                                                checked: StatusPedido.data[_i]['customCheked'],
-                                                                onupdate: function(e) {
-                                                                    this.checked = StatusPedido.data[_i]['customCheked'];
-                                                                },
-                                                                onclick: function(e) {
+                                                m("td.tx-16.tx-normal[colspan='1']",
+                                                    m("div.custom-control.custom-checkbox.tx-16", [
+                                                        m("input.custom-control-input.tx-16[type='checkbox'][id='" + _val.CD_EXA_LAB + "']", {
+                                                            checked: StatusPedido.data[_i]['customCheked'],
+                                                            onupdate: function(e) {
+                                                                this.checked = StatusPedido.data[_i]['customCheked'];
+                                                            },
+                                                            onclick: function(e) {
 
-                                                                    e.preventDefault();
-                                                                    var p = this.checked;
-                                                                    StatusPedido.data[_i]['customCheked'] = !StatusPedido.data[_i]['customCheked'];
-                                                                    if (p) {
-                                                                        this.checked = true;
-                                                                        StatusPedido.data[_i]['STATUS_TOMA'] = "1";
-                                                                        StatusPedido.data[_i]['FECHA_TOMA'] = moment().format('DD-MM-YYYY HH:mm');
-                                                                    } else {
-                                                                        this.checked = false;;
-                                                                        TomaMuestras.checkedAll = false;
-                                                                        StatusPedido.data[_i]['STATUS_TOMA'] = "";
-                                                                        StatusPedido.data[_i]['FECHA_TOMA'] = "";
-                                                                    }
-                                                                },
-                                                            }),
-                                                            m("label.custom-control-label.tx-16[for='" + _val.CD_EXA_LAB + "']",
-                                                                (StatusPedido.data[_i]['STATUS_TOMA'].length !== 0) ? StatusPedido.data[_i]['FECHA_TOMA'] : 'Si' + StatusPedido.data[_i]['STATUS_TOMA'],
+                                                                e.preventDefault();
+                                                                var p = this.checked;
+                                                                StatusPedido.data[_i]['customCheked'] = !StatusPedido.data[_i]['customCheked'];
+                                                                if (p) {
+                                                                    this.checked = true;
+                                                                    StatusPedido.data[_i]['STATUS_TOMA'] = "1";
+                                                                    StatusPedido.data[_i]['FECHA_TOMA'] = moment().format('DD-MM-YYYY HH:mm');
+                                                                } else {
+                                                                    this.checked = false;;
+                                                                    TomaMuestras.checkedAll = false;
+                                                                    StatusPedido.data[_i]['STATUS_TOMA'] = "";
+                                                                    StatusPedido.data[_i]['FECHA_TOMA'] = "";
+                                                                }
+                                                            },
+                                                        }),
+                                                        m("label.custom-control-label.tx-16[for='" + _val.CD_EXA_LAB + "']",
+                                                            (StatusPedido.data[_i]['STATUS_TOMA'].length !== 0) ? StatusPedido.data[_i]['FECHA_TOMA'] : 'Si' + StatusPedido.data[_i]['STATUS_TOMA'],
 
-                                                            )
-                                                        ])
-                                                    ),
-
-                                                ] : [])
+                                                        )
+                                                    ])
+                                                ),
 
                                             ]),
                                         ]
