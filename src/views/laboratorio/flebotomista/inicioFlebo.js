@@ -26,6 +26,8 @@ const actions = {
                 model.seconds = 100;
                 InicioFlebotomista.pedidos = null;
                 InicioFlebotomista.fetchPendientes();
+                InicioFlebotomista.tomasPendientes = null;
+                InicioFlebotomista.fetchTomasPendientes();
             }
             m.redraw();
         }
@@ -170,6 +172,9 @@ class MenuFlebot {
                                         if (InicioFlebotomista.pedidos == null) {
                                             InicioFlebotomista.fetchPendientes();
                                         }
+                                        if (InicioFlebotomista.tomasPendientes == null) {
+                                            InicioFlebotomista.fetchTomasPendientes();
+                                        }
 
                                     },
                                 }, [
@@ -252,9 +257,18 @@ class MenuFlebot {
                                             onclick: () => {
                                                 InicioFlebotomista.resetClassToma();
                                                 InicioFlebotomista.classToma[5] = true;
+                                                InicioFlebotomista.tomasPendientes = null;
+                                                InicioFlebotomista.fetchTomasPendientes();
+
                                             },
-                                        },
-                                        "Tomas Pendientes"
+                                        }, ["Tomas Pendientes ",
+                                            (InicioFlebotomista.tomasPendientes !== null && InicioFlebotomista.tomasPendientes.data.length !== 0 ? [
+                                                m('span.mg-l-5.tx-14.tx-semibold.badge.badge-danger', InicioFlebotomista.tomasPendientes.data.length)
+                                            ] : [
+                                                m('span.mg-l-5.tx-14.tx-semibold.badge.badge-danger', 0)
+                                            ])
+                                        ]
+
                                     ),
                                     m("div.pd-10.bg-gray-500.wd-20p.tx-center.tx-semibold[role='button']", {
                                             style: { "cursor": "pointer" },
@@ -271,12 +285,26 @@ class MenuFlebot {
                                 ]),
 
 
-                                m("div.wd-100p.bg-white.pd-10", [
+                                m("div.wd-100p.bg-white.pd-10", {
+                                    class: (InicioFlebotomista.classToma[5] ? 'd-none' : ''),
+                                }, [
                                     (InicioFlebotomista.pedidos !== null && InicioFlebotomista.pedidos.status) ? [
 
                                         InicioFlebotomista.vTablePedidos('table-pedidos', InicioFlebotomista.pedidos.data, InicioFlebotomista.arqTablePedidos())
                                     ] : (InicioFlebotomista.pedidos !== null && (!InicioFlebotomista.pedidos.status || InicioFlebotomista.pedidos.status == null)) ? [
                                         m(Errors, { type: (!InicioFlebotomista.pedidos.status ? 1 : 0), error: InicioFlebotomista.pedidos })
+                                    ] : [
+                                        m(Loader)
+                                    ]
+                                ]),
+                                m("div.wd-100p.bg-white.pd-10", {
+                                    class: (InicioFlebotomista.classToma[5] ? '' : 'd-none'),
+                                }, [
+                                    (InicioFlebotomista.tomasPendientes !== null && InicioFlebotomista.tomasPendientes.status) ? [
+
+                                        InicioFlebotomista.vTablePedidos('table-tomasPendientes', InicioFlebotomista.tomasPendientes.data, InicioFlebotomista.arqTableTomasPendientes())
+                                    ] : (InicioFlebotomista.tomasPendientes !== null && (!InicioFlebotomista.tomasPendientes.status || InicioFlebotomista.tomasPendientes.status == null)) ? [
+                                        m(Errors, { type: (!InicioFlebotomista.tomasPendientes.status ? 1 : 0), error: InicioFlebotomista.tomasPendientes })
                                     ] : [
                                         m(Loader)
                                     ]
@@ -304,6 +332,7 @@ class InicioFlebotomista extends App {
     static idToma = null;
     static usrToma = null;
     static pedidos = null;
+    static tomasPendientes = null;
     static reLoader = false;
     static classToma = [false, false, false, false, false, false];
 
@@ -376,7 +405,6 @@ class InicioFlebotomista extends App {
 
     static fetchPendientes() {
 
-
         return m.request({
                 method: "GET",
                 url: "https://lisa.hospitalmetropolitano.org/v1/listar?type=ingresadasFlebotomia&idFiltro=4",
@@ -392,12 +420,98 @@ class InicioFlebotomista extends App {
                 res.data = filtrados
                 InicioFlebotomista.pedidos = res;
                 return result;
+
             })
             .catch(function(e) {
+
                 return {
                     'status': null,
                     'message': e
                 };
+
+            });
+    }
+
+    static fetchTomasPendientes() {
+
+        return m.request({
+                method: "GET",
+                url: "https://lisa.hospitalmetropolitano.org/v1/listar?type=ingresadasFlebotomia&idFiltro=4",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+            })
+            .then(function(result) {
+
+                InicioFlebotomista.tomasPendientes = result;
+                return result;
+
+            })
+            .catch(function(e) {
+
+                return {
+                    'status': null,
+                    'message': e
+                };
+
+            });
+    }
+
+    static tomaPendiente(sc) {
+
+        return m.request({
+                method: "POST",
+                url: "https://lisa.hospitalmetropolitano.org/v1/procesos/toma-pendiente",
+                body: {
+                    sc: sc
+                },
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+            })
+            .then(function(response) {
+                if (response.status) {
+                    InicioFlebotomista.tomasPendientes = null;
+                    InicioFlebotomista.fetchTomasPendientes();
+                    InicioFlebotomista.pedidos = null;
+                    InicioFlebotomista.fetchPendientes();
+                    alert('Preceso realizado con éxito.');
+                } else {
+                    alert('Error. No pudimos completar esta petición.');
+                }
+
+            })
+            .catch(function(e) {
+                alert('Error: ' + e);
+            });
+    }
+
+    static deshacerTomaPendiente(sc) {
+
+        return m.request({
+                method: "POST",
+                url: "https://lisa.hospitalmetropolitano.org/v1/procesos/deshacer-toma-pendiente",
+                body: {
+                    sc: sc
+                },
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+            })
+            .then(function(response) {
+                if (response.status) {
+                    InicioFlebotomista.tomasPendientes = null;
+                    InicioFlebotomista.fetchTomasPendientes();
+                    InicioFlebotomista.pedidos = null;
+                    InicioFlebotomista.fetchPendientes();
+                    alert('Preceso realizado con éxito.');
+                } else {
+                    alert('Error. No pudimos completar esta petición.');
+                }
+
+            })
+            .catch(function(e) {
+                alert('Error: ' + e);
             });
     }
 
@@ -455,6 +569,9 @@ class InicioFlebotomista extends App {
                 },
                 {
                     title: "NHC:",
+                },
+                {
+                    title: "DEJAR PENDIENTE:",
                 }
             ],
             aoColumnDefs: [{
@@ -516,7 +633,8 @@ class InicioFlebotomista extends App {
                     visible: true,
                     aTargets: [2],
                     orderable: true,
-                }, {
+                },
+                {
                     mRender: function(data, type, full) {
                         return full.numeroHistoriaClinica;
 
@@ -530,6 +648,199 @@ class InicioFlebotomista extends App {
                     },
                     visible: true,
                     aTargets: [3],
+                    orderable: true,
+
+                },
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m("button.btn.btn-xs.btn-outline-danger.btn-block.tx-semibold[type='button']", {
+                                            onclick: (e) => {
+                                                if (confirm("¿Esta Ud. seguro de confirmar este pedido como Pendiente?") == true) {
+                                                    InicioFlebotomista.tomaPendiente(oData.numeroPedido)
+                                                } else {
+                                                    alert('Ok. Operación Cancelada')
+                                                }
+                                            }
+                                        },
+                                        "Dejar Pendiente"
+                                    )
+                                ]
+                            }
+                        });
+
+
+                    },
+                    visible: true,
+                    aTargets: [4],
+                    orderable: true,
+
+                }
+
+
+            ],
+
+
+        }
+
+    };
+
+    static arqTableTomasPendientes(idTable, dataTable, arqTable) {
+
+        return {
+            data: InicioFlebotomista.tomasPendientes,
+            dom: 't',
+            responsive: true,
+            language: {
+                searchPlaceholder: "Buscar...",
+                sSearch: "",
+                lengthMenu: "Mostrar _MENU_ registros por página",
+                sProcessing: "Procesando...",
+                sZeroRecords: "Todavía no tienes resultados disponibles.",
+                sEmptyTable: "Ningún dato disponible en esta tabla",
+                sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+                sInfoPostFix: "",
+                sUrl: "",
+                sInfoThousands: ",",
+                sLoadingRecords: "Cargando...",
+                oPaginate: {
+                    sFirst: "Primero",
+                    sLast: "Último",
+                    sNext: "Siguiente",
+                    sPrevious: "Anterior",
+                },
+                oAria: {
+                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+                    sSortDescending: ": Activar para ordenar la columna de manera descendente",
+                },
+            },
+            cache: false,
+            pageLength: 100,
+            destroy: true,
+            order: [
+                [1, 'desc']
+            ],
+            columns: [{
+                    title: "LLAMAR",
+                },
+                {
+                    title: "SC:",
+                },
+                {
+                    title: "PACIENTE:",
+                },
+                {
+                    title: "NHC:",
+                },
+                {
+                    title: "DESHACER PENDIENTE:",
+                }
+            ],
+            aoColumnDefs: [{
+                    mRender: function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    },
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center', [
+                                        m("button.btn-xs[type='button']", {
+                                                onclick: () => {
+                                                    InicioFlebotomista.fetchLlamada(oData.cdAtendimento, oData.wid, oData.numero);
+
+                                                },
+                                                class: 'bg-warning',
+                                            },
+                                            m('i.fas.fa-bell.tx-22'),
+                                            m('div.tx-12.tx-semibold', 'Llamar'),
+                                            m('div.d-inline.tx-12.tx-semibold.tx-danger', ''),
+                                        )
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    width: '10%',
+                    visible: false,
+                    aTargets: [0],
+                    orderable: true,
+                },
+
+                {
+                    mRender: function(data, type, full) {
+                        return full.wid;
+                    },
+
+                    visible: false,
+                    aTargets: [1],
+                    orderable: true,
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.paciente;
+                    },
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('.d-block.pd-0.mg-0.tx-12.tx-primary.op-9', oData.sector),
+                                    m('.d-block.pd-0.mg-0', oData.paciente),
+                                ]
+                            }
+                        });
+                    },
+                    visible: true,
+                    aTargets: [2],
+                    orderable: true,
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.numeroHistoriaClinica;
+
+                    },
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return m('.d-block.pd-0.mg-0', oData.numeroHistoriaClinica)
+                            }
+                        });
+                    },
+                    visible: true,
+                    aTargets: [3],
+                    orderable: true,
+
+                },
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m("button.btn.btn-xs.btn-outline-danger.btn-block.tx-semibold[type='button']", {
+                                            onclick: (e) => {
+                                                if (confirm("¿Esta Ud. seguro de confirmar este pedido como Pendiente?") == true) {
+                                                    InicioFlebotomista.deshacerTomaPendiente(oData.numeroPedido)
+                                                } else {
+                                                    alert('Ok. Operación Cancelada')
+                                                }
+                                            }
+                                        },
+                                        "Dejar Pendiente"
+                                    )
+                                ]
+                            }
+                        });
+
+
+                    },
+                    visible: true,
+                    aTargets: [4],
                     orderable: true,
 
                 }
