@@ -326,8 +326,23 @@ class VentilatoriosUci {
                                 id: "ModoVentilatorio",
                                 label: "MODO VENTILARIO"
                             }, {
-                                id: "ResistenciaInspiratoria",
-                                label: "RESISTENCIA INSPIRATORIA"
+                                id: "PresionInspiratoria",
+                                label: "PRESIÓN INSPIRATORIA"
+                            }, {
+                                id: "PresionPico",
+                                label: "PRESIÓN PICO"
+                            }, {
+                                id: "PresionMedia",
+                                label: "PRESIÓN MEDIA"
+                            }, {
+                                id: "PEEP",
+                                label: "PEEP"
+                            }, {
+                                id: "AutoPeep",
+                                label: "AUTO PEEP"
+                            }, {
+                                id: "PresionSoporte",
+                                label: "PRESIÓN SOPORTE"
                             }, {
                                 id: "VolumenTidalEspiradoMaquina",
                                 label: "VOLUMEN TIDAL ESPIRADO MÁQUINA"
@@ -342,14 +357,6 @@ class VentilatoriosUci {
                                 label: "VOLUMEN MINUTO ESPIRADO PACIENTE"
                             },
                             {
-                                id: "PresionSoporte",
-                                label: "PRESION SOPORTE"
-                            },
-                            {
-                                id: "PEEP",
-                                label: "PEEP"
-                            },
-                            {
                                 id: "FRV",
                                 label: "FRECUENCIA RESPIRATORIA MÁQUINA"
                             },
@@ -357,26 +364,41 @@ class VentilatoriosUci {
                                 id: "FRPT",
                                 label: "FRECUENCIA RESPIRATORIA ESPONTÁNEA"
                             },
-
+                            {
+                                id: "ComplianceEstatica",
+                                label: "COMPLIANCE ESTÁTICA"
+                            },
+                            {
+                                id: "ResistenciaInspiratoria",
+                                label: "RESISTENCIA INSPIRATORIA"
+                            },
+                            {
+                                id: "RelacionInspiracionEspiracion",
+                                label: "RELACIÓN INSPIRACION - ESPIRACION"
+                            },
+                            {
+                                id: "TiempoInspiratorio",
+                                label: "TIEMPO INSPIRATORIO"
+                            },
                             {
                                 id: "FIO2",
                                 label: "FIO2"
                             },
                             {
-                                id: "PAFI",
-                                label: "PAFI"
+                                id: "ETCO2",
+                                label: "ETCO2"
                             },
                             {
-                                id: "RelacionIETInspiracion",
-                                label: "RELACION I:E / T. INSPIRACION"
+                                id: "VolumenFugas",
+                                label: "VOLUMEN FUGAS"
                             },
                             {
-                                id: "PresionPicoPresionMedia",
-                                label: "PRESION PICO / PRESION MEDIA"
+                                id: "NivelTuboOrotraqueal",
+                                label: "NIVEL TUBO OROTRAQUEAL"
                             },
                             {
-                                id: "ComplianceResistenciaPulmonar",
-                                label: "COMPLIANCE / RESISTENCIA PULMONAR"
+                                id: "PresionBalonTuboOrotraqueal",
+                                label: "PRESIÓN BALÓN TUBO OROTRAQUEAL"
                             },
                             {
                                 id: "Hercios",
@@ -384,7 +406,7 @@ class VentilatoriosUci {
                             },
                             {
                                 id: "PresionMediaVia",
-                                label: "PRESION MEDIA VIA"
+                                label: "PRESION MEDIA-VIA"
                             },
                             {
                                 id: "Flujo",
@@ -399,25 +421,13 @@ class VentilatoriosUci {
                                 label: "DCO2"
                             },
                             {
-                                id: "VolumenAltaHere",
-                                label: "VOLUMEN ALTA HERE"
+                                id: "VolumenAltaFrecuencia",
+                                label: "VOLUMEN ALTA FRECUENCIA"
                             },
-                            {
-                                id: "FijacionTet",
-                                label: "NIVEL TUBO OROTRAQUEAL / FIJACION TET"
-                            },
-                            {
-                                id: "AutoPeep",
-                                label: "AUTO PEEP"
-                            },
-                            {
-                                id: "VolumenFugas",
-                                label: "VOLUMEN FUGAS"
-                            },
-                            {
-                                id: "PresionBalonTuboOrotraqueal",
-                                label: "PRESIÓN DE BALÓN TUBO OROTRAQUEAL"
-                            },
+
+
+
+
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
                         ))

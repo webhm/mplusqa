@@ -351,18 +351,17 @@ class GasesUci {
                                 label: "PH"
                             },
                             {
-                                id: "PaO2",
-                                label: "PaO2"
-                            },
-                            {
                                 id: "PaCO2",
                                 label: "PaCO2"
+                            },
+                            {
+                                id: "PaO2",
+                                label: "PaO2"
                             },
                             {
                                 id: "HCO3",
                                 label: "HCO3"
                             },
-
                             {
                                 id: "TC02",
                                 label: "TC02"
@@ -372,20 +371,16 @@ class GasesUci {
                                 label: "EXCESO DE BASE"
                             },
                             {
-                                id: "SaO2",
-                                label: "SaO2"
-                            },
-                            {
                                 id: "FiO2",
-                                label: "FiO2"
+                                label: "FiO2 %"
                             },
                             {
                                 id: "PaO2FiO2",
                                 label: "PaO2 / FiO2"
                             },
                             {
-                                id: "IndiceOxigenacion",
-                                label: "INDICE DE OXIGENACIÓN"
+                                id: "SaO2",
+                                label: "SaO2"
                             },
                             {
                                 id: "Lactato",

@@ -405,15 +405,15 @@ class CuidadosUci {
                                 label: "REPOSO RELATIVO"
                             },
                             {
-                                id: "Levantarlo",
-                                label: "LEVANTARLO"
+                                id: "Levantar",
+                                label: "LEVANTAR"
                             },
                             {
                                 id: "CuidadoOjos",
                                 label: "CUIDADO DE OJOS"
                             },
                             {
-                                id: "Asilamiento",
+                                id: "Aislamiento",
                                 label: "AISLAMIENTO"
                             },
                             {
@@ -435,15 +435,10 @@ class CuidadosUci {
                             {
                                 id: "HigieneOral",
                                 label: "HIGIENE ORAL"
-                            }, {
+                            },
+                            {
                                 id: "TerapiaRespiratoria",
                                 label: "TERAPIA RESPIRATORIA"
-                            }, {
-                                id: "Nebulizaciones",
-                                label: "NEBULIZACIONES"
-                            }, {
-                                id: "AspiracionSecrreciones",
-                                label: "ASPIRACIÓN DE SECRECIONES"
                             },
                             {
                                 id: "CuidadosTuboTraqueal",
@@ -453,7 +448,6 @@ class CuidadosUci {
                                 id: "ControlTemperaturaMediosFisicos",
                                 label: "CONTROL FIEBRE MEDIOS FISICOS"
                             },
-
                             {
                                 id: "ControlMarcapasos",
                                 label: "CONTROL DE MARCAPASOS"
@@ -461,10 +455,12 @@ class CuidadosUci {
                             {
                                 id: "ControlDrenajes",
                                 label: "CONTROL DE DRENAJES"
-                            }, {
+                            },
+                            {
                                 id: "ControlSangrado",
                                 label: "CONTROL DE SANGRADO"
-                            }, {
+                            },
+                            {
                                 id: "ControlNeurologico",
                                 label: "CONTROL NEUROLÓGICO"
                             },
@@ -483,10 +479,6 @@ class CuidadosUci {
                             {
                                 id: "EnemaEvacuante",
                                 label: "ENEMA EVACUANTE"
-                            },
-                            {
-                                id: "ControlPulsosDistales",
-                                label: "CONTROL DE PULSOS DISTALES"
                             },
                             {
                                 id: "RiesgoTromboembolismo",
