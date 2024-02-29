@@ -1,68 +1,67 @@
 import m from "mithril";
-import App from "../../../models/App";
-import Loader from "../../utils/loader";
-import Errors from "../../utils/errors";
 import PacientesUCI from "./pacientesUci";
 import FecthUci from "./fecthUci";
 import TurnosUci from "./turnosUci";
 
-class Marcapaso {
+class Cateter {
     id = null;
     nro = null;
     fechaHoraTurno = null;
-    hora = null;
+    cateter = null;
     am = null;
     pm = null;
     hs = null;
-    observacion = null;
     editar = null;
-    seccion = 'Marcapasos';
+    observacion = null;
+    seccion = 'Cateter';
     constructor() {
         this.id = this.id;
         this.nro = this.nro;
         this.fechaHoraTurno = this.fechaHoraTurno;
-        this.hora = this.hora;
+        this.cateter = this.cateter;
         this.am = this.am;
         this.pm = this.pm;
         this.hs = this.hs;
-        this.observacion = this.observacion;
         this.editar = this.editar;
+        this.observacion = this.observacion;
         this.seccion = this.seccion;
+
     }
 }
 
 
-class MarcapasosUci {
+class CateterUci {
+
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
+
     static validarRegistro() {
 
     }
     static iniciarRegistro() {
-        MarcapasosUci.nuevoRegistro = new Marcapaso();
+        CateterUci.nuevoRegistro = new Cateter();
     }
     static agregarRegistro() {
-        FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
-
+        FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
     }
     static verRegistro(registro) {
         registro.editar = true;
-        MarcapasosUci.nuevoRegistro = registro;
-        console.log(MarcapasosUci.nuevoRegistro)
+        CateterUci.nuevoRegistro = registro;
+        console.log(CateterUci.nuevoRegistro)
     }
     static editarRegistro() {
-        MarcapasosUci.nuevoRegistro.editar = null;
-        MarcapasosUci.registros.map((_v, _i) => {
-            if (_v.nro == MarcapasosUci.nuevoRegistro.nro) {
-                MarcapasosUci.registros[_i] = MarcapasosUci.nuevoRegistro;
+        CateterUci.nuevoRegistro.editar = null;
+        CateterUci.registros.map((_v, _i) => {
+            if (_v.nro == CateterUci.nuevoRegistro.nro) {
+                CateterUci.registros[_i] = CateterUci.nuevoRegistro;
             }
         });
 
     }
     static eliminarRegistro(obj) {
 
-        MarcapasosUci.registros = PacientesUCI.extractSeccion(Array.from(document.getElementById('sec_Marcapasos').options));
+        CateterUci.registros = PacientesUCI.extractSeccion(Array.from(document.getElementById('sec_Cateter').options));
 
         let hash = {};
         let res = [];
@@ -70,7 +69,7 @@ class MarcapasosUci {
         let result = [];
         let resultId = [];
 
-        MarcapasosUci.registros.map((_v, _i) => {
+        CateterUci.registros.map((_v, _i) => {
             if (_v.nro !== obj.nro) {
                 res.push(_v);
             }
@@ -82,10 +81,9 @@ class MarcapasosUci {
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.nro - b.nro);
 
-        MarcapasosUci.registros = _arr;
+        CateterUci.registros = _arr;
 
     }
-
     static filterRegistros() {
 
         let result = [];
@@ -93,19 +91,19 @@ class MarcapasosUci {
         let _arr = [];
         let hash = {};
 
-        result = MarcapasosUci.registros.sort((a, b) => b.nro - a.nro);
+        result = CateterUci.registros.sort((a, b) => b.nro - a.nro);
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.nro - b.nro);
 
-        MarcapasosUci.registros = _arr;
+        CateterUci.registros = _arr;
 
     }
+
     static getRegistros() {
-        return MarcapasosUci.registros;
+        return CateterUci.registros;
     }
-
     static arqTable() {
         return {
             data: null,
@@ -150,7 +148,7 @@ class MarcapasosUci {
                     title: "Turno: ",
                 },
                 {
-                    title: "Hora:",
+                    title: "Cateter:",
                 },
                 {
                     title: "AM:",
@@ -158,10 +156,10 @@ class MarcapasosUci {
                 {
                     title: "PM:",
                 },
-
                 {
                     title: "HS:",
                 },
+
                 {
                     title: "Observación:",
                 },
@@ -193,7 +191,7 @@ class MarcapasosUci {
                                 return [
                                     m('div.text-center.pd-5', [
                                         m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'bg-light' : 'bg-warning')
                                             },
                                             (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
                                             (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
@@ -213,7 +211,7 @@ class MarcapasosUci {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.hora;
+                        return full.cateter;
                     },
 
                     visible: true,
@@ -237,6 +235,8 @@ class MarcapasosUci {
                     visible: true,
                     aTargets: [5],
                     orderable: true,
+
+
                 },
                 {
                     mRender: function(data, type, full) {
@@ -266,21 +266,21 @@ class MarcapasosUci {
                                     m("div.btn-block.btn-group.wd-100p.pd-5", [
                                         m("button.btn.btn-xs.btn-success[type='button']", {
                                                 class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : '') : 'disabled'),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
-                                                    MarcapasosUci.nuevoRegistro = null
-                                                    MarcapasosUci.verRegistro(oData);
+                                                    CateterUci.nuevoRegistro = null
+                                                    CateterUci.verRegistro(oData);
                                                 },
                                             },
                                             'Editar',
                                         ),
                                         m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
                                                 class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
+                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
 
                                                 onclick: () => {
                                                     oData.editar = null;
-                                                    MarcapasosUci.nuevoRegistro = null;
+                                                    CateterUci.nuevoRegistro = null;
                                                 },
                                             },
                                             'Cancelar Edición',
@@ -289,15 +289,15 @@ class MarcapasosUci {
                                                 class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                                 onclick: () => {
                                                     if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        MarcapasosUci.iniciarRegistro();
-                                                        MarcapasosUci.nuevoRegistro.id = oData.id;
-                                                        MarcapasosUci.nuevoRegistro.hora = oData.hora;
-                                                        MarcapasosUci.nuevoRegistro.am = oData.am;
-                                                        MarcapasosUci.nuevoRegistro.pm = oData.pm;
-                                                        MarcapasosUci.nuevoRegistro.hs = oData.hs;
-                                                        MarcapasosUci.nuevoRegistro.observacion = oData.observacion;
-                                                        MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        CateterUci.iniciarRegistro();
+                                                        CateterUci.nuevoRegistro.id = oData.id;
+                                                        CateterUci.nuevoRegistro.cateter = oData.cateter;
+                                                        CateterUci.nuevoRegistro.am = oData.am;
+                                                        CateterUci.nuevoRegistro.pm = oData.pm;
+                                                        CateterUci.nuevoRegistro.hs = oData.hs;
+                                                        CateterUci.nuevoRegistro.observacion = oData.observacion;
+                                                        CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                     }
 
                                                 },
@@ -327,34 +327,36 @@ class MarcapasosUci {
     }
 
     view() {
-
         return [
             m("thead.bd.bd-2", {
                     style: { "border-color": "#5173a1" },
                 },
+
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (MarcapasosUci.show ? '' : 'd-none')
-
+                    class: (CateterUci.show ? '' : 'd-none')
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "MARCAPASOS:"
+                        "CATETER URINARIO:"
                     ),
 
                 ])
             ),
             m("tbody.bd.bd-2", {
                 style: { "border-color": "#5173a1" },
-                class: (MarcapasosUci.show ? '' : 'd-none')
+                class: (CateterUci.show ? '' : 'd-none')
             }, [
+
+
+
                 m("tr.bd.bd-2.tx-uppercase", {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
                     m("th[scope='col'][colspan='3']",
-                        "HORA:"
+                        "CATETER: "
                     ),
                     m("th[scope='col'][colspan='3']",
                         "AM: "
@@ -372,14 +374,14 @@ class MarcapasosUci {
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
                     m("td.tx-14.tx-normal[colspan='3']",
-                        (MarcapasosUci.nuevoRegistro !== null ? [
+                        (CateterUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     disabled: true,
-                                    value: MarcapasosUci.nuevoRegistro.hora,
+                                    value: CateterUci.nuevoRegistro.cateter,
                                 })
 
                             ]),
@@ -387,60 +389,52 @@ class MarcapasosUci {
                     ),
                     m("td.tx-14.tx-normal.d-none[colspan='3']",
                         m('select.tx-semibold', {
-                            id: 'sec_Marcapasos',
+                            id: 'sec_Cateter',
                             disabled: true,
                             onchange: (e) => {
                                 let _id = e.target.options[e.target.selectedIndex].id;
                                 let _value = e.target.options[e.target.selectedIndex].value;
-                                MarcapasosUci.iniciarRegistro();
-                                MarcapasosUci.nuevoRegistro.id = _id;
-                                MarcapasosUci.nuevoRegistro.hora = _value;
                             },
                             class: "custom-select",
-                            value: (MarcapasosUci.nuevoRegistro !== null ? MarcapasosUci.nuevoRegistro.hora : 0),
+                            value: (CateterUci.nuevoRegistro !== null ? CateterUci.nuevoRegistro.cateter : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                id: "Frecuencia",
-                                label: "Frecuencia"
+                                id: "RecoletcorVejiga",
+                                label: "RECOLECTOR MAS ABAJO QUE VEJIGA"
                             }, {
-                                id: "Unipolar",
-                                label: "UNIPOLAR"
+                                id: "RecolectorNoTocaPiso",
+                                label: "RECOLECTOR NO TOCA PISO"
+                            }, {
+                                id: "OrinaRecolector",
+                                label: "ORINA HASTA 50% EN RECOLECTOR"
                             },
                             {
-                                id: "Bipolar",
-                                label: "BIPOLAR"
+                                id: "SondaFijadaMuslo",
+                                label: "SONDA FIJADA EN MUSLO"
                             },
                             {
-                                id: "Miliamperios",
-                                label: "MILIAMPERIOS"
+                                id: "RegistroAseoGenital",
+                                label: "REGISTRO DE ASEO GENITAL"
                             },
                             {
-                                id: "Milivoltios",
-                                label: "MILIVOLTIOS"
-                            },
-                            {
-                                id: "Sensibilidad",
-                                label: "SENSIBILIDAD"
+                                id: "RegistroDiasCateter",
+                                label: "REGISTRO N° DE DIAS DE CATETER"
                             }
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
                         ))
                     ),
                     m("td.tx-14.tx-normal[colspan='3']",
-                        (MarcapasosUci.nuevoRegistro !== null ? [
+                        (CateterUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "am" + MarcapasosUci.nuevoRegistro.id,
+                                    id: "am" + CateterUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        if (PacientesUCI.numeroTurno == 1) {
-                                            MarcapasosUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
-                                        } else {
-                                            e.target.value = '';
-                                        }
+                                        CateterUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
-                                    value: MarcapasosUci.nuevoRegistro.am
+                                    value: CateterUci.nuevoRegistro.am,
 
                                 })
 
@@ -448,21 +442,17 @@ class MarcapasosUci {
                         ] : [])
                     ),
                     m("td.tx-14.tx-normal[colspan='3']",
-                        (MarcapasosUci.nuevoRegistro !== null ? [
+                        (CateterUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "pm" + MarcapasosUci.nuevoRegistro.id,
+                                    id: "pm" + CateterUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        if (PacientesUCI.numeroTurno == 2) {
-                                            MarcapasosUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
-                                        } else {
-                                            e.target.value = '';
-                                        }
+                                        CateterUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
-                                    value: MarcapasosUci.nuevoRegistro.pm
+                                    value: CateterUci.nuevoRegistro.pm,
 
                                 })
 
@@ -471,21 +461,17 @@ class MarcapasosUci {
                     ),
 
                     m("td.tx-14.tx-normal[colspan='3']",
-                        (MarcapasosUci.nuevoRegistro !== null ? [
+                        (CateterUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "hs" + MarcapasosUci.nuevoRegistro.id,
+                                    id: "hs" + CateterUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        if (PacientesUCI.numeroTurno == 3) {
-                                            MarcapasosUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
-                                        } else {
-                                            e.target.value = '';
-                                        }
+                                        CateterUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
-                                    value: MarcapasosUci.nuevoRegistro.hs
+                                    value: CateterUci.nuevoRegistro.hs,
 
                                 })
 
@@ -496,6 +482,7 @@ class MarcapasosUci {
                 m("tr.bd.bd-2.tx-uppercase", {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+
                 }, [
                     m("th[scope='col'][colspan='12']",
                         "OBSERVACIÓN: "
@@ -503,42 +490,41 @@ class MarcapasosUci {
 
 
                 ]),
-                m("tr.bd.bd-2", {
+                m('tr.bd.bd-2', {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
                     m("td.tx-14.tx-normal[colspan='12']",
-                        (MarcapasosUci.nuevoRegistro !== null ? [
+                        (CateterUci.nuevoRegistro !== null ? [
                             m("input", {
-                                id: "observacion" + MarcapasosUci.nuevoRegistro.id,
+                                id: "observacion" + CateterUci.nuevoRegistro.id,
                                 class: "form-control tx-semibold tx-14",
                                 type: "text",
                                 placeholder: "...",
-
                                 onkeypress: (e) => {
                                     if (e.keyCode == 13) {
-                                        MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                        MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                        if (MarcapasosUci.nuevoRegistro.editar == null) {
-                                            MarcapasosUci.agregarRegistro();
-                                            FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
-                                            MarcapasosUci.nuevoRegistro = null;
-                                            MarcapasosUci.filterRegistros();
-                                            PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+                                        CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                        CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        if (CateterUci.nuevoRegistro.editar == null) {
+                                            CateterUci.agregarRegistro();
+                                            FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
+                                            CateterUci.nuevoRegistro = null;
+                                            CateterUci.filterRegistros();
+                                            PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
                                         } else {
-                                            MarcapasosUci.editarRegistro();
-                                            FecthUci.actualizarSeccion(MarcapasosUci.nuevoRegistro);
-                                            MarcapasosUci.nuevoRegistro = null;
-                                            MarcapasosUci.filterRegistros();
-                                            PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+                                            CateterUci.editarRegistro();
+                                            FecthUci.actualizarSeccion(CateterUci.nuevoRegistro);
+                                            CateterUci.nuevoRegistro = null;
+                                            CateterUci.filterRegistros();
+                                            PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
+
                                         }
                                     }
                                 },
                                 oninput: (e) => {
-                                    MarcapasosUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
+                                    CateterUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
-                                value: MarcapasosUci.nuevoRegistro.observacion
-
+                                value: CateterUci.nuevoRegistro.observacion,
                             })
                         ] : [])
                     ),
@@ -552,13 +538,13 @@ class MarcapasosUci {
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12']",
-                        (MarcapasosUci.show != false ? [PacientesUCI.vTable('table-marcapasos', MarcapasosUci.getRegistros(), MarcapasosUci.arqTable())] : [])
+                        (CateterUci.show != false ? [PacientesUCI.vTable('table-cateter', CateterUci.getRegistros(), CateterUci.arqTable())] : [])
+
                     ),
                 ]),
             ]),
         ]
-
     }
 }
 
-export default MarcapasosUci;
+export default CateterUci;

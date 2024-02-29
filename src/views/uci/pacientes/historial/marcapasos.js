@@ -1,7 +1,4 @@
 import m from "mithril";
-import App from "../../../models/App";
-import Loader from "../../utils/loader";
-import Errors from "../../utils/errors";
 import PacientesUCI from "./pacientesUci";
 import FecthUci from "./fecthUci";
 import TurnosUci from "./turnosUci";
@@ -434,11 +431,7 @@ class MarcapasosUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        if (PacientesUCI.numeroTurno == 1) {
-                                            MarcapasosUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
-                                        } else {
-                                            e.target.value = '';
-                                        }
+                                        MarcapasosUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: MarcapasosUci.nuevoRegistro.am
 
@@ -456,11 +449,7 @@ class MarcapasosUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        if (PacientesUCI.numeroTurno == 2) {
-                                            MarcapasosUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
-                                        } else {
-                                            e.target.value = '';
-                                        }
+                                        MarcapasosUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: MarcapasosUci.nuevoRegistro.pm
 
@@ -479,11 +468,7 @@ class MarcapasosUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        if (PacientesUCI.numeroTurno == 3) {
-                                            MarcapasosUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
-                                        } else {
-                                            e.target.value = '';
-                                        }
+                                        MarcapasosUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
                                     value: MarcapasosUci.nuevoRegistro.hs
 

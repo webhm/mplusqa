@@ -563,12 +563,9 @@ class CuidadosUci2 {
                                 class: "form-control tx-semibold tx-14",
                                 type: "text",
                                 placeholder: "...",
+                                disabled: (PacientesUCI.numeroTurno == 1 ? '' : 'disabled'),
                                 oninput: (e) => {
-                                    if (PacientesUCI.numeroTurno == 1) {
-                                        CuidadosUci2.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
-                                    } else {
-                                        e.target.value = '';
-                                    }
+                                    CuidadosUci2.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
                                 value: CuidadosUci2.nuevoRegistro.am
                             })
@@ -581,12 +578,9 @@ class CuidadosUci2 {
                                 class: "form-control tx-semibold tx-14",
                                 type: "text",
                                 placeholder: "...",
+                                disabled: (PacientesUCI.numeroTurno == 2 ? '' : 'disabled'),
                                 oninput: (e) => {
-                                    if (PacientesUCI.numeroTurno == 2) {
-                                        CuidadosUci2.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
-                                    } else {
-                                        e.target.value = '';
-                                    }
+                                    CuidadosUci2.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
                                 value: CuidadosUci2.nuevoRegistro.pm
                             })
@@ -599,6 +593,7 @@ class CuidadosUci2 {
                                 class: "form-control tx-semibold tx-14",
                                 type: "text",
                                 placeholder: "...",
+                                // disabled: (PacientesUCI.numeroTurno == 3 ? '' : 'disabled'),
                                 onkeypress: (e) => {
                                     if (e.keyCode == 13) {
 
@@ -626,11 +621,7 @@ class CuidadosUci2 {
                                     }
                                 },
                                 oninput: (e) => {
-                                    if (PacientesUCI.numeroTurno == 3) {
-                                        CuidadosUci2.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
-                                    } else {
-                                        e.target.value = '';
-                                    }
+                                    CuidadosUci2.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
                                 value: CuidadosUci2.nuevoRegistro.hs
                             })

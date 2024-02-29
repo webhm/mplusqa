@@ -361,6 +361,11 @@ class ViasUci {
                                                         ViasUci.nuevoRegistro.via = oData.via;
                                                         ViasUci.nuevoRegistro.ubicacion = oData.ubicacion;
                                                         ViasUci.nuevoRegistro.tipo = oData.tipo;
+                                                        ViasUci.nuevoRegistro.inicio = oData.inicio;
+                                                        ViasUci.nuevoRegistro.retiro = oData.retiro;
+                                                        ViasUci.nuevoRegistro.curacion = oData.curacion;
+                                                        ViasUci.nuevoRegistro.condicion = oData.condicion;
+                                                        ViasUci.nuevoRegistro.observacion = oData.observacion;
                                                         ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                         ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                     }
@@ -662,7 +667,7 @@ class ViasUci {
                         "CONDICIÓN: "
                     ),
                     m("th[scope='col'][colspan='9']",
-                        "OBSERVACIÓN: "
+                        "OBSERVACIÓN / TRAE: "
                     ),
                 ]),
                 m('tr.bd.bd-2', {

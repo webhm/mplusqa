@@ -1,27 +1,24 @@
 import m from "mithril";
-import App from "../../../models/App";
-import Loader from "../../utils/loader";
-import Errors from "../../utils/errors";
 import PacientesUCI from "./pacientesUci";
 import FecthUci from "./fecthUci";
 import TurnosUci from "./turnosUci";
 
-class Marcapaso {
+class Hemodialisis {
     id = null;
     nro = null;
     fechaHoraTurno = null;
-    hora = null;
+    hemo = null;
     am = null;
     pm = null;
     hs = null;
     observacion = null;
     editar = null;
-    seccion = 'Marcapasos';
+    seccion = 'Hemodialisis';
     constructor() {
         this.id = this.id;
         this.nro = this.nro;
         this.fechaHoraTurno = this.fechaHoraTurno;
-        this.hora = this.hora;
+        this.hemo = this.hemo;
         this.am = this.am;
         this.pm = this.pm;
         this.hs = this.hs;
@@ -32,7 +29,7 @@ class Marcapaso {
 }
 
 
-class MarcapasosUci {
+class HemodialisisUci {
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
@@ -40,29 +37,37 @@ class MarcapasosUci {
 
     }
     static iniciarRegistro() {
-        MarcapasosUci.nuevoRegistro = new Marcapaso();
+        HemodialisisUci.nuevoRegistro = new Hemodialisis();
     }
     static agregarRegistro() {
-        FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
+        if (HemodialisisUci.registros.length == 0) {
+            HemodialisisUci.nuevoRegistro.nro = 1;
+            HemodialisisUci.registros.push(HemodialisisUci.nuevoRegistro);
+        } else {
+            HemodialisisUci.nuevoRegistro.nro = (HemodialisisUci.registros[HemodialisisUci.registros.length - 1].nro + 1);
+            HemodialisisUci.registros.push(HemodialisisUci.nuevoRegistro);
+        }
+        FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
 
     }
     static verRegistro(registro) {
         registro.editar = true;
-        MarcapasosUci.nuevoRegistro = registro;
-        console.log(MarcapasosUci.nuevoRegistro)
+        HemodialisisUci.nuevoRegistro = registro;
+        console.log(HemodialisisUci.nuevoRegistro)
     }
+
     static editarRegistro() {
-        MarcapasosUci.nuevoRegistro.editar = null;
-        MarcapasosUci.registros.map((_v, _i) => {
-            if (_v.nro == MarcapasosUci.nuevoRegistro.nro) {
-                MarcapasosUci.registros[_i] = MarcapasosUci.nuevoRegistro;
+        HemodialisisUci.nuevoRegistro.editar = null;
+        HemodialisisUci.registros.map((_v, _i) => {
+            if (_v.nro == HemodialisisUci.nuevoRegistro.nro) {
+                HemodialisisUci.registros[_i] = HemodialisisUci.nuevoRegistro;
             }
         });
 
     }
     static eliminarRegistro(obj) {
 
-        MarcapasosUci.registros = PacientesUCI.extractSeccion(Array.from(document.getElementById('sec_Marcapasos').options));
+        HemodialisisUci.registros = PacientesUCI.extractSeccion(Array.from(document.getElementById('sec_Hemodialisis').options));
 
         let hash = {};
         let res = [];
@@ -70,7 +75,7 @@ class MarcapasosUci {
         let result = [];
         let resultId = [];
 
-        MarcapasosUci.registros.map((_v, _i) => {
+        HemodialisisUci.registros.map((_v, _i) => {
             if (_v.nro !== obj.nro) {
                 res.push(_v);
             }
@@ -82,10 +87,9 @@ class MarcapasosUci {
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.nro - b.nro);
 
-        MarcapasosUci.registros = _arr;
+        HemodialisisUci.registros = _arr;
 
     }
-
     static filterRegistros() {
 
         let result = [];
@@ -93,17 +97,18 @@ class MarcapasosUci {
         let _arr = [];
         let hash = {};
 
-        result = MarcapasosUci.registros.sort((a, b) => b.nro - a.nro);
+        result = HemodialisisUci.registros.sort((a, b) => b.nro - a.nro);
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.nro - b.nro);
 
-        MarcapasosUci.registros = _arr;
+        HemodialisisUci.registros = _arr;
 
     }
+
     static getRegistros() {
-        return MarcapasosUci.registros;
+        return HemodialisisUci.registros;
     }
 
     static arqTable() {
@@ -138,7 +143,7 @@ class MarcapasosUci {
             cache: false,
             destroy: true,
             order: [
-                [0, 'desc']
+                [0, 'desc'],
             ],
             columns: [{
                     title: "Turno: ",
@@ -150,7 +155,7 @@ class MarcapasosUci {
                     title: "Turno: ",
                 },
                 {
-                    title: "Hora:",
+                    title: "Cateter Central o Hemodialisis:",
                 },
                 {
                     title: "AM:",
@@ -213,7 +218,7 @@ class MarcapasosUci {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.hora;
+                        return full.hemo;
                     },
 
                     visible: true,
@@ -266,21 +271,20 @@ class MarcapasosUci {
                                     m("div.btn-block.btn-group.wd-100p.pd-5", [
                                         m("button.btn.btn-xs.btn-success[type='button']", {
                                                 class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : '') : 'disabled'),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
-                                                    MarcapasosUci.nuevoRegistro = null
-                                                    MarcapasosUci.verRegistro(oData);
+                                                    HemodialisisUci.nuevoRegistro = null
+                                                    HemodialisisUci.verRegistro(oData);
                                                 },
                                             },
                                             'Editar',
                                         ),
                                         m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
                                                 class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
-
+                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
                                                 onclick: () => {
                                                     oData.editar = null;
-                                                    MarcapasosUci.nuevoRegistro = null;
+                                                    HemodialisisUci.nuevoRegistro = null;
                                                 },
                                             },
                                             'Cancelar Edición',
@@ -289,15 +293,15 @@ class MarcapasosUci {
                                                 class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                                 onclick: () => {
                                                     if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        MarcapasosUci.iniciarRegistro();
-                                                        MarcapasosUci.nuevoRegistro.id = oData.id;
-                                                        MarcapasosUci.nuevoRegistro.hora = oData.hora;
-                                                        MarcapasosUci.nuevoRegistro.am = oData.am;
-                                                        MarcapasosUci.nuevoRegistro.pm = oData.pm;
-                                                        MarcapasosUci.nuevoRegistro.hs = oData.hs;
-                                                        MarcapasosUci.nuevoRegistro.observacion = oData.observacion;
-                                                        MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        HemodialisisUci.iniciarRegistro();
+                                                        HemodialisisUci.nuevoRegistro.id = oData.id;
+                                                        HemodialisisUci.nuevoRegistro.hemo = oData.hemo;
+                                                        HemodialisisUci.nuevoRegistro.am = oData.am;
+                                                        HemodialisisUci.nuevoRegistro.pm = oData.pm;
+                                                        HemodialisisUci.nuevoRegistro.hs = oData.hs;
+                                                        HemodialisisUci.nuevoRegistro.observacion = oData.observacion;
+                                                        HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                     }
 
                                                 },
@@ -327,7 +331,6 @@ class MarcapasosUci {
     }
 
     view() {
-
         return [
             m("thead.bd.bd-2", {
                     style: { "border-color": "#5173a1" },
@@ -335,26 +338,26 @@ class MarcapasosUci {
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (MarcapasosUci.show ? '' : 'd-none')
-
+                    class: (HemodialisisUci.show ? '' : 'd-none')
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "MARCAPASOS:"
+                        "CATETER VIA CENTRAL O HEMODIALISIS:"
                     ),
 
                 ])
             ),
             m("tbody.bd.bd-2", {
                 style: { "border-color": "#5173a1" },
-                class: (MarcapasosUci.show ? '' : 'd-none')
+                class: (HemodialisisUci.show ? '' : 'd-none')
             }, [
+
                 m("tr.bd.bd-2.tx-uppercase", {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
                     m("th[scope='col'][colspan='3']",
-                        "HORA:"
+                        "CATETER VIA CENTRAL O HEMODIALISIS: "
                     ),
                     m("th[scope='col'][colspan='3']",
                         "AM: "
@@ -372,14 +375,14 @@ class MarcapasosUci {
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
                     m("td.tx-14.tx-normal[colspan='3']",
-                        (MarcapasosUci.nuevoRegistro !== null ? [
+                        (HemodialisisUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     disabled: true,
-                                    value: MarcapasosUci.nuevoRegistro.hora,
+                                    value: HemodialisisUci.nuevoRegistro.hemo,
                                 })
 
                             ]),
@@ -387,60 +390,52 @@ class MarcapasosUci {
                     ),
                     m("td.tx-14.tx-normal.d-none[colspan='3']",
                         m('select.tx-semibold', {
-                            id: 'sec_Marcapasos',
+                            id: 'sec_Hemodialisis',
                             disabled: true,
                             onchange: (e) => {
                                 let _id = e.target.options[e.target.selectedIndex].id;
                                 let _value = e.target.options[e.target.selectedIndex].value;
-                                MarcapasosUci.iniciarRegistro();
-                                MarcapasosUci.nuevoRegistro.id = _id;
-                                MarcapasosUci.nuevoRegistro.hora = _value;
+                                HemodialisisUci.iniciarRegistro();
+                                HemodialisisUci.nuevoRegistro.id = _id;
+                                HemodialisisUci.nuevoRegistro.hemo = _value;
                             },
                             class: "custom-select",
-                            value: (MarcapasosUci.nuevoRegistro !== null ? MarcapasosUci.nuevoRegistro.hora : 0),
+                            value: (HemodialisisUci.nuevoRegistro !== null ? HemodialisisUci.nuevoRegistro.hemo : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                id: "Frecuencia",
-                                label: "Frecuencia"
+                                id: "ParcheLimpioSeco",
+                                label: "PARCHE LIMPIO Y SECO"
                             }, {
-                                id: "Unipolar",
-                                label: "UNIPOLAR"
+                                id: "FechaCuracionParche",
+                                label: "FECHA DE CURACION SOBRE PARCHE"
                             },
                             {
-                                id: "Bipolar",
-                                label: "BIPOLAR"
+                                id: "TodosAccesosTapados",
+                                label: "TODOS LOS ACCESOS TAPADOS"
                             },
                             {
-                                id: "Miliamperios",
-                                label: "MILIAMPERIOS"
+                                id: "RegistroNumerosDias",
+                                label: "REGISTRO DE NUMEROS DE DIAS"
                             },
                             {
-                                id: "Milivoltios",
-                                label: "MILIVOLTIOS"
-                            },
-                            {
-                                id: "Sensibilidad",
-                                label: "SENSIBILIDAD"
+                                id: "RegistroCambioEquipo",
+                                label: "REGISTRO DE CAMBIO DE EQUIPO"
                             }
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
                         ))
                     ),
                     m("td.tx-14.tx-normal[colspan='3']",
-                        (MarcapasosUci.nuevoRegistro !== null ? [
+                        (HemodialisisUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "am" + MarcapasosUci.nuevoRegistro.id,
+                                    id: "am" + HemodialisisUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        if (PacientesUCI.numeroTurno == 1) {
-                                            MarcapasosUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
-                                        } else {
-                                            e.target.value = '';
-                                        }
+                                        HemodialisisUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
-                                    value: MarcapasosUci.nuevoRegistro.am
+                                    value: HemodialisisUci.nuevoRegistro.am
 
                                 })
 
@@ -448,21 +443,17 @@ class MarcapasosUci {
                         ] : [])
                     ),
                     m("td.tx-14.tx-normal[colspan='3']",
-                        (MarcapasosUci.nuevoRegistro !== null ? [
+                        (HemodialisisUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "pm" + MarcapasosUci.nuevoRegistro.id,
+                                    id: "pm" + HemodialisisUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        if (PacientesUCI.numeroTurno == 2) {
-                                            MarcapasosUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
-                                        } else {
-                                            e.target.value = '';
-                                        }
+                                        HemodialisisUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
-                                    value: MarcapasosUci.nuevoRegistro.pm
+                                    value: HemodialisisUci.nuevoRegistro.pm
 
                                 })
 
@@ -471,21 +462,17 @@ class MarcapasosUci {
                     ),
 
                     m("td.tx-14.tx-normal[colspan='3']",
-                        (MarcapasosUci.nuevoRegistro !== null ? [
+                        (HemodialisisUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "hs" + MarcapasosUci.nuevoRegistro.id,
+                                    id: "hs" + HemodialisisUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        if (PacientesUCI.numeroTurno == 3) {
-                                            MarcapasosUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
-                                        } else {
-                                            e.target.value = '';
-                                        }
+                                        HemodialisisUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
-                                    value: MarcapasosUci.nuevoRegistro.hs
+                                    value: HemodialisisUci.nuevoRegistro.hs
 
                                 })
 
@@ -508,37 +495,36 @@ class MarcapasosUci {
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
                     m("td.tx-14.tx-normal[colspan='12']",
-                        (MarcapasosUci.nuevoRegistro !== null ? [
+                        (HemodialisisUci.nuevoRegistro !== null ? [
                             m("input", {
-                                id: "observacion" + MarcapasosUci.nuevoRegistro.id,
+                                id: "observacion" + HemodialisisUci.nuevoRegistro.id,
                                 class: "form-control tx-semibold tx-14",
                                 type: "text",
                                 placeholder: "...",
 
                                 onkeypress: (e) => {
                                     if (e.keyCode == 13) {
-                                        MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                        MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                        if (MarcapasosUci.nuevoRegistro.editar == null) {
-                                            MarcapasosUci.agregarRegistro();
-                                            FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
-                                            MarcapasosUci.nuevoRegistro = null;
-                                            MarcapasosUci.filterRegistros();
-                                            PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+                                        HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                        HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        if (HemodialisisUci.nuevoRegistro.editar == null) {
+                                            HemodialisisUci.agregarRegistro();
+                                            FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
+                                            HemodialisisUci.nuevoRegistro = null;
+                                            HemodialisisUci.filterRegistros();
+                                            PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
                                         } else {
-                                            MarcapasosUci.editarRegistro();
-                                            FecthUci.actualizarSeccion(MarcapasosUci.nuevoRegistro);
-                                            MarcapasosUci.nuevoRegistro = null;
-                                            MarcapasosUci.filterRegistros();
-                                            PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+                                            HemodialisisUci.editarRegistro();
+                                            FecthUci.actualizarSeccion(HemodialisisUci.nuevoRegistro);
+                                            HemodialisisUci.nuevoRegistro = null;
+                                            HemodialisisUci.filterRegistros();
+                                            PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
                                         }
                                     }
                                 },
                                 oninput: (e) => {
-                                    MarcapasosUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
+                                    HemodialisisUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
-                                value: MarcapasosUci.nuevoRegistro.observacion
-
+                                value: HemodialisisUci.nuevoRegistro.observacion
                             })
                         ] : [])
                     ),
@@ -552,13 +538,13 @@ class MarcapasosUci {
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12']",
-                        (MarcapasosUci.show != false ? [PacientesUCI.vTable('table-marcapasos', MarcapasosUci.getRegistros(), MarcapasosUci.arqTable())] : [])
+                        (HemodialisisUci.show != false ? [PacientesUCI.vTable('table-hemodialisis', HemodialisisUci.getRegistros(), HemodialisisUci.arqTable())] : [])
+
                     ),
                 ]),
             ]),
         ]
-
     }
 }
 
-export default MarcapasosUci;
+export default HemodialisisUci;

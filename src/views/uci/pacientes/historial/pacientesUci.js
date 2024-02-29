@@ -1,10 +1,7 @@
 import m from "mithril";
-import App from "../../../models/App";
-import Sidebar from "../sidebarUci";
-import Loader from "../../utils/loader";
-import Errors from "../../utils/errors";
-import TableUCI from "../../utils/tableUci";
-import ApiHTTP from "../../../models/ApiHTTP";
+import App from "../../../../models/App";
+import Sidebar from "../../sidebarUci";
+import TableUCI from "../../../utils/tableUci";
 import TurnosUci from "./turnosUci";
 import ViasUci from "./viasUci";
 import AccesosUci from "./accesosUci";
@@ -21,7 +18,7 @@ import OxigenacionUci from "./oxigenacionUci";
 
 
 // Pacientes UCI
-class PacientesUCI extends App {
+class PacientesUCIHistorialHistorial extends App {
 
     static pacientes = null;
     static dataPte = null;
@@ -38,12 +35,12 @@ class PacientesUCI extends App {
 
         super();
         App.setTitle("Pacientes U.C.I.");
-        this.view = PacientesUCI.page;
-        PacientesUCI.numeroHistoriaClinica = _data.attrs.numeroHistoriaClinica;
-        PacientesUCI.numeroAtencion = _data.attrs.numeroAtencion;
-        PacientesUCI.numeroTurno = (_data.attrs.numeroTurno !== undefined ? _data.attrs.numeroTurno : null);
-        PacientesUCI.usuarioTurno = _data.attrs.usuario;
-        PacientesUCI.validarAtencion();
+        this.view = PacientesUCIHistorialHistorial.page;
+        PacientesUCIHistorialHistorial.numeroHistoriaClinica = _data.attrs.numeroHistoriaClinica;
+        PacientesUCIHistorialHistorial.numeroAtencion = _data.attrs.numeroAtencion;
+        PacientesUCIHistorialHistorial.numeroTurno = (_data.attrs.numeroTurno !== undefined ? _data.attrs.numeroTurno : null);
+        PacientesUCIHistorialHistorial.usuarioTurno = _data.attrs.usuario;
+        PacientesUCIHistorialHistorial.validarAtencion();
 
     }
 
@@ -55,26 +52,26 @@ class PacientesUCI extends App {
 
     static validarAtencion() {
 
-        FecthUci.validarAtencion();
+        FecthUci.validarAtencionHistorial();
     }
 
     static extraerFechaHoraTurnoVigente() {
         let turnos = TurnosUci.getTurnos();
         let lastTurno = turnos[turnos.length - 1];
-        PacientesUCI.fechaHoraTurno = lastTurno.fechaHoraTurno;
+        PacientesUCIHistorialHistorial.fechaHoraTurno = lastTurno.fechaHoraTurno;
     }
 
     static showSecciones() {
 
-        PacientesUCI.extraerFechaHoraTurnoVigente();
+        PacientesUCIHistorialHistorial.extraerFechaHoraTurnoVigente();
 
         CuidadosUci2.show = true;
 
         ViasUci.show = true;
-        ViasUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Vias').options));
+        ViasUci.registros = PacientesUCIHistorialHistorial.parseSeccion(Array.from(document.getElementById('sec_Vias').options));
 
         AccesosUci.show = true;
-        AccesosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Accesos').options));
+        AccesosUci.registros = PacientesUCIHistorialHistorial.parseSeccion(Array.from(document.getElementById('sec_Accesos').options));
 
         CateterUci.show = true;
 
@@ -83,12 +80,12 @@ class PacientesUCI extends App {
         HemodialisisUci.show = true;
 
         CultivosUci.show = true;
-        CultivosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Cultivos').options));
+        CultivosUci.registros = PacientesUCIHistorialHistorial.parseSeccion(Array.from(document.getElementById('sec_Cultivos').options));
 
         MarcapasosUci.show = true;
 
         GasesUci.show = true;
-        GasesUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Gases').options));
+        GasesUci.registros = PacientesUCIHistorialHistorial.parseSeccion(Array.from(document.getElementById('sec_Gases').options));
 
         OxigenacionUci.show = true;
 
@@ -132,25 +129,25 @@ class PacientesUCI extends App {
                                 m("td[colspan='6']",
                                     m("button.btn.btn-xs.btn-primary.tx-semibold.tx-14.mg-r-2[type='button']", {
                                         onclick: () => {
-                                            if (confirm("¿Esta Ud seguro de registrar un nuevo turno para este paciente?") == true) {
-                                                TurnosUci.iniciarTurno();
-                                                PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
+                                            m.route.set('/uci/pacientes/', {
+                                                numeroHistoriaClinica: PacientesUCIHistorialHistorial.numeroHistoriaClinica,
+                                                numeroAtencion: PacientesUCIHistorialHistorial.numeroAtencion,
+                                                usuario: PacientesUCIHistorialHistorial.usuarioTurno
 
-                                            }
+                                            })
 
 
 
                                         }
-                                    }, "Registrar Nuevo Turno"),
+                                    }, "Registrar Turnos"),
                                     (FecthUci.dataSecciones.length > 0 ? [
                                         m("button.btn.btn-xs.btn-secondary.tx-semibold.tx-14[type='button']", {
-                                            disabled: 'disabled',
-
                                             onclick: () => {
                                                 m.route.set('/uci/pacientes/historial/', {
-                                                    numeroHistoriaClinica: PacientesUCI.numeroHistoriaClinica,
-                                                    numeroAtencion: PacientesUCI.numeroAtencion,
-                                                    usuario: PacientesUCI.usuarioTurno
+                                                    numeroHistoriaClinica: PacientesUCIHistorialHistorial.numeroHistoriaClinica,
+                                                    numeroAtencion: PacientesUCIHistorialHistorial.numeroAtencion,
+                                                    usuario: PacientesUCIHistorialHistorial.usuarioTurno
+
                                                 })
                                             }
                                         }, "Ver Historial")
@@ -160,7 +157,7 @@ class PacientesUCI extends App {
                             ]),
                             m("tr", [
                                 m("td[colspan='12']", [
-                                    PacientesUCI.vTable('table-turnos', TurnosUci.getTurnos(), PacientesUCI.arqTableTurnos())
+                                    PacientesUCIHistorialHistorial.vTable('table-turnos', TurnosUci.getTurnos(), PacientesUCIHistorialHistorial.arqTableTurnos())
                                 ])
                             ]),
                             m('br')
@@ -1183,7 +1180,7 @@ class PacientesUCI extends App {
                             return [
                                 m('div.text-center.pd-5', [
                                     m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                            class: (PacientesUCIHistorialHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
                                         },
                                         (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
                                         (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
@@ -1342,7 +1339,7 @@ class PacientesUCI extends App {
 
                                 m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
                                         class: (VentilatoriosUci.nuevoRegistro !== null && VentilatoriosUci.nuevoRegistro.editar && VentilatoriosUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
-                                        disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
+                                        disabled: (PacientesUCIHistorialHistorial.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
                                         onclick: () => {
                                             oData.editar = null;
                                             VentilatoriosUci.nuevoRegistro = null;
@@ -1351,14 +1348,14 @@ class PacientesUCI extends App {
                                     'Cancelar Edición',
                                 ),
                                 m("button.btn.btn-xs.btn-dark[type='button']", {
-                                        //class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                        //class: (PacientesUCIHistorialHistorial.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                         onclick: () => {
                                             if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
                                                 VentilatoriosUci.iniciarRegistro();
                                                 VentilatoriosUci.nuevoRegistro.id = oData.id;
                                                 VentilatoriosUci.nuevoRegistro.ventilatorio = oData.ventilatorio;
-                                                VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCIHistorialHistorial.numeroTurno;
+                                                VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCIHistorialHistorial.fechaHoraTurno;
 
                                             }
 
@@ -1471,7 +1468,7 @@ class PacientesUCI extends App {
         /*
 
         if (CuidadosUci2.registros.length > 0) {
-            let registros = CuidadosUci2.registros.filter(_v => _v.fechaHoraTurno == PacientesUCI.fechaHoraTurno);
+            let registros = CuidadosUci2.registros.filter(_v => _v.fechaHoraTurno == PacientesUCIHistorialHistorial.fechaHoraTurno);
             if (registros.length == 0) {
                 copiar = true;
             }
@@ -1486,8 +1483,8 @@ class PacientesUCI extends App {
                     CuidadosUci2.iniciarRegistro();
                     CuidadosUci2.nuevoRegistro.id = option.id;
                     CuidadosUci2.nuevoRegistro.cuidado = option.value;
-                    CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                    CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCIHistorialHistorial.numeroTurno;
+                    CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCIHistorialHistorial.fechaHoraTurno;
                     res.push(CuidadosUci2.nuevoRegistro);
                     CuidadosUci2.nuevoRegistro = null;
                 }
@@ -1517,7 +1514,7 @@ class PacientesUCI extends App {
         /*
 
         if (CateterUci.registros.length > 0) {
-            let registros = CateterUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCI.fechaHoraTurno);
+            let registros = CateterUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCIHistorialHistorial.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -1531,8 +1528,8 @@ class PacientesUCI extends App {
                     CateterUci.iniciarRegistro();
                     CateterUci.nuevoRegistro.id = option.id;
                     CateterUci.nuevoRegistro.cateter = option.value;
-                    CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                    CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    CateterUci.nuevoRegistro.numeroTurno = PacientesUCIHistorialHistorial.numeroTurno;
+                    CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCIHistorialHistorial.fechaHoraTurno;
                     res.push(CateterUci.nuevoRegistro);
                     CateterUci.nuevoRegistro = null;
                 }
@@ -1567,7 +1564,7 @@ class PacientesUCI extends App {
         /*
 
         if (VentilacionUci.registros.length > 0) {
-            let registros = VentilacionUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCI.fechaHoraTurno);
+            let registros = VentilacionUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCIHistorialHistorial.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -1581,8 +1578,8 @@ class PacientesUCI extends App {
                     VentilacionUci.iniciarRegistro();
                     VentilacionUci.nuevoRegistro.id = option.id;
                     VentilacionUci.nuevoRegistro.ventilacion = option.value;
-                    VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                    VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCIHistorialHistorial.numeroTurno;
+                    VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCIHistorialHistorial.fechaHoraTurno;
                     res.push(VentilacionUci.nuevoRegistro);
                     VentilacionUci.nuevoRegistro = null;
                 }
@@ -1617,7 +1614,7 @@ class PacientesUCI extends App {
         /*
 
         if (HemodialisisUci.registros.length > 0) {
-            let registros = HemodialisisUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCI.fechaHoraTurno);
+            let registros = HemodialisisUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCIHistorialHistorial.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -1631,8 +1628,8 @@ class PacientesUCI extends App {
                     HemodialisisUci.iniciarRegistro();
                     HemodialisisUci.nuevoRegistro.id = option.id;
                     HemodialisisUci.nuevoRegistro.hemo = option.value;
-                    HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                    HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCIHistorialHistorial.numeroTurno;
+                    HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCIHistorialHistorial.fechaHoraTurno;
                     res.push(HemodialisisUci.nuevoRegistro);
                     HemodialisisUci.nuevoRegistro = null;
                 }
@@ -1667,7 +1664,7 @@ class PacientesUCI extends App {
         /*
 
         if (MarcapasosUci.registros.length > 0) {
-            let registros = MarcapasosUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCI.fechaHoraTurno);
+            let registros = MarcapasosUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCIHistorialHistorial.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -1680,8 +1677,8 @@ class PacientesUCI extends App {
                     MarcapasosUci.iniciarRegistro();
                     MarcapasosUci.nuevoRegistro.id = option.id;
                     MarcapasosUci.nuevoRegistro.hora = option.value;
-                    MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                    MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCIHistorialHistorial.numeroTurno;
+                    MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCIHistorialHistorial.fechaHoraTurno;
                     res.push(MarcapasosUci.nuevoRegistro);
                     MarcapasosUci.nuevoRegistro = null;
                 }
@@ -1716,7 +1713,7 @@ class PacientesUCI extends App {
         /*
 
         if (OxigenacionUci.registros.length > 0) {
-            let registros = OxigenacionUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCI.fechaHoraTurno);
+            let registros = OxigenacionUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCIHistorialHistorial.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -1730,8 +1727,8 @@ class PacientesUCI extends App {
                     OxigenacionUci.iniciarRegistro();
                     OxigenacionUci.nuevoRegistro.id = option.id;
                     OxigenacionUci.nuevoRegistro.oxi = option.value;
-                    OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                    OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCIHistorialHistorial.numeroTurno;
+                    OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCIHistorialHistorial.fechaHoraTurno;
                     res.push(OxigenacionUci.nuevoRegistro);
                     OxigenacionUci.nuevoRegistro = null;
                 }
@@ -1766,7 +1763,7 @@ class PacientesUCI extends App {
         /*
 
         if (VentilatoriosUci.registros.length > 0) {
-            let registros = VentilatoriosUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCI.fechaHoraTurno);
+            let registros = VentilatoriosUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCIHistorialHistorial.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -1783,8 +1780,8 @@ class PacientesUCI extends App {
                     VentilatoriosUci.nuevoRegistro.id = option.id;
                     VentilatoriosUci.nuevoRegistro.orden = option.getAttribute('orden');
                     VentilatoriosUci.nuevoRegistro.ventilatorio = option.value;
-                    VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                    VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCIHistorialHistorial.numeroTurno;
+                    VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCIHistorialHistorial.fechaHoraTurno;
                     res.push(VentilatoriosUci.nuevoRegistro);
                     VentilatoriosUci.nuevoRegistro = null;
                 }
@@ -1860,16 +1857,11 @@ class PacientesUCI extends App {
                     title: "Status:",
                 },
 
-                {
-                    title: "Gestionar:",
-                },
-                {
-                    title: "Cerrar:",
-                }
             ],
             aoColumnDefs: [{
                     fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
 
+                        console.log(55, oData)
 
 
                         return m.mount(nTd, {
@@ -1877,7 +1869,7 @@ class PacientesUCI extends App {
                                 return [
                                     m('div.text-center', [
                                         m("button.btn-xs.btn-block.tx-semibold.tx-15[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno && oData.gestion == 1 ? 'bg-warning' : 'bg-light')
+                                                class: (PacientesUCIHistorialHistorial.fechaHoraTurno == oData.fechaHoraTurno && oData.gestion == 1 ? 'bg-warning' : 'bg-light')
                                             },
                                             (oData.numeroTurno == 1 ? 'AM' : ''),
                                             (oData.numeroTurno == 2 ? 'PM' : ''),
@@ -1957,7 +1949,7 @@ class PacientesUCI extends App {
                                             onkeypress: (e) => {
                                                 if (e.keyCode == 13) {
                                                     _d = true;
-                                                    PacientesUCI.fechaHoraTurno = oData.fechaHoraTurno;
+                                                    PacientesUCIHistorialHistorial.fechaHoraTurno = oData.fechaHoraTurno;
                                                     FecthUci.actualizarHoraAtencion();
                                                 }
                                             },
@@ -2065,38 +2057,38 @@ class PacientesUCI extends App {
                                                 onclick: () => {
                                                     TurnosUci.nuevoTurno = oData;
                                                     oData.iniciarGestion();
-                                                    PacientesUCI.fechaHoraTurno = oData.fechaTurno + ' ' + oData.horaTurno;
+                                                    PacientesUCIHistorial.fechaHoraTurno = oData.fechaTurno + ' ' + oData.horaTurno;
 
-                                                    CuidadosUci2.registros = PacientesUCI.parseSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options));
-                                                    PacientesUCI.setTurnoSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options))
+                                                    CuidadosUci2.registros = PacientesUCIHistorial.parseSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options));
+                                                    PacientesUCIHistorial.setTurnoSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options))
 
-                                                    CateterUci.registros = PacientesUCI.parseSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
-                                                    PacientesUCI.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
+                                                    CateterUci.registros = PacientesUCIHistorial.parseSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
+                                                    PacientesUCIHistorial.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
 
-                                                    VentilacionUci.registros = PacientesUCI.parseSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
-                                                    PacientesUCI.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
+                                                    VentilacionUci.registros = PacientesUCIHistorial.parseSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
+                                                    PacientesUCIHistorial.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
 
-                                                    HemodialisisUci.registros = PacientesUCI.parseSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
-                                                    PacientesUCI.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
+                                                    HemodialisisUci.registros = PacientesUCIHistorial.parseSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
+                                                    PacientesUCIHistorial.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
 
-                                                    MarcapasosUci.registros = PacientesUCI.parseSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
-                                                    PacientesUCI.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
+                                                    MarcapasosUci.registros = PacientesUCIHistorial.parseSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
+                                                    PacientesUCIHistorial.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
 
                                                     if (FecthUci.dataSecciones.length == 0) {
-                                                        PacientesUCI.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
-                                                        VentilatoriosUci.registros = PacientesUCI.parseSeccionVentilatorios_v2(Array.from(document.getElementById('sec_Ventilatorios').options));
+                                                        PacientesUCIHistorial.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
+                                                        VentilatoriosUci.registros = PacientesUCIHistorial.parseSeccionVentilatorios_v2(Array.from(document.getElementById('sec_Ventilatorios').options));
                                                     } else {
-                                                        VentilatoriosUci.registros = PacientesUCI.parseSeccionVentilatorios_v2(Array.from(document.getElementById('sec_Ventilatorios').options));
-                                                        PacientesUCI.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
+                                                        VentilatoriosUci.registros = PacientesUCIHistorial.parseSeccionVentilatorios_v2(Array.from(document.getElementById('sec_Ventilatorios').options));
+                                                        PacientesUCIHistorial.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
                                                     }
 
-                                                    OxigenacionUci.registros = PacientesUCI.parseSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
-                                                    PacientesUCI.setTurnoSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
+                                                    OxigenacionUci.registros = PacientesUCIHistorial.parseSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
+                                                    PacientesUCIHistorial.setTurnoSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
 
-                                                    PacientesUCI.showSecciones();
+                                                    PacientesUCIHistorial.showSecciones();
                                                 },
                                             },
-                                            'Gestionar',
+                                            'Ver',
                                         ),
 
 
@@ -2112,37 +2104,6 @@ class PacientesUCI extends App {
                     orderable: false,
 
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center', [
-                                        m("button.btn.btn-xs.btn-block.btn-danger.tx-13[type='button']", {
-                                                disabled: (oData.status == 1 && FecthUci.dataSecciones !== null ? '' : 'disabled'),
-
-                                                onclick: () => {
-                                                    oData.cerrarTurno();
-                                                    FecthUci.cerrarTurno();
-                                                },
-                                            },
-                                            'Cerrar',
-                                        ),
-
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [8],
-                    orderable: false,
-
-                }
-
-
             ],
             fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
@@ -2162,10 +2123,10 @@ class PacientesUCI extends App {
 
     static page() {
         return [
-            PacientesUCI.vMain()
+            PacientesUCIHistorialHistorial.vMain()
         ];
     }
 }
 
 
-export default PacientesUCI;
+export default PacientesUCIHistorialHistorial;

@@ -3,11 +3,11 @@ import FecthUci from "./fecthUci";
 import PacientesUCI from "./pacientesUci";
 import TurnosUci from "./turnosUci";
 
-class Acceso {
+class Via {
     id = null;
     nro = null;
     fechaHoraTurno = null;
-    acceso = null;
+    via = null;
     ubicacion = null;
     tipo = null;
     inicio = null;
@@ -16,12 +16,12 @@ class Acceso {
     condicion = null;
     observacion = null;
     editar = null;
-    seccion = 'Accesos';
+    seccion = 'Vias';
     constructor() {
         this.id = this.id;
         this.nro = this.nro;
         this.fechaHoraTurno = this.fechaHoraTurno;
-        this.acceso = this.acceso;
+        this.via = this.via;
         this.ubicacion = this.ubicacion;
         this.tipo = this.tipo;
         this.inicio = this.inicio;
@@ -35,54 +35,60 @@ class Acceso {
 }
 
 
-class AccesosUci {
+class ViasUci {
+
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
+
     static validarRegistro() {
 
     }
+
     static iniciarRegistro() {
-        AccesosUci.nuevoRegistro = new Acceso();
+        ViasUci.nuevoRegistro = new Via();
     }
+
     static agregarRegistro() {
-        if (AccesosUci.registros.length == 0) {
-            AccesosUci.nuevoRegistro.nro = 1;
-            AccesosUci.registros.push(AccesosUci.nuevoRegistro);
+        if (ViasUci.registros.length == 0) {
+            ViasUci.nuevoRegistro.nro = 1;
+            ViasUci.registros.push(ViasUci.nuevoRegistro);
         } else {
-            AccesosUci.nuevoRegistro.nro = (AccesosUci.registros[AccesosUci.registros.length - 1].nro + 1);
-            AccesosUci.registros.push(AccesosUci.nuevoRegistro);
+            ViasUci.nuevoRegistro.nro = (ViasUci.registros[ViasUci.registros.length - 1].nro + 1);
+            ViasUci.registros.push(ViasUci.nuevoRegistro);
         }
     }
+
     static verRegistro(registro) {
         registro.editar = true;
-        AccesosUci.nuevoRegistro = registro;
+        ViasUci.nuevoRegistro = registro;
     }
+
     static editarRegistro() {
-        AccesosUci.nuevoRegistro.editar = null;
-        AccesosUci.registros.map((_v, _i) => {
-            if (_v.nro == AccesosUci.nuevoRegistro.nro) {
-                AccesosUci.registros[_i] = AccesosUci.nuevoRegistro;
+        ViasUci.nuevoRegistro.editar = null;
+        ViasUci.registros.map((_v, _i) => {
+            if (_v.nro == ViasUci.nuevoRegistro.nro) {
+                ViasUci.registros[_i] = ViasUci.nuevoRegistro;
             }
         });
 
     }
+
     static eliminarRegistro(obj) {
 
         let res = [];
-        AccesosUci.registros.map((_v, _i) => {
-
+        ViasUci.registros.map((_v, _i) => {
             if (_v.nro !== obj.nro) {
                 res.push(_v);
             }
-
         });
 
-        AccesosUci.registros = res;
+        ViasUci.registros = res;
 
     }
+
     static getRegistros() {
-        return AccesosUci.registros;
+        return ViasUci.registros;
     }
 
     static arqTable() {
@@ -121,16 +127,19 @@ class AccesosUci {
                 [1, 'desc']
             ],
             columns: [{
-                    title: "Order N°:",
+                    title: "order Turno:",
                 },
                 {
-                    title: "Order Turno:",
+                    title: "order N°:",
                 },
                 {
                     title: "Turno:",
                 },
                 {
-                    title: "Acceso:",
+                    title: "N°:",
+                },
+                {
+                    title: "Via:",
                 },
                 {
                     title: "Ubicación:",
@@ -174,7 +183,6 @@ class AccesosUci {
                     mRender: function(data, type, full) {
                         return full.nro;
                     },
-
                     visible: false,
                     aTargets: [1],
                     orderable: true,
@@ -193,7 +201,6 @@ class AccesosUci {
                                             (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
                                             (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
                                         ),
-
                                     ])
 
                                 ]
@@ -203,16 +210,27 @@ class AccesosUci {
                     width: '15%',
                     visible: true,
                     aTargets: [2],
-                    orderable: true,
+                    orderable: false,
 
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.acceso;
+                        return full.nro;
+                    },
+
+                    visible: false,
+                    aTargets: [3],
+                    orderable: false,
+
+                },
+
+                {
+                    mRender: function(data, type, full) {
+                        return (full.via != null ? full.via : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                     },
 
                     visible: true,
-                    aTargets: [3],
+                    aTargets: [4],
                     orderable: true,
 
                 },
@@ -221,7 +239,7 @@ class AccesosUci {
                         return (full.ubicacion != null ? full.ubicacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                     },
                     visible: true,
-                    aTargets: [4],
+                    aTargets: [5],
                     orderable: true,
 
                 },
@@ -230,22 +248,12 @@ class AccesosUci {
                         return (full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                     },
                     visible: true,
-                    aTargets: [5],
+                    aTargets: [6],
                     orderable: true,
                 },
                 {
                     mRender: function(data, type, full) {
                         return (full.inicio != null ? full.inicio : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    visible: true,
-                    aTargets: [6],
-                    orderable: true,
-
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.retiro != null ? full.retiro : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                     },
                     visible: true,
                     aTargets: [7],
@@ -255,7 +263,7 @@ class AccesosUci {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return (full.cambio != null ? full.cambio : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                        return (full.retiro != null ? full.retiro : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                     },
                     visible: true,
                     aTargets: [8],
@@ -265,7 +273,7 @@ class AccesosUci {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return (full.curacion != null ? full.curacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                        return (full.cambio != null ? full.cambio : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                     },
                     visible: true,
                     aTargets: [9],
@@ -275,7 +283,7 @@ class AccesosUci {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return (full.condicion != null ? full.condicion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                        return (full.curacion != null ? full.curacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                     },
                     visible: true,
                     aTargets: [10],
@@ -285,10 +293,20 @@ class AccesosUci {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return (full.observacion != null ? full.observacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                        return (full.condicion != null ? full.condicion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                     },
                     visible: true,
                     aTargets: [11],
+                    orderable: true,
+
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return (full.observacion != null ? full.observacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    },
+                    visible: true,
+                    aTargets: [12],
                     orderable: true,
 
 
@@ -303,8 +321,8 @@ class AccesosUci {
                                                 class: (oData.editar ? 'd-none' : ''),
                                                 disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
-                                                    AccesosUci.nuevoRegistro = null
-                                                    AccesosUci.verRegistro(oData);
+                                                    ViasUci.nuevoRegistro = null
+                                                    ViasUci.verRegistro(oData);
                                                 },
                                             },
                                             'Editar',
@@ -315,7 +333,7 @@ class AccesosUci {
 
                                                 onclick: () => {
                                                     oData.editar = null;
-                                                    AccesosUci.nuevoRegistro = null;
+                                                    ViasUci.nuevoRegistro = null;
                                                 },
                                             },
                                             'Cancelar Edición',
@@ -323,19 +341,13 @@ class AccesosUci {
                                         m("button.btn.btn-xs.btn-danger[type='button']", {
                                                 class: (oData.editar ? 'd-none' : ''),
                                                 disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-
                                                 onclick: () => {
-
                                                     if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                                        AccesosUci.eliminarRegistro(oData);
+                                                        ViasUci.eliminarRegistro(oData);
                                                         FecthUci.eliminarSeccion(oData);
-                                                        AccesosUci.nuevoRegistro = null;
-                                                        PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
+                                                        ViasUci.nuevoRegistro = null;
+                                                        PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
                                                     }
-
-
-
-
                                                 },
                                             },
                                             'Eliminar',
@@ -344,18 +356,13 @@ class AccesosUci {
                                                 class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                                 onclick: () => {
                                                     if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        AccesosUci.iniciarRegistro();
-                                                        AccesosUci.nuevoRegistro.id = oData.id;
-                                                        AccesosUci.nuevoRegistro.acceso = oData.acceso;
-                                                        AccesosUci.nuevoRegistro.ubicacion = oData.ubicacion;
-                                                        AccesosUci.nuevoRegistro.tipo = oData.tipo;
-                                                        AccesosUci.nuevoRegistro.inicio = oData.inicio;
-                                                        AccesosUci.nuevoRegistro.retiro = oData.retiro;
-                                                        AccesosUci.nuevoRegistro.curacion = oData.curacion;
-                                                        AccesosUci.nuevoRegistro.condicion = oData.condicion;
-                                                        AccesosUci.nuevoRegistro.observacion = oData.observacion;
-                                                        AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        ViasUci.iniciarRegistro();
+                                                        ViasUci.nuevoRegistro.id = oData.id;
+                                                        ViasUci.nuevoRegistro.via = oData.via;
+                                                        ViasUci.nuevoRegistro.ubicacion = oData.ubicacion;
+                                                        ViasUci.nuevoRegistro.tipo = oData.tipo;
+                                                        ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                     }
 
                                                 },
@@ -370,7 +377,7 @@ class AccesosUci {
                     },
                     width: '10%',
                     visible: true,
-                    aTargets: [12],
+                    aTargets: [13],
                     orderable: true,
 
                 }
@@ -386,33 +393,31 @@ class AccesosUci {
     view() {
         return [
             m("thead.bd.bd-2", {
-                    style: { "border-color": "#5173a1" }
+                    style: { "border-color": "#5173a1" },
                 },
 
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (AccesosUci.show ? '' : 'd-none')
-
+                    class: (ViasUci.show ? '' : 'd-none')
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "ACCESOS:"
+                        "VIAS:"
                     ),
 
                 ])
             ),
             m("tbody.bd.bd-2", {
                 style: { "border-color": "#5173a1" },
-                class: (AccesosUci.show ? '' : 'd-none')
+                class: (ViasUci.show ? '' : 'd-none')
             }, [
 
                 m("tr.bd.bd-2.tx-uppercase", {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
-
                 }, [
                     m("th[scope='col'][colspan='4']",
-                        "ACCESO: "
+                        "VÍA: "
                     ),
                     m("th[scope='col'][colspan='4']",
                         "UBICACIÓN: "
@@ -429,112 +434,77 @@ class AccesosUci {
                 }, [
                     m("td.tx-14.tx-normal.wd-40p[colspan='4']",
                         m('select.tx-semibold', {
-                            id: 'sec_Accesos',
+                            id: 'sec_Vias',
                             onchange: (e) => {
                                 let _id = e.target.options[e.target.selectedIndex].id;
                                 let _value = e.target.options[e.target.selectedIndex].value;
-                                if (AccesosUci.nuevoRegistro == null) {
-                                    AccesosUci.iniciarRegistro();
-                                    AccesosUci.nuevoRegistro.id = _id;
-                                    AccesosUci.nuevoRegistro.acceso = _value;
+                                if (ViasUci.nuevoRegistro == null) {
+                                    ViasUci.iniciarRegistro();
+                                    ViasUci.nuevoRegistro.id = _id;
+                                    ViasUci.nuevoRegistro.via = _value;
                                 } else {
-                                    AccesosUci.nuevoRegistro.id = _id;
-                                    AccesosUci.nuevoRegistro.acceso = _value;
+                                    ViasUci.nuevoRegistro.id = _id;
+                                    ViasUci.nuevoRegistro.via = _value;
                                 }
                             },
                             class: "custom-select",
-                            value: (AccesosUci.nuevoRegistro !== null ? AccesosUci.nuevoRegistro.acceso : 0),
+                            value: (ViasUci.nuevoRegistro !== null ? ViasUci.nuevoRegistro.via : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                id: "CateterIntracraneal",
-                                label: "CATETER INTRACRANEAL"
-                            }, {
-                                id: "AccesoIntraOseo",
-                                label: "ACCESO INTRA-OSEO"
-                            }, {
-                                id: "TuboTraqueal",
-                                label: "TUBO TRAQUEAL"
-                            }, {
-                                id: "TuboToracico",
-                                label: "TUBO TORACICO"
-                            }, {
-                                id: "Traqueotomo",
-                                label: "TRAQUEOTOMO"
-                            }, {
-                                id: "SondaNasogastrica",
-                                label: "SONDA NASOGASTRICA"
-                            }, {
-                                id: "SondaOrogastrica",
-                                label: "SONDA OROGASTRICA"
-                            }, {
-                                id: "SondaVesical",
-                                label: "SONDA VESICAL"
-                            },
-                            {
-                                id: "Gastrotomia",
-                                label: "GASTROSTOMIA"
-                            },
-                            {
-                                id: "Yeyuyostomia",
-                                label: "YEYUYOSTOMIA"
-                            },
-                            {
-                                id: "ManguerasVentilador",
-                                label: "MANGUERAS DE VENTILADOR"
-                            },
-                            {
-                                id: "EquiposNutricionEnteral",
-                                label: "EQUIPOS DE NUTRICION ENTERAL"
-                            },
-                            {
-                                id: "EquiposNutricionParenteral",
-                                label: "EQUIPOS DE NUTRICION PARENTERAL"
-                            },
-                            {
-                                id: "Microgoteros",
-                                label: "MICROGOTEROS"
-                            },
-                            {
-                                id: "EquipoVenoclisis",
-                                label: "EQUIPO DE VENOCLISIS"
-                            }
-                        ].map(x =>
+                            id: "ViaPeriferica",
+                            label: "VIA PERIFERICA"
+                        }, {
+                            id: "CateterSubclavio",
+                            label: "CATETER SUBCLAVIO"
+                        }, {
+                            id: "CateterYugular",
+                            label: "CATETER YUGULAR"
+                        }, {
+                            id: "CateterFemoral",
+                            label: "CATETER FEMORAL"
+                        }, {
+                            id: "CateterCentralInsercionPeriferica",
+                            label: "CATETER CENTRAL DE INSERCION PERIFERICA"
+                        }, {
+                            id: "CateterHemodialisis",
+                            label: "CATETER DE HEMODIALISIS"
+                        }, {
+                            id: "CateterImplantableSubcutaneo",
+                            label: "CATETER IMPLANTABLE SUBCUTANEO"
+                        }, {
+                            id: "LineaArterial",
+                            label: "LINEA ARTERIAL"
+                        }].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
                         ))
+
                     ),
                     m("td.tx-10.tx-normal.wd-40p[colspan='4']",
-                        (AccesosUci.nuevoRegistro !== null ? [
-                            m('select.tx-semibold', {
-                                id: "ubicacion" + AccesosUci.nuevoRegistro.id,
-                                oncreate: (el) => {
-                                    if (AccesosUci.nuevoRegistro.ubicacion != undefined) {
-                                        el.dom.value = AccesosUci.nuevoRegistro.ubicacion;
-                                    }
+                        (ViasUci.nuevoRegistro !== null ? [
+                            m("input", {
+                                id: "ubicacion" + ViasUci.nuevoRegistro.id,
+                                class: "form-control tx-semibold tx-14",
+                                type: "text",
+                                placeholder: "...",
+                                oninput: (e) => {
+                                    ViasUci.nuevoRegistro.ubicacion = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
-                                onchange: (e) => {
-                                    let _value = e.target.options[e.target.selectedIndex].value;
-                                    AccesosUci.nuevoRegistro.ubicacion = _value;
-                                },
-                                class: "custom-select"
-                            }, m('option', 'Seleccione...'), ['SUBDURAL', 'INTRAPARENQUIMATOSO', 'TIBIAL', 'NASO-TRAQUEAL', 'ORO-TRAQUEAL', 'SUBMAXILAR',
-                                'TORAX DERECHO', 'TORAX IZQUIERDO', 'PLEURAL', 'MEDIASTINAL', 'TRAQUEA', 'FOSA NASAL DERECHA', 'FOSA NASAL IZQUIERDA', 'OROGASTRICA', 'EPIGASTRIO', 'YEYUNO', 'NO APLICA'
-                            ].map(x =>
-                                m('option', x)
-                            ))
+                                value: ViasUci.nuevoRegistro.ubicacion
+                            })
                         ] : [])
 
 
                     ),
                     m("td.tx-14.tx-normal.wd-40p[colspan='4']",
-                        (AccesosUci.nuevoRegistro !== null ? [
+                        (ViasUci.nuevoRegistro !== null ? [
                             m("input", {
-                                id: "tipo" + AccesosUci.nuevoRegistro.id,
+                                id: "tipo" + ViasUci.nuevoRegistro.id,
                                 class: "form-control tx-semibold tx-14",
                                 type: "text",
                                 placeholder: "...",
                                 oninput: (e) => {
-                                    AccesosUci.nuevoRegistro.tipo = (e.target.value.length !== 0 ? e.target.value : null);
+                                    ViasUci.nuevoRegistro.tipo = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
-                                value: AccesosUci.nuevoRegistro.tipo
+                                value: ViasUci.nuevoRegistro.tipo
                             })
                         ] : [])
                     ),
@@ -559,25 +529,23 @@ class AccesosUci {
                         "CURACIÓN: "
                     ),
 
-
                 ]),
                 m("tr.bd.bd-2", {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+
                 }, [
-
-
                     m("td.tx-14.tx-normal.wd-30p[colspan='3']",
-                        (AccesosUci.nuevoRegistro !== null ? [
-                            m('div.d-flex', [
+                        (ViasUci.nuevoRegistro !== null ? [
+                            m('div', [
                                 m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
-                                    id: "ifecha" + AccesosUci.nuevoRegistro.id,
+                                    id: "ifecha" + ViasUci.nuevoRegistro.id,
                                     oncreate: (el) => {
-                                        if (AccesosUci.nuevoRegistro.inicio != undefined) {
-                                            el.dom.value = AccesosUci.nuevoRegistro.inicio;
+                                        if (ViasUci.nuevoRegistro.inicio !== undefined) {
+                                            el.dom.value = ViasUci.nuevoRegistro.inicio;
                                         }
                                         setTimeout(() => {
-                                            new Cleave("#ifecha" + AccesosUci.nuevoRegistro.id, {
+                                            new Cleave("#ifecha" + ViasUci.nuevoRegistro.id, {
                                                 date: true,
                                                 datePattern: ["d", "m", "Y"]
                                             });
@@ -585,24 +553,25 @@ class AccesosUci {
                                     },
                                     oninput: (e) => {
                                         setTimeout(() => {
-                                            AccesosUci.nuevoRegistro.inicio = e.target.value;
+                                            ViasUci.nuevoRegistro.inicio = e.target.value;
                                         }, 50);
                                     },
-                                })
+                                }),
                             ]),
                         ] : [])
                     ),
                     m("td.tx-14.tx-normal.wd-30p[colspan='3']",
-                        (AccesosUci.nuevoRegistro !== null ? [
-                            m('div.d-flex', [
+
+                        (ViasUci.nuevoRegistro !== null ? [
+                            m('div', [
                                 m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
-                                    id: "rfecha" + AccesosUci.nuevoRegistro.id,
+                                    id: "rfecha" + ViasUci.nuevoRegistro.id,
                                     oncreate: (el) => {
-                                        if (AccesosUci.nuevoRegistro.retiro != undefined) {
-                                            el.dom.value = AccesosUci.nuevoRegistro.retiro;
+                                        if (ViasUci.nuevoRegistro.retiro !== undefined) {
+                                            el.dom.value = ViasUci.nuevoRegistro.retiro;
                                         }
                                         setTimeout(() => {
-                                            new Cleave("#rfecha" + AccesosUci.nuevoRegistro.id, {
+                                            new Cleave("#rfecha" + ViasUci.nuevoRegistro.id, {
                                                 date: true,
                                                 datePattern: ["d", "m", "Y"]
                                             });
@@ -610,11 +579,10 @@ class AccesosUci {
                                     },
                                     oninput: (e) => {
                                         setTimeout(() => {
-                                            AccesosUci.nuevoRegistro.retiro = e.target.value;
+                                            ViasUci.nuevoRegistro.retiro = e.target.value;
                                         }, 50);
                                     },
-                                })
-
+                                }),
                             ])
 
 
@@ -624,16 +592,16 @@ class AccesosUci {
                     ),
                     m("td.tx-14.tx-normal.wd-30p[colspan='3']",
 
-                        (AccesosUci.nuevoRegistro !== null ? [
-                            m('div.d-flex', [
+                        (ViasUci.nuevoRegistro !== null ? [
+                            m('div', [
                                 m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
-                                    id: "cfecha" + AccesosUci.nuevoRegistro.id,
+                                    id: "cfecha" + ViasUci.nuevoRegistro.id,
                                     oncreate: (el) => {
-                                        if (AccesosUci.nuevoRegistro.cambio != undefined) {
-                                            el.dom.value = AccesosUci.nuevoRegistro.cambio;
+                                        if (ViasUci.nuevoRegistro.cambio !== undefined) {
+                                            el.dom.value = ViasUci.nuevoRegistro.cambio;
                                         }
                                         setTimeout(() => {
-                                            new Cleave("#cfecha" + AccesosUci.nuevoRegistro.id, {
+                                            new Cleave("#cfecha" + ViasUci.nuevoRegistro.id, {
                                                 date: true,
                                                 datePattern: ["d", "m", "Y"]
                                             });
@@ -641,10 +609,10 @@ class AccesosUci {
                                     },
                                     oninput: (e) => {
                                         setTimeout(() => {
-                                            AccesosUci.nuevoRegistro.cambio = e.target.value;
+                                            ViasUci.nuevoRegistro.cambio = e.target.value;
                                         }, 50);
                                     },
-                                })
+                                }),
 
                             ])
                         ] : [
@@ -656,16 +624,16 @@ class AccesosUci {
                     ),
                     m("td.tx-14.tx-normal.wd-30p[colspan='3']",
 
-                        (AccesosUci.nuevoRegistro !== null ? [
-                            m('div.d-flex', [
+                        (ViasUci.nuevoRegistro !== null ? [
+                            m('div', [
                                 m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
-                                    id: "cufecha" + AccesosUci.nuevoRegistro.id,
+                                    id: "cufecha" + ViasUci.nuevoRegistro.id,
                                     oncreate: (el) => {
-                                        if (AccesosUci.nuevoRegistro.curacion != undefined) {
-                                            el.dom.value = AccesosUci.nuevoRegistro.curacion;
+                                        if (ViasUci.nuevoRegistro.curacion !== undefined) {
+                                            el.dom.value = ViasUci.nuevoRegistro.curacion_fecha;
                                         }
                                         setTimeout(() => {
-                                            new Cleave("#cufecha" + AccesosUci.nuevoRegistro.id, {
+                                            new Cleave("#cufecha" + ViasUci.nuevoRegistro.id, {
                                                 date: true,
                                                 datePattern: ["d", "m", "Y"]
                                             });
@@ -673,10 +641,11 @@ class AccesosUci {
                                     },
                                     oninput: (e) => {
                                         setTimeout(() => {
-                                            AccesosUci.nuevoRegistro.curacion = e.target.value;
+                                            ViasUci.nuevoRegistro.curacion = e.target.value;
                                         }, 50);
                                     },
                                 }),
+
                             ])
                         ] : [])
 
@@ -689,70 +658,76 @@ class AccesosUci {
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
                 }, [
-
-
-                    m("th[scope='col'][colspan='6']",
+                    m("th[scope='col'][colspan='3']",
                         "CONDICIÓN: "
                     ),
-                    m("th[scope='col'][colspan='6']",
-                        "OBSERVACIÓN / TRAE: "
+                    m("th[scope='col'][colspan='9']",
+                        "OBSERVACIÓN: "
                     ),
-
                 ]),
                 m('tr.bd.bd-2', {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
-                }, [
-                    m("td.tx-14.tx-normal.wd-60p[colspan='6']",
-                        (AccesosUci.nuevoRegistro !== null ? [
 
-                            m("input", {
-                                id: "condicion" + AccesosUci.nuevoRegistro.id,
-                                class: "form-control tx-semibold tx-14",
-                                type: "text",
-                                placeholder: "...",
-                                value: AccesosUci.nuevoRegistro.condicion,
-                                oninput: (e) => {
-                                    AccesosUci.nuevoRegistro.condicion = (e.target.value.length !== 0 ? e.target.value : null);
+                }, [
+                    m("td.tx-14.tx-normal.wd-30p[colspan='3']",
+                        (ViasUci.nuevoRegistro !== null ? [
+                            m('select.tx-semibold', {
+                                id: "condicion" + ViasUci.nuevoRegistro.id,
+                                oncreate: (el) => {
+                                    if (ViasUci.nuevoRegistro.condicion !== undefined) {
+                                        el.dom.value = ViasUci.nuevoRegistro.condicion;
+                                    }
                                 },
-                            })
+                                onchange: (e) => {
+                                    let _value = e.target.options[e.target.selectedIndex].value;
+                                    ViasUci.nuevoRegistro.condicion = _value;
+                                },
+                                class: "custom-select",
+                            }, m('option', 'Seleccione...'), [
+                                'VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES',
+                                'CATETER PERMEABLE',
+                                'EN BUENAS CONDICIONES',
+                                'SIN SIGNOS DE INFECCION'
+                            ].map(x =>
+                                m('option', x)
+                            ))
                         ] : [])
 
 
                     ),
-                    m("td.tx-14.tx-normal.wd-60p[colspan='6']",
-                        (AccesosUci.nuevoRegistro !== null ? [
+                    m("td.tx-14.tx-normal.wd-90p[colspan='9']",
+                        (ViasUci.nuevoRegistro !== null ? [
                             m("input", {
-                                id: "observacion" + AccesosUci.nuevoRegistro.id,
+                                id: "observacion" + ViasUci.nuevoRegistro.id,
                                 class: "form-control tx-semibold tx-14",
                                 type: "text",
                                 placeholder: "...",
-                                value: AccesosUci.nuevoRegistro.observacion,
                                 onkeypress: (e) => {
                                     if (e.keyCode == 13) {
-                                        AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                        AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                        if (AccesosUci.nuevoRegistro.editar == null) {
-                                            AccesosUci.agregarRegistro();
-                                            FecthUci.registrarSeccion(AccesosUci.nuevoRegistro);
-                                            PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
-                                            AccesosUci.nuevoRegistro = null;
+                                        ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                        ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        if (ViasUci.nuevoRegistro.editar == null) {
+                                            ViasUci.agregarRegistro();
+                                            FecthUci.registrarSeccion(ViasUci.nuevoRegistro);
+                                            ViasUci.nuevoRegistro = null;
+                                            PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
                                         } else {
-                                            AccesosUci.editarRegistro();
-                                            FecthUci.actualizarSeccion(AccesosUci.nuevoRegistro);
-                                            PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
-                                            AccesosUci.nuevoRegistro = null;
+                                            ViasUci.editarRegistro();
+                                            FecthUci.actualizarSeccion(ViasUci.nuevoRegistro);
+                                            ViasUci.nuevoRegistro = null;
+                                            PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
                                         }
                                     }
                                 },
                                 oninput: (e) => {
-                                    AccesosUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
+                                    ViasUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
+                                value: ViasUci.nuevoRegistro.observacion
                             })
                         ] : [])
                     ),
                 ]),
-
                 m("tr.tx-uppercase", {
                     style: { "background-color": "#eaeff5" }
                 }, [
@@ -762,12 +737,15 @@ class AccesosUci {
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12']",
-                        (AccesosUci.show != false ? [PacientesUCI.vTable('table-accesos', AccesosUci.getRegistros(), AccesosUci.arqTable())] : [])
+                        (ViasUci.show != false ? [PacientesUCI.vTable('table-vias', ViasUci.getRegistros(), ViasUci.arqTable())] : [])
                     ),
                 ]),
+                m('br')
             ]),
-        ]
+        ];
     }
+
+
 }
 
-export default AccesosUci;
+export default ViasUci;

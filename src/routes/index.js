@@ -28,6 +28,7 @@ import NuevoContrato from "../views/admisiones/contratos/nuevoContrato";
 import VerContrato from "../views/admisiones/contratos/verContrato";
 import CalendarioEndo2 from "../views/endoscopia/agenda/calendario2";
 import PedidoFlebotomista from "../views/laboratorio/flebotomista/pedidoFlebo";
+import PacientesUCIHistorial from "../views/uci/pacientes/historial/pacientesUci";
 
 // Routes here
 const Routes = {
@@ -42,6 +43,7 @@ const Routes = {
     "/administracion/metroplus": usrMPLUS,
     "/uci": Uci,
     "/uci/pacientes": PacientesUCI,
+    "/uci/pacientes/historial": PacientesUCIHistorial,
     "/hospitalizacion": Hospital,
     "/hospitalizacion/pasaportes": Pasaportes,
     "/hospitalizacion/pasaporte": VerPasaporte,

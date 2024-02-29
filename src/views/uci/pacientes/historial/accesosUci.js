@@ -349,11 +349,6 @@ class AccesosUci {
                                                         AccesosUci.nuevoRegistro.acceso = oData.acceso;
                                                         AccesosUci.nuevoRegistro.ubicacion = oData.ubicacion;
                                                         AccesosUci.nuevoRegistro.tipo = oData.tipo;
-                                                        AccesosUci.nuevoRegistro.inicio = oData.inicio;
-                                                        AccesosUci.nuevoRegistro.retiro = oData.retiro;
-                                                        AccesosUci.nuevoRegistro.curacion = oData.curacion;
-                                                        AccesosUci.nuevoRegistro.condicion = oData.condicion;
-                                                        AccesosUci.nuevoRegistro.observacion = oData.observacion;
                                                         AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                         AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                     }
@@ -695,7 +690,7 @@ class AccesosUci {
                         "CONDICIÓN: "
                     ),
                     m("th[scope='col'][colspan='6']",
-                        "OBSERVACIÓN / TRAE: "
+                        "OBSERVACIÓN: "
                     ),
 
                 ]),

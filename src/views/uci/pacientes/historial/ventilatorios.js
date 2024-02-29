@@ -1,7 +1,4 @@
 import m from "mithril";
-import App from "../../../models/App";
-import Loader from "../../utils/loader";
-import Errors from "../../utils/errors";
 import PacientesUCI from "./pacientesUci";
 import TurnosUci from "./turnosUci";
 import FecthUci from "./fecthUci";
@@ -1418,7 +1415,7 @@ class VentilatoriosUci {
                                         if (VentilatoriosUci.nuevoRegistro.hora != undefined) {
                                             el.dom.value = VentilatoriosUci.nuevoRegistro.hora;
                                         }
-                                        if (VentilatoriosUci.nuevoRegistro.hora == null) {
+                                        if (VentilatoriosUci.nuevoRegistro.editar == null) {
                                             if (VentilatoriosUci.setHora != undefined) {
                                                 el.dom.value = VentilatoriosUci.setHora;
                                             }

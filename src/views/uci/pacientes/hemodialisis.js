@@ -58,6 +58,7 @@ class HemodialisisUci {
         HemodialisisUci.nuevoRegistro = registro;
         console.log(HemodialisisUci.nuevoRegistro)
     }
+
     static editarRegistro() {
         HemodialisisUci.nuevoRegistro.editar = null;
         HemodialisisUci.registros.map((_v, _i) => {
@@ -68,15 +69,47 @@ class HemodialisisUci {
 
     }
     static eliminarRegistro(obj) {
-        let res = [];
-        HemodialisisUci.registros.map((_v, _i) => {
 
+        HemodialisisUci.registros = PacientesUCI.extractSeccion(Array.from(document.getElementById('sec_Hemodialisis').options));
+
+        let hash = {};
+        let res = [];
+        let _arr = [];
+        let result = [];
+        let resultId = [];
+
+        HemodialisisUci.registros.map((_v, _i) => {
             if (_v.nro !== obj.nro) {
                 res.push(_v);
             }
         });
-        HemodialisisUci.registros = res;
+
+        result = res.sort((a, b) => b.nro - a.nro);
+
+        resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
+        // Ordenar desc
+        _arr = resultId.sort((a, b) => a.nro - b.nro);
+
+        HemodialisisUci.registros = _arr;
+
     }
+    static filterRegistros() {
+
+        let result = [];
+        let resultId = [];
+        let _arr = [];
+        let hash = {};
+
+        result = HemodialisisUci.registros.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
+        // Ordenar desc
+        _arr = resultId.sort((a, b) => a.nro - b.nro);
+
+        HemodialisisUci.registros = _arr;
+
+    }
+
     static getRegistros() {
         return HemodialisisUci.registros;
     }
@@ -249,7 +282,7 @@ class HemodialisisUci {
                                             },
                                             'Editar',
                                         ),
-                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
+                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
                                                 class: (oData.editar ? '' : 'd-none'),
                                                 disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
                                                 onclick: () => {
@@ -258,6 +291,25 @@ class HemodialisisUci {
                                                 },
                                             },
                                             'Cancelar Edición',
+                                        ),
+                                        m("button.btn.btn-xs.btn-dark[type='button']", {
+                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                                onclick: () => {
+                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
+                                                        HemodialisisUci.iniciarRegistro();
+                                                        HemodialisisUci.nuevoRegistro.id = oData.id;
+                                                        HemodialisisUci.nuevoRegistro.hemo = oData.hemo;
+                                                        HemodialisisUci.nuevoRegistro.am = oData.am;
+                                                        HemodialisisUci.nuevoRegistro.pm = oData.pm;
+                                                        HemodialisisUci.nuevoRegistro.hs = oData.hs;
+                                                        HemodialisisUci.nuevoRegistro.observacion = oData.observacion;
+                                                        HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    }
+
+                                                },
+                                            },
+                                            'Copiar',
                                         ),
 
                                     ])
@@ -384,7 +436,11 @@ class HemodialisisUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        HemodialisisUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
+                                        if (PacientesUCI.numeroTurno == 1) {
+                                            HemodialisisUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
+                                        } else {
+                                            e.target.value = '';
+                                        }
                                     },
                                     value: HemodialisisUci.nuevoRegistro.am
 
@@ -402,7 +458,11 @@ class HemodialisisUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        HemodialisisUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
+                                        if (PacientesUCI.numeroTurno == 2) {
+                                            HemodialisisUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
+                                        } else {
+                                            e.target.value = '';
+                                        }
                                     },
                                     value: HemodialisisUci.nuevoRegistro.pm
 
@@ -421,7 +481,11 @@ class HemodialisisUci {
                                     type: "text",
                                     placeholder: "...",
                                     oninput: (e) => {
-                                        HemodialisisUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
+                                        if (PacientesUCI.numeroTurno == 3) {
+                                            HemodialisisUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
+                                        } else {
+                                            e.target.value = '';
+                                        }
                                     },
                                     value: HemodialisisUci.nuevoRegistro.hs
 
@@ -460,13 +524,15 @@ class HemodialisisUci {
                                         if (HemodialisisUci.nuevoRegistro.editar == null) {
                                             HemodialisisUci.agregarRegistro();
                                             FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
-                                            PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
                                             HemodialisisUci.nuevoRegistro = null;
+                                            HemodialisisUci.filterRegistros();
+                                            PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
                                         } else {
                                             HemodialisisUci.editarRegistro();
                                             FecthUci.actualizarSeccion(HemodialisisUci.nuevoRegistro);
-                                            PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
                                             HemodialisisUci.nuevoRegistro = null;
+                                            HemodialisisUci.filterRegistros();
+                                            PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
                                         }
                                     }
                                 },
