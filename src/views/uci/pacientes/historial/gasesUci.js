@@ -136,9 +136,7 @@ class GasesUci {
                     title: "Valores:",
                 },
 
-                {
-                    title: "Opciones:",
-                }
+
             ],
             aoColumnDefs: [{
                     mRender: function(data, type, full) {
@@ -209,66 +207,6 @@ class GasesUci {
                     aTargets: [5],
                     orderable: true,
                 },
-
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    GasesUci.nuevoRegistro = null
-                                                    GasesUci.verRegistro(oData);
-                                                },
-                                            },
-                                            'Editar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
-                                                class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
-
-                                                onclick: () => {
-                                                    oData.editar = null;
-                                                    GasesUci.nuevoRegistro = null;
-                                                },
-                                            },
-                                            'Cancelar Edición',
-                                        ),
-                                        m("button.btn.btn-xs.btn-danger[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-
-                                                onclick: () => {
-
-                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                                        GasesUci.eliminarRegistro(oData);
-                                                        FecthUci.eliminarSeccion(oData);
-                                                        GasesUci.nuevoRegistro = null;
-                                                        PacientesUCI.vReloadTable('table-gases', GasesUci.getRegistros());
-                                                    }
-
-
-
-
-                                                },
-                                            },
-                                            'Eliminar',
-                                        ),
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [6],
-                    orderable: true,
-
-                }
 
 
             ],

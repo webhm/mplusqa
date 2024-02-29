@@ -142,9 +142,7 @@ class CultivosUci {
                 {
                     title: "Observaciones:",
                 },
-                {
-                    title: "Opciones:",
-                }
+
             ],
             aoColumnDefs: [{
                     mRender: function(data, type, full) {
@@ -232,65 +230,7 @@ class CultivosUci {
                     aTargets: [7],
                     orderable: true,
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    CultivosUci.nuevoRegistro = null
-                                                    CultivosUci.verRegistro(oData);
-                                                },
-                                            },
-                                            'Editar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
-                                                class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
 
-                                                onclick: () => {
-                                                    oData.editar = null;
-                                                    CultivosUci.nuevoRegistro = null;
-                                                },
-                                            },
-                                            'Cancelar Edición',
-                                        ),
-                                        m("button.btn.btn-xs.btn-danger[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-
-                                                onclick: () => {
-
-                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                                        CultivosUci.eliminarRegistro(oData);
-                                                        FecthUci.eliminarSeccion(oData);
-                                                        CultivosUci.nuevoRegistro = null;
-                                                        PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
-                                                    }
-
-
-
-
-                                                },
-                                            },
-                                            'Eliminar',
-                                        ),
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [8],
-                    orderable: true,
-
-                }
 
 
             ],

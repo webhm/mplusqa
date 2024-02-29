@@ -157,10 +157,8 @@ class AccesosUci {
                 },
                 {
                     title: "Observación:",
-                },
-                {
-                    title: "Opciones:",
                 }
+
             ],
             aoColumnDefs: [{
                     mRender: function(data, type, full) {
@@ -293,82 +291,7 @@ class AccesosUci {
 
 
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    AccesosUci.nuevoRegistro = null
-                                                    AccesosUci.verRegistro(oData);
-                                                },
-                                            },
-                                            'Editar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
-                                                class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
 
-                                                onclick: () => {
-                                                    oData.editar = null;
-                                                    AccesosUci.nuevoRegistro = null;
-                                                },
-                                            },
-                                            'Cancelar Edición',
-                                        ),
-                                        m("button.btn.btn-xs.btn-danger[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-
-                                                onclick: () => {
-
-                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                                        AccesosUci.eliminarRegistro(oData);
-                                                        FecthUci.eliminarSeccion(oData);
-                                                        AccesosUci.nuevoRegistro = null;
-                                                        PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
-                                                    }
-
-
-
-
-                                                },
-                                            },
-                                            'Eliminar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
-                                                onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        AccesosUci.iniciarRegistro();
-                                                        AccesosUci.nuevoRegistro.id = oData.id;
-                                                        AccesosUci.nuevoRegistro.acceso = oData.acceso;
-                                                        AccesosUci.nuevoRegistro.ubicacion = oData.ubicacion;
-                                                        AccesosUci.nuevoRegistro.tipo = oData.tipo;
-                                                        AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    }
-
-                                                },
-                                            },
-                                            'Copiar',
-                                        ),
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [12],
-                    orderable: true,
-
-                }
 
 
             ],

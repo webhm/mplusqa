@@ -180,9 +180,7 @@ class CuidadosUci2 {
                 {
                     title: "HS:",
                 },
-                {
-                    title: "Opciones:",
-                },
+
 
 
             ],
@@ -277,86 +275,6 @@ class CuidadosUci2 {
                     orderable: true,
                 },
 
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    CuidadosUci2.nuevoRegistro = null
-                                                    CuidadosUci2.verRegistro(oData);
-                                                },
-                                            },
-                                            'Editar',
-                                        ),
-
-                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                                class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
-
-                                                onclick: () => {
-                                                    oData.editar = null;
-                                                    CuidadosUci2.nuevoRegistro = null;
-                                                },
-                                            },
-                                            'Cancelar Edición',
-                                        ),
-                                        m("button.btn.btn-xs.btn-danger.d-none[type='button']", {
-                                                //class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-
-                                                onclick: () => {
-
-                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                                        CuidadosUci2.eliminarRegistro(oData);
-                                                        FecthUci.eliminarSeccion(oData);
-                                                        CuidadosUci2.nuevoRegistro = null;
-                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
-
-                                                    }
-
-
-
-
-                                                },
-                                            },
-                                            'Eliminar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
-                                                onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        CuidadosUci2.iniciarRegistro();
-                                                        CuidadosUci2.nuevoRegistro.id = oData.id;
-                                                        CuidadosUci2.nuevoRegistro.cuidado = oData.cuidado;
-                                                        CuidadosUci2.nuevoRegistro.frecuencia = oData.frecuencia;
-                                                        CuidadosUci2.nuevoRegistro.am = oData.am;
-                                                        CuidadosUci2.nuevoRegistro.pm = oData.pm;
-                                                        CuidadosUci2.nuevoRegistro.hs = oData.hs;
-                                                        CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    }
-
-                                                },
-                                            },
-                                            'Copiar',
-                                        ),
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [8],
-                    orderable: true,
-
-                }
 
 
             ],

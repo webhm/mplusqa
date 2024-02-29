@@ -163,9 +163,7 @@ class CateterUci {
                 {
                     title: "Observación:",
                 },
-                {
-                    title: "Opciones:",
-                }
+
             ],
             aoColumnDefs: [{
                     mRender: function(data, type, full) {
@@ -258,65 +256,7 @@ class CateterUci {
 
 
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    CateterUci.nuevoRegistro = null
-                                                    CateterUci.verRegistro(oData);
-                                                },
-                                            },
-                                            'Editar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                                class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
 
-                                                onclick: () => {
-                                                    oData.editar = null;
-                                                    CateterUci.nuevoRegistro = null;
-                                                },
-                                            },
-                                            'Cancelar Edición',
-                                        ),
-                                        m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
-                                                onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        CateterUci.iniciarRegistro();
-                                                        CateterUci.nuevoRegistro.id = oData.id;
-                                                        CateterUci.nuevoRegistro.cateter = oData.cateter;
-                                                        CateterUci.nuevoRegistro.am = oData.am;
-                                                        CateterUci.nuevoRegistro.pm = oData.pm;
-                                                        CateterUci.nuevoRegistro.hs = oData.hs;
-                                                        CateterUci.nuevoRegistro.observacion = oData.observacion;
-                                                        CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    }
-
-                                                },
-                                            },
-                                            'Copiar',
-                                        ),
-
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    width: '5%',
-                    visible: true,
-                    aTargets: [8],
-                    orderable: true,
-
-                }
 
 
             ],

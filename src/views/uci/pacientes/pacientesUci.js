@@ -144,7 +144,6 @@ class PacientesUCI extends App {
                                     }, "Registrar Nuevo Turno"),
                                     (FecthUci.dataSecciones.length > 0 ? [
                                         m("button.btn.btn-xs.btn-secondary.tx-semibold.tx-14[type='button']", {
-                                            disabled: 'disabled',
                                             onclick: () => {
                                                 m.route.set('/uci/pacientes/historial/', {
                                                     numeroHistoriaClinica: PacientesUCI.numeroHistoriaClinica,

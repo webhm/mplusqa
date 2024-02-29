@@ -162,9 +162,7 @@ class MarcapasosUci {
                 {
                     title: "Observación:",
                 },
-                {
-                    title: "Opciones:",
-                }
+
             ],
             aoColumnDefs: [{
                     mRender: function(data, type, full) {
@@ -255,65 +253,6 @@ class MarcapasosUci {
 
 
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    MarcapasosUci.nuevoRegistro = null
-                                                    MarcapasosUci.verRegistro(oData);
-                                                },
-                                            },
-                                            'Editar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                                class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : ''),
-
-                                                onclick: () => {
-                                                    oData.editar = null;
-                                                    MarcapasosUci.nuevoRegistro = null;
-                                                },
-                                            },
-                                            'Cancelar Edición',
-                                        ),
-                                        m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
-                                                onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        MarcapasosUci.iniciarRegistro();
-                                                        MarcapasosUci.nuevoRegistro.id = oData.id;
-                                                        MarcapasosUci.nuevoRegistro.hora = oData.hora;
-                                                        MarcapasosUci.nuevoRegistro.am = oData.am;
-                                                        MarcapasosUci.nuevoRegistro.pm = oData.pm;
-                                                        MarcapasosUci.nuevoRegistro.hs = oData.hs;
-                                                        MarcapasosUci.nuevoRegistro.observacion = oData.observacion;
-                                                        MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    }
-
-                                                },
-                                            },
-                                            'Copiar',
-                                        ),
-
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    width: '5%',
-                    visible: true,
-                    aTargets: [8],
-                    orderable: true,
-
-                }
 
 
             ],

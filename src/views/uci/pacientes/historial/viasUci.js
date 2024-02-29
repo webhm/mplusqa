@@ -167,9 +167,7 @@ class ViasUci {
                 {
                     title: "Observación:",
                 },
-                {
-                    title: "Opciones:",
-                }
+
             ],
             aoColumnDefs: [{
                     mRender: function(data, type, full) {
@@ -311,76 +309,6 @@ class ViasUci {
 
 
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    ViasUci.nuevoRegistro = null
-                                                    ViasUci.verRegistro(oData);
-                                                },
-                                            },
-                                            'Editar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
-                                                class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
-
-                                                onclick: () => {
-                                                    oData.editar = null;
-                                                    ViasUci.nuevoRegistro = null;
-                                                },
-                                            },
-                                            'Cancelar Edición',
-                                        ),
-                                        m("button.btn.btn-xs.btn-danger[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                                        ViasUci.eliminarRegistro(oData);
-                                                        FecthUci.eliminarSeccion(oData);
-                                                        ViasUci.nuevoRegistro = null;
-                                                        PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
-                                                    }
-                                                },
-                                            },
-                                            'Eliminar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
-                                                onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        ViasUci.iniciarRegistro();
-                                                        ViasUci.nuevoRegistro.id = oData.id;
-                                                        ViasUci.nuevoRegistro.via = oData.via;
-                                                        ViasUci.nuevoRegistro.ubicacion = oData.ubicacion;
-                                                        ViasUci.nuevoRegistro.tipo = oData.tipo;
-                                                        ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    }
-
-                                                },
-                                            },
-                                            'Copiar',
-                                        ),
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [13],
-                    orderable: true,
-
-                }
 
 
             ],

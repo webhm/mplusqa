@@ -1421,6 +1421,7 @@ class VentilatoriosUci {
                                         }
                                         if (VentilatoriosUci.nuevoRegistro.hora == null) {
                                             if (VentilatoriosUci.setHora != undefined) {
+                                                VentilatoriosUci.nuevoRegistro.hora = VentilatoriosUci.setHora;
                                                 el.dom.value = VentilatoriosUci.setHora;
                                             }
                                         }

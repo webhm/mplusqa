@@ -170,9 +170,7 @@ class HemodialisisUci {
                 {
                     title: "Observación:",
                 },
-                {
-                    title: "Opciones:",
-                }
+
             ],
             aoColumnDefs: [{
                     mRender: function(data, type, full) {
@@ -263,64 +261,6 @@ class HemodialisisUci {
 
 
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    HemodialisisUci.nuevoRegistro = null
-                                                    HemodialisisUci.verRegistro(oData);
-                                                },
-                                            },
-                                            'Editar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                                class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
-                                                onclick: () => {
-                                                    oData.editar = null;
-                                                    HemodialisisUci.nuevoRegistro = null;
-                                                },
-                                            },
-                                            'Cancelar Edición',
-                                        ),
-                                        m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
-                                                onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        HemodialisisUci.iniciarRegistro();
-                                                        HemodialisisUci.nuevoRegistro.id = oData.id;
-                                                        HemodialisisUci.nuevoRegistro.hemo = oData.hemo;
-                                                        HemodialisisUci.nuevoRegistro.am = oData.am;
-                                                        HemodialisisUci.nuevoRegistro.pm = oData.pm;
-                                                        HemodialisisUci.nuevoRegistro.hs = oData.hs;
-                                                        HemodialisisUci.nuevoRegistro.observacion = oData.observacion;
-                                                        HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    }
-
-                                                },
-                                            },
-                                            'Copiar',
-                                        ),
-
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    width: '5%',
-                    visible: true,
-                    aTargets: [8],
-                    orderable: true,
-
-                }
 
 
             ],

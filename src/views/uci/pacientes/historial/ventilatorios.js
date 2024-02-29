@@ -114,7 +114,7 @@ class VentilatoriosUci {
         resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
 
         // 'data-orden'ar desc
-        _arr = resultId.sort((a, b) => a.prden - b.prden);
+        _arr = resultId.sort((a, b) => a.orden - b.orden);
 
         VentilatoriosUci.registros = _arr;
 
@@ -894,9 +894,7 @@ class VentilatoriosUci {
             });
         }
 
-        VentilatoriosUci.sColumns.push({
-            title: "Opciones:",
-        });
+
 
         VentilatoriosUci.sRows = [];
         VentilatoriosUci.sRows = [{
@@ -961,46 +959,7 @@ class VentilatoriosUci {
                         view: () => {
                             return [
                                 m('div.text-center.pd-l-0.pd-r-0', {
-                                    ondblclick: (e) => {
-                                        VentilatoriosUci.nuevoRegistro = null;
-                                        valores.filter((v, i) => {
-                                            let _i = v.idObj[index];
-                                            if (v.id == oData.id) {
-                                                VentilatoriosUci.verRegistro(resultNro[_i]);
-                                            }
-                                        })
-                                    },
-                                    onclick: (e) => {
-                                        e.preventDefault();
-                                    },
-                                    oncontextmenu: (e) => {
-                                        e.preventDefault();
-                                        if (index == 0) {
-                                            alert('No se puede eliminar el registro predeterminado.');
-                                            throw 'No se puede eliminar el registro predeterminado.';
-                                        }
 
-                                        if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                            valores.filter((v, i) => {
-                                                let _i = v.idObj[index];
-                                                if (v.id == oData.id) {
-                                                    VentilatoriosUci.eliminarRegistro(resultNro[_i]);
-                                                    FecthUci.eliminarSeccion(resultNro[_i]);
-                                                    VentilatoriosUci.nuevoRegistro = null;
-                                                    VentilatoriosUci.destroyTable();
-                                                    VentilatoriosUci.filterRegistros();
-                                                    VentilatoriosUci.show = false;
-                                                    m.redraw();
-                                                    setTimeout(() => {
-                                                        VentilatoriosUci.show = true;
-                                                        m.redraw();
-                                                    }, 100);
-                                                }
-                                            })
-
-
-                                        }
-                                    },
                                     oncreate: (el) => {
                                         valores.filter((v, i) => {
                                             let _i = v.idObj[index];
@@ -1009,7 +968,7 @@ class VentilatoriosUci {
                                                     if (resultNro[_i].condicion !== null) {
                                                         el.dom.innerHTML = resultNro[_i].condicion;
                                                     } else {
-                                                        el.dom.innerHTML = '<button type="button" class="btn btn-xs btn-success btn-block tx-12 ">Registrar</button>';
+                                                        el.dom.innerHTML = '';
                                                     }
                                                 } else {
                                                     el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
@@ -1034,16 +993,7 @@ class VentilatoriosUci {
                         view: () => {
                             return [
                                 m('div.text-center.pd-l-0.pd-r-0', {
-                                    ondblclick: (e) => {
-                                        VentilatoriosUci.nuevoRegistro = null
-                                        valores.filter((v, i) => {
-                                            let _i = v.idObj[index];
-                                            if (v.id == oData.id) {
-                                                VentilatoriosUci.verRegistro(resultNro[_i]);
-                                            }
-                                        })
 
-                                    },
                                     oncreate: (el) => {
                                         valores.filter((v, i) => {
                                             let _i = v.idObj[index];
@@ -1071,53 +1021,6 @@ class VentilatoriosUci {
             });
         }
 
-        VentilatoriosUci.sRows.push({
-            fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                return m.mount(nTd, {
-                    view: () => {
-                        return [
-                            m("div.btn-block.btn-group.wd-100p.pd-5", [
-
-                                m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                        class: (VentilatoriosUci.nuevoRegistro !== null && VentilatoriosUci.nuevoRegistro.editar && VentilatoriosUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
-                                        disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
-                                        onclick: () => {
-                                            oData.editar = null;
-                                            VentilatoriosUci.nuevoRegistro = null;
-                                        },
-                                    },
-                                    'Cancelar Edición',
-                                ),
-                                m("button.btn.btn-xs.btn-dark[type='button']", {
-                                        //class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
-                                        onclick: () => {
-                                            if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                VentilatoriosUci.iniciarRegistro();
-                                                VentilatoriosUci.nuevoRegistro.id = oData.id;
-                                                VentilatoriosUci.nuevoRegistro.ventilatorio = oData.ventilatorio;
-                                                VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-
-                                            }
-
-                                        },
-                                    },
-                                    'Copiar',
-                                ),
-
-
-                            ])
-
-                        ]
-                    }
-                });
-            },
-            width: '5%',
-            visible: true,
-            aTargets: null,
-            orderable: true,
-
-        });
 
         VentilatoriosUci.sRows.map((c, i) => {
             VentilatoriosUci.sRows[i].aTargets = [i];

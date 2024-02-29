@@ -162,9 +162,7 @@ class OxigenacionUci {
                 {
                     title: "Observación:",
                 },
-                {
-                    title: "Opciones:",
-                }
+
             ],
             aoColumnDefs: [{
                     mRender: function(data, type, full) {
@@ -255,65 +253,6 @@ class OxigenacionUci {
 
 
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    OxigenacionUci.nuevoRegistro = null
-                                                    OxigenacionUci.verRegistro(oData);
-                                                },
-                                            },
-                                            'Editar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                                class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
-
-                                                onclick: () => {
-                                                    oData.editar = null;
-                                                    OxigenacionUci.nuevoRegistro = null;
-                                                },
-                                            },
-                                            'Cancelar Edición',
-                                        ),
-                                        m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
-                                                onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        OxigenacionUci.iniciarRegistro();
-                                                        OxigenacionUci.nuevoRegistro.id = oData.id;
-                                                        OxigenacionUci.nuevoRegistro.oxi = oData.oxi;
-                                                        OxigenacionUci.nuevoRegistro.am = oData.am;
-                                                        OxigenacionUci.nuevoRegistro.pm = oData.pm;
-                                                        OxigenacionUci.nuevoRegistro.hs = oData.hs;
-                                                        OxigenacionUci.nuevoRegistro.observacion = oData.observacion;
-                                                        OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    }
-
-                                                },
-                                            },
-                                            'Copiar',
-                                        ),
-
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    width: '5%',
-                    visible: true,
-                    aTargets: [8],
-                    orderable: true,
-
-                }
 
 
             ],
