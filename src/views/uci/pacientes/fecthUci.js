@@ -215,6 +215,7 @@ class FecthUci {
         }).then(function(res) {
             if (res.status) {
 
+                TurnosUci.turnos = [];
                 PacientesUCI.numeroHistoriaClinica = res.data.numeroHistoriaClinica;
                 PacientesUCI.numeroAtencion = res.data.numeroAtencion;
                 PacientesUCI.numeroTurno = res.data.numeroTurno;

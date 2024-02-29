@@ -1,6 +1,6 @@
 import m from "mithril";
 import FecthUci from "./fecthUci";
-import PacientesUCI from "./pacientesUci";
+import PacientesUCIHistorial from "./pacientesUci";
 
 class Turno {
     numeroHistoriaClinica = null;
@@ -42,49 +42,49 @@ class Turno {
 }
 
 // Abtrae de turnos
-class TurnosUci {
+class TurnosUciHistorial {
 
     static turnos = [];
     static nuevoTurno = null;
 
     static setTurno(t) {
-        TurnosUci.nuevoTurno = new Turno();
-        TurnosUci.nuevoTurno.numeroHistoriaClinica = t.numeroHistoriaClinica;
-        TurnosUci.nuevoTurno.numeroAtencion = t.numeroAtencion;
-        TurnosUci.nuevoTurno.numeroTurno = t.numeroTurno;
-        TurnosUci.nuevoTurno.paciente = t.paciente;
-        TurnosUci.nuevoTurno.especialidad = t.especialidad;
-        TurnosUci.nuevoTurno.fechaHoraTurno = t.fechaHoraTurno;
-        TurnosUci.nuevoTurno.fechaTurno = t.fechaHoraTurno.split(' ')[0];
-        TurnosUci.nuevoTurno.horaTurno = t.fechaHoraTurno.split(' ')[1];
-        TurnosUci.nuevoTurno.usuarioTurno = t.usuarioTurno;
-        TurnosUci.nuevoTurno.status = t.status;
-        TurnosUci.nuevoTurno.gestion = 0;
+        TurnosUciHistorial.nuevoTurno = new Turno();
+        TurnosUciHistorial.nuevoTurno.numeroHistoriaClinica = t.numeroHistoriaClinica;
+        TurnosUciHistorial.nuevoTurno.numeroAtencion = t.numeroAtencion;
+        TurnosUciHistorial.nuevoTurno.numeroTurno = t.numeroTurno;
+        TurnosUciHistorial.nuevoTurno.paciente = t.paciente;
+        TurnosUciHistorial.nuevoTurno.especialidad = t.especialidad;
+        TurnosUciHistorial.nuevoTurno.fechaHoraTurno = t.fechaHoraTurno;
+        TurnosUciHistorial.nuevoTurno.fechaTurno = t.fechaHoraTurno.split(' ')[0];
+        TurnosUciHistorial.nuevoTurno.horaTurno = t.fechaHoraTurno.split(' ')[1];
+        TurnosUciHistorial.nuevoTurno.usuarioTurno = t.usuarioTurno;
+        TurnosUciHistorial.nuevoTurno.status = t.status;
+        TurnosUciHistorial.nuevoTurno.gestion = 0;
     }
 
     static iniciarTurno() {
-        TurnosUci.validarInicioTurno();
-        TurnosUci.nuevoTurno = new Turno();
-        TurnosUci.nuevoTurno.numeroHistoriaClinica = PacientesUCI.numeroHistoriaClinica;
-        TurnosUci.nuevoTurno.numeroAtencion = PacientesUCI.numeroAtencion;
-        TurnosUci.nuevoTurno.numeroTurno = PacientesUCI.numeroTurno;
-        TurnosUci.nuevoTurno.fechaTurno = moment().format('DD-MM-YYYY');
-        TurnosUci.nuevoTurno.horaTurno = moment().format('HH:mm');
-        TurnosUci.nuevoTurno.fechaHoraTurno = TurnosUci.nuevoTurno.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno;
-        TurnosUci.nuevoTurno.usuarioTurno = PacientesUCI.usuarioTurno;
+        TurnosUciHistorial.validarInicioTurno();
+        TurnosUciHistorial.nuevoTurno = new Turno();
+        TurnosUciHistorial.nuevoTurno.numeroHistoriaClinica = PacientesUCIHistorial.numeroHistoriaClinica;
+        TurnosUciHistorial.nuevoTurno.numeroAtencion = PacientesUCIHistorial.numeroAtencion;
+        TurnosUciHistorial.nuevoTurno.numeroTurno = PacientesUCIHistorial.numeroTurno;
+        TurnosUciHistorial.nuevoTurno.fechaTurno = moment().format('DD-MM-YYYY');
+        TurnosUciHistorial.nuevoTurno.horaTurno = moment().format('HH:mm');
+        TurnosUciHistorial.nuevoTurno.fechaHoraTurno = TurnosUciHistorial.nuevoTurno.fechaTurno + ' ' + TurnosUciHistorial.nuevoTurno.horaTurno;
+        TurnosUciHistorial.nuevoTurno.usuarioTurno = PacientesUCIHistorial.usuarioTurno;
         FecthUci.registrarTurno();
-        TurnosUci.nuevoTurno.abrirTurno();
-        TurnosUci.turnos.push(TurnosUci.nuevoTurno);
+        TurnosUciHistorial.nuevoTurno.abrirTurno();
+        TurnosUciHistorial.turnos.push(TurnosUciHistorial.nuevoTurno);
     }
 
     static validarInicioTurno() {
-        for (let index = 0; index < TurnosUci.turnos.length; index++) {
-            let element = TurnosUci.turnos[index];
+        for (let index = 0; index < TurnosUciHistorial.turnos.length; index++) {
+            let element = TurnosUciHistorial.turnos[index];
             if (element.status == 1) {
                 alert("Ya existe un turno abierto");
                 throw "Ya existe un turno abierto";
             }
-            if (element.numeroTurno == PacientesUCI.numeroTurno && moment(element.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY')) {
+            if (element.numeroTurno == PacientesUCIHistorial.numeroTurno && moment(element.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY')) {
                 alert("Ya existe un turno generado. Espere la hora del siguiente turno para generar nuevos registros. ");
                 window.location.reload();
                 throw "Ya existe un turno generado. Espere la hora del siguiente turno para generar nuevos registros.";
@@ -93,8 +93,8 @@ class TurnosUci {
     }
 
     static getTurnos() {
-        return TurnosUci.turnos;
+        return TurnosUciHistorial.turnos;
     }
 }
 
-export default TurnosUci;
+export default TurnosUciHistorial;

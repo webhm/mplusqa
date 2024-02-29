@@ -1,7 +1,6 @@
 import m from "mithril";
-
-import TurnosUci from "./turnosUci";
-import PacientesUCI from "./pacientesUci";
+import TurnosUciHistorial from "./turnosUci";
+import PacientesUCIHistorial from "./pacientesUci";
 
 class FecthUci {
 
@@ -17,7 +16,7 @@ class FecthUci {
     static setTurnos(dataTurnos) {
 
         dataTurnos.map((_v) => {
-            TurnosUci.setTurno({
+            TurnosUciHistorial.setTurno({
                 fechaHoraTurno: _v.FECHA,
                 usuarioTurno: _v.USUARIO,
                 numeroHistoriaClinica: _v.NHC,
@@ -28,10 +27,10 @@ class FecthUci {
                 status: parseInt(_v.STATUS),
                 gestion: 0,
             });
-            TurnosUci.turnos.push(TurnosUci.nuevoTurno);
+            TurnosUciHistorial.turnos.push(TurnosUciHistorial.nuevoTurno);
         });
 
-        return TurnosUci.turnos;
+        return TurnosUciHistorial.turnos;
 
     }
 
@@ -41,11 +40,11 @@ class FecthUci {
             method: "POST",
             url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/registrar-turno",
             body: {
-                numeroHistoriaClinica: TurnosUci.nuevoTurno.numeroHistoriaClinica,
-                numeroAtencion: TurnosUci.nuevoTurno.numeroAtencion,
-                numeroTurno: TurnosUci.nuevoTurno.numeroTurno,
-                usuarioTurno: TurnosUci.nuevoTurno.usuarioTurno,
-                fechaHoraTurno: TurnosUci.nuevoTurno.fechaHoraTurno,
+                numeroHistoriaClinica: TurnosUciHistorial.nuevoTurno.numeroHistoriaClinica,
+                numeroAtencion: TurnosUciHistorial.nuevoTurno.numeroAtencion,
+                numeroTurno: TurnosUciHistorial.nuevoTurno.numeroTurno,
+                usuarioTurno: TurnosUciHistorial.nuevoTurno.usuarioTurno,
+                fechaHoraTurno: TurnosUciHistorial.nuevoTurno.fechaHoraTurno,
                 status: 1
             },
             headers: {
@@ -65,9 +64,9 @@ class FecthUci {
             method: "POST",
             url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/registrar-allseccion",
             body: {
-                numeroAtencion: PacientesUCI.numeroAtencion,
-                numeroTurno: PacientesUCI.numeroTurno,
-                fechaHoraTurno: PacientesUCI.fechaHoraTurno,
+                numeroAtencion: PacientesUCIHistorial.numeroAtencion,
+                numeroTurno: PacientesUCIHistorial.numeroTurno,
+                fechaHoraTurno: PacientesUCIHistorial.fechaHoraTurno,
                 dataSeccion: _dataAllSeccion
             },
             headers: {
@@ -87,8 +86,8 @@ class FecthUci {
             method: "POST",
             url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/registrar-seccion",
             body: {
-                numeroAtencion: PacientesUCI.numeroAtencion,
-                numeroTurno: PacientesUCI.numeroTurno,
+                numeroAtencion: PacientesUCIHistorial.numeroAtencion,
+                numeroTurno: PacientesUCIHistorial.numeroTurno,
                 idSeccion: _dataSeccion.id,
                 dataSeccion: _dataSeccion
             },
@@ -109,7 +108,7 @@ class FecthUci {
             method: "POST",
             url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/eliminar-seccion",
             body: {
-                numeroAtencion: PacientesUCI.numeroAtencion,
+                numeroAtencion: PacientesUCIHistorial.numeroAtencion,
                 numeroTurno: _dataSeccion.numeroTurno,
                 nro: _dataSeccion.nro,
                 seccion: _dataSeccion.seccion,
@@ -133,10 +132,10 @@ class FecthUci {
             method: "POST",
             url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/actualizar-atencion",
             body: {
-                numeroAtencion: PacientesUCI.numeroAtencion,
-                numeroTurno: PacientesUCI.numeroTurno,
-                fechaHoraTurno: PacientesUCI.fechaHoraTurno,
-                nuevaFechaHoraTurno: TurnosUci.nuevoTurno.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno,
+                numeroAtencion: PacientesUCIHistorial.numeroAtencion,
+                numeroTurno: PacientesUCIHistorial.numeroTurno,
+                fechaHoraTurno: PacientesUCIHistorial.fechaHoraTurno,
+                nuevaFechaHoraTurno: TurnosUciHistorial.nuevoTurno.fechaTurno + ' ' + TurnosUciHistorial.nuevoTurno.horaTurno,
 
             },
             headers: {
@@ -156,8 +155,8 @@ class FecthUci {
             method: "POST",
             url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/actualizar-seccion",
             body: {
-                numeroAtencion: PacientesUCI.numeroAtencion,
-                numeroTurno: PacientesUCI.numeroTurno,
+                numeroAtencion: PacientesUCIHistorial.numeroAtencion,
+                numeroTurno: PacientesUCIHistorial.numeroTurno,
                 idSeccion: _dataSeccion.id,
                 dataSeccion: _dataSeccion
             },
@@ -179,9 +178,9 @@ class FecthUci {
             method: "POST",
             url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/cerrar-turno",
             body: {
-                numeroHistoriaClinica: PacientesUCI.numeroHistoriaClinica,
-                numeroAtencion: PacientesUCI.numeroAtencion,
-                numeroTurno: PacientesUCI.numeroTurno,
+                numeroHistoriaClinica: PacientesUCIHistorial.numeroHistoriaClinica,
+                numeroAtencion: PacientesUCIHistorial.numeroAtencion,
+                numeroTurno: PacientesUCIHistorial.numeroTurno,
                 status: 2
             },
             headers: {
@@ -204,8 +203,8 @@ class FecthUci {
             method: "GET",
             url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/turnos-abiertos",
             params: {
-                numeroHistoriaClinica: PacientesUCI.numeroHistoriaClinica,
-                numeroAtencion: PacientesUCI.numeroAtencion,
+                numeroHistoriaClinica: PacientesUCIHistorial.numeroHistoriaClinica,
+                numeroAtencion: PacientesUCIHistorial.numeroAtencion,
             },
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
@@ -213,20 +212,20 @@ class FecthUci {
         }).then(function(res) {
             if (res.status) {
 
-                PacientesUCI.numeroHistoriaClinica = res.data.numeroHistoriaClinica;
-                PacientesUCI.numeroAtencion = res.data.numeroAtencion;
-                PacientesUCI.numeroTurno = res.data.numeroTurno;
+                PacientesUCIHistorial.numeroHistoriaClinica = res.data.numeroHistoriaClinica;
+                PacientesUCIHistorial.numeroAtencion = res.data.numeroAtencion;
+                PacientesUCIHistorial.numeroTurno = res.data.numeroTurno;
 
                 m.route.set("/uci/pacientes/", {
                     numeroHistoriaClinica: res.data.numeroHistoriaClinica,
                     numeroAtencion: res.data.numeroAtencion,
-                    usuario: PacientesUCI.usuarioTurno,
+                    usuario: PacientesUCIHistorial.usuarioTurno,
                     numeroTurno: res.data.numeroTurno
                 });
 
                 if (res.data.dataTurnos.length > 0) {
-                    TurnosUci.turnos = FecthUci.setTurnos(res.data.dataTurnos);
-                    PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
+                    TurnosUciHistorial.turnos = FecthUci.setTurnos(res.data.dataTurnos);
+                    PacientesUCIHistorial.vReloadTable('table-turnos', TurnosUciHistorial.getTurnos());
                 }
 
                 FecthUci.loadSecciones();
@@ -246,8 +245,8 @@ class FecthUci {
             method: "GET",
             url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/turnos-abiertos",
             params: {
-                numeroHistoriaClinica: PacientesUCI.numeroHistoriaClinica,
-                numeroAtencion: PacientesUCI.numeroAtencion,
+                numeroHistoriaClinica: PacientesUCIHistorial.numeroHistoriaClinica,
+                numeroAtencion: PacientesUCIHistorial.numeroAtencion,
             },
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
@@ -255,20 +254,21 @@ class FecthUci {
         }).then(function(res) {
             if (res.status) {
 
-                PacientesUCI.numeroHistoriaClinica = res.data.numeroHistoriaClinica;
-                PacientesUCI.numeroAtencion = res.data.numeroAtencion;
-                PacientesUCI.numeroTurno = res.data.numeroTurno;
+                TurnosUciHistorial.turnos = [];
+                PacientesUCIHistorial.numeroHistoriaClinica = res.data.numeroHistoriaClinica;
+                PacientesUCIHistorial.numeroAtencion = res.data.numeroAtencion;
+                PacientesUCIHistorial.numeroTurno = res.data.numeroTurno;
 
                 m.route.set("/uci/pacientes/historial", {
                     numeroHistoriaClinica: res.data.numeroHistoriaClinica,
                     numeroAtencion: res.data.numeroAtencion,
-                    usuario: PacientesUCI.usuarioTurno,
+                    usuario: PacientesUCIHistorial.usuarioTurno,
                     numeroTurno: res.data.numeroTurno
                 });
 
                 if (res.data.dataTurnos.length > 0) {
-                    TurnosUci.turnos = FecthUci.setTurnos(res.data.dataTurnos);
-                    PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
+                    TurnosUciHistorial.turnos = FecthUci.setTurnos(res.data.dataTurnos);
+                    PacientesUCIHistorial.vReloadTable('table-turnos', TurnosUciHistorial.getTurnos());
                 }
 
                 FecthUci.loadSecciones();
@@ -287,7 +287,7 @@ class FecthUci {
             method: "GET",
             url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/detalle-all-secciones",
             params: {
-                numeroAtencion: PacientesUCI.numeroAtencion,
+                numeroAtencion: PacientesUCIHistorial.numeroAtencion,
             },
             headers: {
                 "Content-Type": "application/json; charset=utf-8"

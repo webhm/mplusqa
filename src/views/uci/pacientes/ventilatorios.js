@@ -117,7 +117,8 @@ class VentilatoriosUci {
         resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
 
         // 'data-orden'ar desc
-        _arr = resultId.sort((a, b) => a.prden - b.prden);
+        _arr = resultId.sort((a, b) => a.orden - b.orden);
+
 
         VentilatoriosUci.registros = _arr;
 

@@ -145,7 +145,6 @@ class PacientesUCI extends App {
                                     (FecthUci.dataSecciones.length > 0 ? [
                                         m("button.btn.btn-xs.btn-secondary.tx-semibold.tx-14[type='button']", {
                                             disabled: 'disabled',
-
                                             onclick: () => {
                                                 m.route.set('/uci/pacientes/historial/', {
                                                     numeroHistoriaClinica: PacientesUCI.numeroHistoriaClinica,
@@ -371,9 +370,14 @@ class PacientesUCI extends App {
 
         VentilatoriosUci.allRegistros = resultNro.sort((a, b) => a.nro - b.nro);
         // Quitar duplicados
-        resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
+        resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.orden - b.orden);
+
+
+        console.log(3355, _arr)
+
+
 
 
         // Establecer Columnas
