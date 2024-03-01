@@ -2097,7 +2097,7 @@ class PacientesUCI extends App {
                                 return [
                                     m('div.text-center', [
                                         m("button.btn.btn-xs.btn-block.btn-success.tx-13[type='button']", {
-                                                disabled: (oData.status == 1 && FecthUci.dataSecciones !== null ? '' : 'disabled'),
+                                                disabled: (oData.status == 1 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
                                                 onclick: () => {
                                                     TurnosUci.nuevoTurno = oData;
                                                     oData.iniciarGestion();
@@ -2152,7 +2152,7 @@ class PacientesUCI extends App {
                                 return [
                                     m('div.text-center', [
                                         m("button.btn.btn-xs.btn-block.btn-danger.tx-13[type='button']", {
-                                                disabled: (oData.status == 1 && FecthUci.dataSecciones !== null ? '' : 'disabled'),
+                                                disabled: (oData.status == 1 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
 
                                                 onclick: () => {
                                                     oData.cerrarTurno();

@@ -13,6 +13,7 @@ class FecthUci {
     static status = null;
     static fecha = null;
     static usuario = null;
+    static loaderSecciones = false;
     static dataTurnos = null;
     static dataSecciones = [];
 
@@ -244,6 +245,9 @@ class FecthUci {
     }
 
     static loadSecciones() {
+
+        FecthUci.loaderSecciones = false;
+
         return m.request({
             method: "GET",
             url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/detalle-all-secciones",
@@ -254,6 +258,8 @@ class FecthUci {
                 "Content-Type": "application/json; charset=utf-8"
             }
         }).then(function(res) {
+
+            FecthUci.loaderSecciones = true;
 
             FecthUci.dataSecciones = res.data;
 
