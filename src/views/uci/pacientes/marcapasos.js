@@ -43,6 +43,7 @@ class MarcapasosUci {
         MarcapasosUci.nuevoRegistro = new Marcapaso();
     }
     static agregarRegistro() {
+        // Agrega registro
         if (MarcapasosUci.registros.length == 0) {
             MarcapasosUci.nuevoRegistro.nro = 1;
             MarcapasosUci.registros.push(MarcapasosUci.nuevoRegistro);
