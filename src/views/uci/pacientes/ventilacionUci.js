@@ -43,7 +43,13 @@ class VentilacionUci {
         VentilacionUci.nuevoRegistro = new Ventilacion();
     }
     static agregarRegistro() {
-        FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
+        if (VentilacionUci.registros.length == 0) {
+            VentilacionUci.nuevoRegistro.nro = 1;
+            VentilacionUci.registros.push(VentilacionUci.nuevoRegistro);
+        } else {
+            VentilacionUci.nuevoRegistro.nro = (VentilacionUci.registros[VentilacionUci.registros.length - 1].nro + 1);
+            VentilacionUci.registros.push(VentilacionUci.nuevoRegistro);
+        }
     }
     static verRegistro(registro) {
         registro.editar = true;

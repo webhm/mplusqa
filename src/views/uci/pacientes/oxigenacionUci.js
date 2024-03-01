@@ -43,7 +43,13 @@ class OxigenacionUci {
         OxigenacionUci.nuevoRegistro = new Oxi();
     }
     static agregarRegistro() {
-        FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
+        if (OxigenacionUci.registros.length == 0) {
+            OxigenacionUci.nuevoRegistro.nro = 1;
+            OxigenacionUci.registros.push(OxigenacionUci.nuevoRegistro);
+        } else {
+            OxigenacionUci.nuevoRegistro.nro = (OxigenacionUci.registros[OxigenacionUci.registros.length - 1].nro + 1);
+            OxigenacionUci.registros.push(OxigenacionUci.nuevoRegistro);
+        }
 
     }
     static verRegistro(registro) {

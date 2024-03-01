@@ -107,15 +107,15 @@ class VentilatoriosUci {
         let columnas = [];
         let filas = [];
         let valores = [];
+        let r = [];
 
         result = VentilatoriosUci.allRegistros;
 
-        console.log(11, result)
-            // Quitar duplicados
-        resultNro = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+        r = result.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        resultNro = r.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
         // Quitar duplicados
         resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
-
         // 'data-orden'ar desc
         _arr = resultId.sort((a, b) => a.orden - b.orden);
 
@@ -1171,7 +1171,9 @@ class VentilatoriosUci {
             },
             cache: false,
             destroy: true,
-            order: false,
+            order: [
+                [1, 'Asc']
+            ],
             pageLength: 100,
             columns: VentilatoriosUci.sColumns,
             aoColumnDefs: VentilatoriosUci.sRows,

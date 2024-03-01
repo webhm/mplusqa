@@ -46,7 +46,13 @@ class CateterUci {
         CateterUci.nuevoRegistro = new Cateter();
     }
     static agregarRegistro() {
-        FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
+        if (CateterUci.registros.length == 0) {
+            CateterUci.nuevoRegistro.nro = 1;
+            CateterUci.registros.push(CateterUci.nuevoRegistro);
+        } else {
+            CateterUci.nuevoRegistro.nro = (CateterUci.registros[CateterUci.registros.length - 1].nro + 1);
+            CateterUci.registros.push(CateterUci.nuevoRegistro);
+        }
     }
     static verRegistro(registro) {
         registro.editar = true;

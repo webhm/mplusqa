@@ -313,6 +313,8 @@ class PacientesUCI extends App {
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.nro - b.nro);
 
+        console.log(88, _arr)
+
         return _arr;
     }
 
@@ -352,6 +354,7 @@ class PacientesUCI extends App {
         let columnas = [];
         let filas = [];
         let valores = [];
+        let r = [];
 
         options.map((option) => {
             FecthUci.dataSecciones.filter((obj) => {
@@ -364,19 +367,17 @@ class PacientesUCI extends App {
 
 
         result = res.sort((a, b) => b.nro - a.nro);
-        // Quitar duplicados
+
         resultNro = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
 
-        VentilatoriosUci.allRegistros = resultNro.sort((a, b) => a.nro - b.nro);
+        console.log(555, resultNro);
+        // Quitar duplicados
+        VentilatoriosUci.allRegistros = resultNro;
+
         // Quitar duplicados
         resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.orden - b.orden);
-
-
-        console.log(3355, _arr)
-
-
 
 
         // Establecer Columnas

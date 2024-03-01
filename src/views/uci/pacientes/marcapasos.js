@@ -43,7 +43,13 @@ class MarcapasosUci {
         MarcapasosUci.nuevoRegistro = new Marcapaso();
     }
     static agregarRegistro() {
-        FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
+        if (MarcapasosUci.registros.length == 0) {
+            MarcapasosUci.nuevoRegistro.nro = 1;
+            MarcapasosUci.registros.push(MarcapasosUci.nuevoRegistro);
+        } else {
+            MarcapasosUci.nuevoRegistro.nro = (MarcapasosUci.registros[MarcapasosUci.registros.length - 1].nro + 1);
+            MarcapasosUci.registros.push(MarcapasosUci.nuevoRegistro);
+        }
 
     }
     static verRegistro(registro) {

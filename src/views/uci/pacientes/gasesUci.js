@@ -260,6 +260,21 @@ class GasesUci {
                                             },
                                             'Eliminar',
                                         ),
+                                        m("button.btn.btn-xs.btn-dark[type='button']", {
+                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                                onclick: () => {
+                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
+                                                        GasesUci.iniciarRegistro();
+                                                        GasesUci.nuevoRegistro.id = oData.id;
+                                                        GasesUci.nuevoRegistro.gas = oData.gas;
+                                                        GasesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        GasesUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    }
+
+                                                },
+                                            },
+                                            'Copiar',
+                                        ),
                                     ])
 
                                 ]

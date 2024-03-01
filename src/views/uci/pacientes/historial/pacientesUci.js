@@ -300,6 +300,7 @@ class PacientesUCIHistorial extends App {
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.nro - b.nro);
+        console.log(444, _arr)
 
         return _arr;
     }
