@@ -1216,7 +1216,7 @@ class VentilatoriosUci {
                         "VENTILATORIOS/VARIABLES:"
                     ),
                     m("th[scope='col'][colspan='4']",
-                        "CONDICIÓN: "
+                        "PARÁMETRO: "
                     ),
                     m("th[scope='col'][colspan='4']",
                         "HORA: "
