@@ -380,7 +380,7 @@ class PacientesUCI extends App {
         let columnas = [];
         let filas = [];
         let valores = [];
-        let r = [];
+
 
         options.map((option) => {
             FecthUci.dataSecciones.filter((obj) => {
@@ -391,11 +391,13 @@ class PacientesUCI extends App {
             });
         });
 
+        if (res.length == 0) {
+            res = VentilatoriosUci.allRegistros;
+        }
 
         result = res.sort((a, b) => b.nro - a.nro);
 
         resultNro = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
-
         // Quitar duplicados
         resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -1383,6 +1385,7 @@ class PacientesUCI extends App {
                                                 VentilatoriosUci.iniciarRegistro();
                                                 VentilatoriosUci.nuevoRegistro.id = oData.id;
                                                 VentilatoriosUci.nuevoRegistro.ventilatorio = oData.ventilatorio;
+                                                VentilatoriosUci.nuevoRegistro.orden = oData.orden;
                                                 VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                 VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
@@ -2109,8 +2112,9 @@ class PacientesUCI extends App {
                                                     PacientesUCI.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
 
                                                     VentilatoriosUci.allRegistros = PacientesUCI.parseSeccionVentilatorios_AllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
-                                                    VentilatoriosUci.registros = PacientesUCI.parseSeccionVentilatorios_v2(Array.from(document.getElementById('sec_Ventilatorios').options));
                                                     PacientesUCI.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
+                                                    VentilatoriosUci.registros = PacientesUCI.parseSeccionVentilatorios_v2(Array.from(document.getElementById('sec_Ventilatorios').options));
+
 
                                                     OxigenacionUci.registros = PacientesUCI.parseSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
                                                     PacientesUCI.setTurnoSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));

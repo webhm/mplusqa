@@ -54,7 +54,7 @@ class VentilatoriosUci {
             VentilatoriosUci.nuevoRegistro.nro = 1;
             VentilatoriosUci.allRegistros.push(VentilatoriosUci.nuevoRegistro);
         } else {
-            VentilatoriosUci.nuevoRegistro.nro = (VentilatoriosUci.allRegistros[VentilatoriosUci.allRegistros.length - 1].nro + 1);
+            VentilatoriosUci.nuevoRegistro.nro = (VentilatoriosUci.allRegistros[VentilatoriosUci.allRegistros.reverse().length - 1].nro + 1);
             VentilatoriosUci.allRegistros.push(VentilatoriosUci.nuevoRegistro);
         }
     }
@@ -112,13 +112,13 @@ class VentilatoriosUci {
         result = VentilatoriosUci.allRegistros;
 
         r = result.sort((a, b) => b.nro - a.nro);
-        // Quitar duplicados
+        console.log(55, r)
+            // Quitar duplicados
         resultNro = r.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
         // Quitar duplicados
         resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // 'data-orden'ar desc
         _arr = resultId.sort((a, b) => a.orden - b.orden);
-
 
         VentilatoriosUci.registros = _arr;
 
@@ -1095,10 +1095,14 @@ class VentilatoriosUci {
                                 m("button.btn.btn-xs.btn-dark[type='button']", {
                                         //class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                         onclick: () => {
+
+
                                             if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
+
                                                 VentilatoriosUci.iniciarRegistro();
                                                 VentilatoriosUci.nuevoRegistro.id = oData.id;
                                                 VentilatoriosUci.nuevoRegistro.ventilatorio = oData.ventilatorio;
+                                                VentilatoriosUci.nuevoRegistro.orden = oData.orden;
                                                 VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                 VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
