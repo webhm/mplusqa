@@ -1172,7 +1172,7 @@ class VentilatoriosUci {
             cache: false,
             destroy: true,
             order: [
-                [1, 'Asc']
+                [1, 'asc']
             ],
             pageLength: 100,
             columns: VentilatoriosUci.sColumns,
