@@ -566,8 +566,6 @@ class CuidadosUci2 {
                                 oninput: (e) => {
                                     if (PacientesUCI.numeroTurno == 1) {
                                         CuidadosUci2.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
-                                    } else {
-                                        e.target.value = '';
                                     }
                                 },
                                 value: CuidadosUci2.nuevoRegistro.am

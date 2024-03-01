@@ -112,9 +112,8 @@ class VentilatoriosUci {
         result = VentilatoriosUci.allRegistros;
 
         r = result.sort((a, b) => b.nro - a.nro);
-        console.log(55, r)
-            // Quitar duplicados
-        resultNro = r.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+        // Quitar duplicados
+        resultNro = r.filter(o => hash[o.nro] ? false : hash[o.nro] = true).sort((a, b) => a.nro - b.nro);
         // Quitar duplicados
         resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // 'data-orden'ar desc
@@ -968,8 +967,9 @@ class VentilatoriosUci {
                                     ondblclick: (e) => {
                                         VentilatoriosUci.nuevoRegistro = null;
                                         valores.filter((v, i) => {
-                                            let _i = v.idObj[index];
+
                                             if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
                                                 VentilatoriosUci.verRegistro(resultNro[_i]);
                                             }
                                         })
@@ -986,8 +986,8 @@ class VentilatoriosUci {
 
                                         if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
                                             valores.filter((v, i) => {
-                                                let _i = v.idObj[index];
                                                 if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
                                                     VentilatoriosUci.eliminarRegistro(resultNro[_i]);
                                                     FecthUci.eliminarSeccion(resultNro[_i]);
                                                     VentilatoriosUci.nuevoRegistro = null;
@@ -1007,8 +1007,8 @@ class VentilatoriosUci {
                                     },
                                     oncreate: (el) => {
                                         valores.filter((v, i) => {
-                                            let _i = v.idObj[index];
                                             if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].condicion !== null) {
                                                         el.dom.innerHTML = resultNro[_i].condicion;
@@ -1041,8 +1041,8 @@ class VentilatoriosUci {
                                     ondblclick: (e) => {
                                         VentilatoriosUci.nuevoRegistro = null
                                         valores.filter((v, i) => {
-                                            let _i = v.idObj[index];
                                             if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
                                                 VentilatoriosUci.verRegistro(resultNro[_i]);
                                             }
                                         })
@@ -1050,8 +1050,8 @@ class VentilatoriosUci {
                                     },
                                     oncreate: (el) => {
                                         valores.filter((v, i) => {
-                                            let _i = v.idObj[index];
                                             if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].hora !== null) {
                                                         el.dom.innerHTML = resultNro[_i].hora;
@@ -1100,19 +1100,12 @@ class VentilatoriosUci {
                                                 alert('No se permite copiar. Ya existe un registro disponible.');
                                                 throw 'No se permite copiar. Ya existe un registro disponible.'
                                             }
-
-
-
-                                            if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-
-                                                VentilatoriosUci.iniciarRegistro();
-                                                VentilatoriosUci.nuevoRegistro.id = oData.id;
-                                                VentilatoriosUci.nuevoRegistro.ventilatorio = oData.ventilatorio;
-                                                VentilatoriosUci.nuevoRegistro.orden = oData.orden;
-                                                VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-
-                                            }
+                                            VentilatoriosUci.iniciarRegistro();
+                                            VentilatoriosUci.nuevoRegistro.id = oData.id;
+                                            VentilatoriosUci.nuevoRegistro.ventilatorio = oData.ventilatorio;
+                                            VentilatoriosUci.nuevoRegistro.orden = oData.orden;
+                                            VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
                                         },
                                     },
@@ -1181,9 +1174,7 @@ class VentilatoriosUci {
             },
             cache: false,
             destroy: true,
-            order: [
-                [1, 'asc']
-            ],
+            order: false,
             pageLength: 100,
             columns: VentilatoriosUci.sColumns,
             aoColumnDefs: VentilatoriosUci.sRows,

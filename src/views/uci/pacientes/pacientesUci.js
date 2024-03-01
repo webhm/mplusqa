@@ -397,7 +397,8 @@ class PacientesUCI extends App {
 
         result = res.sort((a, b) => b.nro - a.nro);
 
-        resultNro = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+        resultNro = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true).sort((a, b) => a.nro - b.nro);
+
         // Quitar duplicados
         resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -1175,7 +1176,7 @@ class PacientesUCI extends App {
 
         for (let index = 0; index < orderCol[0]; index++) {
             VentilatoriosUci.sColumns.push({
-                title: "Condición:",
+                title: "Parámetro:",
             });
             VentilatoriosUci.sColumns.push({
                 title: "Hora:",
@@ -1252,8 +1253,11 @@ class PacientesUCI extends App {
                                     ondblclick: (e) => {
                                         VentilatoriosUci.nuevoRegistro = null;
                                         valores.filter((v, i) => {
-                                            let _i = v.idObj[index];
+
                                             if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+
+                                                console.log(88, _i)
                                                 VentilatoriosUci.verRegistro(resultNro[_i]);
                                             }
                                         })
@@ -1271,8 +1275,10 @@ class PacientesUCI extends App {
 
                                         if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
                                             valores.filter((v, i) => {
-                                                let _i = v.idObj[index];
+
                                                 if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+
                                                     VentilatoriosUci.eliminarRegistro(resultNro[_i]);
                                                     FecthUci.eliminarSeccion(resultNro[_i]);
                                                     VentilatoriosUci.nuevoRegistro = null;
@@ -1292,9 +1298,10 @@ class PacientesUCI extends App {
                                     },
                                     oncreate: (el) => {
                                         valores.filter((v, i) => {
-                                            let _i = v.idObj[index];
 
                                             if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].condicion !== null) {
                                                         el.dom.innerHTML = resultNro[_i].condicion;
@@ -1327,8 +1334,9 @@ class PacientesUCI extends App {
                                     ondblclick: (e) => {
                                         VentilatoriosUci.nuevoRegistro = null
                                         valores.filter((v, i) => {
-                                            let _i = v.idObj[index];
+
                                             if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
                                                 VentilatoriosUci.verRegistro(resultNro[_i]);
                                             }
                                         })
@@ -1336,8 +1344,10 @@ class PacientesUCI extends App {
                                     },
                                     oncreate: (el) => {
                                         valores.filter((v, i) => {
-                                            let _i = v.idObj[index];
+
                                             if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].hora !== null) {
                                                         el.dom.innerHTML = resultNro[_i].hora;
@@ -1387,16 +1397,12 @@ class PacientesUCI extends App {
                                                 throw 'No se permite copiar. Ya existe un registro disponible.'
                                             }
 
-                                            console.log(55, oData)
-                                            if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                VentilatoriosUci.iniciarRegistro();
-                                                VentilatoriosUci.nuevoRegistro.id = oData.id;
-                                                VentilatoriosUci.nuevoRegistro.ventilatorio = oData.ventilatorio;
-                                                VentilatoriosUci.nuevoRegistro.orden = oData.orden;
-                                                VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-
-                                            }
+                                            VentilatoriosUci.iniciarRegistro();
+                                            VentilatoriosUci.nuevoRegistro.id = oData.id;
+                                            VentilatoriosUci.nuevoRegistro.ventilatorio = oData.ventilatorio;
+                                            VentilatoriosUci.nuevoRegistro.orden = oData.orden;
+                                            VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
                                         },
                                     },
