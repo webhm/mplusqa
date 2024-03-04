@@ -40,6 +40,7 @@ class CultivosUci {
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
+    static showOtros = false;
     static validarRegistro() {
 
     }
@@ -193,7 +194,7 @@ class CultivosUci {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.muestra;
+                        return (full.id == 'Otros' ? full.otros : full.muestra);
                     },
 
                     visible: true,
@@ -353,31 +354,8 @@ class CultivosUci {
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
                 }, [
-                    m("td.tx-14.tx-normal[colspan='']", {
-                            class: (CultivosUci.nuevoRegistro.muestra !== undefined && CultivosUci.nuevoRegistro.muestra == 'Otros' ? '' : 'd-none')
-                        },
-                        (CultivosUci.nuevoRegistro !== null ? [
-                            m('div.d-flex', [
 
-                                m("input", {
-                                    id: "otrosMuestra" + CultivosUci.nuevoRegistro.id,
-                                    class: "form-control tx-semibold tx-14",
-                                    type: "text",
-                                    placeholder: "...",
-                                    disabled: true,
-                                    value: CultivosUci.nuevoRegistro.muestra,
-                                    oninput: (e) => {
-                                        CultivosUci.nuevoRegistro.muestra = (e.target.value.length !== 0 ? e.target.value : null);
-                                    },
-                                })
-
-                            ]),
-                        ] : [])
-                    ),
-                    m("td.tx-14.tx-normal[colspan='']", {
-                            class: (CultivosUci.nuevoRegistro.muestra !== undefined && CultivosUci.nuevoRegistro.muestra !== 'Otros' ? '' : 'd-none')
-
-                        },
+                    m("td.tx-14.tx-normal[colspan='1']",
                         m('select.tx-semibold', {
                             id: 'sec_Cultivos',
                             onchange: (e) => {
@@ -387,9 +365,21 @@ class CultivosUci {
                                     CultivosUci.iniciarRegistro();
                                     CultivosUci.nuevoRegistro.id = _id;
                                     CultivosUci.nuevoRegistro.muestra = _value;
+                                    if (CultivosUci.nuevoRegistro.id == 'Otros') {
+                                        CultivosUci.showOtros = true;
+                                    }
+                                    if (CultivosUci.nuevoRegistro.id !== 'Otros') {
+                                        CultivosUci.showOtros = false;
+                                    }
                                 } else {
                                     CultivosUci.nuevoRegistro.id = _id;
                                     CultivosUci.nuevoRegistro.muestra = _value;
+                                    if (CultivosUci.nuevoRegistro.id == 'Otros') {
+                                        CultivosUci.showOtros = true;
+                                    }
+                                    if (CultivosUci.nuevoRegistro.id !== 'Otros') {
+                                        CultivosUci.showOtros = false;
+                                    }
                                 }
                             },
                             class: "custom-select",
@@ -435,6 +425,28 @@ class CultivosUci {
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
                         ))
+                    ),
+                    m("td.tx-14.tx-normal[colspan='2']", {
+                            class: (CultivosUci.showOtros == false ? 'd-none' : '')
+                        }, [
+                            m('div.d-flex', [
+                                (CultivosUci.nuevoRegistro !== null ? [
+                                    m("input", {
+                                        id: "otrosMuestra" + CultivosUci.nuevoRegistro.id,
+                                        class: "form-control tx-semibold tx-14",
+                                        type: "text",
+                                        placeholder: "Otros",
+                                        value: CultivosUci.nuevoRegistro.otros,
+                                        oninput: (e) => {
+                                            CultivosUci.nuevoRegistro.otros = (e.target.value.length !== 0 ? e.target.value : null);
+                                        },
+                                    })
+                                ] : [])
+
+
+                            ]),
+                        ]
+
                     ),
                     m("td.tx-14.tx-normal[colspan='3']",
                         (CultivosUci.nuevoRegistro !== null ? [
