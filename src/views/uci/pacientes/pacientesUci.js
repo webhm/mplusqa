@@ -1501,6 +1501,7 @@ class PacientesUCI extends App {
         let FiO2 = 0;
         let PaO2FiO2 = 0;
         let SaO2 = 0;
+        let IndiceOxigenacion = 0;
         let Lactato = 0;
         let Na = 0;
         let K = 0;
@@ -1534,6 +1535,9 @@ class PacientesUCI extends App {
             if (col.id == 'SaO2') {
                 SaO2++;
             }
+            if (col.id == 'IndiceOxigenacion') {
+                IndiceOxigenacion++;
+            }
             if (col.id == 'Lactato') {
                 Lactato++;
             }
@@ -1549,7 +1553,7 @@ class PacientesUCI extends App {
 
         });
 
-        columnas = [PH, PaCO2, PaO2, HCO3, TC02, ExcesoBase, FiO2, PaO2FiO2, SaO2, Lactato, Na, K];
+        columnas = [PH, PaCO2, PaO2, HCO3, TC02, ExcesoBase, FiO2, PaO2FiO2, SaO2, IndiceOxigenacion, Lactato, Na, K];
 
         resultNro.map((col, i) => {
             let fila = {};
@@ -1734,6 +1738,28 @@ class PacientesUCI extends App {
                 }
             }
             if (col.id == 'SaO2') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'IndiceOxigenacion') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);

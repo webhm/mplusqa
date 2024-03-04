@@ -246,6 +246,11 @@ class CultivosUci {
                                                 class: (oData.editar ? 'd-none' : ''),
                                                 disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
+                                                    if (oData.id == 'Otros') {
+                                                        CultivosUci.showOtros = true;
+                                                    } else {
+                                                        CultivosUci.showOtros = false;
+                                                    }
                                                     CultivosUci.nuevoRegistro = null
                                                     CultivosUci.verRegistro(oData);
                                                 },
