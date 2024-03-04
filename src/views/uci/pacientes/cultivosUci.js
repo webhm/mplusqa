@@ -353,8 +353,31 @@ class CultivosUci {
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
                 }, [
+                    m("td.tx-14.tx-normal[colspan='']", {
+                            class: (CultivosUci.nuevoRegistro.muestra !== undefined && CultivosUci.nuevoRegistro.muestra == 'Otros' ? '' : 'd-none')
+                        },
+                        (CultivosUci.nuevoRegistro !== null ? [
+                            m('div.d-flex', [
 
-                    m("td.tx-14.tx-normal[colspan='']",
+                                m("input", {
+                                    id: "otrosMuestra" + CultivosUci.nuevoRegistro.id,
+                                    class: "form-control tx-semibold tx-14",
+                                    type: "text",
+                                    placeholder: "...",
+                                    disabled: true,
+                                    value: CultivosUci.nuevoRegistro.muestra,
+                                    oninput: (e) => {
+                                        CultivosUci.nuevoRegistro.muestra = (e.target.value.length !== 0 ? e.target.value : null);
+                                    },
+                                })
+
+                            ]),
+                        ] : [])
+                    ),
+                    m("td.tx-14.tx-normal[colspan='']", {
+                            class: (CultivosUci.nuevoRegistro.muestra !== undefined && CultivosUci.nuevoRegistro.muestra !== 'Otros' ? '' : 'd-none')
+
+                        },
                         m('select.tx-semibold', {
                             id: 'sec_Cultivos',
                             onchange: (e) => {
