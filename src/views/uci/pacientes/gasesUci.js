@@ -696,6 +696,9 @@ class GasesUci {
                                             GasesUci.nuevoRegistro.id = oData.id;
                                             GasesUci.nuevoRegistro.gas = oData.gas;
                                             GasesUci.nuevoRegistro.orden = oData.orden;
+                                            GasesUci.nuevoRegistro.fecha = oData.fecha;
+                                            GasesUci.nuevoRegistro.hora = oData.hora;
+                                            GasesUci.nuevoRegistro.fechaHora = oData.fechaHora;
                                             GasesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             GasesUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
@@ -961,6 +964,7 @@ class GasesUci {
                                         if (GasesUci.nuevoRegistro.hora == null) {
                                             if (GasesUci.setHora != undefined) {
                                                 GasesUci.nuevoRegistro.hora = GasesUci.setHora;
+                                                GasesUci.nuevoRegistro.fechaHora = GasesUci.nuevoRegistro.fecha + ' ' + GasesUci.nuevoRegistro.hora;
                                                 el.dom.value = GasesUci.setHora;
                                             }
                                         }

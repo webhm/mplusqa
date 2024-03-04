@@ -391,6 +391,7 @@ class Cita {
         Cita.data.inicio = _data.inicio;
         Cita.data.fin = _data.fin;
         Cita.data.hashCita = moment(_data.inicio, 'DD/MM/YYYY HH:mm').format("YYYY-MM-DD HH:mm") + "." + moment(_data.fin, 'DD/MM/YYYY HH:mm').format("YYYY-MM-DD HH:mm");
+        console.log(8888, Cita.data)
         m.redraw();
     }
 
@@ -501,6 +502,7 @@ class Cita {
                 }
             }
         }
+
 
 
         m.request({
