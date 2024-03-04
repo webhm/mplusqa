@@ -88,7 +88,6 @@ class PacientesUCI extends App {
         MarcapasosUci.show = true;
 
         GasesUci.show = true;
-        GasesUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Gases').options));
 
         OxigenacionUci.show = true;
 
