@@ -292,17 +292,15 @@ class VentilacionUci {
                                         m("button.btn.btn-xs.btn-dark[type='button']", {
                                                 class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                                 onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        VentilacionUci.iniciarRegistro();
-                                                        VentilacionUci.nuevoRegistro.id = oData.id;
-                                                        VentilacionUci.nuevoRegistro.ventilacion = oData.ventilacion;
-                                                        VentilacionUci.nuevoRegistro.am = oData.am;
-                                                        VentilacionUci.nuevoRegistro.pm = oData.pm;
-                                                        VentilacionUci.nuevoRegistro.hs = oData.hs;
-                                                        VentilacionUci.nuevoRegistro.observacion = oData.observacion;
-                                                        VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    }
+                                                    VentilacionUci.iniciarRegistro();
+                                                    VentilacionUci.nuevoRegistro.id = oData.id;
+                                                    VentilacionUci.nuevoRegistro.ventilacion = oData.ventilacion;
+                                                    VentilacionUci.nuevoRegistro.am = oData.am;
+                                                    VentilacionUci.nuevoRegistro.pm = oData.pm;
+                                                    VentilacionUci.nuevoRegistro.hs = oData.hs;
+                                                    VentilacionUci.nuevoRegistro.observacion = oData.observacion;
+                                                    VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
                                                 },
                                             },

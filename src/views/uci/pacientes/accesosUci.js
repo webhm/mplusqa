@@ -343,20 +343,18 @@ class AccesosUci {
                                         m("button.btn.btn-xs.btn-dark[type='button']", {
                                                 class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                                 onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        AccesosUci.iniciarRegistro();
-                                                        AccesosUci.nuevoRegistro.id = oData.id;
-                                                        AccesosUci.nuevoRegistro.acceso = oData.acceso;
-                                                        AccesosUci.nuevoRegistro.ubicacion = oData.ubicacion;
-                                                        AccesosUci.nuevoRegistro.tipo = oData.tipo;
-                                                        AccesosUci.nuevoRegistro.inicio = oData.inicio;
-                                                        AccesosUci.nuevoRegistro.retiro = oData.retiro;
-                                                        AccesosUci.nuevoRegistro.curacion = oData.curacion;
-                                                        AccesosUci.nuevoRegistro.condicion = oData.condicion;
-                                                        AccesosUci.nuevoRegistro.observacion = oData.observacion;
-                                                        AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    }
+                                                    AccesosUci.iniciarRegistro();
+                                                    AccesosUci.nuevoRegistro.id = oData.id;
+                                                    AccesosUci.nuevoRegistro.acceso = oData.acceso;
+                                                    AccesosUci.nuevoRegistro.ubicacion = oData.ubicacion;
+                                                    AccesosUci.nuevoRegistro.tipo = oData.tipo;
+                                                    AccesosUci.nuevoRegistro.inicio = oData.inicio;
+                                                    AccesosUci.nuevoRegistro.retiro = oData.retiro;
+                                                    AccesosUci.nuevoRegistro.curacion = oData.curacion;
+                                                    AccesosUci.nuevoRegistro.condicion = oData.condicion;
+                                                    AccesosUci.nuevoRegistro.observacion = oData.observacion;
+                                                    AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
                                                 },
                                             },

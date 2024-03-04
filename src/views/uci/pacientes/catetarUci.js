@@ -297,17 +297,15 @@ class CateterUci {
                                         m("button.btn.btn-xs.btn-dark[type='button']", {
                                                 class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                                 onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        CateterUci.iniciarRegistro();
-                                                        CateterUci.nuevoRegistro.id = oData.id;
-                                                        CateterUci.nuevoRegistro.cateter = oData.cateter;
-                                                        CateterUci.nuevoRegistro.am = oData.am;
-                                                        CateterUci.nuevoRegistro.pm = oData.pm;
-                                                        CateterUci.nuevoRegistro.hs = oData.hs;
-                                                        CateterUci.nuevoRegistro.observacion = oData.observacion;
-                                                        CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    }
+                                                    CateterUci.iniciarRegistro();
+                                                    CateterUci.nuevoRegistro.id = oData.id;
+                                                    CateterUci.nuevoRegistro.cateter = oData.cateter;
+                                                    CateterUci.nuevoRegistro.am = oData.am;
+                                                    CateterUci.nuevoRegistro.pm = oData.pm;
+                                                    CateterUci.nuevoRegistro.hs = oData.hs;
+                                                    CateterUci.nuevoRegistro.observacion = oData.observacion;
+                                                    CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
                                                 },
                                             },

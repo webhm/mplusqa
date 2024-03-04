@@ -329,17 +329,15 @@ class CuidadosUci2 {
                                         m("button.btn.btn-xs.btn-dark[type='button']", {
                                                 class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                                 onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        CuidadosUci2.iniciarRegistro();
-                                                        CuidadosUci2.nuevoRegistro.id = oData.id;
-                                                        CuidadosUci2.nuevoRegistro.cuidado = oData.cuidado;
-                                                        CuidadosUci2.nuevoRegistro.frecuencia = oData.frecuencia;
-                                                        CuidadosUci2.nuevoRegistro.am = oData.am;
-                                                        CuidadosUci2.nuevoRegistro.pm = oData.pm;
-                                                        CuidadosUci2.nuevoRegistro.hs = oData.hs;
-                                                        CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    }
+                                                    CuidadosUci2.iniciarRegistro();
+                                                    CuidadosUci2.nuevoRegistro.id = oData.id;
+                                                    CuidadosUci2.nuevoRegistro.cuidado = oData.cuidado;
+                                                    CuidadosUci2.nuevoRegistro.frecuencia = oData.frecuencia;
+                                                    CuidadosUci2.nuevoRegistro.am = oData.am;
+                                                    CuidadosUci2.nuevoRegistro.pm = oData.pm;
+                                                    CuidadosUci2.nuevoRegistro.hs = oData.hs;
+                                                    CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
                                                 },
                                             },

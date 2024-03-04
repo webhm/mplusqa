@@ -295,17 +295,15 @@ class HemodialisisUci {
                                         m("button.btn.btn-xs.btn-dark[type='button']", {
                                                 class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                                 onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        HemodialisisUci.iniciarRegistro();
-                                                        HemodialisisUci.nuevoRegistro.id = oData.id;
-                                                        HemodialisisUci.nuevoRegistro.hemo = oData.hemo;
-                                                        HemodialisisUci.nuevoRegistro.am = oData.am;
-                                                        HemodialisisUci.nuevoRegistro.pm = oData.pm;
-                                                        HemodialisisUci.nuevoRegistro.hs = oData.hs;
-                                                        HemodialisisUci.nuevoRegistro.observacion = oData.observacion;
-                                                        HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    }
+                                                    HemodialisisUci.iniciarRegistro();
+                                                    HemodialisisUci.nuevoRegistro.id = oData.id;
+                                                    HemodialisisUci.nuevoRegistro.hemo = oData.hemo;
+                                                    HemodialisisUci.nuevoRegistro.am = oData.am;
+                                                    HemodialisisUci.nuevoRegistro.pm = oData.pm;
+                                                    HemodialisisUci.nuevoRegistro.hs = oData.hs;
+                                                    HemodialisisUci.nuevoRegistro.observacion = oData.observacion;
+                                                    HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
                                                 },
                                             },

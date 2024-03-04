@@ -295,17 +295,15 @@ class MarcapasosUci {
                                         m("button.btn.btn-xs.btn-dark[type='button']", {
                                                 class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                                 onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        MarcapasosUci.iniciarRegistro();
-                                                        MarcapasosUci.nuevoRegistro.id = oData.id;
-                                                        MarcapasosUci.nuevoRegistro.hora = oData.hora;
-                                                        MarcapasosUci.nuevoRegistro.am = oData.am;
-                                                        MarcapasosUci.nuevoRegistro.pm = oData.pm;
-                                                        MarcapasosUci.nuevoRegistro.hs = oData.hs;
-                                                        MarcapasosUci.nuevoRegistro.observacion = oData.observacion;
-                                                        MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    }
+                                                    MarcapasosUci.iniciarRegistro();
+                                                    MarcapasosUci.nuevoRegistro.id = oData.id;
+                                                    MarcapasosUci.nuevoRegistro.hora = oData.hora;
+                                                    MarcapasosUci.nuevoRegistro.am = oData.am;
+                                                    MarcapasosUci.nuevoRegistro.pm = oData.pm;
+                                                    MarcapasosUci.nuevoRegistro.hs = oData.hs;
+                                                    MarcapasosUci.nuevoRegistro.observacion = oData.observacion;
+                                                    MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
                                                 },
                                             },

@@ -355,20 +355,18 @@ class ViasUci {
                                         m("button.btn.btn-xs.btn-dark[type='button']", {
                                                 class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                                 onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de copiar este registro?") == true) {
-                                                        ViasUci.iniciarRegistro();
-                                                        ViasUci.nuevoRegistro.id = oData.id;
-                                                        ViasUci.nuevoRegistro.via = oData.via;
-                                                        ViasUci.nuevoRegistro.ubicacion = oData.ubicacion;
-                                                        ViasUci.nuevoRegistro.tipo = oData.tipo;
-                                                        ViasUci.nuevoRegistro.inicio = oData.inicio;
-                                                        ViasUci.nuevoRegistro.retiro = oData.retiro;
-                                                        ViasUci.nuevoRegistro.curacion = oData.curacion;
-                                                        ViasUci.nuevoRegistro.condicion = oData.condicion;
-                                                        ViasUci.nuevoRegistro.observacion = oData.observacion;
-                                                        ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                        ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    }
+                                                    ViasUci.iniciarRegistro();
+                                                    ViasUci.nuevoRegistro.id = oData.id;
+                                                    ViasUci.nuevoRegistro.via = oData.via;
+                                                    ViasUci.nuevoRegistro.ubicacion = oData.ubicacion;
+                                                    ViasUci.nuevoRegistro.tipo = oData.tipo;
+                                                    ViasUci.nuevoRegistro.inicio = oData.inicio;
+                                                    ViasUci.nuevoRegistro.retiro = oData.retiro;
+                                                    ViasUci.nuevoRegistro.curacion = oData.curacion;
+                                                    ViasUci.nuevoRegistro.condicion = oData.condicion;
+                                                    ViasUci.nuevoRegistro.observacion = oData.observacion;
+                                                    ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
                                                 },
                                             },
