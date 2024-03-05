@@ -93,6 +93,34 @@ class PacientesUCIHistorial extends App {
         PacientesUCIHistorial.showSecciones();
     }
 
+    static resetSecs() {
+
+        CuidadosUci2.show = false;
+
+        ViasUci.show = false;
+
+        AccesosUci.show = false;
+
+        CateterUci.show = false;
+
+        VentilacionUci.show = false;
+
+        HemodialisisUci.show = false;
+
+        CultivosUci.show = false;
+
+        MarcapasosUci.show = false;
+
+        GasesUci.show = false;
+
+        OxigenacionUci.show = false;
+
+        VentilatoriosUci.show = false;
+
+        m.redraw();
+
+    }
+
     static showSecciones() {
 
         PacientesUCIHistorial.extraerFechaHoraTurnoVigente();

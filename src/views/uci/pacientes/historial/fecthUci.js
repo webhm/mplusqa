@@ -304,6 +304,9 @@ class FecthUci {
     }
 
     static loadSeccionesHistorial(fechaBusqueda) {
+
+        PacientesUCIHistorial.resetSecs();
+
         return m.request({
             method: "GET",
             url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/detalle-all-secciones",
@@ -315,7 +318,6 @@ class FecthUci {
                 "Content-Type": "application/json; charset=utf-8"
             }
         }).then(function(res) {
-
 
             if (res.data.length == 0) {
                 alert('No existe información en la fecha ingresada.');
