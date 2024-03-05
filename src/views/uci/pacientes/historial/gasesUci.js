@@ -78,6 +78,16 @@ class GasesUci {
         GasesUci.registros = res;
 
     }
+
+    static destroyTable() {
+        let table = document.getElementById('table-gases');
+        // clear first
+        if (table != null) {
+            $('#table-gases').DataTable().clear().destroy();
+
+        }
+    }
+
     static getRegistros() {
         return GasesUci.registros;
     }

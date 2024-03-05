@@ -112,10 +112,12 @@ class PacientesUCIHistorial extends App {
         MarcapasosUci.show = false;
 
         GasesUci.show = false;
+        GasesUci.destroyTable();
 
         OxigenacionUci.show = false;
 
         VentilatoriosUci.show = false;
+        VentilatoriosUci.destroyTable();
 
         m.redraw();
 
@@ -1471,6 +1473,7 @@ class PacientesUCIHistorial extends App {
         resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.orden - b.orden);
+
 
         // Establecer Columnas
         let PH = 0;
