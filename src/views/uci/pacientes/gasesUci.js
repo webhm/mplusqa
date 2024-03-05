@@ -702,7 +702,6 @@ class GasesUci {
 
                                 m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
                                         class: (GasesUci.nuevoRegistro !== null && GasesUci.nuevoRegistro.editar && GasesUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
-                                        disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
                                         onclick: () => {
                                             oData.editar = null;
                                             GasesUci.nuevoRegistro = null;
