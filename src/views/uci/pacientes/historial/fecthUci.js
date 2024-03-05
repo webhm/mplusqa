@@ -11,7 +11,7 @@ class FecthUci {
     static fecha = null;
     static usuario = null;
     static dataTurnos = null;
-    static dataSecciones = [];
+    static dataHistorial = [];
 
     static setTurnos(dataTurnos) {
 
@@ -268,10 +268,10 @@ class FecthUci {
 
                 if (res.data.dataTurnos.length > 0) {
                     TurnosUciHistorial.turnos = FecthUci.setTurnos(res.data.dataTurnos);
-                    PacientesUCIHistorial.vReloadTable('table-turnos', TurnosUciHistorial.getTurnos());
+                    //PacientesUCIHistorial.vReloadTable('table-turnos', TurnosUciHistorial.getTurnos());
                 }
 
-                FecthUci.loadSecciones();
+                //  FecthUci.loadSeccionesHistorial();
 
             }
 
@@ -294,9 +294,39 @@ class FecthUci {
             }
         }).then(function(res) {
 
-            FecthUci.dataSecciones = res.data;
+            FecthUci.dataHistorial = res.data;
 
             console.log(res)
+
+        }).catch(function(e) {
+
+        });
+    }
+
+    static loadSeccionesHistorial(fechaBusqueda) {
+        return m.request({
+            method: "GET",
+            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/detalle-all-secciones",
+            params: {
+                numeroAtencion: PacientesUCIHistorial.numeroAtencion,
+                fechaBusqueda: fechaBusqueda,
+            },
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        }).then(function(res) {
+
+
+            if (res.data.length == 0) {
+                alert('No existe información en la fecha ingresada.');
+            } else {
+                FecthUci.dataHistorial = res.data;
+                PacientesUCIHistorial.loadSecs();
+
+                console.log(res)
+            }
+
+
 
         }).catch(function(e) {
 
