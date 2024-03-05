@@ -298,10 +298,12 @@ class MarcapasosUci {
                                                     MarcapasosUci.iniciarRegistro();
                                                     MarcapasosUci.nuevoRegistro.id = oData.id;
                                                     MarcapasosUci.nuevoRegistro.hora = oData.hora;
-                                                    MarcapasosUci.nuevoRegistro.am = oData.am;
-                                                    MarcapasosUci.nuevoRegistro.pm = oData.pm;
-                                                    MarcapasosUci.nuevoRegistro.hs = oData.hs;
-                                                    MarcapasosUci.nuevoRegistro.observacion = oData.observacion;
+                                                    if (PacientesUCI.numeroTurno !== 1) {
+                                                        MarcapasosUci.nuevoRegistro.am = oData.am;
+                                                        MarcapasosUci.nuevoRegistro.pm = oData.pm;
+                                                        MarcapasosUci.nuevoRegistro.hs = oData.hs;
+                                                        MarcapasosUci.nuevoRegistro.observacion = oData.observacion;
+                                                    }
                                                     MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 

@@ -39,6 +39,8 @@ class AccesosUci {
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
+    static showOtros = false;
+
     static validarRegistro() {
 
     }
@@ -303,6 +305,11 @@ class AccesosUci {
                                                 class: (oData.editar ? 'd-none' : ''),
                                                 disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
+                                                    if (oData.id == 'Otros') {
+                                                        AccesosUci.showOtros = true;
+                                                    } else {
+                                                        AccesosUci.showOtros = false;
+                                                    }
                                                     AccesosUci.nuevoRegistro = null
                                                     AccesosUci.verRegistro(oData);
                                                 },
@@ -425,7 +432,7 @@ class AccesosUci {
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
                 }, [
-                    m("td.tx-14.tx-normal.wd-40p[colspan='4']",
+                    m("td.tx-14.tx-normal.wd-40p[colspan='2']",
                         m('select.tx-semibold', {
                             id: 'sec_Accesos',
                             onchange: (e) => {
@@ -435,9 +442,21 @@ class AccesosUci {
                                     AccesosUci.iniciarRegistro();
                                     AccesosUci.nuevoRegistro.id = _id;
                                     AccesosUci.nuevoRegistro.acceso = _value;
+                                    if (AccesosUci.nuevoRegistro.id == 'Otros') {
+                                        AccesosUci.showOtros = true;
+                                    }
+                                    if (AccesosUci.nuevoRegistro.id !== 'Otros') {
+                                        AccesosUci.showOtros = false;
+                                    }
                                 } else {
                                     AccesosUci.nuevoRegistro.id = _id;
                                     AccesosUci.nuevoRegistro.acceso = _value;
+                                    if (AccesosUci.nuevoRegistro.id == 'Otros') {
+                                        AccesosUci.showOtros = true;
+                                    }
+                                    if (AccesosUci.nuevoRegistro.id !== 'Otros') {
+                                        AccesosUci.showOtros = false;
+                                    }
                                 }
                             },
                             class: "custom-select",
@@ -494,11 +513,33 @@ class AccesosUci {
                             {
                                 id: "EquipoVenoclisis",
                                 label: "EQUIPO DE VENOCLISIS"
+                            },
+                            {
+                                id: "Otros",
+                                label: "OTROS"
                             }
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
                         ))
                     ),
+                    m("td.tx-14.tx-normal[colspan='2']", {
+                        class: (AccesosUci.showOtros == false ? 'd-none' : '')
+                    }, [
+                        m('div.d-flex', [
+                            (AccesosUci.nuevoRegistro !== null ? [
+                                m("input", {
+                                    id: "otrosAcceso" + AccesosUci.nuevoRegistro.id,
+                                    class: "form-control tx-semibold tx-14",
+                                    type: "text",
+                                    placeholder: "Otros",
+                                    value: AccesosUci.nuevoRegistro.otros,
+                                    oninput: (e) => {
+                                        AccesosUci.nuevoRegistro.otros = (e.target.value.length !== 0 ? e.target.value : null);
+                                    },
+                                })
+                            ] : [])
+                        ]),
+                    ]),
                     m("td.tx-10.tx-normal.wd-40p[colspan='4']",
                         (AccesosUci.nuevoRegistro !== null ? [
                             m('select.tx-semibold', {

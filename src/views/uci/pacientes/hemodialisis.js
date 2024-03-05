@@ -298,10 +298,12 @@ class HemodialisisUci {
                                                     HemodialisisUci.iniciarRegistro();
                                                     HemodialisisUci.nuevoRegistro.id = oData.id;
                                                     HemodialisisUci.nuevoRegistro.hemo = oData.hemo;
-                                                    HemodialisisUci.nuevoRegistro.am = oData.am;
-                                                    HemodialisisUci.nuevoRegistro.pm = oData.pm;
-                                                    HemodialisisUci.nuevoRegistro.hs = oData.hs;
-                                                    HemodialisisUci.nuevoRegistro.observacion = oData.observacion;
+                                                    if (PacientesUCI.numeroTurno !== 1) {
+                                                        HemodialisisUci.nuevoRegistro.am = oData.am;
+                                                        HemodialisisUci.nuevoRegistro.pm = oData.pm;
+                                                        HemodialisisUci.nuevoRegistro.hs = oData.hs;
+                                                        HemodialisisUci.nuevoRegistro.observacion = oData.observacion;
+                                                    }
                                                     HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 

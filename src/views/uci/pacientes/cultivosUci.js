@@ -360,7 +360,7 @@ class CultivosUci {
 
                 }, [
 
-                    m("td.tx-14.tx-normal[colspan='1']",
+                    m("td.tx-14.tx-normal[colspan='']",
                         m('select.tx-semibold', {
                             id: 'sec_Cultivos',
                             onchange: (e) => {
@@ -431,7 +431,7 @@ class CultivosUci {
                             m('option[id="' + x.id + '"]', x.label)
                         ))
                     ),
-                    m("td.tx-14.tx-normal[colspan='2']", {
+                    m("td.tx-14.tx-normal[colspan='']", {
                             class: (CultivosUci.showOtros == false ? 'd-none' : '')
                         }, [
                             m('div.d-flex', [

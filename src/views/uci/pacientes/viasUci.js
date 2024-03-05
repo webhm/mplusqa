@@ -40,6 +40,7 @@ class ViasUci {
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
+    static showOtros = false;
 
     static validarRegistro() {
 
@@ -321,6 +322,11 @@ class ViasUci {
                                                 class: (oData.editar ? 'd-none' : ''),
                                                 disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
+                                                    if (oData.id == 'Otros') {
+                                                        ViasUci.showOtros = true;
+                                                    } else {
+                                                        ViasUci.showOtros = false;
+                                                    }
                                                     ViasUci.nuevoRegistro = null
                                                     ViasUci.verRegistro(oData);
                                                 },
@@ -435,7 +441,7 @@ class ViasUci {
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
                 }, [
-                    m("td.tx-14.tx-normal.wd-40p[colspan='4']",
+                    m("td.tx-14.tx-normal.wd-40p[colspan='2']",
                         m('select.tx-semibold', {
                             id: 'sec_Vias',
                             onchange: (e) => {
@@ -445,42 +451,77 @@ class ViasUci {
                                     ViasUci.iniciarRegistro();
                                     ViasUci.nuevoRegistro.id = _id;
                                     ViasUci.nuevoRegistro.via = _value;
+                                    if (ViasUci.nuevoRegistro.id == 'Otros') {
+                                        ViasUci.showOtros = true;
+                                    }
+                                    if (ViasUci.nuevoRegistro.id !== 'Otros') {
+                                        ViasUci.showOtros = false;
+                                    }
                                 } else {
                                     ViasUci.nuevoRegistro.id = _id;
                                     ViasUci.nuevoRegistro.via = _value;
+                                    if (ViasUci.nuevoRegistro.id == 'Otros') {
+                                        ViasUci.showOtros = true;
+                                    }
+                                    if (ViasUci.nuevoRegistro.id !== 'Otros') {
+                                        ViasUci.showOtros = false;
+                                    }
                                 }
                             },
                             class: "custom-select",
                             value: (ViasUci.nuevoRegistro !== null ? ViasUci.nuevoRegistro.via : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                            id: "ViaPeriferica",
-                            label: "VIA PERIFERICA"
-                        }, {
-                            id: "CateterSubclavio",
-                            label: "CATETER SUBCLAVIO"
-                        }, {
-                            id: "CateterYugular",
-                            label: "CATETER YUGULAR"
-                        }, {
-                            id: "CateterFemoral",
-                            label: "CATETER FEMORAL"
-                        }, {
-                            id: "CateterCentralInsercionPeriferica",
-                            label: "CATETER CENTRAL DE INSERCION PERIFERICA"
-                        }, {
-                            id: "CateterHemodialisis",
-                            label: "CATETER DE HEMODIALISIS"
-                        }, {
-                            id: "CateterImplantableSubcutaneo",
-                            label: "CATETER IMPLANTABLE SUBCUTANEO"
-                        }, {
-                            id: "LineaArterial",
-                            label: "LINEA ARTERIAL"
-                        }].map(x =>
+                                id: "ViaPeriferica",
+                                label: "VIA PERIFERICA"
+                            }, {
+                                id: "CateterSubclavio",
+                                label: "CATETER SUBCLAVIO"
+                            }, {
+                                id: "CateterYugular",
+                                label: "CATETER YUGULAR"
+                            }, {
+                                id: "CateterFemoral",
+                                label: "CATETER FEMORAL"
+                            }, {
+                                id: "CateterCentralInsercionPeriferica",
+                                label: "CATETER CENTRAL DE INSERCION PERIFERICA"
+                            }, {
+                                id: "CateterHemodialisis",
+                                label: "CATETER DE HEMODIALISIS"
+                            }, {
+                                id: "CateterImplantableSubcutaneo",
+                                label: "CATETER IMPLANTABLE SUBCUTANEO"
+                            }, {
+                                id: "LineaArterial",
+                                label: "LINEA ARTERIAL"
+                            },
+                            {
+                                id: "Otros",
+                                label: "OTROS"
+                            }
+                        ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
                         ))
 
                     ),
+                    m("td.tx-14.tx-normal[colspan='2']", {
+                        class: (ViasUci.showOtros == false ? 'd-none' : '')
+                    }, [
+                        m('div.d-flex', [
+                            (ViasUci.nuevoRegistro !== null ? [
+                                m("input", {
+                                    id: "otrosVia" + ViasUci.nuevoRegistro.id,
+                                    class: "form-control tx-semibold tx-14",
+                                    type: "text",
+                                    placeholder: "Otros",
+                                    value: ViasUci.nuevoRegistro.otros,
+                                    oninput: (e) => {
+                                        ViasUci.nuevoRegistro.otros = (e.target.value.length !== 0 ? e.target.value : null);
+                                    },
+                                })
+                            ] : [])
+                        ]),
+                    ]),
                     m("td.tx-10.tx-normal.wd-40p[colspan='4']",
                         (ViasUci.nuevoRegistro !== null ? [
                             m("input", {

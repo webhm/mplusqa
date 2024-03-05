@@ -300,10 +300,12 @@ class CateterUci {
                                                     CateterUci.iniciarRegistro();
                                                     CateterUci.nuevoRegistro.id = oData.id;
                                                     CateterUci.nuevoRegistro.cateter = oData.cateter;
-                                                    CateterUci.nuevoRegistro.am = oData.am;
-                                                    CateterUci.nuevoRegistro.pm = oData.pm;
-                                                    CateterUci.nuevoRegistro.hs = oData.hs;
-                                                    CateterUci.nuevoRegistro.observacion = oData.observacion;
+                                                    if (PacientesUCI.numeroTurno !== 1) {
+                                                        CateterUci.nuevoRegistro.am = oData.am;
+                                                        CateterUci.nuevoRegistro.pm = oData.pm;
+                                                        CateterUci.nuevoRegistro.hs = oData.hs;
+                                                        CateterUci.nuevoRegistro.observacion = oData.observacion;
+                                                    }
                                                     CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
