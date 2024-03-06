@@ -337,6 +337,11 @@ class CuidadosUci2 {
                                                         CuidadosUci2.nuevoRegistro.am = oData.am;
                                                         CuidadosUci2.nuevoRegistro.pm = oData.pm;
                                                         CuidadosUci2.nuevoRegistro.hs = oData.hs;
+                                                    } else {
+                                                        CuidadosUci2.nuevoRegistro.frecuencia = oData.frecuencia;
+                                                        CuidadosUci2.nuevoRegistro.am = null;
+                                                        CuidadosUci2.nuevoRegistro.pm = null;
+                                                        CuidadosUci2.nuevoRegistro.hs = null;
                                                     }
                                                     CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
