@@ -210,7 +210,8 @@ class AccesosUci {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return full.acceso;
+                        return (full.id == 'Otros' ? full.otros : full.acceso);
+
                     },
 
                     visible: true,

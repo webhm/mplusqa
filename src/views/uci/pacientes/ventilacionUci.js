@@ -295,7 +295,7 @@ class VentilacionUci {
                                                     VentilacionUci.iniciarRegistro();
                                                     VentilacionUci.nuevoRegistro.id = oData.id;
                                                     VentilacionUci.nuevoRegistro.ventilacion = oData.ventilacion;
-                                                    if (PacientesUCI.numeroTurno !== 1) {
+                                                    if (PacientesUCI.numeroTurno != 1) {
                                                         VentilacionUci.nuevoRegistro.am = oData.am;
                                                         VentilacionUci.nuevoRegistro.pm = oData.pm;
                                                         VentilacionUci.nuevoRegistro.hs = oData.hs;

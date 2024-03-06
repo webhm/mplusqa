@@ -298,7 +298,7 @@ class HemodialisisUci {
                                                     HemodialisisUci.iniciarRegistro();
                                                     HemodialisisUci.nuevoRegistro.id = oData.id;
                                                     HemodialisisUci.nuevoRegistro.hemo = oData.hemo;
-                                                    if (PacientesUCI.numeroTurno !== 1) {
+                                                    if (PacientesUCI.numeroTurno != 1) {
                                                         HemodialisisUci.nuevoRegistro.am = oData.am;
                                                         HemodialisisUci.nuevoRegistro.pm = oData.pm;
                                                         HemodialisisUci.nuevoRegistro.hs = oData.hs;

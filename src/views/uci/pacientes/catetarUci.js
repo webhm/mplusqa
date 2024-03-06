@@ -300,7 +300,7 @@ class CateterUci {
                                                     CateterUci.iniciarRegistro();
                                                     CateterUci.nuevoRegistro.id = oData.id;
                                                     CateterUci.nuevoRegistro.cateter = oData.cateter;
-                                                    if (PacientesUCI.numeroTurno !== 1) {
+                                                    if (PacientesUCI.numeroTurno != 1) {
                                                         CateterUci.nuevoRegistro.am = oData.am;
                                                         CateterUci.nuevoRegistro.pm = oData.pm;
                                                         CateterUci.nuevoRegistro.hs = oData.hs;

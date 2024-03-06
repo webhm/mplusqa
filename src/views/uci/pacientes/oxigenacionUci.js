@@ -297,7 +297,7 @@ class OxigenacionUci {
                                                     OxigenacionUci.iniciarRegistro();
                                                     OxigenacionUci.nuevoRegistro.id = oData.id;
                                                     OxigenacionUci.nuevoRegistro.oxi = oData.oxi;
-                                                    if (PacientesUCI.numeroTurno !== 1) {
+                                                    if (PacientesUCI.numeroTurno != 1) {
                                                         OxigenacionUci.nuevoRegistro.am = oData.am;
                                                         OxigenacionUci.nuevoRegistro.pm = oData.pm;
                                                         OxigenacionUci.nuevoRegistro.hs = oData.hs;

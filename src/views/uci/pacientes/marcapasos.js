@@ -298,7 +298,7 @@ class MarcapasosUci {
                                                     MarcapasosUci.iniciarRegistro();
                                                     MarcapasosUci.nuevoRegistro.id = oData.id;
                                                     MarcapasosUci.nuevoRegistro.hora = oData.hora;
-                                                    if (PacientesUCI.numeroTurno !== 1) {
+                                                    if (PacientesUCI.numeroTurno != 1) {
                                                         MarcapasosUci.nuevoRegistro.am = oData.am;
                                                         MarcapasosUci.nuevoRegistro.pm = oData.pm;
                                                         MarcapasosUci.nuevoRegistro.hs = oData.hs;
