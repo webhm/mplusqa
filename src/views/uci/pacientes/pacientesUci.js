@@ -141,17 +141,15 @@ class PacientesUCI extends App {
 
                                         }
                                     }, "Registrar Nuevo Turno"),
-                                    (FecthUci.dataSecciones.length > 0 ? [
-                                        m("button.btn.btn-xs.btn-secondary.tx-semibold.tx-14[type='button']", {
-                                            onclick: () => {
-                                                m.route.set('/uci/pacientes/historial/', {
-                                                    numeroHistoriaClinica: PacientesUCI.numeroHistoriaClinica,
-                                                    numeroAtencion: PacientesUCI.numeroAtencion,
-                                                    usuario: PacientesUCI.usuarioTurno
-                                                })
-                                            }
-                                        }, "Ver Historial")
-                                    ] : [])
+                                    m("button.btn.btn-xs.btn-secondary.tx-semibold.tx-14[type='button']", {
+                                        onclick: () => {
+                                            m.route.set('/uci/pacientes/historial/', {
+                                                numeroHistoriaClinica: PacientesUCI.numeroHistoriaClinica,
+                                                numeroAtencion: PacientesUCI.numeroAtencion,
+                                                usuario: PacientesUCI.usuarioTurno
+                                            })
+                                        }
+                                    }, "Ver Historial")
                                 ),
 
                             ]),
