@@ -285,7 +285,7 @@ class CuidadosUci2 {
                         return m.mount(nTd, {
                             view: () => {
                                 return [
-                                    m('div.pd-5', {
+                                    m('div.pd-10', {
                                         class: (oData.editar == true ? 'd-none' : ''),
                                         ondblclick: (e) => {
                                             CuidadosUci2.nuevoRegistro = null
@@ -328,7 +328,7 @@ class CuidadosUci2 {
                         return m.mount(nTd, {
                             view: () => {
                                 return [
-                                    m('div.pd-5', {
+                                    m('div.pd-10', {
                                         class: (oData.editar == true ? 'd-none' : ''),
                                         ondblclick: (e) => {
                                             CuidadosUci2.nuevoRegistro = null
@@ -370,7 +370,7 @@ class CuidadosUci2 {
                         return m.mount(nTd, {
                             view: () => {
                                 return [
-                                    m('div.pd-5', {
+                                    m('div.pd-10', {
                                         class: (oData.editar == true ? 'd-none' : ''),
                                         ondblclick: (e) => {
                                             CuidadosUci2.nuevoRegistro = null
