@@ -228,8 +228,11 @@ class FecthUci {
                     numeroTurno: res.data.numeroTurno
                 });
 
-                if (res.data.dataTurnos.length > 0) {
-                    TurnosUci.turnos = FecthUci.setTurnos(res.data.dataTurnos);
+                // Filter Turnos de Hoy
+                let turnosHoy = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+
+                if (turnosHoy.length > 0) {
+                    TurnosUci.turnos = FecthUci.setTurnos(turnosHoy);
                     PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
                 }
 
@@ -260,10 +263,10 @@ class FecthUci {
         }).then(function(res) {
 
             FecthUci.loaderSecciones = true;
-
-            FecthUci.dataSecciones = res.data;
-
-            console.log(res)
+            // Filter Turnos de Hoy
+            let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+            FecthUci.dataSecciones = seccionesHoy;
+            console.log(seccionesHoy)
 
         }).catch(function(e) {
 
