@@ -408,7 +408,7 @@ class BuscadorPacientes {
             },
             cache: false,
             order: [
-                [2, "Asc"]
+                [3, "Asc"]
             ],
             destroy: true,
             columns: [{
@@ -416,6 +416,9 @@ class BuscadorPacientes {
                 },
                 {
                     title: "NHC:"
+                },
+                {
+                    title: "Cédula:"
                 },
                 {
                     title: "Paciente:"
@@ -426,6 +429,8 @@ class BuscadorPacientes {
                     title: "Sexo:"
                 }, {
                     title: "F. Nacimiento:"
+                }, {
+                    title: "Nro. Celular:"
                 }, {
                     title: "Opciones:"
                 },
@@ -446,42 +451,55 @@ class BuscadorPacientes {
                 },
                 {
                     mRender: function(data, type, full) {
+                        return full.CEDULA;
+                    },
+                    visible: true,
+                    aTargets: [2]
+                },
+                {
+                    mRender: function(data, type, full) {
                         return full.NM_PACIENTE;
                     },
                     visible: true,
-                    aTargets: [2],
-                    width: "60%"
+                    aTargets: [3],
+                    width: "50%"
                 },
                 {
                     mRender: function(data, type, full) {
                         return full.EDAD;
                     },
                     visible: true,
-                    aTargets: [3]
+                    aTargets: [4]
                 }, {
                     mRender: function(data, type, full) {
                         return full.TP_SEXO;
                     },
                     visible: true,
-                    aTargets: [4]
+                    aTargets: [5]
                 }, {
                     mRender: function(data, type, full) {
                         return full.DT_NASCIMENTO;
                     },
                     visible: true,
-                    aTargets: [5]
+                    aTargets: [6]
+                }, {
+                    mRender: function(data, type, full) {
+                        return full.NR_CELULAR;
+                    },
+                    visible: true,
+                    aTargets: [7]
                 }, {
                     mRender: function(data, type, full) {
                         return "OPCIONES";
                     },
                     visible: true,
-                    aTargets: [6]
+                    aTargets: [8]
                 },
             ],
             fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {},
             drawCallback: function(settings) {
                 settings.aoData.map(function(_i) {
-                    m.mount(_i.anCells[6], {
+                    m.mount(_i.anCells[8], {
                         view: function() {
                             return [
                                 m("button.btn.btn-sm.btn-block.btn-primary[type='button']", {
