@@ -912,7 +912,7 @@ class Calendario extends App {
                         }
                     }
 
-                    element.find('.fc-title').html('<span>' + _cales[0].substring(0, _cales[0].length - 3) + ': ' + event.paciente + '</span>');
+                    element.find('.fc-title').html('<span>' + _cales[0].substring(0, _cales[0].length - 3) + (event.paciente !== undefined ? ': ' + event.paciente : ': ' + event.title) + '</span>');
                     element.find(".fc-title").parent().attr("data-toggle", "tooltip");
                     element.find(".fc-title").parent().attr("data-html", "true");
                     element.find(".fc-title").parent().attr("data-placement", "left");
@@ -1375,7 +1375,7 @@ class Calendario extends App {
                                 }
                             }, [
                                 m("div.input-group", [
-                                    m("input.form-control[type='text'][placeholder='Apellidos y Nombres']", {
+                                    m("input.form-control[type='text'][placeholder='Apellidos y Nombres o Nro. de Cédula']", {
                                         oninput: (e) => {
                                             Cita.error = null;
                                             BuscadorPacientes.searchField = e.target.value;
