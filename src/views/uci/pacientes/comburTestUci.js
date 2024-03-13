@@ -11,10 +11,8 @@ class Medida {
     medida = null;
     valor = null;
     hora = null;
-    rango = null;
-    instrumento = null;
     editar = null;
-    seccion = 'Medidas';
+    seccion = 'ComburTest';
     constructor() {
         this.id = this.id;
         this.orden = this.orden;
@@ -23,15 +21,13 @@ class Medida {
         this.medida = this.medida;
         this.valor = this.valor;
         this.hora = this.hora;
-        this.rango = this.rango;
-        this.instrumento = this.instrumento;
         this.editar = this.editar;
         this.seccion = this.seccion;
     }
 }
 
 
-class MedidasUci {
+class ComburTestUci {
     static registros = [];
     static allRegistros = [];
     static nuevoRegistro = null;
@@ -47,28 +43,28 @@ class MedidasUci {
 
     }
     static iniciarRegistro() {
-        MedidasUci.nuevoRegistro = new Medida();
+        ComburTestUci.nuevoRegistro = new Medida();
     }
     static agregarRegistro() {
 
-        if (MedidasUci.allRegistros.length == 0) {
-            MedidasUci.nuevoRegistro.nro = 1;
-            MedidasUci.allRegistros.push(MedidasUci.nuevoRegistro);
+        if (ComburTestUci.allRegistros.length == 0) {
+            ComburTestUci.nuevoRegistro.nro = 1;
+            ComburTestUci.allRegistros.push(ComburTestUci.nuevoRegistro);
         } else {
-            MedidasUci.nuevoRegistro.nro = (MedidasUci.allRegistros[MedidasUci.allRegistros.reverse().length - 1].nro + 1);
-            MedidasUci.allRegistros.push(MedidasUci.nuevoRegistro);
+            ComburTestUci.nuevoRegistro.nro = (ComburTestUci.allRegistros[ComburTestUci.allRegistros.reverse().length - 1].nro + 1);
+            ComburTestUci.allRegistros.push(ComburTestUci.nuevoRegistro);
         }
     }
     static verRegistro(registro) {
         registro.editar = true;
-        MedidasUci.nuevoRegistro = registro;
-        console.log(MedidasUci.nuevoRegistro)
+        ComburTestUci.nuevoRegistro = registro;
+        console.log(ComburTestUci.nuevoRegistro)
     }
     static editarRegistro() {
-        MedidasUci.nuevoRegistro.editar = null;
-        MedidasUci.allRegistros.map((_v, _i) => {
-            if (_v.nro == MedidasUci.nuevoRegistro.nro) {
-                MedidasUci.allRegistros[_i] = MedidasUci.nuevoRegistro;
+        ComburTestUci.nuevoRegistro.editar = null;
+        ComburTestUci.allRegistros.map((_v, _i) => {
+            if (_v.nro == ComburTestUci.nuevoRegistro.nro) {
+                ComburTestUci.allRegistros[_i] = ComburTestUci.nuevoRegistro;
             }
         });
 
@@ -82,7 +78,7 @@ class MedidasUci {
         let result = [];
         let resultNro = [];
 
-        MedidasUci.allRegistros.map((_v, _i) => {
+        ComburTestUci.allRegistros.map((_v, _i) => {
             if (_v.nro !== obj.nro) {
                 res.push(_v);
             }
@@ -94,10 +90,9 @@ class MedidasUci {
 
         _arr = resultNro.sort((a, b) => a.nro - b.nro);
 
-        MedidasUci.allRegistros = _arr;
+        ComburTestUci.allRegistros = _arr;
 
     }
-
     static valorarRango(valor, id) {
 
         if (id == 'GastoCardiaco') {
@@ -201,7 +196,7 @@ class MedidasUci {
         let valores = [];
         let r = [];
 
-        result = MedidasUci.allRegistros;
+        result = ComburTestUci.allRegistros;
         r = result.sort((a, b) => b.nro - a.nro);
         // Quitar duplicados
         resultNro = r.filter(o => hash[o.nro] ? false : hash[o.nro] = true).sort((a, b) => a.nro - b.nro);
@@ -210,67 +205,59 @@ class MedidasUci {
         // 'data-orden'ar desc
         _arr = resultId.sort((a, b) => a.orden - b.orden);
 
-        MedidasUci.registros = _arr;
+        ComburTestUci.registros = _arr;
 
         // Establecer Columnas
-        let GastoCardiaco = 0;
-        let IndiceCardiaco = 0;
-        let VolumenSistolico = 0;
-        let PresionCapilarPulmonar = 0;
-        let IndiceResistenciaVascularSistemicaIndexada = 0;
-        let ResistenciaVascularSistemica = 0;
-        let IndiceResistenciaVascularPulmonarIndexada = 0;
-        let PresionCuna = 0;
-        let PresionArteriaPulmonar = 0;
-        let TransporteArterialOxigeno = 0;
-        let ConcentracionOxigeno = 0;
-        let PresionPerfusionCerebral = 0;
-
+        let cbPH = 0;
+        let cbProteinas = 0;
+        let cbDensidad = 0;
+        let cbGlucosa = 0;
+        let cbSangre = 0;
+        let cbCetonas = 0;
+        let cbLeucocitos = 0;
+        let cbNitritos = 0;
+        let cbUrobilinogeno = 0;
+        let cbBilirubina = 0;
 
         resultNro.map((col, i) => {
-            if (col.id == 'GastoCardiaco') {
-                GastoCardiaco++;
+            if (col.id == 'cbPH') {
+                cbPH++;
             }
-            if (col.id == 'IndiceCardiaco') {
-                IndiceCardiaco++;
+            if (col.id == 'cbProteinas') {
+                cbProteinas++;
             }
-            if (col.id == 'VolumenSistolico') {
-                VolumenSistolico++;
+            if (col.id == 'cbDensidad') {
+                cbDensidad++;
             }
-            if (col.id == 'PresionCapilarPulmonar') {
-                PresionCapilarPulmonar++;
+            if (col.id == 'cbGlucosa') {
+                cbGlucosa++;
             }
-            if (col.id == 'IndiceResistenciaVascularSistemicaIndexada') {
-                IndiceResistenciaVascularSistemicaIndexada++;
+            if (col.id == 'cbSangre') {
+                cbSangre++;
             }
-            if (col.id == 'ResistenciaVascularSistemica') {
-                ResistenciaVascularSistemica++;
+            if (col.id == 'cbCetonas') {
+                cbCetonas++;
             }
-            if (col.id == 'IndiceResistenciaVascularPulmonarIndexada') {
-                IndiceResistenciaVascularPulmonarIndexada++;
+            if (col.id == 'cbLeucocitos') {
+                cbLeucocitos++;
             }
-            if (col.id == 'PresionCuna') {
-                PresionCuna++;
+            if (col.id == 'cbNitritos') {
+                cbNitritos++;
             }
-            if (col.id == 'PresionArteriaPulmonar') {
-                PresionArteriaPulmonar++;
+            if (col.id == 'cbUrobilinogeno') {
+                cbUrobilinogeno++;
             }
-            if (col.id == 'TransporteArterialOxigeno') {
-                TransporteArterialOxigeno++;
+            if (col.id == 'cbBilirubina') {
+                cbBilirubina++;
             }
-            if (col.id == 'ConcentracionOxigeno') {
-                ConcentracionOxigeno++;
-            }
-            if (col.id == 'PresionPerfusionCerebral') {
-                PresionPerfusionCerebral++;
-            }
+
         });
 
-        columnas = [GastoCardiaco, IndiceCardiaco, VolumenSistolico, PresionCapilarPulmonar, IndiceResistenciaVascularSistemicaIndexada, ResistenciaVascularSistemica, IndiceResistenciaVascularPulmonarIndexada, PresionCuna, PresionArteriaPulmonar, TransporteArterialOxigeno, ConcentracionOxigeno, PresionPerfusionCerebral];
+        columnas = [cbPH, cbProteinas, cbDensidad, cbGlucosa, cbSangre, cbCetonas, cbLeucocitos, cbNitritos, cbUrobilinogeno, cbBilirubina];
 
         resultNro.map((col, i) => {
             let fila = {};
-            if (col.id == 'GastoCardiaco') {
+            if (col.id == 'cbPH') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -294,7 +281,7 @@ class MedidasUci {
 
 
             }
-            if (col.id == 'IndiceCardiaco') {
+            if (col.id == 'cbProteinas') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -318,7 +305,7 @@ class MedidasUci {
 
 
             }
-            if (col.id == 'VolumenSistolico') {
+            if (col.id == 'cbDensidad') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -340,7 +327,7 @@ class MedidasUci {
                     });
                 }
             }
-            if (col.id == 'PresionCapilarPulmonar') {
+            if (col.id == 'cbGlucosa') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -362,7 +349,7 @@ class MedidasUci {
                     });
                 }
             }
-            if (col.id == 'IndiceResistenciaVascularSistemicaIndexada') {
+            if (col.id == 'cbSangre') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -384,7 +371,7 @@ class MedidasUci {
                     });
                 }
             }
-            if (col.id == 'ResistenciaVascularSistemica') {
+            if (col.id == 'cbCetonas') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -406,7 +393,7 @@ class MedidasUci {
                     });
                 }
             }
-            if (col.id == 'IndiceResistenciaVascularPulmonarIndexada') {
+            if (col.id == 'cbLeucocitos') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -428,7 +415,7 @@ class MedidasUci {
                     });
                 }
             }
-            if (col.id == 'PresionCuna') {
+            if (col.id == 'cbNitritos') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -450,7 +437,7 @@ class MedidasUci {
                     });
                 }
             }
-            if (col.id == 'PresionArteriaPulmonar') {
+            if (col.id == 'cbUrobilinogeno') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -472,7 +459,7 @@ class MedidasUci {
                     });
                 }
             }
-            if (col.id == 'TransporteArterialOxigeno') {
+            if (col.id == 'cbBilirubina') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -494,56 +481,11 @@ class MedidasUci {
                     });
                 }
             }
-            if (col.id == 'ConcentracionOxigeno') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'PresionPerfusionCerebral') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-
 
         });
 
-        MedidasUci.sColumns = [];
-        MedidasUci.sColumns = [{
+        ComburTestUci.sColumns = [];
+        ComburTestUci.sColumns = [{
                 title: "Turno: ",
             },
             {
@@ -553,7 +495,7 @@ class MedidasUci {
                 title: "Turno: ",
             },
             {
-                title: "Nombre y Unidad de Medida:",
+                title: "Medida:",
             },
 
         ];
@@ -566,20 +508,20 @@ class MedidasUci {
         }
 
         for (let index = 0; index < orderCol[0]; index++) {
-            MedidasUci.sColumns.push({
+            ComburTestUci.sColumns.push({
                 title: "Valor:",
             });
-            MedidasUci.sColumns.push({
+            ComburTestUci.sColumns.push({
                 title: "Hora:",
             });
         }
 
-        MedidasUci.sColumns.push({
+        ComburTestUci.sColumns.push({
             title: "Opciones:",
         });
 
-        MedidasUci.sRows = [];
-        MedidasUci.sRows = [{
+        ComburTestUci.sRows = [];
+        ComburTestUci.sRows = [{
                 mRender: function(data, type, full) {
                     return full.fechaHoraTurno;
                 },
@@ -635,19 +577,19 @@ class MedidasUci {
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
-            MedidasUci.sRows.push({
+            ComburTestUci.sRows.push({
                 fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
                                 m('div.text-center.pd-l-0.pd-r-0', {
                                     ondblclick: (e) => {
-                                        MedidasUci.nuevoRegistro = null;
+                                        ComburTestUci.nuevoRegistro = null;
                                         valores.filter((v, i) => {
 
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
-                                                MedidasUci.verRegistro(resultNro[_i]);
+                                                ComburTestUci.verRegistro(resultNro[_i]);
                                             }
                                         })
                                     },
@@ -665,15 +607,15 @@ class MedidasUci {
                                             valores.filter((v, i) => {
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
-                                                    MedidasUci.eliminarRegistro(resultNro[_i]);
+                                                    ComburTestUci.eliminarRegistro(resultNro[_i]);
                                                     FecthUci.eliminarSeccion(resultNro[_i]);
-                                                    MedidasUci.nuevoRegistro = null;
-                                                    MedidasUci.destroyTable();
-                                                    MedidasUci.filterRegistros();
-                                                    MedidasUci.show = false;
+                                                    ComburTestUci.nuevoRegistro = null;
+                                                    ComburTestUci.destroyTable();
+                                                    ComburTestUci.filterRegistros();
+                                                    ComburTestUci.show = false;
                                                     m.redraw();
                                                     setTimeout(() => {
-                                                        MedidasUci.show = true;
+                                                        ComburTestUci.show = true;
                                                         m.redraw();
                                                     }, 100);
                                                 }
@@ -688,12 +630,6 @@ class MedidasUci {
                                                 let _i = v.idObj[index];
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].valor !== null) {
-                                                        let _v = MedidasUci.valorarRango(resultNro[_i].valor, oData.id);
-                                                        if (_v.toString().indexOf('Fuera') != -1) {
-                                                            el.dom.classList.add("tx-danger");
-                                                            el.dom.classList.add("tx-semibold");
-                                                            el.dom.title = _v;
-                                                        }
                                                         el.dom.innerHTML = resultNro[_i].valor;
                                                     } else {
                                                         el.dom.innerHTML = '<button type="button" class="btn btn-xs btn-success btn-block tx-12 ">Registrar</button>';
@@ -715,18 +651,18 @@ class MedidasUci {
                 orderable: true,
 
             });
-            MedidasUci.sRows.push({
+            ComburTestUci.sRows.push({
                 fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
                                 m('div.text-center.pd-l-0.pd-r-0', {
                                     ondblclick: (e) => {
-                                        MedidasUci.nuevoRegistro = null
+                                        ComburTestUci.nuevoRegistro = null
                                         valores.filter((v, i) => {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
-                                                MedidasUci.verRegistro(resultNro[_i]);
+                                                ComburTestUci.verRegistro(resultNro[_i]);
                                             }
                                         })
 
@@ -758,7 +694,7 @@ class MedidasUci {
             });
         }
 
-        MedidasUci.sRows.push({
+        ComburTestUci.sRows.push({
             fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                 return m.mount(nTd, {
                     view: () => {
@@ -766,10 +702,10 @@ class MedidasUci {
                             m("div.btn-block.btn-group.wd-100p.pd-5", [
 
                                 m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                        class: (MedidasUci.nuevoRegistro !== null && MedidasUci.nuevoRegistro.editar && MedidasUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
+                                        class: (ComburTestUci.nuevoRegistro !== null && ComburTestUci.nuevoRegistro.editar && ComburTestUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
                                         onclick: () => {
                                             oData.editar = null;
-                                            MedidasUci.nuevoRegistro = null;
+                                            ComburTestUci.nuevoRegistro = null;
                                         },
                                     },
                                     'Cancelar Edición',
@@ -781,14 +717,12 @@ class MedidasUci {
                                                 alert('No se permite copiar. Ya existe un registro disponible.');
                                                 throw 'No se permite copiar. Ya existe un registro disponible.'
                                             }
-                                            MedidasUci.iniciarRegistro();
-                                            MedidasUci.nuevoRegistro.id = oData.id;
-                                            MedidasUci.nuevoRegistro.medida = oData.medida;
-                                            MedidasUci.nuevoRegistro.orden = oData.orden;
-                                            MedidasUci.nuevoRegistro.rango = oData.rango;
-                                            MedidasUci.nuevoRegistro.instrumento = oData.instrumento;
-                                            MedidasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            MedidasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            ComburTestUci.iniciarRegistro();
+                                            ComburTestUci.nuevoRegistro.id = oData.id;
+                                            ComburTestUci.nuevoRegistro.medida = oData.medida;
+                                            ComburTestUci.nuevoRegistro.orden = oData.orden;
+                                            ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
                                         },
                                     },
@@ -809,22 +743,22 @@ class MedidasUci {
 
         });
 
-        MedidasUci.sRows.map((c, i) => {
-            MedidasUci.sRows[i].aTargets = [i];
+        ComburTestUci.sRows.map((c, i) => {
+            ComburTestUci.sRows[i].aTargets = [i];
         });
 
 
     }
     static destroyTable() {
-        let table = document.getElementById('table-medidas');
+        let table = document.getElementById('table-comburtest');
         // clear first
         if (table != null) {
-            $('#table-medidas').DataTable().clear().destroy();
+            $('#table-comburtest').DataTable().clear().destroy();
 
         }
     }
     static getRegistros() {
-        return MedidasUci.registros;
+        return ComburTestUci.registros;
     }
     static arqTable() {
         return {
@@ -856,8 +790,8 @@ class MedidasUci {
             destroy: true,
             order: false,
             pageLength: 100,
-            columns: MedidasUci.sColumns,
-            aoColumnDefs: MedidasUci.sRows,
+            columns: ComburTestUci.sColumns,
+            aoColumnDefs: ComburTestUci.sRows,
             fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
             },
@@ -871,19 +805,19 @@ class MedidasUci {
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (MedidasUci.show ? '' : 'd-none')
+                    class: (ComburTestUci.show ? '' : 'd-none')
 
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "MEDIDAS UCI:"
+                        "COMBUR TEST:"
                     ),
 
                 ])
             ),
             m("tbody.bd.bd-2", {
                 style: { "border-color": "#5173a1" },
-                class: (MedidasUci.show ? '' : 'd-none')
+                class: (ComburTestUci.show ? '' : 'd-none')
             }, [
 
 
@@ -893,7 +827,7 @@ class MedidasUci {
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
                     m("th[scope='col'][colspan='4']",
-                        "NOMBRE Y UNIDAD DE MEDIDA:"
+                        "MEDIDA:"
                     ),
                     m("th[scope='col'][colspan='4']",
                         "VALOR: "
@@ -909,14 +843,14 @@ class MedidasUci {
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
                     m("td.tx-14.tx-normal[colspan='3']",
-                        (MedidasUci.nuevoRegistro !== null ? [
+                        (ComburTestUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     disabled: true,
-                                    value: MedidasUci.nuevoRegistro.medida,
+                                    value: ComburTestUci.nuevoRegistro.medida,
                                 })
 
                             ]),
@@ -924,135 +858,100 @@ class MedidasUci {
                     ),
                     m("td.tx-14.tx-normal.d-none[colspan='4']",
                         m('select.tx-semibold', {
-                            id: 'sec_Medidas',
+                            id: 'sec_ComburTest',
                             disabled: true,
                             onchange: (e) => {
                                 let _id = e.target.options[e.target.selectedIndex].id;
                                 let _value = e.target.options[e.target.selectedIndex].value;
-                                MedidasUci.iniciarRegistro();
-                                MedidasUci.nuevoRegistro.id = _id;
-                                MedidasUci.nuevoRegistro.medida = _value;
+                                ComburTestUci.iniciarRegistro();
+                                ComburTestUci.nuevoRegistro.id = _id;
+                                ComburTestUci.nuevoRegistro.medida = _value;
                             },
                             class: "custom-select",
-                            value: (MedidasUci.nuevoRegistro !== null ? MedidasUci.nuevoRegistro.medida : 0),
+                            value: (ComburTestUci.nuevoRegistro !== null ? ComburTestUci.nuevoRegistro.medida : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                orden: 1,
-                                id: "GastoCardiaco",
-                                label: "GASTO CARDIACO (LITRO/MINUTO/M2)",
-                                rango: "3 a 4 Litro/minuto/m2",
-                                instrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 2,
-                                id: "IndiceCardiaco",
-                                label: "INDICE CARDIACO (LITRO/MINUTO/M2)",
-                                rango: "3 a 5 Litro/minuto/m2",
-                                instrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 3,
-                                id: "VolumenSistolico",
-                                label: "VOLUMEN SISTOLICO (MILILITROS)",
-                                rango: "50 a 100 ml",
-                                intrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 4,
-                                id: "PresionCapilarPulmonar",
-                                label: "PRESION CAPILAR PULMONAR (MILILITROS DE MERCURIO)",
-                                rango: "6 a 12 mmHg",
-                                intrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 5,
-                                id: "IndiceResistenciaVascularSistemicaIndexada",
-                                label: "INDICE DE RESISTENCIA VASCULAR SISTEMICA INDEXADAS (DINAS)",
-                                rango: "1200 - 2500 Dinas",
-                                intrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 6,
-                                id: "ResistenciaVascularSistemica",
-                                label: "RESISTENCIA VASCULAR SISTEMICA (DINAS)",
-                                rango: "800 – 1200 Dinas",
-                                intrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 7,
-                                id: "IndiceResistenciaVascularPulmonarIndexada",
-                                label: "INDICE DE RESISTENCIA VASCULAR PULMONAR INDEXADAS (DINAS)",
-                                rango: "80 – 240 Dinas",
-                                intrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 8,
-                                id: "PresionCuna",
-                                label: "PRESION EN CUÑA (MILILITROS DE MERCURIO)",
-                                rango: "2 – 12 mmHg",
-                                intrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 9,
-                                id: "PresionArteriaPulmonar",
-                                label: "PRESION DE ARTERIA PULMONAR (MILILITROS DE MERCURIO)",
-                                rango: "8 - 15 mmHg",
-                                intrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 10,
-                                id: "TransporteArterialOxigeno",
-                                label: "TRANSPORTE ARTERIAL DE OXIGENO (MILILITRO/MINUTO)",
-                                rango: "850 - 1050 ml/min",
-                                intrumento: "Manual"
-                            }, {
-                                orden: 11,
-                                id: "ConcentracionOxigeno",
-                                label: "CONCENTRACION DE OXIGENO (LITROS)",
-                                rango: "50 - 80 Litros",
-                                intrumento: "Manual"
-                            },
-                            {
-                                orden: 12,
-                                id: "PresionPerfusionCerebral",
-                                label: "PRESION DE PERFUSION CEREBRAL (MILILITROS DE MERCURIO)",
-                                rango: "65 - 75 mmHg",
-                                intrumento: "Manual"
-                            }
-
-                        ].map(x =>
-                            m('option[id="' + x.id + '"][orden="' + x.orden + '"][rango="' + x.rango + '"][intrumento="' + x.intrumento + '"]', x.label)
+                            orden: 1,
+                            id: "cbPH",
+                            label: "PH"
+                        }, {
+                            orden: 2,
+                            id: "cbProteinas",
+                            label: "PROTEINAS"
+                        }, {
+                            orden: 3,
+                            id: "cbDensidad",
+                            label: "DENSIDAD"
+                        }, {
+                            orden: 4,
+                            id: "cbGlucosa",
+                            label: "GLUCOSA"
+                        }, {
+                            orden: 5,
+                            id: "cbSangre",
+                            label: "SANGRE"
+                        }, {
+                            orden: 6,
+                            id: "cbCetonas",
+                            label: "CETONAS"
+                        }, {
+                            orden: 7,
+                            id: "cbLeucocitos",
+                            label: "LEUCOCITOS"
+                        }, {
+                            orden: 8,
+                            id: "cbNitritos",
+                            label: "NITRITOS"
+                        }, {
+                            orden: 9,
+                            id: "cbUrobilinogeno",
+                            label: "UROBILINOGENO",
+                        }, {
+                            orden: 10,
+                            id: "cbBilirubina",
+                            label: "BILIRRUBINA"
+                        }].map(x =>
+                            m('option[id="' + x.id + '"][orden="' + x.orden + '"]', x.label)
                         ))
                     ),
                     m("td.tx-14.tx-normal[colspan='4']",
-                        (MedidasUci.nuevoRegistro !== null ? [
+                        (ComburTestUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "valor" + MedidasUci.nuevoRegistro.id,
+                                    id: "valor" + ComburTestUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     oncreate: (el) => {
-                                        if (MedidasUci.nuevoRegistro.valor != undefined) {
-                                            el.dom.value = MedidasUci.nuevoRegistro.valor;
+                                        if (ComburTestUci.nuevoRegistro.valor != undefined) {
+                                            el.dom.value = ComburTestUci.nuevoRegistro.valor;
                                         }
                                     },
                                     oninput: (e) => {
-                                        MedidasUci.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
+                                        ComburTestUci.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
-                                    value: MedidasUci.nuevoRegistro.valor
+                                    value: ComburTestUci.nuevoRegistro.valor
                                 })
 
                             ]),
                         ] : [])
                     ),
                     m("td.tx-14.tx-normal[colspan='4']",
-                        (MedidasUci.nuevoRegistro !== null ? [
+                        (ComburTestUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input.form-control[type='text'][placeholder='HH:mm']", {
-                                    id: "horaMedida" + MedidasUci.nuevoRegistro.id,
+                                    id: "horaMedida" + ComburTestUci.nuevoRegistro.id,
                                     oncreate: (el) => {
-                                        if (MedidasUci.nuevoRegistro.hora != undefined) {
-                                            el.dom.value = MedidasUci.nuevoRegistro.hora;
+                                        if (ComburTestUci.nuevoRegistro.hora != undefined) {
+                                            el.dom.value = ComburTestUci.nuevoRegistro.hora;
                                         }
-                                        if (MedidasUci.nuevoRegistro.hora == null) {
-                                            if (MedidasUci.setHora != undefined) {
-                                                MedidasUci.nuevoRegistro.hora = MedidasUci.setHora;
-                                                el.dom.value = MedidasUci.setHora;
+                                        if (ComburTestUci.nuevoRegistro.hora == null) {
+                                            if (ComburTestUci.setHora != undefined) {
+                                                ComburTestUci.nuevoRegistro.hora = ComburTestUci.setHora;
+                                                el.dom.value = ComburTestUci.setHora;
                                             }
                                         }
                                         setTimeout(() => {
-                                            new Cleave("#horaMedida" + MedidasUci.nuevoRegistro.id, {
+                                            new Cleave("#horaMedida" + ComburTestUci.nuevoRegistro.id, {
                                                 time: true,
                                                 timePattern: ['h', 'm']
                                             });
@@ -1060,37 +959,37 @@ class MedidasUci {
                                     },
                                     oninput: (e) => {
                                         setTimeout(() => {
-                                            //MedidasUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                            MedidasUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                            MedidasUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            //ComburTestUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                            ComburTestUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            ComburTestUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
                                         }, 50);
                                     },
                                     onkeypress: (e) => {
                                         if (e.keyCode == 13) {
-                                            MedidasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            MedidasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                            if (MedidasUci.nuevoRegistro.editar == null) {
-                                                MedidasUci.agregarRegistro();
-                                                FecthUci.registrarSeccion(MedidasUci.nuevoRegistro);
-                                                MedidasUci.nuevoRegistro = null;
-                                                MedidasUci.destroyTable();
-                                                MedidasUci.filterRegistros();
-                                                MedidasUci.show = false;
+                                            ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            if (ComburTestUci.nuevoRegistro.editar == null) {
+                                                ComburTestUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(ComburTestUci.nuevoRegistro);
+                                                ComburTestUci.nuevoRegistro = null;
+                                                ComburTestUci.destroyTable();
+                                                ComburTestUci.filterRegistros();
+                                                ComburTestUci.show = false;
                                                 m.redraw();
                                                 setTimeout(() => {
-                                                    MedidasUci.show = true;
+                                                    ComburTestUci.show = true;
                                                     m.redraw();
                                                 }, 100);
                                             } else {
-                                                MedidasUci.editarRegistro();
-                                                FecthUci.actualizarSeccion(MedidasUci.nuevoRegistro);
-                                                MedidasUci.nuevoRegistro = null;
-                                                MedidasUci.destroyTable();
-                                                MedidasUci.filterRegistros();
-                                                MedidasUci.show = false;
+                                                ComburTestUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(ComburTestUci.nuevoRegistro);
+                                                ComburTestUci.nuevoRegistro = null;
+                                                ComburTestUci.destroyTable();
+                                                ComburTestUci.filterRegistros();
+                                                ComburTestUci.show = false;
                                                 m.redraw();
                                                 setTimeout(() => {
-                                                    MedidasUci.show = true;
+                                                    ComburTestUci.show = true;
                                                     m.redraw();
                                                 }, 100);
                                             }
@@ -1113,7 +1012,7 @@ class MedidasUci {
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12']",
-                        (MedidasUci.show != false ? [PacientesUCI.vTable('table-medidas', MedidasUci.getRegistros(), MedidasUci.arqTable())] : [])
+                        (ComburTestUci.show != false ? [PacientesUCI.vTable('table-comburtest', ComburTestUci.getRegistros(), ComburTestUci.arqTable())] : [])
                     ),
                 ]),
             ]),
@@ -1121,4 +1020,4 @@ class MedidasUci {
     }
 }
 
-export default MedidasUci;
+export default ComburTestUci;

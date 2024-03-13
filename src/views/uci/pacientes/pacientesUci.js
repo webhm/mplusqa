@@ -19,6 +19,7 @@ import VentilatoriosUci from "./ventilatorios";
 import GasesUci from "./gasesUci";
 import OxigenacionUci from "./oxigenacionUci";
 import MedidasUci from "./medidasUci";
+import ComburTestUci from "./comburTestUci";
 
 
 // Pacientes UCI
@@ -95,6 +96,8 @@ class PacientesUCI extends App {
         VentilatoriosUci.show = true;
 
         MedidasUci.show = true;
+
+        ComburTestUci.show = true;
 
     }
 
@@ -187,7 +190,9 @@ class PacientesUCI extends App {
                         // Oxigenación
                         m(OxigenacionUci),
                         // MedidasUci
-                        m(MedidasUci)
+                        m(MedidasUci),
+                        // ComburTest
+                        m(ComburTestUci)
 
                     ])
                 ])
@@ -2496,7 +2501,7 @@ class PacientesUCI extends App {
                 title: "Turno: ",
             },
             {
-                title: "Medida:",
+                title: "Nombre y Unidad de Medida:",
             },
 
         ];
@@ -2631,6 +2636,12 @@ class PacientesUCI extends App {
                                                 let _i = v.idObj[index];
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].valor !== null) {
+                                                        let _v = MedidasUci.valorarRango(resultNro[_i].valor, oData.id);
+                                                        if (_v.toString().indexOf('Fuera') != -1) {
+                                                            el.dom.classList.add("tx-danger");
+                                                            el.dom.classList.add("tx-semibold");
+                                                            el.dom.title = _v;
+                                                        }
                                                         el.dom.innerHTML = resultNro[_i].valor;
                                                     } else {
                                                         el.dom.innerHTML = '<button type="button" class="btn btn-xs btn-success btn-block tx-12 ">Registrar</button>';
@@ -2755,6 +2766,586 @@ class PacientesUCI extends App {
 
     }
 
+    static parseSeccionComburTest_v2(options) {
+
+        let res = [];
+        let result = [];
+        let resultId = [];
+        let resultNro = [];
+        let _arr = [];
+        let hash = {};
+        let columnas = [];
+        let filas = [];
+        let valores = [];
+
+
+        options.map((option) => {
+            FecthUci.dataSecciones.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id) {
+                    res.push(_obj);
+                }
+            });
+        });
+
+        if (res.length == 0) {
+            res = ComburTestUci.allRegistros;
+        }
+
+        result = res.sort((a, b) => b.nro - a.nro);
+
+        resultNro = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true).sort((a, b) => a.nro - b.nro);
+
+        // Quitar duplicados
+        resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
+        // Ordenar desc
+        _arr = resultId.sort((a, b) => a.orden - b.orden);
+
+        // Establecer Columnas
+        let cbPH = 0;
+        let cbProteinas = 0;
+        let cbDensidad = 0;
+        let cbGlucosa = 0;
+        let cbSangre = 0;
+        let cbCetonas = 0;
+        let cbLeucocitos = 0;
+        let cbNitritos = 0;
+        let cbUrobilinogeno = 0;
+        let cbBilirubina = 0;
+
+        resultNro.map((col, i) => {
+            if (col.id == 'cbPH') {
+                cbPH++;
+            }
+            if (col.id == 'cbProteinas') {
+                cbProteinas++;
+            }
+            if (col.id == 'cbDensidad') {
+                cbDensidad++;
+            }
+            if (col.id == 'cbGlucosa') {
+                cbGlucosa++;
+            }
+            if (col.id == 'cbSangre') {
+                cbSangre++;
+            }
+            if (col.id == 'cbCetonas') {
+                cbCetonas++;
+            }
+            if (col.id == 'cbLeucocitos') {
+                cbLeucocitos++;
+            }
+            if (col.id == 'cbNitritos') {
+                cbNitritos++;
+            }
+            if (col.id == 'cbUrobilinogeno') {
+                cbUrobilinogeno++;
+            }
+            if (col.id == 'cbBilirubina') {
+                cbBilirubina++;
+            }
+
+        });
+
+        columnas = [cbPH, cbProteinas, cbDensidad, cbGlucosa, cbSangre, cbCetonas, cbLeucocitos, cbNitritos, cbUrobilinogeno, cbBilirubina];
+
+        resultNro.map((col, i) => {
+            let fila = {};
+            if (col.id == 'cbPH') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+
+
+            }
+            if (col.id == 'cbProteinas') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+
+
+            }
+            if (col.id == 'cbDensidad') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'cbGlucosa') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'cbSangre') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'cbCetonas') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'cbLeucocitos') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'cbNitritos') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'cbUrobilinogeno') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'cbBilirubina') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+
+        });
+
+        ComburTestUci.sColumns = [];
+        ComburTestUci.sColumns = [{
+                title: "Turno: ",
+            },
+            {
+                title: "Order Nro : ",
+            },
+            {
+                title: "Turno: ",
+            },
+            {
+                title: "Medida:",
+            },
+
+        ];
+
+        // 'data-orden'ar Columnas
+        let orderCol = columnas.sort((a, b) => b - a);
+
+        if (orderCol[0] == 0) {
+            orderCol[0] = 1;
+        }
+
+        for (let index = 0; index < orderCol[0]; index++) {
+            ComburTestUci.sColumns.push({
+                title: "Valor:",
+            });
+            ComburTestUci.sColumns.push({
+                title: "Hora:",
+            });
+        }
+
+        ComburTestUci.sColumns.push({
+            title: "Opciones:",
+        });
+
+        ComburTestUci.sRows = [];
+        ComburTestUci.sRows = [{
+                mRender: function(data, type, full) {
+                    return full.fechaHoraTurno;
+                },
+                visible: false,
+                aTargets: [0],
+                orderable: true,
+            },
+            {
+                mRender: function(data, type, full) {
+                    return full.orden;
+                },
+                visible: false,
+                aTargets: [1],
+                orderable: true,
+
+            },
+            {
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center.pd-5', [
+                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                            class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                        },
+                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    ),
+                                ])
+
+                            ]
+                        }
+                    });
+                },
+                width: '15%',
+                visible: true,
+                aTargets: [2],
+                orderable: false,
+
+            },
+            {
+                mRender: function(data, type, full) {
+                    return full.medida;
+                },
+
+                visible: true,
+                aTargets: [3],
+                orderable: true,
+
+            },
+        ];
+
+        // 'data-orden'ar Filas
+        for (let index = 0; index < orderCol[0]; index++) {
+            ComburTestUci.sRows.push({
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center.pd-l-0.pd-r-0', {
+                                    ondblclick: (e) => {
+                                        ComburTestUci.nuevoRegistro = null;
+                                        valores.filter((v, i) => {
+
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                ComburTestUci.verRegistro(resultNro[_i]);
+                                            }
+                                        })
+                                    },
+                                    onclick: (e) => {
+                                        e.preventDefault();
+                                    },
+                                    oncontextmenu: (e) => {
+                                        e.preventDefault();
+                                        if (index == 0) {
+                                            alert('No se puede eliminar el registro predeterminado.');
+                                            throw 'No se puede eliminar el registro predeterminado.';
+                                        }
+
+                                        if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                            valores.filter((v, i) => {
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+                                                    ComburTestUci.eliminarRegistro(resultNro[_i]);
+                                                    FecthUci.eliminarSeccion(resultNro[_i]);
+                                                    ComburTestUci.nuevoRegistro = null;
+                                                    ComburTestUci.destroyTable();
+                                                    ComburTestUci.filterRegistros();
+                                                    ComburTestUci.show = false;
+                                                    m.redraw();
+                                                    setTimeout(() => {
+                                                        ComburTestUci.show = true;
+                                                        m.redraw();
+                                                    }, 100);
+                                                }
+                                            })
+
+
+                                        }
+                                    },
+                                    oncreate: (el) => {
+                                        valores.filter((v, i) => {
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                if (resultNro[_i] !== undefined) {
+                                                    if (resultNro[_i].valor !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].valor;
+                                                    } else {
+                                                        el.dom.innerHTML = '<button type="button" class="btn btn-xs btn-success btn-block tx-12 ">Registrar</button>';
+                                                    }
+                                                } else {
+                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                }
+                                            }
+                                        })
+                                    }
+
+                                }, [])
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: null,
+                orderable: true,
+
+            });
+            ComburTestUci.sRows.push({
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center.pd-l-0.pd-r-0', {
+                                    ondblclick: (e) => {
+                                        ComburTestUci.nuevoRegistro = null
+                                        valores.filter((v, i) => {
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                ComburTestUci.verRegistro(resultNro[_i]);
+                                            }
+                                        })
+
+                                    },
+                                    oncreate: (el) => {
+                                        valores.filter((v, i) => {
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                if (resultNro[_i] !== undefined) {
+                                                    if (resultNro[_i].hora !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].hora;
+                                                    } else {
+                                                        el.dom.innerHTML = '';
+                                                    }
+                                                } else {
+                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                }
+                                            }
+                                        })
+                                    }
+                                }, [])
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: null,
+                orderable: true,
+            });
+        }
+
+        ComburTestUci.sRows.push({
+            fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m("div.btn-block.btn-group.wd-100p.pd-5", [
+
+                                m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
+                                        class: (ComburTestUci.nuevoRegistro !== null && ComburTestUci.nuevoRegistro.editar && ComburTestUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
+                                        onclick: () => {
+                                            oData.editar = null;
+                                            ComburTestUci.nuevoRegistro = null;
+                                        },
+                                    },
+                                    'Cancelar Edición',
+                                ),
+                                m("button.btn.btn-xs.btn-dark[type='button']", {
+                                        //class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                        onclick: () => {
+                                            if (oData.valor == null) {
+                                                alert('No se permite copiar. Ya existe un registro disponible.');
+                                                throw 'No se permite copiar. Ya existe un registro disponible.'
+                                            }
+                                            ComburTestUci.iniciarRegistro();
+                                            ComburTestUci.nuevoRegistro.id = oData.id;
+                                            ComburTestUci.nuevoRegistro.medida = oData.medida;
+                                            ComburTestUci.nuevoRegistro.orden = oData.orden;
+                                            ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+
+                                        },
+                                    },
+                                    'Copiar',
+                                ),
+
+
+                            ])
+
+                        ]
+                    }
+                });
+            },
+            width: '5%',
+            visible: true,
+            aTargets: null,
+            orderable: true,
+
+        });
+
+        ComburTestUci.sRows.map((c, i) => {
+            ComburTestUci.sRows[i].aTargets = [i];
+        });
+
+        return _arr;
+
+    }
+
+
     static parseSeccionMedidas_AllRegistros(options) {
 
         let res = [];
@@ -2779,6 +3370,32 @@ class PacientesUCI extends App {
         return resultNro;
 
     }
+
+    static parseSeccionComburTest_AllRegistros(options) {
+
+        let res = [];
+        let result = [];
+        let resultNro = [];
+        let hash = {};
+
+        options.map((option) => {
+            FecthUci.dataSecciones.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id) {
+                    res.push(_obj);
+                }
+            });
+        });
+
+
+        result = res.sort((a, b) => b.nro - a.nro);
+
+        resultNro = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+
+        return resultNro;
+
+    }
+
 
 
 
@@ -3197,6 +3814,58 @@ class PacientesUCI extends App {
 
     }
 
+    static setTurnoSeccionComburTest(_options) {
+
+        let res = [];
+        let crear = false;
+
+        if (ComburTestUci.allRegistros.length == 0) {
+            crear = true;
+        }
+
+        /*
+
+        if (VentilatoriosUci.registros.length > 0) {
+            let registros = VentilatoriosUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCI.fechaHoraTurno);
+            if (registros.length == 0) {
+                crear = true;
+            }
+        }
+
+        */
+
+
+
+        if (crear) {
+            _options.map((option) => {
+                if (option.value != 0) {
+                    ComburTestUci.iniciarRegistro();
+                    ComburTestUci.nuevoRegistro.id = option.id;
+                    ComburTestUci.nuevoRegistro.medida = option.value;
+                    ComburTestUci.nuevoRegistro.orden = option.getAttribute('orden');
+                    ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                    ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    res.push(ComburTestUci.nuevoRegistro);
+                    ComburTestUci.nuevoRegistro = null;
+                }
+            });
+
+            ComburTestUci.allRegistros.push.apply(ComburTestUci.allRegistros, res);
+
+            // Asignar Nro
+            ComburTestUci.allRegistros.map((_v, _i) => {
+                ComburTestUci.allRegistros[_i].nro = (_i + 1);
+            });
+
+
+            FecthUci.registrarAllSeccion(ComburTestUci.allRegistros);
+
+        }
+
+
+    }
+
+
 
     static setTurnoSeccionVentilatorios(_options) {
 
@@ -3580,6 +4249,9 @@ class PacientesUCI extends App {
                                                     PacientesUCI.setTurnoSeccionMedidas(Array.from(document.getElementById('sec_Medidas').options));
                                                     MedidasUci.registros = PacientesUCI.parseSeccionMedidas_v2(Array.from(document.getElementById('sec_Medidas').options));
 
+                                                    ComburTestUci.allRegistros = PacientesUCI.parseSeccionComburTest_AllRegistros(Array.from(document.getElementById('sec_ComburTest').options));
+                                                    PacientesUCI.setTurnoSeccionComburTest(Array.from(document.getElementById('sec_ComburTest').options));
+                                                    ComburTestUci.registros = PacientesUCI.parseSeccionComburTest_v2(Array.from(document.getElementById('sec_ComburTest').options));
 
                                                     PacientesUCI.showSecciones();
                                                 },
