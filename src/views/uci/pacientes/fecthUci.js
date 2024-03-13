@@ -70,6 +70,7 @@ class FecthUci {
             body: {
                 numeroAtencion: PacientesUCI.numeroAtencion,
                 numeroTurno: PacientesUCI.numeroTurno,
+                usuarioTurno: PacientesUCI.usuarioTurno,
                 fechaHoraTurno: PacientesUCI.fechaHoraTurno,
                 dataSeccion: _dataAllSeccion
             },
@@ -92,6 +93,7 @@ class FecthUci {
             body: {
                 numeroAtencion: PacientesUCI.numeroAtencion,
                 numeroTurno: PacientesUCI.numeroTurno,
+                usuarioTurno: PacientesUCI.usuarioTurno,
                 idSeccion: _dataSeccion.id,
                 dataSeccion: _dataSeccion
             },
@@ -161,6 +163,7 @@ class FecthUci {
             body: {
                 numeroAtencion: PacientesUCI.numeroAtencion,
                 numeroTurno: PacientesUCI.numeroTurno,
+                usuarioTurno: PacientesUCI.usuarioTurno,
                 idSeccion: _dataSeccion.id,
                 dataSeccion: _dataSeccion
             },
