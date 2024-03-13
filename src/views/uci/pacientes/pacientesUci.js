@@ -3,8 +3,8 @@ import App from "../../../models/App";
 import Sidebar from "../sidebarUci";
 import Loader from "../../utils/loader";
 import Errors from "../../utils/errors";
-import TableUCI from "../../utils/tableUci";
 import ApiHTTP from "../../../models/ApiHTTP";
+import TableUCI from "../../utils/tableUci";
 import TurnosUci from "./turnosUci";
 import ViasUci from "./viasUci";
 import AccesosUci from "./accesosUci";
@@ -18,6 +18,7 @@ import FecthUci from "./fecthUci";
 import VentilatoriosUci from "./ventilatorios";
 import GasesUci from "./gasesUci";
 import OxigenacionUci from "./oxigenacionUci";
+import MedidasUci from "./medidasUci";
 
 
 // Pacientes UCI
@@ -92,6 +93,8 @@ class PacientesUCI extends App {
         OxigenacionUci.show = true;
 
         VentilatoriosUci.show = true;
+
+        MedidasUci.show = true;
 
     }
 
@@ -183,6 +186,8 @@ class PacientesUCI extends App {
                         m(GasesUci),
                         // Oxigenación
                         m(OxigenacionUci),
+                        // MedidasUci
+                        m(MedidasUci)
 
                     ])
                 ])
@@ -2115,6 +2120,666 @@ class PacientesUCI extends App {
 
     }
 
+    static parseSeccionMedidas_v2(options) {
+
+        let res = [];
+        let result = [];
+        let resultId = [];
+        let resultNro = [];
+        let _arr = [];
+        let hash = {};
+        let columnas = [];
+        let filas = [];
+        let valores = [];
+
+
+        options.map((option) => {
+            FecthUci.dataSecciones.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id) {
+                    res.push(_obj);
+                }
+            });
+        });
+
+        if (res.length == 0) {
+            res = MedidasUci.allRegistros;
+        }
+
+        result = res.sort((a, b) => b.nro - a.nro);
+
+        resultNro = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true).sort((a, b) => a.nro - b.nro);
+
+        // Quitar duplicados
+        resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
+        // Ordenar desc
+        _arr = resultId.sort((a, b) => a.orden - b.orden);
+
+        // Establecer Columnas
+        let GastoCardiaco = 0;
+        let IndiceCardiaco = 0;
+        let VolumenSistolico = 0;
+        let PresionCapilarPulmonar = 0;
+        let IndiceResistenciaVascularSistemicaIndexada = 0;
+        let ResistenciaVascularSistemica = 0;
+        let IndiceResistenciaVascularPulmonarIndexada = 0;
+        let PresionCuna = 0;
+        let PresionArteriaPulmonar = 0;
+        let TransporteArterialOxigeno = 0;
+        let ConcentracionOxigeno = 0;
+        let PresionPerfusionCerebral = 0;
+
+
+        resultNro.map((col, i) => {
+            if (col.id == 'GastoCardiaco') {
+                GastoCardiaco++;
+            }
+            if (col.id == 'IndiceCardiaco') {
+                IndiceCardiaco++;
+            }
+            if (col.id == 'VolumenSistolico') {
+                VolumenSistolico++;
+            }
+            if (col.id == 'PresionCapilarPulmonar') {
+                PresionCapilarPulmonar++;
+            }
+            if (col.id == 'IndiceResistenciaVascularSistemicaIndexada') {
+                IndiceResistenciaVascularSistemicaIndexada++;
+            }
+            if (col.id == 'ResistenciaVascularSistemica') {
+                ResistenciaVascularSistemica++;
+            }
+            if (col.id == 'IndiceResistenciaVascularPulmonarIndexada') {
+                IndiceResistenciaVascularPulmonarIndexada++;
+            }
+            if (col.id == 'PresionCuna') {
+                PresionCuna++;
+            }
+            if (col.id == 'PresionArteriaPulmonar') {
+                PresionArteriaPulmonar++;
+            }
+            if (col.id == 'TransporteArterialOxigeno') {
+                TransporteArterialOxigeno++;
+            }
+            if (col.id == 'ConcentracionOxigeno') {
+                ConcentracionOxigeno++;
+            }
+            if (col.id == 'PresionPerfusionCerebral') {
+                PresionPerfusionCerebral++;
+            }
+        });
+
+        columnas = [GastoCardiaco, IndiceCardiaco, VolumenSistolico, PresionCapilarPulmonar, IndiceResistenciaVascularSistemicaIndexada, ResistenciaVascularSistemica, IndiceResistenciaVascularPulmonarIndexada, PresionCuna, PresionArteriaPulmonar, TransporteArterialOxigeno, ConcentracionOxigeno, PresionPerfusionCerebral];
+
+        resultNro.map((col, i) => {
+            let fila = {};
+            if (col.id == 'GastoCardiaco') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+
+
+            }
+            if (col.id == 'IndiceCardiaco') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+
+
+            }
+            if (col.id == 'VolumenSistolico') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'PresionCapilarPulmonar') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'IndiceResistenciaVascularSistemicaIndexada') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'ResistenciaVascularSistemica') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'IndiceResistenciaVascularPulmonarIndexada') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'PresionCuna') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'PresionArteriaPulmonar') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'TransporteArterialOxigeno') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'ConcentracionOxigeno') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'PresionPerfusionCerebral') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+
+
+        });
+
+        MedidasUci.sColumns = [];
+        MedidasUci.sColumns = [{
+                title: "Turno: ",
+            },
+            {
+                title: "Order Nro : ",
+            },
+            {
+                title: "Turno: ",
+            },
+            {
+                title: "Medida:",
+            },
+
+        ];
+
+        // 'data-orden'ar Columnas
+        let orderCol = columnas.sort((a, b) => b - a);
+
+        if (orderCol[0] == 0) {
+            orderCol[0] = 1;
+        }
+
+        for (let index = 0; index < orderCol[0]; index++) {
+            MedidasUci.sColumns.push({
+                title: "Valor:",
+            });
+            MedidasUci.sColumns.push({
+                title: "Hora:",
+            });
+        }
+
+        MedidasUci.sColumns.push({
+            title: "Opciones:",
+        });
+
+        MedidasUci.sRows = [];
+        MedidasUci.sRows = [{
+                mRender: function(data, type, full) {
+                    return full.fechaHoraTurno;
+                },
+                visible: false,
+                aTargets: [0],
+                orderable: true,
+            },
+            {
+                mRender: function(data, type, full) {
+                    return full.orden;
+                },
+                visible: false,
+                aTargets: [1],
+                orderable: true,
+
+            },
+            {
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center.pd-5', [
+                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                            class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                        },
+                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    ),
+                                ])
+
+                            ]
+                        }
+                    });
+                },
+                width: '15%',
+                visible: true,
+                aTargets: [2],
+                orderable: false,
+
+            },
+            {
+                mRender: function(data, type, full) {
+                    return full.medida;
+                },
+
+                visible: true,
+                aTargets: [3],
+                orderable: true,
+
+            },
+        ];
+
+        // 'data-orden'ar Filas
+        for (let index = 0; index < orderCol[0]; index++) {
+            MedidasUci.sRows.push({
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center.pd-l-0.pd-r-0', {
+                                    ondblclick: (e) => {
+                                        MedidasUci.nuevoRegistro = null;
+                                        valores.filter((v, i) => {
+
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                MedidasUci.verRegistro(resultNro[_i]);
+                                            }
+                                        })
+                                    },
+                                    onclick: (e) => {
+                                        e.preventDefault();
+                                    },
+                                    oncontextmenu: (e) => {
+                                        e.preventDefault();
+                                        if (index == 0) {
+                                            alert('No se puede eliminar el registro predeterminado.');
+                                            throw 'No se puede eliminar el registro predeterminado.';
+                                        }
+
+                                        if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                            valores.filter((v, i) => {
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+                                                    MedidasUci.eliminarRegistro(resultNro[_i]);
+                                                    FecthUci.eliminarSeccion(resultNro[_i]);
+                                                    MedidasUci.nuevoRegistro = null;
+                                                    MedidasUci.destroyTable();
+                                                    MedidasUci.filterRegistros();
+                                                    MedidasUci.show = false;
+                                                    m.redraw();
+                                                    setTimeout(() => {
+                                                        MedidasUci.show = true;
+                                                        m.redraw();
+                                                    }, 100);
+                                                }
+                                            })
+
+
+                                        }
+                                    },
+                                    oncreate: (el) => {
+                                        valores.filter((v, i) => {
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                if (resultNro[_i] !== undefined) {
+                                                    if (resultNro[_i].valor !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].valor;
+                                                    } else {
+                                                        el.dom.innerHTML = '<button type="button" class="btn btn-xs btn-success btn-block tx-12 ">Registrar</button>';
+                                                    }
+                                                } else {
+                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                }
+                                            }
+                                        })
+                                    }
+
+                                }, [])
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: null,
+                orderable: true,
+
+            });
+            MedidasUci.sRows.push({
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center.pd-l-0.pd-r-0', {
+                                    ondblclick: (e) => {
+                                        MedidasUci.nuevoRegistro = null
+                                        valores.filter((v, i) => {
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                MedidasUci.verRegistro(resultNro[_i]);
+                                            }
+                                        })
+
+                                    },
+                                    oncreate: (el) => {
+                                        valores.filter((v, i) => {
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                if (resultNro[_i] !== undefined) {
+                                                    if (resultNro[_i].hora !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].hora;
+                                                    } else {
+                                                        el.dom.innerHTML = '';
+                                                    }
+                                                } else {
+                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                }
+                                            }
+                                        })
+                                    }
+                                }, [])
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: null,
+                orderable: true,
+            });
+        }
+
+        MedidasUci.sRows.push({
+            fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m("div.btn-block.btn-group.wd-100p.pd-5", [
+
+                                m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
+                                        class: (MedidasUci.nuevoRegistro !== null && MedidasUci.nuevoRegistro.editar && MedidasUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
+                                        onclick: () => {
+                                            oData.editar = null;
+                                            MedidasUci.nuevoRegistro = null;
+                                        },
+                                    },
+                                    'Cancelar Edición',
+                                ),
+                                m("button.btn.btn-xs.btn-dark[type='button']", {
+                                        //class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                        onclick: () => {
+                                            if (oData.valor == null) {
+                                                alert('No se permite copiar. Ya existe un registro disponible.');
+                                                throw 'No se permite copiar. Ya existe un registro disponible.'
+                                            }
+                                            MedidasUci.iniciarRegistro();
+                                            MedidasUci.nuevoRegistro.id = oData.id;
+                                            MedidasUci.nuevoRegistro.medida = oData.medida;
+                                            MedidasUci.nuevoRegistro.orden = oData.orden;
+                                            MedidasUci.nuevoRegistro.rango = oData.rango;
+                                            MedidasUci.nuevoRegistro.instrumento = oData.instrumento;
+                                            MedidasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            MedidasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+
+                                        },
+                                    },
+                                    'Copiar',
+                                ),
+
+
+                            ])
+
+                        ]
+                    }
+                });
+            },
+            width: '5%',
+            visible: true,
+            aTargets: null,
+            orderable: true,
+
+        });
+
+        MedidasUci.sRows.map((c, i) => {
+            MedidasUci.sRows[i].aTargets = [i];
+        });
+
+
+        return _arr;
+
+    }
+
+    static parseSeccionMedidas_AllRegistros(options) {
+
+        let res = [];
+        let result = [];
+        let resultNro = [];
+        let hash = {};
+
+        options.map((option) => {
+            FecthUci.dataSecciones.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id) {
+                    res.push(_obj);
+                }
+            });
+        });
+
+
+        result = res.sort((a, b) => b.nro - a.nro);
+
+        resultNro = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+
+        return resultNro;
+
+    }
+
 
 
     static extractSeccion(options) {
@@ -2478,6 +3143,60 @@ class PacientesUCI extends App {
         }
 
     }
+
+    static setTurnoSeccionMedidas(_options) {
+
+        let res = [];
+        let crear = false;
+
+        if (MedidasUci.allRegistros.length == 0) {
+            crear = true;
+        }
+
+        /*
+
+        if (VentilatoriosUci.registros.length > 0) {
+            let registros = VentilatoriosUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCI.fechaHoraTurno);
+            if (registros.length == 0) {
+                crear = true;
+            }
+        }
+
+        */
+
+
+
+        if (crear) {
+            _options.map((option) => {
+                if (option.value != 0) {
+                    MedidasUci.iniciarRegistro();
+                    MedidasUci.nuevoRegistro.id = option.id;
+                    MedidasUci.nuevoRegistro.medida = option.value;
+                    MedidasUci.nuevoRegistro.orden = option.getAttribute('orden');
+                    MedidasUci.nuevoRegistro.rango = option.getAttribute('rango');
+                    MedidasUci.nuevoRegistro.instrumento = option.getAttribute('instrumento');
+                    MedidasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                    MedidasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                    res.push(MedidasUci.nuevoRegistro);
+                    MedidasUci.nuevoRegistro = null;
+                }
+            });
+
+            MedidasUci.allRegistros.push.apply(MedidasUci.allRegistros, res);
+
+            // Asignar Nro
+            MedidasUci.allRegistros.map((_v, _i) => {
+                MedidasUci.allRegistros[_i].nro = (_i + 1);
+            });
+
+
+            FecthUci.registrarAllSeccion(MedidasUci.allRegistros);
+
+        }
+
+
+    }
+
 
     static setTurnoSeccionVentilatorios(_options) {
 
@@ -2856,6 +3575,11 @@ class PacientesUCI extends App {
 
                                                     OxigenacionUci.registros = PacientesUCI.parseSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
                                                     PacientesUCI.setTurnoSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
+
+                                                    MedidasUci.allRegistros = PacientesUCI.parseSeccionMedidas_AllRegistros(Array.from(document.getElementById('sec_Medidas').options));
+                                                    PacientesUCI.setTurnoSeccionMedidas(Array.from(document.getElementById('sec_Medidas').options));
+                                                    MedidasUci.registros = PacientesUCI.parseSeccionMedidas_v2(Array.from(document.getElementById('sec_Medidas').options));
+
 
                                                     PacientesUCI.showSecciones();
                                                 },
