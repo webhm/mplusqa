@@ -925,6 +925,8 @@ class Calendario extends App {
 
                     if (event.tipo == 2) {
                         element.find(".fc-title").parent().attr("title", "<div class='wd-50px text-left'>" + event.title + "  </div> <br>" + "<div class='wd-50px text-left'>Agendas:</div> <div class='wd-50px text-left'>" + _calendarios + "</div>  ");
+                        element.find(".fc-title").parent().attr("title", "<div class='wd-50px text-left'>" + event.title + "  </div> " + "<br> <div class='wd-50px text-left'>Fecha Y Hora:</div> <div class='wd-50px text-right text-capitalize'>" + moment(event.inicio, "DD/MM/YYYY HH:mm").format("HH:mm") + " - " + moment(event.fin, "DD/MM/YYYY HH:mm").format("HH:mm") + " <br> " + moment(event.fin, "DD/MM/YYYY HH:mm").format("dddd, DD/MM/YYYY") + "  </div> <br> " + "<div class='wd-50px text-left'>Agendas:</div> <div class='wd-50px text-left'>" + _calendarios + "</div>  ");
+
                     }
 
                     if (event.tipo == 3) {
@@ -1720,11 +1722,13 @@ class Calendario extends App {
 
                                         },
                                     })),
-                                    m("div.col-3", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Hora de Inicio:"), m("input.form-control[id='eventStartHourDate'][type='text'][placeholder='hh:mm']", {
+                                    m("div.col-3", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Hora de Iniciooo:"), m("input.form-control[id='eventStartHourDate'][type='text'][placeholder='hh:mm']", {
                                         oninput: (e) => {
                                             setTimeout(() => {
                                                 Cita.data.inicio = moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("DD/MM/YYYY") + " " + e.target.value;
                                                 Cita.data.start = moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("dddd, DD-MM-YYYY HH:mm");
+                                                console.log(77, Cita.data)
+
                                             }, 50);
 
                                         },

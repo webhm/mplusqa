@@ -331,6 +331,10 @@ class Cita {
         }
 
         if (Cita.data.tipo == 2) {
+
+            Cita.data.hashCita = moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD HH:mm") + "." + moment(Cita.data.fin, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD HH:mm");
+
+
             if (Cita.data.evento == undefined) {
                 $("#modalCreateEvent").animate({
                     scrollTop: 0
@@ -342,6 +346,10 @@ class Cita {
         }
 
         if (Cita.data.tipo == 3) {
+
+            Cita.data.hashCita = moment(Cita.data.inicio, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD HH:mm") + "." + moment(Cita.data.fin, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD HH:mm");
+
+
             if (Cita.data.nota == undefined) {
                 $("#modalCreateEvent").animate({
                     scrollTop: 0
