@@ -179,15 +179,16 @@ class FecthUci {
 
     }
 
-    static cerrarTurno() {
+    static cerrarTurno(oData) {
 
         return m.request({
             method: "POST",
             url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/cerrar-turno",
             body: {
-                numeroHistoriaClinica: PacientesUCI.numeroHistoriaClinica,
-                numeroAtencion: PacientesUCI.numeroAtencion,
-                numeroTurno: PacientesUCI.numeroTurno,
+                numeroHistoriaClinica: oData.numeroHistoriaClinica,
+                numeroAtencion: oData.numeroAtencion,
+                numeroTurno: oData.numeroTurno,
+                fechaHoraTurno: oData.fechaHoraTurno,
                 status: 2
             },
             headers: {
@@ -231,15 +232,35 @@ class FecthUci {
                     numeroTurno: res.data.numeroTurno
                 });
 
-                // Filter Turnos de Hoy
-                let turnosHoy = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
 
-                if (turnosHoy.length > 0) {
-                    TurnosUci.turnos = FecthUci.setTurnos(turnosHoy);
+
+                // Existe turnos abiertos
+                let turnosAbiertos = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') && v.STATUS == 1)
+
+                if (turnosAbiertos.length > 0) {
+
+                    TurnosUci.turnos = FecthUci.setTurnos(turnosAbiertos);
                     PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
+                    setTimeout(() => {
+                        alert('Existen turnos abiertos. Por favor cierre los turnos para continuar.');
+
+                    }, 500);
+
+                } else {
+
+                    // Filter Turnos de Hoy
+                    let turnosHoy = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+
+                    if (turnosHoy.length > 0) {
+                        TurnosUci.turnos = FecthUci.setTurnos(turnosHoy);
+                        PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
+                    }
+
+                    FecthUci.loadSecciones();
                 }
 
-                FecthUci.loadSecciones();
+
+
 
             }
 

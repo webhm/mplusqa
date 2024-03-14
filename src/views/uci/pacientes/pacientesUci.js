@@ -4279,11 +4279,11 @@ class PacientesUCI extends App {
                                 return [
                                     m('div.text-center', [
                                         m("button.btn.btn-xs.btn-block.btn-danger.tx-13[type='button']", {
-                                                disabled: (oData.status == 1 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
+                                                disabled: (oData.status == 1 && FecthUci.loaderSecciones == true || moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') ? '' : 'disabled'),
 
                                                 onclick: () => {
                                                     oData.cerrarTurno();
-                                                    FecthUci.cerrarTurno();
+                                                    FecthUci.cerrarTurno(oData);
                                                 },
                                             },
                                             'Cerrar',
