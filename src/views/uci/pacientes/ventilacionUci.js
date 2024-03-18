@@ -226,8 +226,41 @@ class VentilacionUci {
 
                 },
                 {
-                    mRender: function(data, type, full) {
-                        return (full.am != null ? full.am : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.pd-10', {
+                                        class: (oData.editar == true ? 'd-none' : ''),
+                                        ondblclick: (e) => {
+                                            VentilacionUci.nuevoRegistro = null
+                                            VentilacionUci.verRegistro(oData);
+                                        },
+                                    }, (oData.am !== null ? oData.am : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                    (VentilacionUci.nuevoRegistro !== null ? [
+                                        m("input", {
+                                            id: "am" + VentilacionUci.nuevoRegistro.id,
+                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                            type: "text",
+                                            placeholder: "...",
+                                            ondblclick: (e) => {
+                                                oData.editar = null;
+                                                VentilacionUci.nuevoRegistro = null
+                                            },
+                                            oninput: (e) => {
+                                                if (PacientesUCI.numeroTurno == 1) {
+                                                    VentilacionUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
+                                                } else {
+                                                    e.preventDefault();
+                                                }
+                                            },
+                                            value: (VentilacionUci.nuevoRegistro.am !== null ? VentilacionUci.nuevoRegistro.am : '')
+                                        })
+                                    ] : [])
+
+                                ]
+                            }
+                        });
                     },
                     visible: true,
                     aTargets: [4],
@@ -235,16 +268,83 @@ class VentilacionUci {
 
                 },
                 {
-                    mRender: function(data, type, full) {
-                        return (full.pm != null ? full.pm : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.pd-10', {
+                                        class: (oData.editar == true ? 'd-none' : ''),
+                                        ondblclick: (e) => {
+                                            VentilacionUci.nuevoRegistro = null
+                                            VentilacionUci.verRegistro(oData);
+                                        },
+                                    }, (oData.pm !== null ? oData.pm : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                    (VentilacionUci.nuevoRegistro !== null ? [
+                                        m("input", {
+                                            id: "pm" + VentilacionUci.nuevoRegistro.id,
+                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                            type: "text",
+                                            placeholder: "...",
+                                            ondblclick: (e) => {
+                                                oData.editar = null;
+                                                VentilacionUci.nuevoRegistro = null
+                                            },
+                                            oninput: (e) => {
+                                                if (PacientesUCI.numeroTurno == 2) {
+                                                    VentilacionUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
+                                                } else {
+                                                    e.preventDefault();
+                                                }
+                                            },
+                                            value: (VentilacionUci.nuevoRegistro.pm !== null ? VentilacionUci.nuevoRegistro.pm : '')
+                                        })
+                                    ] : [])
+
+                                ]
+                            }
+                        });
                     },
                     visible: true,
                     aTargets: [5],
                     orderable: true,
                 },
                 {
-                    mRender: function(data, type, full) {
-                        return (full.hs != null ? full.hs : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.pd-10', {
+                                        class: (oData.editar == true ? 'd-none' : ''),
+                                        ondblclick: (e) => {
+                                            VentilacionUci.nuevoRegistro = null
+                                            VentilacionUci.verRegistro(oData);
+                                        },
+                                    }, (oData.hs !== null ? oData.hs : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                    (VentilacionUci.nuevoRegistro !== null ? [
+                                        m("input", {
+                                            id: "hs" + VentilacionUci.nuevoRegistro.id,
+                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                            type: "text",
+                                            placeholder: "...",
+                                            ondblclick: (e) => {
+                                                oData.editar = null;
+                                                VentilacionUci.nuevoRegistro = null
+                                            },
+                                            oninput: (e) => {
+                                                if (PacientesUCI.numeroTurno == 3) {
+                                                    VentilacionUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
+                                                } else {
+                                                    e.preventDefault();
+                                                }
+                                            },
+                                            value: (VentilacionUci.nuevoRegistro.hs !== null ? VentilacionUci.nuevoRegistro.hs : '')
+
+                                        })
+                                    ] : [])
+
+                                ]
+                            }
+                        });
                     },
                     visible: true,
                     aTargets: [6],
@@ -253,8 +353,64 @@ class VentilacionUci {
 
                 },
                 {
-                    mRender: function(data, type, full) {
-                        return (full.observacion != null ? full.observacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.pd-10', {
+                                        class: (oData.editar == true ? 'd-none' : ''),
+                                        ondblclick: (e) => {
+                                            VentilacionUci.nuevoRegistro = null
+                                            VentilacionUci.verRegistro(oData);
+                                        },
+                                    }, (oData.observacion !== null ? oData.observacion : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                    (VentilacionUci.nuevoRegistro !== null ? [
+                                        m("input", {
+                                            id: "observacion" + VentilacionUci.nuevoRegistro.id,
+                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                            type: "text",
+                                            placeholder: "...",
+                                            onkeypress: (e) => {
+                                                if (e.keyCode == 13) {
+
+                                                    VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    console.log(99, VentilacionUci.nuevoRegistro)
+
+                                                    // throw 'AA';
+                                                    if (VentilacionUci.nuevoRegistro.editar == null) {
+                                                        VentilacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
+                                                        VentilacionUci.nuevoRegistro = null;
+                                                        VentilacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
+                                                    } else {
+                                                        VentilacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(VentilacionUci.nuevoRegistro);
+                                                        VentilacionUci.nuevoRegistro = null;
+                                                        VentilacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
+
+                                                    }
+
+
+                                                }
+                                            },
+                                            ondblclick: (e) => {
+                                                oData.editar = null;
+                                                VentilacionUci.nuevoRegistro = null
+                                            },
+                                            oninput: (e) => {
+                                                VentilacionUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
+                                            },
+                                            value: (VentilacionUci.nuevoRegistro.observacion !== null ? VentilacionUci.nuevoRegistro.observacion : '')
+
+                                        })
+                                    ] : [])
+
+                                ]
+                            }
+                        });
                     },
                     visible: true,
                     aTargets: [7],
@@ -268,8 +424,8 @@ class VentilacionUci {
                             view: () => {
                                 return [
                                     m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
+                                        m("button.btn.btn-xs.btn-success.d-none[type='button']", {
+                                                //class: (oData.editar ? 'd-none' : ''),
                                                 disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
                                                     VentilacionUci.nuevoRegistro = null
@@ -374,7 +530,7 @@ class VentilacionUci {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
-                    m("td.tx-14.tx-normal[colspan='3']",
+                    m("td.tx-14.tx-normal.d-none[colspan='3']",
                         (VentilacionUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
@@ -437,11 +593,11 @@ class VentilacionUci {
                             m('option[id="' + x.id + '"]', x.label)
                         ))
                     ),
-                    m("td.tx-14.tx-normal[colspan='3']",
+                    m("td.tx-14.tx-normal.d-none[colspan='3']",
                         (VentilacionUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "am" + VentilacionUci.nuevoRegistro.id,
+                                    id: "_am" + VentilacionUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
@@ -458,11 +614,11 @@ class VentilacionUci {
                             ]),
                         ] : [])
                     ),
-                    m("td.tx-14.tx-normal[colspan='3']",
+                    m("td.tx-14.tx-normal.d-none[colspan='3']",
                         (VentilacionUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "pm" + VentilacionUci.nuevoRegistro.id,
+                                    id: "_pm" + VentilacionUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
@@ -480,11 +636,11 @@ class VentilacionUci {
                         ] : [])
                     ),
 
-                    m("td.tx-14.tx-normal[colspan='3']",
+                    m("td.tx-14.tx-normal.d-none[colspan='3']",
                         (VentilacionUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "hs" + VentilacionUci.nuevoRegistro.id,
+                                    id: "_hs" + VentilacionUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
@@ -502,7 +658,7 @@ class VentilacionUci {
                         ] : [])
                     ),
                 ]),
-                m("tr.bd.bd-2.tx-uppercase", {
+                m("tr.bd.bd-2.tx-uppercase.d-none", {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
@@ -510,14 +666,14 @@ class VentilacionUci {
                         "OBSERVACIÓN: "
                     ),
                 ]),
-                m("tr.bd.bd-2", {
+                m("tr.bd.bd-2.d-none", {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
                     m("td.tx-14.tx-normal[colspan='12']",
                         (VentilacionUci.nuevoRegistro !== null ? [
                             m("input", {
-                                id: "observacion" + VentilacionUci.nuevoRegistro.id,
+                                id: "_observacion" + VentilacionUci.nuevoRegistro.id,
                                 class: "form-control tx-semibold tx-14",
                                 type: "text",
                                 placeholder: "...",

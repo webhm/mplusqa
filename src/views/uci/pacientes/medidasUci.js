@@ -1008,8 +1008,42 @@ class MedidasUci {
                                 label: "PRESION DE PERFUSION CEREBRAL (MILILITROS DE MERCURIO)",
                                 rango: "65 - 75 mmHg",
                                 intrumento: "Manual"
+                            },
+                            {
+                                orden: 13,
+                                id: "PresionIntraCraneal",
+                                label: "PRESIÓN INTRA CRANEAL (MILIMETROS DE AGUA)",
+                                rango: "5 - 15 mm",
+                                intrumento: "Manual"
+                            },
+                            {
+                                orden: 14,
+                                id: "PresionIntraAbdominal",
+                                label: "PRESIÓN INTRA ABDOMINAL (MILIMETROS DE AGUA)",
+                                rango: "5 - 10 mm",
+                                intrumento: "Manual"
+                            },
+                            {
+                                orden: 15,
+                                id: "PresionVenosaCentral",
+                                label: "PRESIÓN VENOSA CENTRAL (MILIMETROS DE AGUA)",
+                                rango: "6 - 12 mm",
+                                intrumento: "Manual"
+                            },
+                            {
+                                orden: 16,
+                                id: "PresionVenosaCentralAuricula",
+                                label: "PRESIÓN VENOSA CENTRAL EN AURICULA (MILIMETROS DE MERCURIO)",
+                                rango: "2 - 6 mm",
+                                intrumento: "Manual"
+                            },
+                            {
+                                orden: 17,
+                                id: "Biss",
+                                label: "BISS (MONITOR)",
+                                rango: "40 - 60",
+                                intrumento: "Monitor"
                             }
-
                         ].map(x =>
                             m('option[id="' + x.id + '"][orden="' + x.orden + '"][rango="' + x.rango + '"][intrumento="' + x.intrumento + '"]', x.label)
                         ))

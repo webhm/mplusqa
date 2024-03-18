@@ -1028,9 +1028,6 @@ class GasesUci {
                                     placeholder: "...",
                                     oncreate: (el) => {
 
-                                        if (GasesUci.setValores != undefined) {
-                                            el.dom.value = GasesUci.setValores;
-                                        }
                                         if (GasesUci.nuevoRegistro.valores != undefined) {
                                             el.dom.value = GasesUci.nuevoRegistro.valores;
                                         }

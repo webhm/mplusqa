@@ -229,8 +229,41 @@ class MarcapasosUci {
 
                 },
                 {
-                    mRender: function(data, type, full) {
-                        return (full.am != null ? full.am : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.pd-10', {
+                                        class: (oData.editar == true ? 'd-none' : ''),
+                                        ondblclick: (e) => {
+                                            MarcapasosUci.nuevoRegistro = null
+                                            MarcapasosUci.verRegistro(oData);
+                                        },
+                                    }, (oData.am !== null ? oData.am : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                    (MarcapasosUci.nuevoRegistro !== null ? [
+                                        m("input", {
+                                            id: "am" + MarcapasosUci.nuevoRegistro.id,
+                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                            type: "text",
+                                            placeholder: "...",
+                                            ondblclick: (e) => {
+                                                oData.editar = null;
+                                                MarcapasosUci.nuevoRegistro = null
+                                            },
+                                            oninput: (e) => {
+                                                if (PacientesUCI.numeroTurno == 1) {
+                                                    MarcapasosUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
+                                                } else {
+                                                    e.preventDefault();
+                                                }
+                                            },
+                                            value: (MarcapasosUci.nuevoRegistro.am !== null ? MarcapasosUci.nuevoRegistro.am : '')
+                                        })
+                                    ] : [])
+
+                                ]
+                            }
+                        });
                     },
                     visible: true,
                     aTargets: [4],
@@ -238,16 +271,83 @@ class MarcapasosUci {
 
                 },
                 {
-                    mRender: function(data, type, full) {
-                        return (full.pm != null ? full.pm : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.pd-10', {
+                                        class: (oData.editar == true ? 'd-none' : ''),
+                                        ondblclick: (e) => {
+                                            MarcapasosUci.nuevoRegistro = null
+                                            MarcapasosUci.verRegistro(oData);
+                                        },
+                                    }, (oData.pm !== null ? oData.pm : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                    (MarcapasosUci.nuevoRegistro !== null ? [
+                                        m("input", {
+                                            id: "pm" + MarcapasosUci.nuevoRegistro.id,
+                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                            type: "text",
+                                            placeholder: "...",
+                                            ondblclick: (e) => {
+                                                oData.editar = null;
+                                                MarcapasosUci.nuevoRegistro = null
+                                            },
+                                            oninput: (e) => {
+                                                if (PacientesUCI.numeroTurno == 2) {
+                                                    MarcapasosUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
+                                                } else {
+                                                    e.preventDefault();
+                                                }
+                                            },
+                                            value: (MarcapasosUci.nuevoRegistro.pm !== null ? MarcapasosUci.nuevoRegistro.pm : '')
+                                        })
+                                    ] : [])
+
+                                ]
+                            }
+                        });
                     },
                     visible: true,
                     aTargets: [5],
                     orderable: true,
                 },
                 {
-                    mRender: function(data, type, full) {
-                        return (full.hs != null ? full.hs : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.pd-10', {
+                                        class: (oData.editar == true ? 'd-none' : ''),
+                                        ondblclick: (e) => {
+                                            MarcapasosUci.nuevoRegistro = null
+                                            MarcapasosUci.verRegistro(oData);
+                                        },
+                                    }, (oData.hs !== null ? oData.hs : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                    (MarcapasosUci.nuevoRegistro !== null ? [
+                                        m("input", {
+                                            id: "hs" + MarcapasosUci.nuevoRegistro.id,
+                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                            type: "text",
+                                            placeholder: "...",
+                                            ondblclick: (e) => {
+                                                oData.editar = null;
+                                                MarcapasosUci.nuevoRegistro = null
+                                            },
+                                            oninput: (e) => {
+                                                if (PacientesUCI.numeroTurno == 3) {
+                                                    MarcapasosUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
+                                                } else {
+                                                    e.preventDefault();
+                                                }
+                                            },
+                                            value: (MarcapasosUci.nuevoRegistro.hs !== null ? MarcapasosUci.nuevoRegistro.hs : '')
+
+                                        })
+                                    ] : [])
+
+                                ]
+                            }
+                        });
                     },
                     visible: true,
                     aTargets: [6],
@@ -256,8 +356,64 @@ class MarcapasosUci {
 
                 },
                 {
-                    mRender: function(data, type, full) {
-                        return (full.observacion != null ? full.observacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.pd-10', {
+                                        class: (oData.editar == true ? 'd-none' : ''),
+                                        ondblclick: (e) => {
+                                            MarcapasosUci.nuevoRegistro = null
+                                            MarcapasosUci.verRegistro(oData);
+                                        },
+                                    }, (oData.observacion !== null ? oData.observacion : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                    (MarcapasosUci.nuevoRegistro !== null ? [
+                                        m("input", {
+                                            id: "observacion" + MarcapasosUci.nuevoRegistro.id,
+                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                            type: "text",
+                                            placeholder: "...",
+                                            onkeypress: (e) => {
+                                                if (e.keyCode == 13) {
+
+                                                    MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    console.log(99, MarcapasosUci.nuevoRegistro)
+
+                                                    // throw 'AA';
+                                                    if (MarcapasosUci.nuevoRegistro.editar == null) {
+                                                        MarcapasosUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
+                                                        MarcapasosUci.nuevoRegistro = null;
+                                                        MarcapasosUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+                                                    } else {
+                                                        MarcapasosUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(MarcapasosUci.nuevoRegistro);
+                                                        MarcapasosUci.nuevoRegistro = null;
+                                                        MarcapasosUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+
+                                                    }
+
+
+                                                }
+                                            },
+                                            ondblclick: (e) => {
+                                                oData.editar = null;
+                                                MarcapasosUci.nuevoRegistro = null
+                                            },
+                                            oninput: (e) => {
+                                                MarcapasosUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
+                                            },
+                                            value: (MarcapasosUci.nuevoRegistro.observacion !== null ? MarcapasosUci.nuevoRegistro.observacion : '')
+
+                                        })
+                                    ] : [])
+
+                                ]
+                            }
+                        });
                     },
                     visible: true,
                     aTargets: [7],
@@ -271,8 +427,8 @@ class MarcapasosUci {
                             view: () => {
                                 return [
                                     m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
+                                        m("button.btn.btn-xs.btn-success.d-none[type='button']", {
+                                                // class: (oData.editar ? 'd-none' : ''),
                                                 disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.numeroTurno != oData.numeroTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
                                                     MarcapasosUci.nuevoRegistro = null
@@ -378,7 +534,7 @@ class MarcapasosUci {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
-                    m("td.tx-14.tx-normal[colspan='3']",
+                    m("td.tx-14.tx-normal.d-none[colspan='3']",
                         (MarcapasosUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
@@ -432,11 +588,11 @@ class MarcapasosUci {
                             m('option[id="' + x.id + '"]', x.label)
                         ))
                     ),
-                    m("td.tx-14.tx-normal[colspan='3']",
+                    m("td.tx-14.tx-normal.d-none[colspan='3']",
                         (MarcapasosUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "am" + MarcapasosUci.nuevoRegistro.id,
+                                    id: "_am" + MarcapasosUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
@@ -454,11 +610,11 @@ class MarcapasosUci {
                             ]),
                         ] : [])
                     ),
-                    m("td.tx-14.tx-normal[colspan='3']",
+                    m("td.tx-14.tx-normal.d-none[colspan='3']",
                         (MarcapasosUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "pm" + MarcapasosUci.nuevoRegistro.id,
+                                    id: "_pm" + MarcapasosUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
@@ -477,11 +633,11 @@ class MarcapasosUci {
                         ] : [])
                     ),
 
-                    m("td.tx-14.tx-normal[colspan='3']",
+                    m("td.tx-14.tx-normal.d-none[colspan='3']",
                         (MarcapasosUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "hs" + MarcapasosUci.nuevoRegistro.id,
+                                    id: "_hs" + MarcapasosUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
@@ -500,7 +656,7 @@ class MarcapasosUci {
                         ] : [])
                     ),
                 ]),
-                m("tr.bd.bd-2.tx-uppercase", {
+                m("tr.bd.bd-2.tx-uppercase.d-none", {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
@@ -510,14 +666,14 @@ class MarcapasosUci {
 
 
                 ]),
-                m("tr.bd.bd-2", {
+                m("tr.bd.bd-2.d-none", {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
                     m("td.tx-14.tx-normal[colspan='12']",
                         (MarcapasosUci.nuevoRegistro !== null ? [
                             m("input", {
-                                id: "observacion" + MarcapasosUci.nuevoRegistro.id,
+                                id: "_observacion" + MarcapasosUci.nuevoRegistro.id,
                                 class: "form-control tx-semibold tx-14",
                                 type: "text",
                                 placeholder: "...",
