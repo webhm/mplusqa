@@ -1,77 +1,70 @@
 import m from "mithril";
-import App from "../../../models/App";
-import Loader from "../../utils/loader";
-import Errors from "../../utils/errors";
 import PacientesUCI from "./pacientesUci";
-import FecthUci from "./fecthUci";
 import TurnosUci from "./turnosUci";
+import FecthUci from "./fecthUci";
 
-class Gas {
+class Medida {
     id = null;
+    orden = null;
     nro = null;
     fechaHoraTurno = null;
-    gas = null;
-    fechaHora = null;
-    fecha = null;
+    medida = null;
+    valor = null;
     hora = null;
-    valores = null;
     editar = null;
-    seccion = 'Gases';
+    seccion = 'ComburTest';
     constructor() {
         this.id = this.id;
+        this.orden = this.orden;
         this.nro = this.nro;
         this.fechaHoraTurno = this.fechaHoraTurno;
-        this.gas = this.gas;
-        this.fechaHora = this.fechaHora;
-        this.fecha = this.fecha;
+        this.medida = this.medida;
+        this.valor = this.valor;
         this.hora = this.hora;
-        this.valores = this.valores;
         this.editar = this.editar;
         this.seccion = this.seccion;
     }
 }
 
 
-class GasesUci {
-    static allRegistros = [];
+class GasesMedUci {
     static registros = [];
+    static allRegistros = [];
     static nuevoRegistro = null;
     static show = false;
-    static setFecha = null;
     static setHora = null;
-    static setValores = null;
+    static setCondicion = null;
     static sCells = [];
     static sRowsHeaders = [];
     static sColumns = [];
     static sRows = [];
 
-
     static validarRegistro() {
 
     }
     static iniciarRegistro() {
-        GasesUci.nuevoRegistro = new Gas();
+        GasesMedUci.nuevoRegistro = new Medida();
     }
     static agregarRegistro() {
 
-        if (GasesUci.allRegistros.length == 0) {
-            GasesUci.nuevoRegistro.nro = 1;
-            GasesUci.allRegistros.push(GasesUci.nuevoRegistro);
+        if (GasesMedUci.allRegistros.length == 0) {
+            GasesMedUci.nuevoRegistro.nro = 1;
+            GasesMedUci.allRegistros.push(GasesMedUci.nuevoRegistro);
         } else {
-            GasesUci.nuevoRegistro.nro = (GasesUci.allRegistros[GasesUci.allRegistros.reverse().length - 1].nro + 1);
-            GasesUci.allRegistros.push(GasesUci.nuevoRegistro);
+            GasesMedUci.nuevoRegistro.nro = (GasesMedUci.allRegistros[GasesMedUci.allRegistros.reverse().length - 1].nro + 1);
+            GasesMedUci.allRegistros.push(GasesMedUci.nuevoRegistro);
         }
     }
     static verRegistro(registro) {
         registro.editar = true;
-        GasesUci.nuevoRegistro = registro;
-        console.log(GasesUci.nuevoRegistro)
+        GasesMedUci.nuevoRegistro = registro;
+        console.log(GasesMedUci.nuevoRegistro)
     }
     static editarRegistro() {
-        GasesUci.nuevoRegistro.editar = null;
-        GasesUci.allRegistros.map((_v, _i) => {
-            if (_v.nro == GasesUci.nuevoRegistro.nro) {
-                GasesUci.allRegistros[_i] = GasesUci.nuevoRegistro;
+        GasesMedUci.nuevoRegistro.editar = null;
+        GasesMedUci.allRegistros.map((_v, _i) => {
+            if (_v.nro == GasesMedUci.nuevoRegistro.nro) {
+                GasesMedUci.allRegistros[_i] = GasesMedUci.nuevoRegistro;
             }
         });
 
@@ -85,7 +78,7 @@ class GasesUci {
         let result = [];
         let resultNro = [];
 
-        GasesUci.allRegistros.map((_v, _i) => {
+        GasesMedUci.allRegistros.map((_v, _i) => {
             if (_v.nro !== obj.nro) {
                 res.push(_v);
             }
@@ -97,9 +90,99 @@ class GasesUci {
 
         _arr = resultNro.sort((a, b) => a.nro - b.nro);
 
-        GasesUci.allRegistros = _arr;
+        GasesMedUci.allRegistros = _arr;
 
     }
+    static valorarRango(valor, id) {
+
+        if (id == 'GastoCardiaco') {
+            if (valor > 4) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+
+        }
+        if (id == 'IndiceCardiaco') {
+            if (valor > 5) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+        if (id == 'VolumenSistolico') {
+            if (valor > 100) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+        if (id == 'PresionCapilarPulmonar') {
+            if (valor > 12) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+        if (id == 'IndiceResistenciaVascularSistemicaIndexada') {
+            if (valor > 500) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+        if (id == 'ResistenciaVascularSistemica') {
+            if (valor > 1200) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+        if (id == 'IndiceResistenciaVascularPulmonarIndexada') {
+            if (valor > 240) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+        if (id == 'PresionCuna') {
+            if (valor > 12) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+        if (id == 'PresionArteriaPulmonar') {
+            if (valor > 15) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+        if (id == 'TransporteArterialOxigeno') {
+            if (valor > 1050) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+        if (id == 'ConcentracionOxigeno') {
+            if (valor > 80) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+        if (id == 'PresionPerfusionCerebral') {
+            if (valor > 75) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+
+    }
+
 
     static filterRegistros() {
 
@@ -113,8 +196,7 @@ class GasesUci {
         let valores = [];
         let r = [];
 
-        result = GasesUci.allRegistros;
-
+        result = GasesMedUci.allRegistros;
         r = result.sort((a, b) => b.nro - a.nro);
         // Quitar duplicados
         resultNro = r.filter(o => hash[o.nro] ? false : hash[o.nro] = true).sort((a, b) => a.nro - b.nro);
@@ -123,75 +205,59 @@ class GasesUci {
         // 'data-orden'ar desc
         _arr = resultId.sort((a, b) => a.orden - b.orden);
 
-        GasesUci.registros = _arr;
+        GasesMedUci.registros = _arr;
 
         // Establecer Columnas
-        let PH = 0;
-        let PaCO2 = 0;
-        let PaO2 = 0;
-        let HCO3 = 0;
-        let TC02 = 0;
-        let ExcesoBase = 0;
-        let FiO2 = 0;
-        let PaO2FiO2 = 0;
-        let SaO2 = 0;
-        let IndiceOxigenacion = 0;
-        let Lactato = 0;
-        let Na = 0;
-        let K = 0;
-
+        let cbPH = 0;
+        let cbProteinas = 0;
+        let cbDensidad = 0;
+        let cbGlucosa = 0;
+        let cbSangre = 0;
+        let cbCetonas = 0;
+        let cbLeucocitos = 0;
+        let cbNitritos = 0;
+        let cbUrobilinogeno = 0;
+        let cbBilirubina = 0;
 
         resultNro.map((col, i) => {
-            if (col.id == 'PH') {
-                PH++;
+            if (col.id == 'cbPH') {
+                cbPH++;
             }
-            if (col.id == 'PaCO2') {
-                PaCO2++;
+            if (col.id == 'cbProteinas') {
+                cbProteinas++;
             }
-            if (col.id == 'PaO2') {
-                PaO2++;
+            if (col.id == 'cbDensidad') {
+                cbDensidad++;
             }
-            if (col.id == 'HCO3') {
-                HCO3++;
+            if (col.id == 'cbGlucosa') {
+                cbGlucosa++;
             }
-            if (col.id == 'TC02') {
-                TC02++;
+            if (col.id == 'cbSangre') {
+                cbSangre++;
             }
-            if (col.id == 'ExcesoBase') {
-                ExcesoBase++;
+            if (col.id == 'cbCetonas') {
+                cbCetonas++;
             }
-            if (col.id == 'FiO2') {
-                FiO2++;
+            if (col.id == 'cbLeucocitos') {
+                cbLeucocitos++;
             }
-            if (col.id == 'PaO2FiO2') {
-                PaO2FiO2++;
+            if (col.id == 'cbNitritos') {
+                cbNitritos++;
             }
-            if (col.id == 'SaO2') {
-                SaO2++;
+            if (col.id == 'cbUrobilinogeno') {
+                cbUrobilinogeno++;
             }
-            if (col.id == 'IndiceOxigenacion') {
-                IndiceOxigenacion++;
-            }
-            if (col.id == 'Lactato') {
-                Lactato++;
-            }
-            if (col.id == 'VolumenFugas') {
-                VolumenFugas++;
-            }
-            if (col.id == 'Na') {
-                Na++;
-            }
-            if (col.id == 'K') {
-                K++;
+            if (col.id == 'cbBilirubina') {
+                cbBilirubina++;
             }
 
         });
 
-        columnas = [PH, PaCO2, PaO2, HCO3, TC02, ExcesoBase, FiO2, PaO2FiO2, SaO2, IndiceOxigenacion, Lactato, Na, K];
+        columnas = [cbPH, cbProteinas, cbDensidad, cbGlucosa, cbSangre, cbCetonas, cbLeucocitos, cbNitritos, cbUrobilinogeno, cbBilirubina];
 
         resultNro.map((col, i) => {
             let fila = {};
-            if (col.id == 'PH') {
+            if (col.id == 'cbPH') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -215,7 +281,7 @@ class GasesUci {
 
 
             }
-            if (col.id == 'PaCO2') {
+            if (col.id == 'cbProteinas') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -239,7 +305,7 @@ class GasesUci {
 
 
             }
-            if (col.id == 'PaO2') {
+            if (col.id == 'cbDensidad') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -261,7 +327,7 @@ class GasesUci {
                     });
                 }
             }
-            if (col.id == 'HCO3') {
+            if (col.id == 'cbGlucosa') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -283,7 +349,7 @@ class GasesUci {
                     });
                 }
             }
-            if (col.id == 'TC02') {
+            if (col.id == 'cbSangre') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -305,7 +371,7 @@ class GasesUci {
                     });
                 }
             }
-            if (col.id == 'ExcesoBase') {
+            if (col.id == 'cbCetonas') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -327,7 +393,7 @@ class GasesUci {
                     });
                 }
             }
-            if (col.id == 'FiO2') {
+            if (col.id == 'cbLeucocitos') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -349,7 +415,7 @@ class GasesUci {
                     });
                 }
             }
-            if (col.id == 'PaO2FiO2') {
+            if (col.id == 'cbNitritos') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -371,7 +437,7 @@ class GasesUci {
                     });
                 }
             }
-            if (col.id == 'SaO2') {
+            if (col.id == 'cbUrobilinogeno') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -393,7 +459,7 @@ class GasesUci {
                     });
                 }
             }
-            if (col.id == 'IndiceOxigenacion') {
+            if (col.id == 'cbBilirubina') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -415,76 +481,11 @@ class GasesUci {
                     });
                 }
             }
-            if (col.id == 'Lactato') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
 
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'Na') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'K') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
         });
 
-        GasesUci.sColumns = [];
-        GasesUci.sColumns = [{
+        GasesMedUci.sColumns = [];
+        GasesMedUci.sColumns = [{
                 title: "Turno: ",
             },
             {
@@ -494,7 +495,7 @@ class GasesUci {
                 title: "Turno: ",
             },
             {
-                title: "Gases:",
+                title: "Medida:",
             },
 
         ];
@@ -507,20 +508,20 @@ class GasesUci {
         }
 
         for (let index = 0; index < orderCol[0]; index++) {
-            GasesUci.sColumns.push({
-                title: "Fecha y Hora:",
+            GasesMedUci.sColumns.push({
+                title: "Valor:",
             });
-            GasesUci.sColumns.push({
-                title: "Valores:",
+            GasesMedUci.sColumns.push({
+                title: "Hora:",
             });
         }
 
-        GasesUci.sColumns.push({
+        GasesMedUci.sColumns.push({
             title: "Opciones:",
         });
 
-        GasesUci.sRows = [];
-        GasesUci.sRows = [{
+        GasesMedUci.sRows = [];
+        GasesMedUci.sRows = [{
                 mRender: function(data, type, full) {
                     return full.fechaHoraTurno;
                 },
@@ -564,7 +565,7 @@ class GasesUci {
             },
             {
                 mRender: function(data, type, full) {
-                    return full.gas;
+                    return full.medida;
                 },
 
                 visible: true,
@@ -576,19 +577,19 @@ class GasesUci {
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
-            GasesUci.sRows.push({
+            GasesMedUci.sRows.push({
                 fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
                                 m('div.text-center.pd-l-0.pd-r-0', {
                                     ondblclick: (e) => {
-                                        GasesUci.nuevoRegistro = null;
+                                        GasesMedUci.nuevoRegistro = null;
                                         valores.filter((v, i) => {
 
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
-                                                GasesUci.verRegistro(resultNro[_i]);
+                                                GasesMedUci.verRegistro(resultNro[_i]);
                                             }
                                         })
                                     },
@@ -606,15 +607,15 @@ class GasesUci {
                                             valores.filter((v, i) => {
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
-                                                    GasesUci.eliminarRegistro(resultNro[_i]);
+                                                    GasesMedUci.eliminarRegistro(resultNro[_i]);
                                                     FecthUci.eliminarSeccion(resultNro[_i]);
-                                                    GasesUci.nuevoRegistro = null;
-                                                    GasesUci.destroyTable();
-                                                    GasesUci.filterRegistros();
-                                                    GasesUci.show = false;
+                                                    GasesMedUci.nuevoRegistro = null;
+                                                    GasesMedUci.destroyTable();
+                                                    GasesMedUci.filterRegistros();
+                                                    GasesMedUci.show = false;
                                                     m.redraw();
                                                     setTimeout(() => {
-                                                        GasesUci.show = true;
+                                                        GasesMedUci.show = true;
                                                         m.redraw();
                                                     }, 100);
                                                 }
@@ -628,8 +629,8 @@ class GasesUci {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].fechaHora !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].fechaHora;
+                                                    if (resultNro[_i].valor !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].valor;
                                                     } else {
                                                         el.dom.innerHTML = '<button type="button" class="btn btn-xs btn-success btn-block tx-12 ">Registrar</button>';
                                                     }
@@ -650,18 +651,18 @@ class GasesUci {
                 orderable: true,
 
             });
-            GasesUci.sRows.push({
+            GasesMedUci.sRows.push({
                 fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
                                 m('div.text-center.pd-l-0.pd-r-0', {
                                     ondblclick: (e) => {
-                                        GasesUci.nuevoRegistro = null
+                                        GasesMedUci.nuevoRegistro = null
                                         valores.filter((v, i) => {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
-                                                GasesUci.verRegistro(resultNro[_i]);
+                                                GasesMedUci.verRegistro(resultNro[_i]);
                                             }
                                         })
 
@@ -671,8 +672,8 @@ class GasesUci {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].valores !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].valores;
+                                                    if (resultNro[_i].hora !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].hora;
                                                     } else {
                                                         el.dom.innerHTML = '';
                                                     }
@@ -693,7 +694,7 @@ class GasesUci {
             });
         }
 
-        GasesUci.sRows.push({
+        GasesMedUci.sRows.push({
             fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                 return m.mount(nTd, {
                     view: () => {
@@ -701,10 +702,10 @@ class GasesUci {
                             m("div.btn-block.btn-group.wd-100p.pd-5", [
 
                                 m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                        class: (GasesUci.nuevoRegistro !== null && GasesUci.nuevoRegistro.editar && GasesUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
+                                        class: (GasesMedUci.nuevoRegistro !== null && GasesMedUci.nuevoRegistro.editar && GasesMedUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
                                         onclick: () => {
                                             oData.editar = null;
-                                            GasesUci.nuevoRegistro = null;
+                                            GasesMedUci.nuevoRegistro = null;
                                         },
                                     },
                                     'Cancelar Edición',
@@ -712,20 +713,16 @@ class GasesUci {
                                 m("button.btn.btn-xs.btn-dark[type='button']", {
                                         //class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                         onclick: () => {
-
-                                            if (oData.gas == null) {
+                                            if (oData.valor == null) {
                                                 alert('No se permite copiar. Ya existe un registro disponible.');
                                                 throw 'No se permite copiar. Ya existe un registro disponible.'
                                             }
-                                            GasesUci.iniciarRegistro();
-                                            GasesUci.nuevoRegistro.id = oData.id;
-                                            GasesUci.nuevoRegistro.gas = oData.gas;
-                                            GasesUci.nuevoRegistro.orden = oData.orden;
-                                            GasesUci.nuevoRegistro.fecha = oData.fecha;
-                                            GasesUci.nuevoRegistro.hora = oData.hora;
-                                            GasesUci.nuevoRegistro.fechaHora = oData.fechaHora;
-                                            GasesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            GasesUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            GasesMedUci.iniciarRegistro();
+                                            GasesMedUci.nuevoRegistro.id = oData.id;
+                                            GasesMedUci.nuevoRegistro.medida = oData.medida;
+                                            GasesMedUci.nuevoRegistro.orden = oData.orden;
+                                            GasesMedUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            GasesMedUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
                                         },
                                     },
@@ -746,26 +743,23 @@ class GasesUci {
 
         });
 
-        GasesUci.sRows.map((c, i) => {
-            GasesUci.sRows[i].aTargets = [i];
+        GasesMedUci.sRows.map((c, i) => {
+            GasesMedUci.sRows[i].aTargets = [i];
         });
 
 
     }
-
     static destroyTable() {
-        let table = document.getElementById('table-gases');
+        let table = document.getElementById('table-gasesmed');
         // clear first
         if (table != null) {
-            $('#table-gases').DataTable().clear().destroy();
+            $('#table-gasesmed').DataTable().clear().destroy();
 
         }
     }
-
     static getRegistros() {
-        return GasesUci.registros;
+        return GasesMedUci.registros;
     }
-
     static arqTable() {
         return {
             data: null,
@@ -796,39 +790,36 @@ class GasesUci {
             destroy: true,
             order: false,
             pageLength: 100,
-            columns: GasesUci.sColumns,
-            aoColumnDefs: GasesUci.sRows,
+            columns: GasesMedUci.sColumns,
+            aoColumnDefs: GasesMedUci.sRows,
             fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
             },
         };
     }
-
-
     view() {
         return [
             m("thead.bd.bd-2", {
-                    style: { "border-color": "#5173a1" }
+                    style: { "border-color": "#5173a1" },
                 },
-
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
-                        GasesUci.show = !GasesUci.show;
+                        GasesMedUci.show = !GasesMedUci.show;
                     }
 
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "GASOMETRIAS / HORAS:"
+                        "COMBUR TEST:"
                     ),
 
                 ])
             ),
             m("tbody.bd.bd-2", {
                 style: { "border-color": "#5173a1" },
-                class: (GasesUci.show ? '' : 'd-none')
+                class: (GasesMedUci.show ? '' : 'd-none')
             }, [
 
 
@@ -836,33 +827,32 @@ class GasesUci {
                 m("tr.bd.bd-2.tx-uppercase", {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
-
                 }, [
                     m("th[scope='col'][colspan='4']",
-                        "GASOMETRIAS:"
+                        "MEDIDA:"
                     ),
                     m("th[scope='col'][colspan='4']",
-                        "FECHA Y HORA:"
+                        "VALOR: "
                     ),
                     m("th[scope='col'][colspan='4']",
-                        "VALORES:"
+                        "HORA: "
                     ),
+
 
                 ]),
                 m("tr.bd.bd-2", {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
-
                 }, [
-                    m("td.tx-14.tx-normal[colspan='4']",
-                        (GasesUci.nuevoRegistro !== null ? [
+                    m("td.tx-14.tx-normal[colspan='3']",
+                        (GasesMedUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     disabled: true,
-                                    value: GasesUci.nuevoRegistro.gas,
+                                    value: GasesMedUci.nuevoRegistro.medida,
                                 })
 
                             ]),
@@ -870,140 +860,100 @@ class GasesUci {
                     ),
                     m("td.tx-14.tx-normal.d-none[colspan='4']",
                         m('select.tx-semibold', {
-                            id: 'sec_Gases',
+                            id: 'sec_ComburTest',
+                            disabled: true,
                             onchange: (e) => {
                                 let _id = e.target.options[e.target.selectedIndex].id;
                                 let _value = e.target.options[e.target.selectedIndex].value;
-                                if (GasesUci.nuevoRegistro == null) {
-                                    GasesUci.iniciarRegistro();
-                                    GasesUci.nuevoRegistro.id = _id;
-                                    GasesUci.nuevoRegistro.gas = _value;
-                                } else {
-                                    GasesUci.nuevoRegistro.id = _id;
-                                    GasesUci.nuevoRegistro.gas = _value;
-                                }
+                                GasesMedUci.iniciarRegistro();
+                                GasesMedUci.nuevoRegistro.id = _id;
+                                GasesMedUci.nuevoRegistro.medida = _value;
                             },
                             class: "custom-select",
-                            value: (GasesUci.nuevoRegistro !== null ? GasesUci.nuevoRegistro.gas : 0),
-                            disabled: true,
+                            value: (GasesMedUci.nuevoRegistro !== null ? GasesMedUci.nuevoRegistro.medida : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                id: "PH",
-                                orden: 1,
-                                label: "PH"
-                            },
-                            {
-                                id: "PaCO2",
-                                orden: 2,
-                                label: "PaCO2"
-                            },
-                            {
-                                id: "PaO2",
-                                orden: 3,
-                                label: "PaO2"
-                            },
-                            {
-                                id: "HCO3",
-                                orden: 4,
-                                label: "HCO3"
-                            },
-                            {
-                                id: "TC02",
-                                orden: 5,
-                                label: "TC02"
-                            },
-                            {
-                                id: "ExcesoBase",
-                                orden: 6,
-                                label: "EXCESO DE BASE"
-                            },
-                            {
-                                id: "FiO2",
-                                orden: 7,
-                                label: "FiO2 %"
-                            },
-                            {
-                                id: "PaO2FiO2",
-                                orden: 8,
-                                label: "PaO2 / FiO2"
-                            },
-                            {
-                                id: "SaO2",
-                                orden: 9,
-                                label: "SaO2"
-                            },
-                            {
-                                id: "IndiceOxigenacion",
-                                orden: 10,
-                                label: "Indice de Oxigenacion"
-                            },
-                            {
-                                id: "Lactato",
-                                orden: 11,
-                                label: "LACTATO"
-                            },
-                            {
-                                id: "Na",
-                                orden: 12,
-                                label: "Na"
-                            },
-                            {
-                                id: "K",
-                                orden: 13,
-                                label: "K"
-                            }
-                        ].map(x =>
+                            orden: 1,
+                            id: "cbPH",
+                            label: "PH"
+                        }, {
+                            orden: 2,
+                            id: "cbProteinas",
+                            label: "PROTEINAS"
+                        }, {
+                            orden: 3,
+                            id: "cbDensidad",
+                            label: "DENSIDAD"
+                        }, {
+                            orden: 4,
+                            id: "cbGlucosa",
+                            label: "GLUCOSA"
+                        }, {
+                            orden: 5,
+                            id: "cbSangre",
+                            label: "SANGRE"
+                        }, {
+                            orden: 6,
+                            id: "cbCetonas",
+                            label: "CETONAS"
+                        }, {
+                            orden: 7,
+                            id: "cbLeucocitos",
+                            label: "LEUCOCITOS"
+                        }, {
+                            orden: 8,
+                            id: "cbNitritos",
+                            label: "NITRITOS"
+                        }, {
+                            orden: 9,
+                            id: "cbUrobilinogeno",
+                            label: "UROBILINOGENO",
+                        }, {
+                            orden: 10,
+                            id: "cbBilirubina",
+                            label: "BILIRRUBINA"
+                        }].map(x =>
                             m('option[id="' + x.id + '"][orden="' + x.orden + '"]', x.label)
                         ))
                     ),
-                    m("td.tx-14.tx-normal.wd-40p[colspan='4']",
-                        (GasesUci.nuevoRegistro !== null ? [
+                    m("td.tx-14.tx-normal[colspan='4']",
+                        (GasesMedUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
-                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY']", {
-                                    id: "gasesFecha" + GasesUci.nuevoRegistro.id,
+                                m("input", {
+                                    id: "valor" + GasesMedUci.nuevoRegistro.id,
+                                    class: "form-control tx-semibold tx-14",
+                                    type: "text",
+                                    placeholder: "...",
                                     oncreate: (el) => {
-                                        if (GasesUci.nuevoRegistro.fecha != undefined) {
-                                            el.dom.value = GasesUci.nuevoRegistro.fecha;
+                                        if (GasesMedUci.nuevoRegistro.valor != undefined) {
+                                            el.dom.value = GasesMedUci.nuevoRegistro.valor;
                                         }
-
-                                        if (GasesUci.nuevoRegistro.fecha == null) {
-                                            if (GasesUci.setFecha != undefined) {
-                                                GasesUci.nuevoRegistro.fecha = GasesUci.setFecha;
-                                                el.dom.value = GasesUci.setFecha;
-                                            }
-                                        }
-
-                                        setTimeout(() => {
-                                            new Cleave("#gasesFecha" + GasesUci.nuevoRegistro.id, {
-                                                date: true,
-                                                datePattern: ["d", "m", "Y"]
-                                            });
-                                        }, 50);
                                     },
                                     oninput: (e) => {
-                                        setTimeout(() => {
-                                            GasesUci.setFecha = e.target.value;
-                                            GasesUci.nuevoRegistro.fecha = e.target.value;
-                                        }, 50);
+                                        GasesMedUci.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
-                                }),
+                                    value: GasesMedUci.nuevoRegistro.valor
+                                })
+
+                            ]),
+                        ] : [])
+                    ),
+                    m("td.tx-14.tx-normal[colspan='4']",
+                        (GasesMedUci.nuevoRegistro !== null ? [
+                            m('div.d-flex', [
                                 m("input.form-control[type='text'][placeholder='HH:mm']", {
-                                    id: "gasesHora" + GasesUci.nuevoRegistro.id,
+                                    id: "horaMedida" + GasesMedUci.nuevoRegistro.id,
                                     oncreate: (el) => {
-                                        if (GasesUci.nuevoRegistro.hora != undefined) {
-                                            el.dom.value = GasesUci.nuevoRegistro.hora;
+                                        if (GasesMedUci.nuevoRegistro.hora != undefined) {
+                                            el.dom.value = GasesMedUci.nuevoRegistro.hora;
                                         }
-
-
-                                        if (GasesUci.nuevoRegistro.hora == null) {
-                                            if (GasesUci.setHora != undefined) {
-                                                GasesUci.nuevoRegistro.hora = GasesUci.setHora;
-                                                GasesUci.nuevoRegistro.fechaHora = GasesUci.nuevoRegistro.fecha + ' ' + GasesUci.nuevoRegistro.hora;
-                                                el.dom.value = GasesUci.setHora;
+                                        if (GasesMedUci.nuevoRegistro.hora == null) {
+                                            if (GasesMedUci.setHora != undefined) {
+                                                GasesMedUci.nuevoRegistro.hora = GasesMedUci.setHora;
+                                                el.dom.value = GasesMedUci.setHora;
                                             }
                                         }
-
                                         setTimeout(() => {
-                                            new Cleave("#gasesHora" + GasesUci.nuevoRegistro.id, {
+                                            new Cleave("#horaMedida" + GasesMedUci.nuevoRegistro.id, {
                                                 time: true,
                                                 timePattern: ['h', 'm']
                                             });
@@ -1011,72 +961,50 @@ class GasesUci {
                                     },
                                     oninput: (e) => {
                                         setTimeout(() => {
-                                            GasesUci.setHora = e.target.value;
-                                            GasesUci.nuevoRegistro.hora = e.target.value;
-                                            GasesUci.nuevoRegistro.fechaHora = GasesUci.nuevoRegistro.fecha + ' ' + GasesUci.nuevoRegistro.hora;
+                                            //GasesMedUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                            GasesMedUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            GasesMedUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
                                         }, 50);
-                                    },
-                                }),
-                            ]),
-
-                        ] : [])
-                    ),
-                    m("td.tx-14.tx-normal.wd-40p[colspan='4']",
-                        (GasesUci.nuevoRegistro !== null ? [
-                            m('div.d-flex', [
-                                m("input", {
-                                    id: "valores" + GasesUci.nuevoRegistro.id,
-                                    class: "form-control tx-semibold tx-14",
-                                    type: "text",
-                                    placeholder: "...",
-                                    oncreate: (el) => {
-
-                                        if (GasesUci.nuevoRegistro.valores != undefined) {
-                                            el.dom.value = GasesUci.nuevoRegistro.valores;
-                                        }
                                     },
                                     onkeypress: (e) => {
                                         if (e.keyCode == 13) {
-                                            GasesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            GasesUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                            if (GasesUci.nuevoRegistro.editar == null) {
-                                                GasesUci.agregarRegistro();
-                                                FecthUci.registrarSeccion(GasesUci.nuevoRegistro);
-                                                GasesUci.nuevoRegistro = null;
-                                                GasesUci.destroyTable();
-                                                GasesUci.filterRegistros();
-                                                GasesUci.show = false;
+                                            GasesMedUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            GasesMedUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            if (GasesMedUci.nuevoRegistro.editar == null) {
+                                                GasesMedUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(GasesMedUci.nuevoRegistro);
+                                                GasesMedUci.nuevoRegistro = null;
+                                                GasesMedUci.destroyTable();
+                                                GasesMedUci.filterRegistros();
+                                                GasesMedUci.show = false;
                                                 m.redraw();
                                                 setTimeout(() => {
-                                                    GasesUci.show = true;
+                                                    GasesMedUci.show = true;
                                                     m.redraw();
                                                 }, 100);
                                             } else {
-                                                GasesUci.editarRegistro();
-                                                FecthUci.actualizarSeccion(GasesUci.nuevoRegistro);
-                                                GasesUci.nuevoRegistro = null;
-                                                GasesUci.destroyTable();
-                                                GasesUci.filterRegistros();
-                                                GasesUci.show = false;
+                                                GasesMedUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(GasesMedUci.nuevoRegistro);
+                                                GasesMedUci.nuevoRegistro = null;
+                                                GasesMedUci.destroyTable();
+                                                GasesMedUci.filterRegistros();
+                                                GasesMedUci.show = false;
                                                 m.redraw();
                                                 setTimeout(() => {
-                                                    GasesUci.show = true;
+                                                    GasesMedUci.show = true;
                                                     m.redraw();
                                                 }, 100);
                                             }
                                         }
                                     },
-                                    oninput: (e) => {
-                                        GasesUci.setValores = (e.target.value.length !== 0 ? e.target.value : null);
-                                        GasesUci.nuevoRegistro.valores = (e.target.value.length !== 0 ? e.target.value : null);
-                                    },
-                                    value: GasesUci.nuevoRegistro.valores
-                                })
-
+                                }),
                             ]),
                         ] : [])
                     ),
+
+
                 ]),
+
                 m("tr.tx-uppercase", {
                     style: { "background-color": "#eaeff5" }
                 }, [
@@ -1086,7 +1014,7 @@ class GasesUci {
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12']",
-                        (GasesUci.show != false ? [PacientesUCI.vTable('table-gases', GasesUci.getRegistros(), GasesUci.arqTable())] : [])
+                        (GasesMedUci.show != false ? [PacientesUCI.vTable('table-gasesmed', GasesMedUci.getRegistros(), GasesMedUci.arqTable())] : [])
                     ),
                 ]),
             ]),
@@ -1094,4 +1022,4 @@ class GasesUci {
     }
 }
 
-export default GasesUci;
+export default GasesMedUci;

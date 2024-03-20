@@ -1191,7 +1191,9 @@ class VentilatoriosUci {
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (VentilatoriosUci.show ? '' : 'd-none')
+                    onclick: () => {
+                        VentilatoriosUci.show = !VentilatoriosUci.show;
+                    }
 
 
                 }, [

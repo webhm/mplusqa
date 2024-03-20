@@ -318,7 +318,9 @@ class CultivosUci {
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (CultivosUci.show ? '' : 'd-none')
+                    onclick: () => {
+                        CultivosUci.show = !CultivosUci.show;
+                    }
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",

@@ -494,7 +494,9 @@ class VentilacionUci {
 
                 m("tr.tx-uppercase", {
                     style: { "background-color": "#CCCCFF" },
-                    class: (VentilacionUci.show ? '' : 'd-none')
+                    onclick: () => {
+                        VentilacionUci.show = !VentilacionUci.show;
+                    }
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",

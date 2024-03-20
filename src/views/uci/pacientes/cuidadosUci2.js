@@ -535,8 +535,10 @@ class CuidadosUci2 {
 
                 m("tr.tx-uppercase", {
                     style: { "background-color": "#CCCCFF" },
+                    onclick: () => {
+                        CuidadosUci2.show = !CuidadosUci2.show;
+                    }
 
-                    class: (CuidadosUci2.show ? '' : 'd-none')
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
                         "CUIDADOS GENERALES: "

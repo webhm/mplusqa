@@ -185,6 +185,42 @@ class MedidasUci {
                 return valor;
             }
         }
+        if (id == 'PresionIntraCraneal') {
+            if (valor > 15) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+        if (id == 'PresionIntraAbdominal') {
+            if (valor > 10) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+        if (id == 'PresionVenosaCentral') {
+            if (valor > 12) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+        if (id == 'PresionVenosaCentralAuricula') {
+            if (valor > 6) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+        if (id == 'Biss') {
+            if (valor > 60) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+
 
     }
 
@@ -225,6 +261,11 @@ class MedidasUci {
         let TransporteArterialOxigeno = 0;
         let ConcentracionOxigeno = 0;
         let PresionPerfusionCerebral = 0;
+        let PresionIntraCraneal = 0;
+        let PresionIntraAbdominal = 0;
+        let PresionVenosaCentral = 0;
+        let PresionVenosaCentralAuricula = 0;
+        let Biss = 0;
 
 
         resultNro.map((col, i) => {
@@ -264,9 +305,24 @@ class MedidasUci {
             if (col.id == 'PresionPerfusionCerebral') {
                 PresionPerfusionCerebral++;
             }
+            if (col.id == 'PresionIntraCraneal') {
+                PresionIntraCraneal++;
+            }
+            if (col.id == 'PresionIntraAbdominal') {
+                PresionIntraAbdominal++;
+            }
+            if (col.id == 'PresionVenosaCentral') {
+                PresionVenosaCentral++;
+            }
+            if (col.id == 'PresionVenosaCentralAuricula') {
+                PresionVenosaCentralAuricula++;
+            }
+            if (col.id == 'Biss') {
+                Biss++;
+            }
         });
 
-        columnas = [GastoCardiaco, IndiceCardiaco, VolumenSistolico, PresionCapilarPulmonar, IndiceResistenciaVascularSistemicaIndexada, ResistenciaVascularSistemica, IndiceResistenciaVascularPulmonarIndexada, PresionCuna, PresionArteriaPulmonar, TransporteArterialOxigeno, ConcentracionOxigeno, PresionPerfusionCerebral];
+        columnas = [GastoCardiaco, IndiceCardiaco, VolumenSistolico, PresionCapilarPulmonar, IndiceResistenciaVascularSistemicaIndexada, ResistenciaVascularSistemica, IndiceResistenciaVascularPulmonarIndexada, PresionCuna, PresionArteriaPulmonar, TransporteArterialOxigeno, ConcentracionOxigeno, PresionPerfusionCerebral, PresionIntraCraneal, PresionIntraAbdominal, PresionVenosaCentral, PresionVenosaCentralAuricula, Biss];
 
         resultNro.map((col, i) => {
             let fila = {};
@@ -517,6 +573,116 @@ class MedidasUci {
                 }
             }
             if (col.id == 'PresionPerfusionCerebral') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'PresionIntraCraneal') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'PresionIntraAbdominal') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'PresionVenosaCentral') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'PresionVenosaCentralAuricula') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'Biss') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -871,7 +1037,9 @@ class MedidasUci {
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (MedidasUci.show ? '' : 'd-none')
+                    onclick: () => {
+                        MedidasUci.show = !MedidasUci.show;
+                    }
 
 
                 }, [

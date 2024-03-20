@@ -228,8 +228,41 @@ class OxigenacionUci {
 
                 },
                 {
-                    mRender: function(data, type, full) {
-                        return (full.am != null ? full.am : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.pd-10', {
+                                        class: (oData.editar == true ? 'd-none' : ''),
+                                        ondblclick: (e) => {
+                                            OxigenacionUci.nuevoRegistro = null
+                                            OxigenacionUci.verRegistro(oData);
+                                        },
+                                    }, (oData.am !== null ? oData.am : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                    (OxigenacionUci.nuevoRegistro !== null ? [
+                                        m("input", {
+                                            id: "am" + OxigenacionUci.nuevoRegistro.id,
+                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                            type: "text",
+                                            placeholder: "...",
+                                            ondblclick: (e) => {
+                                                oData.editar = null;
+                                                OxigenacionUci.nuevoRegistro = null
+                                            },
+                                            oninput: (e) => {
+                                                if (PacientesUCI.numeroTurno == 1) {
+                                                    OxigenacionUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
+                                                } else {
+                                                    e.preventDefault();
+                                                }
+                                            },
+                                            value: (OxigenacionUci.nuevoRegistro.am !== null ? OxigenacionUci.nuevoRegistro.am : '')
+                                        })
+                                    ] : [])
+
+                                ]
+                            }
+                        });
                     },
                     visible: true,
                     aTargets: [4],
@@ -237,16 +270,83 @@ class OxigenacionUci {
 
                 },
                 {
-                    mRender: function(data, type, full) {
-                        return (full.pm != null ? full.pm : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.pd-10', {
+                                        class: (oData.editar == true ? 'd-none' : ''),
+                                        ondblclick: (e) => {
+                                            OxigenacionUci.nuevoRegistro = null
+                                            OxigenacionUci.verRegistro(oData);
+                                        },
+                                    }, (oData.pm !== null ? oData.pm : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                    (OxigenacionUci.nuevoRegistro !== null ? [
+                                        m("input", {
+                                            id: "pm" + OxigenacionUci.nuevoRegistro.id,
+                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                            type: "text",
+                                            placeholder: "...",
+                                            ondblclick: (e) => {
+                                                oData.editar = null;
+                                                OxigenacionUci.nuevoRegistro = null
+                                            },
+                                            oninput: (e) => {
+                                                if (PacientesUCI.numeroTurno == 2) {
+                                                    OxigenacionUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
+                                                } else {
+                                                    e.preventDefault();
+                                                }
+                                            },
+                                            value: (OxigenacionUci.nuevoRegistro.pm !== null ? OxigenacionUci.nuevoRegistro.pm : '')
+                                        })
+                                    ] : [])
+
+                                ]
+                            }
+                        });
                     },
                     visible: true,
                     aTargets: [5],
                     orderable: true,
                 },
                 {
-                    mRender: function(data, type, full) {
-                        return (full.hs != null ? full.hs : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.pd-10', {
+                                        class: (oData.editar == true ? 'd-none' : ''),
+                                        ondblclick: (e) => {
+                                            OxigenacionUci.nuevoRegistro = null
+                                            OxigenacionUci.verRegistro(oData);
+                                        },
+                                    }, (oData.hs !== null ? oData.hs : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                    (OxigenacionUci.nuevoRegistro !== null ? [
+                                        m("input", {
+                                            id: "hs" + OxigenacionUci.nuevoRegistro.id,
+                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                            type: "text",
+                                            placeholder: "...",
+                                            ondblclick: (e) => {
+                                                oData.editar = null;
+                                                OxigenacionUci.nuevoRegistro = null
+                                            },
+                                            oninput: (e) => {
+                                                if (PacientesUCI.numeroTurno == 3) {
+                                                    OxigenacionUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
+                                                } else {
+                                                    e.preventDefault();
+                                                }
+                                            },
+                                            value: (OxigenacionUci.nuevoRegistro.hs !== null ? OxigenacionUci.nuevoRegistro.hs : '')
+
+                                        })
+                                    ] : [])
+
+                                ]
+                            }
+                        });
                     },
                     visible: true,
                     aTargets: [6],
@@ -255,8 +355,64 @@ class OxigenacionUci {
 
                 },
                 {
-                    mRender: function(data, type, full) {
-                        return (full.observacion != null ? full.observacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.pd-10', {
+                                        class: (oData.editar == true ? 'd-none' : ''),
+                                        ondblclick: (e) => {
+                                            OxigenacionUci.nuevoRegistro = null
+                                            OxigenacionUci.verRegistro(oData);
+                                        },
+                                    }, (oData.observacion !== null ? oData.observacion : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                    (OxigenacionUci.nuevoRegistro !== null ? [
+                                        m("input", {
+                                            id: "observacion" + OxigenacionUci.nuevoRegistro.id,
+                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                            type: "text",
+                                            placeholder: "...",
+                                            onkeypress: (e) => {
+                                                if (e.keyCode == 13) {
+
+                                                    OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    console.log(99, OxigenacionUci.nuevoRegistro)
+
+                                                    // throw 'AA';
+                                                    if (OxigenacionUci.nuevoRegistro.editar == null) {
+                                                        OxigenacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-hemodialisis', OxigenacionUci.getRegistros());
+                                                    } else {
+                                                        OxigenacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-hemodialisis', OxigenacionUci.getRegistros());
+
+                                                    }
+
+
+                                                }
+                                            },
+                                            ondblclick: (e) => {
+                                                oData.editar = null;
+                                                OxigenacionUci.nuevoRegistro = null
+                                            },
+                                            oninput: (e) => {
+                                                OxigenacionUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
+                                            },
+                                            value: (OxigenacionUci.nuevoRegistro.observacion !== null ? OxigenacionUci.nuevoRegistro.observacion : '')
+
+                                        })
+                                    ] : [])
+
+                                ]
+                            }
+                        });
                     },
                     visible: true,
                     aTargets: [7],
@@ -270,7 +426,7 @@ class OxigenacionUci {
                             view: () => {
                                 return [
                                     m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success[type='button']", {
+                                        m("button.btn.btn-xs.btn-success.d-none[type='button']", {
                                                 class: (oData.editar ? 'd-none' : ''),
                                                 disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
@@ -341,8 +497,9 @@ class OxigenacionUci {
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (OxigenacionUci.show ? '' : 'd-none')
-
+                    onclick: () => {
+                        OxigenacionUci.show = !OxigenacionUci.show;
+                    }
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
@@ -377,7 +534,7 @@ class OxigenacionUci {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
-                    m("td.tx-14.tx-normal[colspan='3']",
+                    m("td.tx-14.tx-normal.d-none[colspan='3']",
                         (OxigenacionUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
@@ -424,11 +581,11 @@ class OxigenacionUci {
                             m('option[id="' + x.id + '"]', x.label)
                         ))
                     ),
-                    m("td.tx-14.tx-normal[colspan='3']",
+                    m("td.tx-14.tx-normal.d-none[colspan='3']",
                         (OxigenacionUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "am" + OxigenacionUci.nuevoRegistro.id,
+                                    id: "_am" + OxigenacionUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
@@ -446,11 +603,11 @@ class OxigenacionUci {
                             ]),
                         ] : [])
                     ),
-                    m("td.tx-14.tx-normal[colspan='3']",
+                    m("td.tx-14.tx-normal.d-none[colspan='3']",
                         (OxigenacionUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "pm" + OxigenacionUci.nuevoRegistro.id,
+                                    id: "_pm" + OxigenacionUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
@@ -469,11 +626,11 @@ class OxigenacionUci {
                         ] : [])
                     ),
 
-                    m("td.tx-14.tx-normal[colspan='3']",
+                    m("td.tx-14.tx-normal.d-none[colspan='3']",
                         (OxigenacionUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "hs" + OxigenacionUci.nuevoRegistro.id,
+                                    id: "_hs" + OxigenacionUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
@@ -492,7 +649,7 @@ class OxigenacionUci {
                         ] : [])
                     ),
                 ]),
-                m("tr.bd.bd-2.tx-uppercase", {
+                m("tr.bd.bd-2.tx-uppercase.d-none", {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
@@ -502,14 +659,14 @@ class OxigenacionUci {
 
 
                 ]),
-                m("tr.bd.bd-2", {
+                m("tr.bd.bd-2.d-none", {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
-                    m("td.tx-14.tx-normal[colspan='12']",
+                    m("td.tx-14.tx-normal.d-none[colspan='12']",
                         (OxigenacionUci.nuevoRegistro !== null ? [
                             m("input", {
-                                id: "observacion" + OxigenacionUci.nuevoRegistro.id,
+                                id: "_observacion" + OxigenacionUci.nuevoRegistro.id,
                                 class: "form-control tx-semibold tx-14",
                                 type: "text",
                                 placeholder: "...",

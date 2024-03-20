@@ -498,7 +498,9 @@ class MarcapasosUci {
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (MarcapasosUci.show ? '' : 'd-none')
+                    onclick: () => {
+                        MarcapasosUci.show = !MarcapasosUci.show;
+                    }
 
 
                 }, [
