@@ -500,7 +500,7 @@ class VentilacionUci {
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "MANEJO DE VENTILACIÓN:"
+                        "MANEJO DE VENTILACIÓN"
                     ),
 
                 ])

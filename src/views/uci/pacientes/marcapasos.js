@@ -505,7 +505,7 @@ class MarcapasosUci {
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "MARCAPASOS:"
+                        "MARCAPASOS"
                     ),
 
                 ])

@@ -12,7 +12,7 @@ class Medida {
     valor = null;
     hora = null;
     editar = null;
-    seccion = 'ComburTest';
+    seccion = 'GasesMed';
     constructor() {
         this.id = this.id;
         this.orden = this.orden;
@@ -208,56 +208,27 @@ class GasesMedUci {
         GasesMedUci.registros = _arr;
 
         // Establecer Columnas
-        let cbPH = 0;
-        let cbProteinas = 0;
-        let cbDensidad = 0;
-        let cbGlucosa = 0;
-        let cbSangre = 0;
-        let cbCetonas = 0;
-        let cbLeucocitos = 0;
-        let cbNitritos = 0;
-        let cbUrobilinogeno = 0;
-        let cbBilirubina = 0;
+        let AireComprimido = 0;
+        let Heliox = 0;
+        let OxidoNitrico = 0;
 
         resultNro.map((col, i) => {
-            if (col.id == 'cbPH') {
-                cbPH++;
+            if (col.id == 'AireComprimido') {
+                AireComprimido++;
             }
-            if (col.id == 'cbProteinas') {
-                cbProteinas++;
+            if (col.id == 'Heliox') {
+                Heliox++;
             }
-            if (col.id == 'cbDensidad') {
-                cbDensidad++;
+            if (col.id == 'OxidoNitrico') {
+                OxidoNitrico++;
             }
-            if (col.id == 'cbGlucosa') {
-                cbGlucosa++;
-            }
-            if (col.id == 'cbSangre') {
-                cbSangre++;
-            }
-            if (col.id == 'cbCetonas') {
-                cbCetonas++;
-            }
-            if (col.id == 'cbLeucocitos') {
-                cbLeucocitos++;
-            }
-            if (col.id == 'cbNitritos') {
-                cbNitritos++;
-            }
-            if (col.id == 'cbUrobilinogeno') {
-                cbUrobilinogeno++;
-            }
-            if (col.id == 'cbBilirubina') {
-                cbBilirubina++;
-            }
-
         });
 
-        columnas = [cbPH, cbProteinas, cbDensidad, cbGlucosa, cbSangre, cbCetonas, cbLeucocitos, cbNitritos, cbUrobilinogeno, cbBilirubina];
+        columnas = [AireComprimido, Heliox, OxidoNitrico];
 
         resultNro.map((col, i) => {
             let fila = {};
-            if (col.id == 'cbPH') {
+            if (col.id == 'AireComprimido') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -281,7 +252,7 @@ class GasesMedUci {
 
 
             }
-            if (col.id == 'cbProteinas') {
+            if (col.id == 'Heliox') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -305,7 +276,7 @@ class GasesMedUci {
 
 
             }
-            if (col.id == 'cbDensidad') {
+            if (col.id == 'OxidoNitrico') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -327,161 +298,6 @@ class GasesMedUci {
                     });
                 }
             }
-            if (col.id == 'cbGlucosa') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'cbSangre') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'cbCetonas') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'cbLeucocitos') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'cbNitritos') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'cbUrobilinogeno') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'cbBilirubina') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-
         });
 
         GasesMedUci.sColumns = [];
@@ -803,16 +619,13 @@ class GasesMedUci {
                     style: { "border-color": "#5173a1" },
                 },
                 m("tr.tx-uppercase", {
-
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
                         GasesMedUci.show = !GasesMedUci.show;
                     }
-
-
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "COMBUR TEST:"
+                        "GASES MEDICINALES"
                     ),
 
                 ])
@@ -860,7 +673,7 @@ class GasesMedUci {
                     ),
                     m("td.tx-14.tx-normal.d-none[colspan='4']",
                         m('select.tx-semibold', {
-                            id: 'sec_ComburTest',
+                            id: 'sec_GasesMed',
                             disabled: true,
                             onchange: (e) => {
                                 let _id = e.target.options[e.target.selectedIndex].id;
@@ -873,44 +686,16 @@ class GasesMedUci {
                             value: (GasesMedUci.nuevoRegistro !== null ? GasesMedUci.nuevoRegistro.medida : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
                             orden: 1,
-                            id: "cbPH",
-                            label: "PH"
+                            id: "AireComprimido",
+                            label: "AIRE COMPRIMIDO (PORCENTAJE)"
                         }, {
                             orden: 2,
-                            id: "cbProteinas",
-                            label: "PROTEINAS"
+                            id: "Heliox",
+                            label: "HELIOX (LITROS)"
                         }, {
                             orden: 3,
-                            id: "cbDensidad",
-                            label: "DENSIDAD"
-                        }, {
-                            orden: 4,
-                            id: "cbGlucosa",
-                            label: "GLUCOSA"
-                        }, {
-                            orden: 5,
-                            id: "cbSangre",
-                            label: "SANGRE"
-                        }, {
-                            orden: 6,
-                            id: "cbCetonas",
-                            label: "CETONAS"
-                        }, {
-                            orden: 7,
-                            id: "cbLeucocitos",
-                            label: "LEUCOCITOS"
-                        }, {
-                            orden: 8,
-                            id: "cbNitritos",
-                            label: "NITRITOS"
-                        }, {
-                            orden: 9,
-                            id: "cbUrobilinogeno",
-                            label: "UROBILINOGENO",
-                        }, {
-                            orden: 10,
-                            id: "cbBilirubina",
-                            label: "BILIRRUBINA"
+                            id: "OxidoNitrico",
+                            label: "OXIDO NITRICO (PARTES POR MILLON)"
                         }].map(x =>
                             m('option[id="' + x.id + '"][orden="' + x.orden + '"]', x.label)
                         ))

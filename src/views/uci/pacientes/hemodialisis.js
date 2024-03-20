@@ -503,7 +503,7 @@ class HemodialisisUci {
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "CATETER VIA CENTRAL O HEMODIALISIS:"
+                        "CATETER VIA CENTRAL O HEMODIALISIS"
                     ),
 
                 ])

@@ -505,7 +505,7 @@ class CateterUci {
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "CATETER URINARIO:"
+                        "CATETER URINARIO"
                     ),
 
                 ])

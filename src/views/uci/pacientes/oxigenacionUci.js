@@ -503,7 +503,7 @@ class OxigenacionUci {
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "Oxigenación:"
+                        "OXIGENACIÓN"
                     ),
 
                 ])

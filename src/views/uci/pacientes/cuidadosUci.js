@@ -338,7 +338,7 @@ class CuidadosUci {
                     class: (CuidadosUci.show ? '' : 'd-none')
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "CUIDADOS GENERALES: "
+                        "CUIDADOS GENERALES"
                     ),
 
 

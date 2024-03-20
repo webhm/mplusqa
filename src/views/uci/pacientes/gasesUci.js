@@ -821,7 +821,7 @@ class GasesUci {
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "GASOMETRIAS / HORAS:"
+                        "GASOMETRIAS / HORAS"
                     ),
 
                 ])

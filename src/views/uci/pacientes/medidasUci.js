@@ -1044,7 +1044,7 @@ class MedidasUci {
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "MEDIDAS UCI:"
+                        "MEDIDAS UCI"
                     ),
 
                 ])
