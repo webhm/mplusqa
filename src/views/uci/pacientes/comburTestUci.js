@@ -812,7 +812,7 @@ class ComburTestUci {
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "COMBUR TEST:"
+                        "COMBUR TEST"
                     ),
 
                 ])
