@@ -47,21 +47,19 @@ class SelectMedicos {
             .on("change", function(e) {
 
                 Calendario.warning = null;
-                setTimeout(() => {
-                    let medicos = $('#agendas').val();
-                    let salas = $('#agendasPtes').val();
-                    console.log('salas', salas)
-                    if (medicos.length == 0 && salas.length == 0) {
-                        $("#calendar").fullCalendar("removeEvents");
-                        Calendario.reloadCitasSidebar();
-                        Calendario.warning = "No se han aplicado filtros para la búsqueda.";
-                        m.route.set("/endoscopia/agendas/calendario");
-                    } else {
-                        Calendario.setFilterRouteSalas(salas);
-                        Calendario.setFilterRouteMedicos(medicos);
+                let medicos = $('#agendas').val();
+                let salas = $('#agendasPtes').val();
+                console.log('salas', salas)
+                if (medicos.length == 0 && salas.length == 0) {
+                    $("#calendar").fullCalendar("removeEvents");
+                    Calendario.reloadCitasSidebar();
+                    Calendario.warning = "No se han aplicado filtros para la búsqueda.";
+                    m.route.set("/endoscopia/agendas/calendario");
+                } else {
+                    Calendario.setFilterRouteSalas(salas);
+                    Calendario.setFilterRouteMedicos(medicos);
 
-                    }
-                }, 500);
+                }
 
 
 
@@ -181,21 +179,18 @@ class SelectPacientes {
             .on("change", function(e) {
 
                 Calendario.warning = null;
-
-                setTimeout(() => {
-                    let salas = $('#agendasPtes').val();
-                    let medicos = $('#agendas').val();
-                    console.log('medicos', medicos)
-                    if (medicos.length == 0 && salas.length == 0) {
-                        $("#calendar").fullCalendar("removeEvents");
-                        Calendario.reloadCitasSidebar();
-                        Calendario.warning = "No se han aplicado filtros para la búsqueda.";
-                        m.route.set("/endoscopia/agendas/calendario");
-                    } else {
-                        Calendario.setFilterRouteSalas(salas);
-                        Calendario.setFilterRouteMedicos(medicos);
-                    }
-                }, 500);
+                let salas = $('#agendasPtes').val();
+                let medicos = $('#agendas').val();
+                console.log('medicos', medicos)
+                if (medicos.length == 0 && salas.length == 0) {
+                    $("#calendar").fullCalendar("removeEvents");
+                    Calendario.reloadCitasSidebar();
+                    Calendario.warning = "No se han aplicado filtros para la búsqueda.";
+                    m.route.set("/endoscopia/agendas/calendario");
+                } else {
+                    Calendario.setFilterRouteSalas(salas);
+                    Calendario.setFilterRouteMedicos(medicos);
+                }
 
 
 
