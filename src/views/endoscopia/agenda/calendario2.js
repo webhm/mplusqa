@@ -47,20 +47,21 @@ class SelectMedicos {
             .on("change", function(e) {
 
                 Calendario.warning = null;
-                let medicos = $(this).val();
-                let salas = $('#agendasPtes').val();
-                console.log('salas', salas)
-
                 setTimeout(() => {
+                    let medicos = $('#agendas').val();
+                    let salas = $('#agendasPtes').val();
+                    console.log('salas', salas)
                     if (medicos.length == 0 && salas.length == 0) {
                         $("#calendar").fullCalendar("removeEvents");
                         Calendario.reloadCitasSidebar();
                         Calendario.warning = "No se han aplicado filtros para la búsqueda.";
                         m.route.set("/endoscopia/agendas/calendario");
                     } else {
+                        Calendario.setFilterRouteSalas(salas);
                         Calendario.setFilterRouteMedicos(medicos);
+
                     }
-                }, 100);
+                }, 500);
 
 
 
@@ -122,7 +123,6 @@ class SelectMedicos {
                                 if ((_agendasMedicos.length + 1) == SelectMedicos.medicos.length && _v.IDCALENDAR == '-1') {
                                     el.dom.selected = true;
                                 }
-
                                 if ((_agendasMedicos.length + 1) != SelectMedicos.medicos.length && _v.IDCALENDAR !== '-1') {
                                     if (_agendas.includes(_v.IDCALENDAR)) {
                                         el.dom.selected = true;
@@ -182,11 +182,10 @@ class SelectPacientes {
 
                 Calendario.warning = null;
 
-                let salas = $(this).val();
-                let medicos = $('#agendas').val();
-                console.log('medicos', medicos)
-
                 setTimeout(() => {
+                    let salas = $('#agendasPtes').val();
+                    let medicos = $('#agendas').val();
+                    console.log('medicos', medicos)
                     if (medicos.length == 0 && salas.length == 0) {
                         $("#calendar").fullCalendar("removeEvents");
                         Calendario.reloadCitasSidebar();
@@ -194,8 +193,9 @@ class SelectPacientes {
                         m.route.set("/endoscopia/agendas/calendario");
                     } else {
                         Calendario.setFilterRouteSalas(salas);
+                        Calendario.setFilterRouteMedicos(medicos);
                     }
-                }, 100);
+                }, 500);
 
 
 
@@ -219,6 +219,7 @@ class SelectPacientes {
             IDCALENDAR: '-1',
             CALENDAR: 'TODOS LOS SALAS'
         });
+
 
     }
 
@@ -255,9 +256,10 @@ class SelectPacientes {
                             oncreate: (el) => {
                                 if ((_agendasSalas.length + 1) == SelectPacientes.salas.length && _v.IDCALENDAR == '-1') {
                                     el.dom.selected = true;
-                                } else if ((_agendasSalas.length + 1) != SelectPacientes.salas.length && _v.IDCALENDAR !== '-1') {
+                                }
+                                if ((_agendasSalas.length + 1) != SelectPacientes.salas.length && _v.IDCALENDAR !== '-1') {
                                     if (_agendas.includes(_v.IDCALENDAR)) {
-                                        // el.dom.selected = true;
+                                        el.dom.selected = true;
                                     }
                                 }
                             }
@@ -597,6 +599,7 @@ class Calendario extends App {
             let resMedicos = [];
 
             if (Calendario.idCalendar.indexOf(',') > 0) {
+
                 let _agendas = Calendario.idCalendar.split(',');
                 Calendario.calendarios.map((_v) => {
                     if (_v.TIPO == 1 && _agendas.includes(_v.IDCALENDAR)) {
@@ -605,6 +608,7 @@ class Calendario extends App {
                 });
 
             } else {
+
                 Calendario.calendarios.map((_v) => {
                     if (_v.TIPO == 1 && Calendario.idCalendar == _v.IDCALENDAR) {
                         resSalas.push(_v.IDCALENDAR);
@@ -620,16 +624,16 @@ class Calendario extends App {
             });
 
             res = resSalas.concat(resMedicos);
-            console.log(4, res)
+            console.log(7, resMedicos)
             Calendario.idCalendar = res.join(',');
             RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
         } else {
 
             let filterMedicos = medicos.filter(item => item != '-1');
-
             $("#agendas").val(filterMedicos).trigger("change.select2");
 
             if (Calendario.idCalendar.indexOf(',') > 0) {
+
                 let _agendas = Calendario.idCalendar.split(',');
                 Calendario.calendarios.map((_v) => {
                     if (_v.TIPO == 1 && _agendas.includes(_v.IDCALENDAR)) {
@@ -638,17 +642,25 @@ class Calendario extends App {
                 });
 
                 res = resSalas.concat(filterMedicos);
-                console.log(3, res)
+                console.log(6, res)
                 Calendario.idCalendar = res.join(',');
                 RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
             } else {
+
+
                 Calendario.calendarios.map((_v) => {
                     if (_v.TIPO == 1 && Calendario.idCalendar == _v.IDCALENDAR) {
                         resSalas.push(_v.IDCALENDAR);
                     }
                 });
-                res = resSalas.concat(filterMedicos);
-                console.log(4, res)
+
+                if (resSalas.length > 0) {
+                    res = resSalas.concat(filterMedicos);
+                } else {
+                    res = filterMedicos;
+                }
+
+                console.log(1, res)
                 Calendario.idCalendar = res.join(',');
                 RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
             }
@@ -670,7 +682,6 @@ class Calendario extends App {
         let resMedicos = [];
         let res = [];
 
-        console.log(5454, salas)
 
         if (salas[0] == '-1') {
 
@@ -700,10 +711,11 @@ class Calendario extends App {
             });
 
             res = resMedicos.concat(resSalas);
-            console.log(4, res)
+            console.log(5, res)
             Calendario.idCalendar = res.join(',');
             RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
         } else {
+
 
             let filterSalas = salas.filter(item => item != '-1');
             $("#agendasPtes").val(filterSalas).trigger("change.select2");
@@ -726,7 +738,13 @@ class Calendario extends App {
                         resMedicos.push(_v.IDCALENDAR);
                     }
                 });
-                res = resMedicos.concat(filterSalas);
+
+                if (resMedicos.length > 0) {
+                    res = resMedicos.concat(filterSalas);
+                } else {
+                    res = filterSalas;
+                }
+
                 console.log(4, res)
                 Calendario.idCalendar = res.join(',');
                 RouteCal.setRoute(Calendario.idCalendar, 'idCalendar');
