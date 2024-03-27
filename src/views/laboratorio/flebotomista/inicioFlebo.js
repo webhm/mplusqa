@@ -626,7 +626,8 @@ class InicioFlebotomista extends App {
                             view: () => {
                                 return [
                                     m('.d-block.pd-0.mg-0.tx-12.tx-primary.op-9', oData.sector),
-                                    m('.d-block.pd-0.mg-0', oData.paciente),
+                                    m('.d-block.pd-0.mg-0.mg-r-5', oData.paciente),
+                                    m('.d-block.tx-danger.tx-semibold.pd-0.mg-0', oData.turno_completo),
                                 ]
                             }
                         });
@@ -793,6 +794,7 @@ class InicioFlebotomista extends App {
                                 return [
                                     m('.d-block.pd-0.mg-0.tx-12.tx-primary.op-9', oData.sector),
                                     m('.d-block.pd-0.mg-0', oData.paciente),
+                                    m('.d-block.tx-danger.tx-semibold.pd-0.mg-0', oData.turno_completo),
                                 ]
                             }
                         });
