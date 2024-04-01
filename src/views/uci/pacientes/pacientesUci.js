@@ -1260,7 +1260,7 @@ class PacientesUCI extends App {
                     return m.mount(nTd, {
                         view: () => {
                             return [
-                                m('div.text-center.pd-l-0.pd-r-0', {
+                                m('div', {
                                     ondblclick: (e) => {
                                         VentilatoriosUci.nuevoRegistro = null;
                                         valores.filter((v, i) => {
@@ -1270,6 +1270,20 @@ class PacientesUCI extends App {
 
                                                 console.log(88, _i)
                                                 VentilatoriosUci.verRegistro(resultNro[_i]);
+                                                document.getElementById('condicion' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
+                                                document.getElementById('txtCondicion' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                document.getElementById('horaVentilatorio' + resultNro[_i].nro).className = "form-control";
+                                                document.getElementById('txtHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                if (document.getElementById('btn' + resultNro[_i].nro) != null) {
+                                                    document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
+                                                    setTimeout(() => {
+                                                        new Cleave("#horaVentilatorio" + resultNro[_i].nro, {
+                                                            time: true,
+                                                            timePattern: ['h', 'm']
+                                                        });
+                                                    }, 90);
+                                                }
+
                                             }
                                         })
                                     },
@@ -1308,16 +1322,18 @@ class PacientesUCI extends App {
                                         }
                                     },
                                     oncreate: (el) => {
-                                        valores.filter((v, i) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
 
+                                        valores.filter((v, i) => {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
-
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].condicion !== null) {
                                                         el.dom.innerHTML = resultNro[_i].condicion;
+                                                        el.dom.id = "txtCondicion" + resultNro[_i].nro;
                                                     } else {
-                                                        el.dom.innerHTML = '<button type="button" class="btn btn-xs btn-success btn-block tx-12">Registrar</button>';
+                                                        el.dom.id = "txtCondicion" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = '<button type="button" id="btn' + resultNro[_i].nro + '" class="btn btn-xs btn-success btn-block tx-12">Registrar</button>';
                                                     }
                                                 } else {
                                                     el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
@@ -1326,7 +1342,42 @@ class PacientesUCI extends App {
                                         })
                                     }
 
-                                }, [])
+                                }, []),
+                                m('div.d-flex', [
+                                    m("input", {
+
+                                        type: "text",
+                                        placeholder: "...",
+                                        oncreate: (el) => {
+
+                                            valores.filter((v, i) => {
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+                                                    if (resultNro[_i] !== undefined) {
+                                                        if (resultNro[_i].condicion !== null) {
+                                                            el.dom.value = resultNro[_i].condicion;
+                                                            el.dom.id = "condicion" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control tx-semibold tx-14 d-none";
+
+                                                        } else {
+                                                            el.dom.id = "condicion" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control tx-semibold tx-14 d-none";
+                                                        }
+                                                    } else {
+                                                        el.dom.className = "form-control tx-semibold tx-14 d-none";
+
+                                                    }
+                                                }
+                                            })
+                                        },
+                                        oninput: (e) => {
+                                            VentilatoriosUci.setCondicion = (e.target.value.length !== 0 ? e.target.value : null);
+                                            VentilatoriosUci.nuevoRegistro.condicion = (e.target.value.length !== 0 ? e.target.value : null);
+                                        },
+
+                                    })
+
+                                ]),
                             ]
                         }
                     });
@@ -1341,7 +1392,7 @@ class PacientesUCI extends App {
                     return m.mount(nTd, {
                         view: () => {
                             return [
-                                m('div.text-center.pd-l-0.pd-r-0', {
+                                m('div', {
                                     ondblclick: (e) => {
                                         VentilatoriosUci.nuevoRegistro = null
                                         valores.filter((v, i) => {
@@ -1349,11 +1400,29 @@ class PacientesUCI extends App {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 VentilatoriosUci.verRegistro(resultNro[_i]);
+                                                document.getElementById('condicion' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
+                                                document.getElementById('txtCondicion' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                document.getElementById('horaVentilatorio' + resultNro[_i].nro).className = "form-control";
+                                                document.getElementById('txtHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                if (document.getElementById('btn' + resultNro[_i].nro) != null) {
+                                                    document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
+                                                    setTimeout(() => {
+                                                        new Cleave("#horaVentilatorio" + resultNro[_i].nro, {
+                                                            time: true,
+                                                            timePattern: ['h', 'm']
+                                                        });
+                                                    }, 90);
+                                                }
+
                                             }
-                                        })
+                                        });
+
+
 
                                     },
                                     oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
                                         valores.filter((v, i) => {
 
                                             if (v.id == oData.id) {
@@ -1361,8 +1430,10 @@ class PacientesUCI extends App {
 
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].hora !== null) {
+                                                        el.dom.id = "txtHora" + resultNro[_i].nro;
                                                         el.dom.innerHTML = resultNro[_i].hora;
                                                     } else {
+                                                        el.dom.id = "txtHora" + resultNro[_i].nro;
                                                         el.dom.innerHTML = '';
                                                     }
                                                 } else {
@@ -1371,7 +1442,91 @@ class PacientesUCI extends App {
                                             }
                                         })
                                     }
-                                }, [])
+                                }, []),
+                                m('div.d-flex', [
+                                    m("input[type='text'][placeholder='HH:mm']", {
+                                        oncreate: (el) => {
+                                            valores.filter((v, i) => {
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+                                                    if (resultNro[_i] !== undefined) {
+                                                        if (resultNro[_i].hora !== null) {
+                                                            el.dom.value = resultNro[_i].hora;
+                                                            el.dom.id = "horaVentilatorio" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control d-none";
+
+
+                                                            setTimeout(() => {
+                                                                new Cleave("#" + el.dom.id, {
+                                                                    time: true,
+                                                                    timePattern: ['h', 'm']
+                                                                });
+                                                            }, 90);
+
+                                                        } else {
+                                                            el.dom.id = "horaVentilatorio" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control d-none";
+                                                        }
+                                                    } else {
+                                                        el.dom.className = "form-control d-none";
+
+                                                    }
+                                                }
+                                            })
+
+
+                                            if (VentilatoriosUci.nuevoRegistro !== null && VentilatoriosUci.nuevoRegistro.hora == null) {
+                                                if (VentilatoriosUci.setHora != undefined) {
+                                                    VentilatoriosUci.nuevoRegistro.hora = VentilatoriosUci.setHora;
+                                                    el.dom.value = VentilatoriosUci.setHora;
+                                                }
+                                            }
+
+
+
+
+                                        },
+                                        oninput: (e) => {
+                                            setTimeout(() => {
+                                                //VentilatoriosUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                                VentilatoriosUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                                VentilatoriosUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+
+                                            }, 50);
+                                        },
+                                        onkeypress: (e) => {
+                                            if (e.keyCode == 13) {
+                                                VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                if (VentilatoriosUci.nuevoRegistro.editar == null) {
+                                                    VentilatoriosUci.agregarRegistro();
+                                                    FecthUci.registrarSeccion(VentilatoriosUci.nuevoRegistro);
+                                                    VentilatoriosUci.nuevoRegistro = null;
+                                                    VentilatoriosUci.destroyTable();
+                                                    VentilatoriosUci.filterRegistros();
+                                                    VentilatoriosUci.show = false;
+                                                    m.redraw();
+                                                    setTimeout(() => {
+                                                        VentilatoriosUci.show = true;
+                                                        m.redraw();
+                                                    }, 100);
+                                                } else {
+                                                    VentilatoriosUci.editarRegistro();
+                                                    FecthUci.actualizarSeccion(VentilatoriosUci.nuevoRegistro);
+                                                    VentilatoriosUci.nuevoRegistro = null;
+                                                    VentilatoriosUci.destroyTable();
+                                                    VentilatoriosUci.filterRegistros();
+                                                    VentilatoriosUci.show = false;
+                                                    m.redraw();
+                                                    setTimeout(() => {
+                                                        VentilatoriosUci.show = true;
+                                                        m.redraw();
+                                                    }, 100);
+                                                }
+                                            }
+                                        },
+                                    }),
+                                ]),
                             ]
                         }
                     });
@@ -1392,8 +1547,18 @@ class PacientesUCI extends App {
                                 m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
                                         class: (VentilatoriosUci.nuevoRegistro !== null && VentilatoriosUci.nuevoRegistro.editar && VentilatoriosUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
                                         onclick: () => {
+
                                             oData.editar = null;
+                                            document.getElementById('condicion' + VentilatoriosUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
+                                            document.getElementById('txtCondicion' + VentilatoriosUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                            document.getElementById('horaVentilatorio' + VentilatoriosUci.nuevoRegistro.nro).className = "form-control d-none";
+                                            document.getElementById('txtHora' + VentilatoriosUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                            if (document.getElementById('btn' + VentilatoriosUci.nuevoRegistro.nro) != null) {
+                                                document.getElementById('btn' + VentilatoriosUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
+                                            }
+
                                             VentilatoriosUci.nuevoRegistro = null;
+
                                         },
                                     },
                                     'Cancelar Edición',
@@ -1413,6 +1578,18 @@ class PacientesUCI extends App {
                                             VentilatoriosUci.nuevoRegistro.orden = oData.orden;
                                             VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+
+                                            VentilatoriosUci.agregarRegistro();
+                                            FecthUci.registrarSeccion(VentilatoriosUci.nuevoRegistro);
+                                            VentilatoriosUci.nuevoRegistro = null;
+                                            VentilatoriosUci.destroyTable();
+                                            VentilatoriosUci.filterRegistros();
+                                            VentilatoriosUci.show = false;
+                                            m.redraw();
+                                            setTimeout(() => {
+                                                VentilatoriosUci.show = true;
+                                                m.redraw();
+                                            }, 100);
 
                                         },
                                     },
@@ -1885,7 +2062,7 @@ class PacientesUCI extends App {
 
         for (let index = 0; index < orderCol[0]; index++) {
             GasesUci.sColumns.push({
-                title: "Fecha y Hora:",
+                title: "Hora:",
             });
             GasesUci.sColumns.push({
                 title: "Valores:",
@@ -2005,8 +2182,8 @@ class PacientesUCI extends App {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].fechaHora !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].fechaHora;
+                                                    if (resultNro[_i].hora !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].hora;
                                                     } else {
                                                         el.dom.innerHTML = '<button type="button" class="btn btn-xs btn-success btn-block tx-12 ">Registrar</button>';
                                                     }

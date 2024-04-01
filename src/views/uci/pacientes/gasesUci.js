@@ -508,7 +508,7 @@ class GasesUci {
 
         for (let index = 0; index < orderCol[0]; index++) {
             GasesUci.sColumns.push({
-                title: "Fecha y Hora:",
+                title: "Hora:",
             });
             GasesUci.sColumns.push({
                 title: "Valores:",
@@ -628,8 +628,8 @@ class GasesUci {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].fechaHora !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].fechaHora;
+                                                    if (resultNro[_i].hora !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].hora;
                                                     } else {
                                                         el.dom.innerHTML = '<button type="button" class="btn btn-xs btn-success btn-block tx-12 ">Registrar</button>';
                                                     }
@@ -842,7 +842,7 @@ class GasesUci {
                         "GASOMETRIAS:"
                     ),
                     m("th[scope='col'][colspan='4']",
-                        "FECHA Y HORA:"
+                        "HORA:"
                     ),
                     m("th[scope='col'][colspan='4']",
                         "VALORES:"
@@ -917,20 +917,21 @@ class GasesUci {
                                 label: "EXCESO DE BASE"
                             },
                             {
-                                id: "FiO2",
+                                id: "SaO2",
                                 orden: 7,
+                                label: "SaO2"
+                            },
+                            {
+                                id: "FiO2",
+                                orden: 8,
                                 label: "FiO2 %"
                             },
                             {
                                 id: "PaO2FiO2",
-                                orden: 8,
+                                orden: 9,
                                 label: "PaO2 / FiO2"
                             },
-                            {
-                                id: "SaO2",
-                                orden: 9,
-                                label: "SaO2"
-                            },
+
                             {
                                 id: "IndiceOxigenacion",
                                 orden: 10,
@@ -958,7 +959,7 @@ class GasesUci {
                     m("td.tx-14.tx-normal.wd-40p[colspan='4']",
                         (GasesUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
-                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY']", {
+                                m("input.form-control.d-none[type='text'][placeholder='DD/MM/YYYY']", {
                                     id: "gasesFecha" + GasesUci.nuevoRegistro.id,
                                     oncreate: (el) => {
                                         if (GasesUci.nuevoRegistro.fecha != undefined) {
