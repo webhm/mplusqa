@@ -4,6 +4,7 @@ import m from "mithril";
 class Cita {
     static track = null;
     static buscarPacientes = false;
+    static buscarMedicos = false;
     static buscarItems = false;
     static loader = false;
     static data = null;

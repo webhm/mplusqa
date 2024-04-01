@@ -6,7 +6,7 @@ import HeaderCalendar from "../../layout/headerCalendar";
 import Errors from "../../utils/errors";
 import Cita from "./cita";
 import EventosCalendario from "./eventosCalendar";
-import { ProximasCitas, ProximosEventos, CitasAnteriores, BuscadorItems, BuscadorPacientes } from "./widgets";
+import { ProximasCitas, ProximosEventos, CitasAnteriores, BuscadorItems, BuscadorPacientes, BuscadorMedicos } from "./widgets";
 import WebRTCConnection from "../../../models/P2PMessage";
 
 
@@ -1118,6 +1118,17 @@ class Calendario extends App {
 
     }
 
+    static setMedico(params) {
+
+        Cita.error = null;
+        Cita.data.cd_prestador = params.CD_PRESTADOR;
+        Cita.data.prestador = params.NM_PRESTADOR;
+        Cita.buscarMedicos = !Cita.buscarMedicos;
+
+        console.log('data => ', Cita.data)
+
+    }
+
     static sendEvent() {
         EventosCalendario.getStatus(FetchCalendario.peerId).then((_data) => {
             FetchCalendario.channel.sendAll(_data.usersCalendar, App.userName);
@@ -1342,7 +1353,9 @@ class Calendario extends App {
                             ]),
                         ]),
 
-                        m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Tipo:"), m("div.input-group", [
+                        m("div.form-group", {
+                            class: Cita.buscarPacientes || Cita.buscarItems || Cita.buscarMedicos ? "d-none" : ""
+                        }, m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Tipo:"), m("div.input-group", [
                             m("div.custom-control.custom-radio", [
                                 m("input.custom-control-input[type='radio'][id='tipoCita1'][name='tipoCita']", {
                                     onclick: (e) => {
@@ -1382,6 +1395,62 @@ class Calendario extends App {
                                 m("label.custom-control-label[for='tipoCita3']", "Nota"),
                             ]),
                         ])),
+
+                        m("div", {
+                            class: !Cita.buscarMedicos ? "d-none" : ""
+                        }, [
+                            m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Buscar Médicos:"),
+                            m("div.form-group", m("form", {
+                                onsubmit: (e) => {
+                                    e.preventDefault();
+                                    if (BuscadorMedicos.searchField.length !== 0) {
+                                        BuscadorMedicos.fetchSearch();
+                                        Cita.buscarMedicos = true;
+
+                                    } else {
+                                        $("#modalCreateEvent").animate({
+                                            scrollTop: 0
+                                        }, "slow");
+                                        Cita.error = "Ingrese Apellidos y Nombres para continuar.";
+                                        Cita.buscarMedicos = true;
+
+                                    }
+                                }
+                            }, [
+                                m("div.input-group", [
+                                    m("input.form-control[type='text'][placeholder='Apellidos y Nombres']", {
+                                        oninput: (e) => {
+                                            Cita.error = null;
+                                            BuscadorMedicos.searchField = e.target.value;
+                                        }
+                                    }),
+                                    m("div.input-group-append",
+                                        m("button.btn.btn-light[type='button']", {
+                                            onclick: (e) => {
+                                                if (BuscadorMedicos.searchField.length !== 0) {
+                                                    BuscadorMedicos.fetchSearch();
+                                                    Cita.buscarMedicos = true;
+
+                                                } else {
+                                                    $("#modalCreateEvent").animate({
+                                                        scrollTop: 0
+                                                    }, "slow");
+                                                    Cita.error = "Ingrese Apellidos y Nombres para continuar.";
+                                                    Cita.buscarMedicos = true;
+
+                                                }
+                                            }
+                                        }, "Buscar"), m("button.btn.btn-light[type='button']", {
+                                            title: "Cerrar",
+                                            onclick: (e) => {
+                                                Cita.error = null;
+                                                Cita.buscarMedicos = !Cita.buscarMedicos;
+                                            }
+                                        }, m("i.fas.fa-times-circle"))),
+                                ]),
+                            ]), m("div.row", [m("div.col-12", m(BuscadorMedicos))])),
+                        ]),
+
                         m("div", {
                             class: !Cita.buscarPacientes ? "d-none" : ""
                         }, [
@@ -1491,7 +1560,7 @@ class Calendario extends App {
 
 
                             m("div", {
-                                class: Cita.buscarPacientes || Cita.buscarItems ? "d-none" : ""
+                                class: Cita.buscarPacientes || Cita.buscarItems || Cita.buscarMedicos ? "d-none" : ""
                             }, [
 
                                 m("div.row", [
@@ -1531,6 +1600,23 @@ class Calendario extends App {
                                             Cita.buscarItems = !Cita.buscarItems;
                                         }
                                     }, [m("i.fas.fa-search.mg-r-2"), " Buscar Estudios"])),
+                                ])),
+
+                                m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Médico / Referente:"), m("div.input-group", [
+                                    m("input.form-control[type='text'][placeholder='Médico']", {
+                                        class: Cita.data.cd_prestador !== undefined ? "" : "d-none",
+                                        value: Cita.data.prestador !== undefined ? Cita.data.cd_prestador + " - " + Cita.data.prestador : "",
+                                        oninput: (e) => {
+                                            e.preventDefault();
+                                        },
+                                        disabled: Cita.data.cd_prestador !== undefined ? "disabled" : ""
+                                    }),
+                                    m("div.input-group-append", m("button.btn.btn-primary[type='button']", {
+                                        onclick: (e) => {
+                                            Cita.error = null;
+                                            Cita.buscarMedicos = !Cita.buscarMedicos;
+                                        }
+                                    }, [m("i.fas.fa-search.mg-r-2"), " Buscar Médicos "])),
                                 ])),
 
 
@@ -2167,6 +2253,15 @@ class Calendario extends App {
                                                 e.preventDefault();
                                             },
                                             disabled: Cita.data.id_estudio !== undefined ? "disabled" : ""
+                                        }),
+                                    ])),
+                                    m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Médico / Referente:"), m("div.input-group", [
+                                        m("input.form-control[type='text'][placeholder='Médico / Referente']", {
+                                            value: Cita.data.cd_prestador !== undefined ? Cita.data.cd_prestador + " - " + Cita.data.prestador : "",
+                                            oninput: (e) => {
+                                                e.preventDefault();
+                                            },
+                                            disabled: Cita.data.cd_prestador !== undefined ? "disabled" : ""
                                         }),
                                     ])),
                                     m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Paciente:"), m("div.input-group", [

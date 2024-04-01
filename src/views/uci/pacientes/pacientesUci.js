@@ -71,36 +71,36 @@ class PacientesUCI extends App {
 
         PacientesUCI.extraerFechaHoraTurnoVigente();
 
-        CuidadosUci2.show = true;
+        // CuidadosUci2.show = true;
 
-        ViasUci.show = true;
+        // ViasUci.show = true;
         ViasUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Vias').options));
 
-        AccesosUci.show = true;
+        // AccesosUci.show = true;
         AccesosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Accesos').options));
 
-        CateterUci.show = true;
+        //  CateterUci.show = true;
 
-        VentilacionUci.show = true;
+        //  VentilacionUci.show = true;
 
-        HemodialisisUci.show = true;
+        //  HemodialisisUci.show = true;
 
-        CultivosUci.show = true;
+        //  CultivosUci.show = true;
         CultivosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Cultivos').options));
 
-        MarcapasosUci.show = true;
+        //   MarcapasosUci.show = true;
 
-        GasesUci.show = true;
+        //  GasesUci.show = true;
 
-        OxigenacionUci.show = true;
+        //  OxigenacionUci.show = true;
 
-        VentilatoriosUci.show = true;
+        //  VentilatoriosUci.show = true;
 
-        MedidasUci.show = true;
+        //  MedidasUci.show = true;
 
-        ComburTestUci.show = true;
+        //  ComburTestUci.show = true;
 
-        GasesMedUci.show = true;
+        // GasesMedUci.show = true;
 
     }
 
@@ -1579,17 +1579,20 @@ class PacientesUCI extends App {
                                             VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
-                                            VentilatoriosUci.agregarRegistro();
-                                            FecthUci.registrarSeccion(VentilatoriosUci.nuevoRegistro);
-                                            VentilatoriosUci.nuevoRegistro = null;
-                                            VentilatoriosUci.destroyTable();
-                                            VentilatoriosUci.filterRegistros();
-                                            VentilatoriosUci.show = false;
-                                            m.redraw();
                                             setTimeout(() => {
-                                                VentilatoriosUci.show = true;
+                                                VentilatoriosUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(VentilatoriosUci.nuevoRegistro);
+                                                VentilatoriosUci.nuevoRegistro = null;
+                                                VentilatoriosUci.destroyTable();
+                                                VentilatoriosUci.filterRegistros();
+                                                VentilatoriosUci.show = false;
                                                 m.redraw();
+                                                setTimeout(() => {
+                                                    VentilatoriosUci.show = true;
+                                                    m.redraw();
+                                                }, 100);
                                             }, 100);
+
 
                                         },
                                     },

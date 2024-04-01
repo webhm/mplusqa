@@ -551,5 +551,144 @@ class BuscadorPacientes {
     }
 }
 
+class BuscadorMedicos {
+    static searchField = "";
+    static data = [];
+    static loader = false;
+    static loadMedicos() {
+        $.fn.dataTable.ext.errMode = "none";
+        let table = $("#table-medicos").DataTable({
+            data: BuscadorMedicos.data,
+            dom: "ltp",
+            responsive: true,
+            language: {
+                searchPlaceholder: "Buscar...",
+                sSearch: "",
+                lengthMenu: "Mostrar _MENU_ registros por página",
+                sProcessing: "Procesando...",
+                sZeroRecords: "Todavía no tienes resultados disponibles.",
+                sEmptyTable: "Ningún dato disponible en esta tabla",
+                sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+                sInfoPostFix: "",
+                sUrl: "",
+                sInfoThousands: ",",
+                sLoadingRecords: "Cargando...",
+                oPaginate: {
+                    sFirst: "Primero",
+                    sLast: "Último",
+                    sNext: "Siguiente",
+                    sPrevious: "Anterior"
+                },
+                oAria: {
+                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+                    sSortDescending: ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+            cache: false,
+            order: [
+                [3, "Asc"]
+            ],
+            destroy: true,
+            columns: [{
+                    title: "N°:"
+                },
+                {
+                    title: "Código:"
+                },
+                {
+                    title: "Médico:"
+                },
+                {
+                    title: "Opciones:"
+                },
 
-export { ProximasCitas, ProximosEventos, CitasAnteriores, BuscadorItems, BuscadorPacientes };
+            ],
+            aoColumnDefs: [{
+                    mRender: function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    },
+                    visible: true,
+                    aTargets: [0]
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.CD_PRESTADOR;
+                    },
+                    visible: true,
+                    aTargets: [1]
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.NM_PRESTADOR;
+                    },
+                    visible: true,
+                    width: "50%",
+                    aTargets: [2]
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return "OPCIONES";
+                    },
+                    visible: true,
+                    aTargets: [3]
+                },
+            ],
+            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {},
+            drawCallback: function(settings) {
+                settings.aoData.map(function(_i) {
+                    m.mount(_i.anCells[3], {
+                        view: function() {
+                            return [
+                                m("button.btn.btn-sm.btn-block.btn-primary[type='button']", {
+                                    onclick: () => {
+
+                                        Calendario.setMedico(_i._aData);
+
+                                    }
+                                }, "Seleccionar"),
+                            ];
+                        }
+                    });
+                });
+            }
+        });
+
+        $(".dataTables_length select").select2({ minimumResultsForSearch: Infinity });
+
+        return table;
+    }
+    static fetchSearch() {
+        BuscadorMedicos.loader = true;
+        BuscadorMedicos.data = [];
+
+        m.request({
+            method: "POST",
+            url: "https://api.hospitalmetropolitano.org/v2/date/medicos",
+            body: {
+                searchField: BuscadorMedicos.searchField
+            },
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        }).then(function(res) {
+            BuscadorMedicos.loader = false;
+            BuscadorMedicos.data = res.data;
+            BuscadorMedicos.loadMedicos();
+        }).catch(function(e) {});
+    }
+    view() {
+        return [
+            m("div.mg-t-10.pd-10.wd-100p", {
+                class: BuscadorMedicos.loader ? "" : "d-none"
+            }, m("div.placeholder-paragraph", [m("div.line"), m("div.line")])),
+            m("div.mg-t-10.pd-10.wd-100p", {
+                class: BuscadorMedicos.loader ? "d-none" : ""
+            }, m("table.table.table-sm.tx-11[id='table-medicos'][width='100%']")),
+        ];
+    }
+}
+
+
+export { ProximasCitas, ProximosEventos, CitasAnteriores, BuscadorItems, BuscadorPacientes, BuscadorMedicos };

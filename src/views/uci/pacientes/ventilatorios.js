@@ -1279,17 +1279,20 @@ class VentilatoriosUci {
                                             VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
-                                            VentilatoriosUci.agregarRegistro();
-                                            FecthUci.registrarSeccion(VentilatoriosUci.nuevoRegistro);
-                                            VentilatoriosUci.nuevoRegistro = null;
-                                            VentilatoriosUci.destroyTable();
-                                            VentilatoriosUci.filterRegistros();
-                                            VentilatoriosUci.show = false;
-                                            m.redraw();
                                             setTimeout(() => {
-                                                VentilatoriosUci.show = true;
+                                                VentilatoriosUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(VentilatoriosUci.nuevoRegistro);
+                                                VentilatoriosUci.nuevoRegistro = null;
+                                                VentilatoriosUci.destroyTable();
+                                                VentilatoriosUci.filterRegistros();
+                                                VentilatoriosUci.show = false;
                                                 m.redraw();
+                                                setTimeout(() => {
+                                                    VentilatoriosUci.show = true;
+                                                    m.redraw();
+                                                }, 100);
                                             }, 100);
+
 
                                         },
                                     },
