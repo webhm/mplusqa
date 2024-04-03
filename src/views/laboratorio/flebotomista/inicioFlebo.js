@@ -185,8 +185,12 @@ class MenuFlebot {
                                         ),
                                         m("div.media-body.mg-l-15[role='button']", [
                                             m(
-                                                "p.tx-30.mg-b-0.tx-white[role='button']",
-                                                (InicioFlebotomista.pedidos != null ? InicioFlebotomista.pedidos.data.length : '') + " Pendientes"
+                                                "p.tx-30.mg-b-0.tx-white[role='button']", [
+                                                    m('span.mg-l-5.tx-30.tx-semibold.badge.badge-danger', (InicioFlebotomista.pedidos != null ? InicioFlebotomista.pedidos.data.length : '0')),
+                                                    ' Pendientes en Cola'
+                                                ]
+
+
                                             ),
                                         ]),
                                     ]),
@@ -658,7 +662,7 @@ class InicioFlebotomista extends App {
                         return m.mount(nTd, {
                             view: () => {
                                 return [
-                                    m("button.btn.btn-xs.btn-outline-danger.btn-block.tx-semibold[type='button']", {
+                                    m("button.btn.btn-lg.btn-outline-danger.btn-block.tx-semibold[type='button']", {
                                             onclick: (e) => {
                                                 if (confirm("¿Esta Ud. seguro de confirmar este pedido como Pendiente?") == true) {
                                                     InicioFlebotomista.tomaPendiente(oData.codigoPedido)
@@ -825,7 +829,7 @@ class InicioFlebotomista extends App {
                         return m.mount(nTd, {
                             view: () => {
                                 return [
-                                    m("button.btn.btn-xs.btn-outline-danger.btn-block.tx-semibold[type='button']", {
+                                    m("button.btn.btn-lg.btn-outline-danger.btn-block.tx-semibold[type='button']", {
                                             onclick: (e) => {
                                                 if (confirm("¿Esta Ud. seguro de confirmar este pedido como Pendiente?") == true) {
                                                     InicioFlebotomista.deshacerTomaPendiente(oData.codigoPedido)
