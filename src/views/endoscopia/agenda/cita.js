@@ -23,6 +23,8 @@ class Cita {
         Cita.data.email = calEvent.email;
         Cita.data.estudio = calEvent.estudio;
         Cita.data.fecha_nacimiento = calEvent.fecha_nacimiento;
+        Cita.data.prestador = calEvent.prestador;
+        Cita.data.cd_prestador = calEvent.cd_prestador;
         Cita.data.hashCita = calEvent.hashCita;
         Cita.data.idCalendar = calEvent.idCalendar;
         Cita.data.id_estudio = calEvent.id_estudio;
@@ -87,6 +89,8 @@ class Cita {
             Cita.data.email = calEvent.email;
             Cita.data.estudio = calEvent.estudio;
             Cita.data.fecha_nacimiento = calEvent.fecha_nacimiento;
+            Cita.data.prestador = calEvent.prestador;
+            Cita.data.cd_prestador = calEvent.cd_prestador;
             Cita.data.hashCita = calEvent.hashCita;
             Cita.data.idCalendar = calEvent.idCalendar;
             Cita.data.id_estudio = calEvent.id_estudio;
@@ -138,6 +142,8 @@ class Cita {
             Cita.data.email = calEvent.email;
             Cita.data.estudio = calEvent.estudio;
             Cita.data.fecha_nacimiento = calEvent.fecha_nacimiento;
+            Cita.data.prestador = calEvent.prestador;
+            Cita.data.cd_prestador = calEvent.cd_prestador;
             Cita.data.hashCita = calEvent.hashCita;
             Cita.data.idCalendar = calEvent.idCalendar;
             Cita.data.id_estudio = calEvent.id_estudio;

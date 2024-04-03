@@ -2078,10 +2078,22 @@ class Calendario extends App {
                                                 Cita.data.sexo == "M" ? "Masculino" : "Femenino"
                                             ),
                                         ]),
+
                                     ]),
                                     m("div.col-6", [
                                         m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Correo(s) electrónico(s):"),
-                                        m("p.mg-b-0", [Cita.data.email]),
+                                        m("p", [Cita.data.email]),
+
+                                    ]),
+                                    m("div.col-6", [
+                                        m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Médico / Referente:"),
+                                        m("p", [Cita.data.prestador]),
+                                    ]),
+                                    m("div.col-6", [
+                                        m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Teléfono:"),
+                                        m("p", [
+                                            Cita.data.telefono
+                                        ]),
                                     ]),
                                     m("div.col-6", [
                                         m("label.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1.tx-color-03", "Estudio:"),

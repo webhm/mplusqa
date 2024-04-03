@@ -2421,7 +2421,7 @@ class PacientesUCI extends App {
                                                     setTimeout(() => {
 
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#txtGasesHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#txtGasesHora" + _nro).offset().top }, 100, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);

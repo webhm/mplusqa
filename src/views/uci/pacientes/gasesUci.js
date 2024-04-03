@@ -664,11 +664,9 @@ class GasesUci {
                                             })
 
 
-                                            if (GasesUci.nuevoRegistro !== null && GasesUci.nuevoRegistro.hora == null) {
-                                                if (GasesUci.setHora != undefined) {
-                                                    GasesUci.nuevoRegistro.hora = GasesUci.setHora;
-                                                    el.dom.value = GasesUci.setHora;
-                                                }
+                                            if (GasesUci.setHora != undefined) {
+                                                GasesUci.nuevoRegistro.hora = GasesUci.setHora;
+                                                el.dom.value = GasesUci.setHora;
                                             }
 
 
