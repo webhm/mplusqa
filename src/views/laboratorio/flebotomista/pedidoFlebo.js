@@ -2041,17 +2041,19 @@ const TomaMuestras = {
                                 m("span.badge.badge-light.tx-right.wd-100p.tx-14",
                                     "Toma de Muestra: FLEBOT1 " + StatusPedido.documento.dataTomaMuestra.fechaToma,
                                 ),
-                                m("button.btn.btn-xs.btn-primary.btn-block.tx-semibold.mg-t-5[type='button']", {
-                                        title: "Cerrar",
-                                        onclick: () => {
-                                            window.close();
-                                        }
-                                    },
-                                    "Finalizar"
-                                )
+
                             ] : [])
 
                         ])]),
+
+                        m("button.btn.btn-xs.btn-primary.btn-block.tx-semibold.mg-5[type='button']", {
+                                title: "Cerrar",
+                                onclick: () => {
+                                    window.close();
+                                }
+                            },
+                            "Finalizar"
+                        )
 
                     ]),
 
