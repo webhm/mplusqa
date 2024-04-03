@@ -493,13 +493,14 @@ class InicioFlebotomista extends App {
             });
     }
 
-    static deshacerTomaPendiente(sc) {
+    static deshacerTomaPendiente(sc, wid) {
 
         return m.request({
                 method: "POST",
                 url: "https://lisa.hospitalmetropolitano.org/v1/procesos/deshacer-toma-pendiente",
                 body: {
-                    sc: sc
+                    sc: sc,
+                    wid: wid
                 },
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
@@ -832,7 +833,7 @@ class InicioFlebotomista extends App {
                                     m("button.btn.btn-lg.btn-outline-danger.btn-block.tx-semibold[type='button']", {
                                             onclick: (e) => {
                                                 if (confirm("¿Esta Ud. seguro de confirmar este pedido como Pendiente?") == true) {
-                                                    InicioFlebotomista.deshacerTomaPendiente(oData.codigoPedido)
+                                                    InicioFlebotomista.deshacerTomaPendiente(oData.codigoPedido, oData.wid)
                                                 } else {
                                                     alert('Ok. Operación Cancelada')
                                                 }
