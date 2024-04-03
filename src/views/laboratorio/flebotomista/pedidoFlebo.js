@@ -2046,16 +2046,17 @@ const TomaMuestras = {
 
                         ])]),
 
-                        m("button.btn.btn-xs.btn-primary.btn-block.tx-semibold.mg-5[type='button']", {
-                                title: "Cerrar",
-                                onclick: () => {
-                                    window.close();
-                                }
-                            },
-                            "Finalizar"
-                        )
+
 
                     ]),
+                    m("button.btn.btn-xs.btn-primary.btn-block.tx-semibold.mg-5[type='button']", {
+                            title: "Cerrar",
+                            onclick: () => {
+                                window.close();
+                            }
+                        },
+                        "Finalizar"
+                    )
 
                 ])
             ]
