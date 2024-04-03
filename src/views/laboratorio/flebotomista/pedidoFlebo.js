@@ -965,7 +965,7 @@ const TomaMuestras = {
 
 
                     (TomaMuestras.disabledToma ? [m("p.mg-5.tx-left", [
-                        m("button.btn.btn-xs.btn-secondary[type='button']", {
+                        m("button.btn.btn-lg.btn-secondary[type='button']", {
                                 onclick: () => {
                                     TomaMuestras.disabledToma = false;
                                     TomaMuestras.disabledInsumos = false;
@@ -995,7 +995,7 @@ const TomaMuestras = {
                                     ]),
                                     m('tr', [
                                         m("th[colspan='2']",
-                                            m("button.btn.btn-xs.btn-outline-danger.btn-block.tx-semibold[type='button']", {
+                                            m("button.btn.btn-lg.btn-outline-danger.btn-block.tx-semibold[type='button']", {
                                                     onclick: (e) => {
                                                         if (confirm("¿Esta Ud. seguro de confirmar este pedido como Pendiente?") == true) {
                                                             PedidoFlebotomista.tomaPendiente(PedidoFlebotomista.numeroPedido)
@@ -1451,90 +1451,7 @@ const TomaMuestras = {
 
 
                                     ]),
-                                    m("tr", [
 
-                                        m("td.tx-16.tx-normal",
-                                            m("div.custom-control.custom-checkbox.tx-16", [
-                                                m("input.tx-20.custom-control-input[type='checkbox'][id='tirillaTp']", {
-                                                    onclick: (el) => {
-                                                        if (el.target.checked) {
-                                                            Insumos.tirillaTp = 1;
-                                                        } else {
-                                                            Insumos.tirillaTp = 0;
-                                                        }
-
-                                                    },
-                                                    oncreate: (el) => {
-                                                        if (Insumos.tirillaTp !== undefined && Insumos.tirillaTp !== 0) {
-                                                            el.dom.checked = true;
-                                                        }
-                                                    },
-                                                    onupdate: (el) => {
-                                                        if (Insumos.tirillaTp !== undefined && Insumos.tirillaTp !== 0) {
-                                                            if (Insumos.tirillaTp == 1) {
-                                                                el.dom.checked = true;
-                                                            }
-                                                        } else {
-                                                            el.dom.checked = false;
-                                                        }
-                                                    }
-                                                }),
-                                                m("label.tx-20.tx-semibold..custom-control-label[for='tirillaTp']",
-                                                    "Tirilla TP"
-                                                )
-                                            ])
-                                        ),
-
-                                        m("td.tx-16.tx-medium.text-left", [
-                                            m(".btn-group.btn-group-sm.tx-16[role='group']", {
-
-                                            }, [
-                                                m("button.btn[type='button']",
-                                                    m("div.tx-20.tx-semibold.bg-gray-300.pd-l-5.pd-r-5", {
-                                                        oncreate: (el) => {
-                                                            if (Insumos.tirillaTp !== undefined && Insumos.tirillaTp !== 0) {
-                                                                el.dom.innerText = Insumos.tirillaTp;
-                                                            } else {
-                                                                el.dom.innerText = 0;
-
-                                                            }
-                                                        },
-                                                        onupdate: (el) => {
-                                                            if (Insumos.tirillaTp !== undefined && Insumos.tirillaTp !== 0) {
-                                                                el.dom.innerText = Insumos.tirillaTp;
-                                                            } else {
-                                                                el.dom.innerText = 0;
-
-                                                            }
-                                                        }
-
-                                                    })
-                                                ),
-                                                m("button.btn.btn[type='button']", {
-                                                        onclick: () => {
-                                                            Insumos.tirillaTp++;
-                                                        },
-
-                                                    },
-                                                    m("i.fas.fa-plus-circle.tx-22.tx-success")
-                                                ),
-                                                m("button.btn.btn[type='button']", {
-                                                        onclick: () => {
-                                                            Insumos.tirillaTp--;
-
-                                                        },
-
-                                                    },
-                                                    m("i.fas.fa-minus-circle.tx-22.tx-danger")
-                                                ),
-
-                                            ])
-                                        ]),
-
-
-
-
-                                    ]),
                                     m("tr", [
 
                                         m("td.tx-16.tx-normal",
@@ -1692,6 +1609,90 @@ const TomaMuestras = {
                                                 m("button.btn.btn[type='button']", {
                                                         onclick: () => {
                                                             Insumos.tuboVerde--;
+
+                                                        },
+
+                                                    },
+                                                    m("i.fas.fa-minus-circle.tx-22.tx-danger")
+                                                ),
+
+                                            ])
+                                        ]),
+
+
+
+
+                                    ]),
+                                    m("tr", [
+
+                                        m("td.tx-16.tx-normal",
+                                            m("div.custom-control.custom-checkbox.tx-16", [
+                                                m("input.tx-20.custom-control-input[type='checkbox'][id='tirillaTp']", {
+                                                    onclick: (el) => {
+                                                        if (el.target.checked) {
+                                                            Insumos.tirillaTp = 1;
+                                                        } else {
+                                                            Insumos.tirillaTp = 0;
+                                                        }
+
+                                                    },
+                                                    oncreate: (el) => {
+                                                        if (Insumos.tirillaTp !== undefined && Insumos.tirillaTp !== 0) {
+                                                            el.dom.checked = true;
+                                                        }
+                                                    },
+                                                    onupdate: (el) => {
+                                                        if (Insumos.tirillaTp !== undefined && Insumos.tirillaTp !== 0) {
+                                                            if (Insumos.tirillaTp == 1) {
+                                                                el.dom.checked = true;
+                                                            }
+                                                        } else {
+                                                            el.dom.checked = false;
+                                                        }
+                                                    }
+                                                }),
+                                                m("label.tx-20.tx-semibold..custom-control-label[for='tirillaTp']",
+                                                    "Tirilla TP"
+                                                )
+                                            ])
+                                        ),
+
+                                        m("td.tx-16.tx-medium.text-left", [
+                                            m(".btn-group.btn-group-sm.tx-16[role='group']", {
+
+                                            }, [
+                                                m("button.btn[type='button']",
+                                                    m("div.tx-20.tx-semibold.bg-gray-300.pd-l-5.pd-r-5", {
+                                                        oncreate: (el) => {
+                                                            if (Insumos.tirillaTp !== undefined && Insumos.tirillaTp !== 0) {
+                                                                el.dom.innerText = Insumos.tirillaTp;
+                                                            } else {
+                                                                el.dom.innerText = 0;
+
+                                                            }
+                                                        },
+                                                        onupdate: (el) => {
+                                                            if (Insumos.tirillaTp !== undefined && Insumos.tirillaTp !== 0) {
+                                                                el.dom.innerText = Insumos.tirillaTp;
+                                                            } else {
+                                                                el.dom.innerText = 0;
+
+                                                            }
+                                                        }
+
+                                                    })
+                                                ),
+                                                m("button.btn.btn[type='button']", {
+                                                        onclick: () => {
+                                                            Insumos.tirillaTp++;
+                                                        },
+
+                                                    },
+                                                    m("i.fas.fa-plus-circle.tx-22.tx-success")
+                                                ),
+                                                m("button.btn.btn[type='button']", {
+                                                        onclick: () => {
+                                                            Insumos.tirillaTp--;
 
                                                         },
 
@@ -2019,7 +2020,7 @@ const TomaMuestras = {
                             ])
                         ),
                         ((!TomaMuestras.disabledToma) ? [m("div.pd-10", [
-                            m("button.btn.btn-xs.btn-primary.btn-block.tx-semibold[type='button']", {
+                            m("button.btn.btn-lg.btn-success.btn-block.tx-semibold[type='button']", {
                                     disabled: TomaMuestras.disabledToma,
                                     onclick: () => {
 
@@ -2049,14 +2050,17 @@ const TomaMuestras = {
 
 
                     ]),
-                    m("button.btn.btn-xs.btn-primary.btn-block.tx-semibold.mg-5[type='button']", {
-                            title: "Cerrar",
-                            onclick: () => {
-                                window.close();
-                            }
-                        },
-                        "Finalizar"
-                    )
+                    m('div.pd-10', [
+                        m("button.btn.btn-lg.btn-primary.btn-block.tx-semibold.op-9[type='button']", {
+                                title: "Cerrar",
+                                onclick: () => {
+                                    window.close();
+                                }
+                            },
+                            "Cerrar y Finalizar"
+                        )
+                    ])
+
 
                 ])
             ]
