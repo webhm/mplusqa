@@ -1,7 +1,5 @@
 import m from "mithril";
-import App from "../../../models/App";
-import Loader from "../../utils/loader";
-import Errors from "../../utils/errors";
+
 import PacientesUCI from "./pacientesUci";
 import TurnosUci from "./turnosUci";
 import FecthUci from "./fecthUci";
@@ -1359,6 +1357,7 @@ class VentilatoriosUci {
                 },
 
             },
+            retrieve: true,
             cache: false,
             destroy: true,
             order: false,
