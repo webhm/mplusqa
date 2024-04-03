@@ -280,6 +280,8 @@ class MenuFlebot {
                                             onclick: () => {
                                                 InicioFlebotomista.pedidos = null;
                                                 InicioFlebotomista.fetchPendientes();
+                                                InicioFlebotomista.tomasPendientes = null;
+                                                InicioFlebotomista.fetchTomasPendientes();
                                             }
                                         },
                                         "Actualizar"
