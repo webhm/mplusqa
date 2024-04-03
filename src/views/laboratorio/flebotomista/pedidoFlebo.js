@@ -962,10 +962,31 @@ const TomaMuestras = {
         } else if (StatusPedido.data.length !== 0) {
             return [
                 m("div.bg-white.bd.d-flex.flex-column.justify-content-end", [
+                    m("div.pd-10", [
+                        m("div.table-responsive.mg-b-10.mg-t-10", [
+                            m("table.table.table-dashboard.table-hover.mg-b-0", [
+                                m("tbody", [
+                                    m("tr[colspan='2']",
+                                        m("button.btn.btn-lg.btn-outline-danger.btn-block.tx-semibold[type='button']", {
+                                                onclick: (e) => {
+                                                    if (confirm("¿Esta Ud. seguro de confirmar este pedido como Pendiente?") == true) {
+                                                        PedidoFlebotomista.tomaPendiente(PedidoFlebotomista.numeroPedido)
+                                                    } else {
+                                                        alert('Ok. Operación Cancelada')
+                                                    }
+                                                }
+                                            },
+                                            "Registrar como Pendiente"
+                                        )
+                                    ),
+                                ])
+                            ])
+                        ])
+                    ]),
 
 
-                    (TomaMuestras.disabledToma ? [m("p.mg-5.tx-left", [
-                        m("button.btn.btn-lg.btn-secondary[type='button']", {
+                    (TomaMuestras.disabledToma ? [m("p.pd-10.tx-left.wd-100p", [
+                        m("button.btn.btn-lg.btn-block.btn-secondary[type='button']", {
                                 onclick: () => {
                                     TomaMuestras.disabledToma = false;
                                     TomaMuestras.disabledInsumos = false;
@@ -993,21 +1014,7 @@ const TomaMuestras = {
 
 
                                     ]),
-                                    m('tr', [
-                                        m("th[colspan='2']",
-                                            m("button.btn.btn-lg.btn-outline-danger.btn-block.tx-semibold[type='button']", {
-                                                    onclick: (e) => {
-                                                        if (confirm("¿Esta Ud. seguro de confirmar este pedido como Pendiente?") == true) {
-                                                            PedidoFlebotomista.tomaPendiente(PedidoFlebotomista.numeroPedido)
-                                                        } else {
-                                                            alert('Ok. Operación Cancelada')
-                                                        }
-                                                    }
-                                                },
-                                                "Registrar como Pendiente"
-                                            )
-                                        ),
-                                    ]),
+
                                     m("tr", [
                                         m("th.text-left",
                                             "EXAMEN"
