@@ -589,6 +589,15 @@ class GasesUci {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 GasesUci.verRegistro(resultNro[_i]);
+
+                                                if (GasesUci.nuevoRegistro !== null && GasesUci.nuevoRegistro.hora == null) {
+                                                    if (GasesUci.setHora != undefined) {
+                                                        GasesUci.nuevoRegistro.hora = GasesUci.setHora;
+                                                        document.getElementById('gasesHora' + resultNro[_i].nro).value = GasesUci.setHora;
+                                                    }
+                                                }
+
+
                                                 document.getElementById('gasesHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
                                                 document.getElementById('txtGasesHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
                                                 document.getElementById('gasesValores' + resultNro[_i].nro).className = "form-control";
@@ -634,6 +643,7 @@ class GasesUci {
                                 }, []),
                                 m('div.d-flex', [
                                     m("input[type='text'][placeholder='HH:mm']", {
+
                                         oncreate: (el) => {
                                             valores.filter((v, i) => {
                                                 if (v.id == oData.id) {
@@ -663,11 +673,6 @@ class GasesUci {
                                                 }
                                             })
 
-
-                                            if (GasesUci.setHora != undefined) {
-                                                GasesUci.nuevoRegistro.hora = GasesUci.setHora;
-                                                el.dom.value = GasesUci.setHora;
-                                            }
 
 
 
@@ -707,6 +712,14 @@ class GasesUci {
                                                 let _i = v.idObj[index];
 
                                                 GasesUci.verRegistro(resultNro[_i]);
+
+                                                if (GasesUci.nuevoRegistro !== null && GasesUci.nuevoRegistro.hora == null) {
+                                                    if (GasesUci.setHora != undefined) {
+                                                        GasesUci.nuevoRegistro.hora = GasesUci.setHora;
+                                                        document.getElementById('gasesHora' + resultNro[_i].nro).value = GasesUci.setHora;
+                                                    }
+                                                }
+
                                                 document.getElementById('gasesHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
                                                 document.getElementById('txtGasesHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
                                                 document.getElementById('gasesValores' + resultNro[_i].nro).className = "form-control";

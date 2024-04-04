@@ -2146,6 +2146,12 @@ class PacientesUCI extends App {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 GasesUci.verRegistro(resultNro[_i]);
+                                                if (GasesUci.nuevoRegistro !== null && GasesUci.nuevoRegistro.hora == null) {
+                                                    if (GasesUci.setHora != undefined) {
+                                                        GasesUci.nuevoRegistro.hora = GasesUci.setHora;
+                                                        document.getElementById('gasesHora' + resultNro[_i].nro).value = GasesUci.setHora;
+                                                    }
+                                                }
                                                 document.getElementById('gasesHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
                                                 document.getElementById('txtGasesHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
                                                 document.getElementById('gasesValores' + resultNro[_i].nro).className = "form-control";
@@ -2221,14 +2227,6 @@ class PacientesUCI extends App {
                                             })
 
 
-                                            if (GasesUci.nuevoRegistro !== null && GasesUci.nuevoRegistro.hora == null) {
-                                                if (GasesUci.setHora != undefined) {
-                                                    GasesUci.nuevoRegistro.hora = GasesUci.setHora;
-                                                    el.dom.value = GasesUci.setHora;
-                                                }
-                                            }
-
-
 
 
                                         },
@@ -2266,6 +2264,12 @@ class PacientesUCI extends App {
                                                 let _i = v.idObj[index];
 
                                                 GasesUci.verRegistro(resultNro[_i]);
+                                                if (GasesUci.nuevoRegistro !== null && GasesUci.nuevoRegistro.hora == null) {
+                                                    if (GasesUci.setHora != undefined) {
+                                                        GasesUci.nuevoRegistro.hora = GasesUci.setHora;
+                                                        document.getElementById('gasesHora' + resultNro[_i].nro).value = GasesUci.setHora;
+                                                    }
+                                                }
                                                 document.getElementById('gasesHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
                                                 document.getElementById('txtGasesHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
                                                 document.getElementById('gasesValores' + resultNro[_i].nro).className = "form-control";
@@ -2421,7 +2425,7 @@ class PacientesUCI extends App {
                                                     setTimeout(() => {
 
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#txtGasesHora" + _nro).offset().top }, 100, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#txtGasesHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
