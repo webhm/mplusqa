@@ -122,6 +122,12 @@ class MenuFlebot {
     static showPendientes = true;
     static showGestionados = true;
 
+    oncreate() {
+
+        Flebotomista.pedidos = null;
+        Flebotomista.fetchPendientes();
+    }
+
     view() {
         return [
             m(
@@ -288,6 +294,7 @@ class MenuFlebot {
 
                                     ]),
                                 m('div.bg-white.wd-100p.pd-2', {
+
                                     class: Flebotomista.showPendientes ? '' : 'd-none'
                                 }, [
 
@@ -296,15 +303,7 @@ class MenuFlebot {
                                             "Usuario: " + Flebotomista.getUsrToma()
                                         ),
 
-                                        m("div.pd-10.bg-gray-500.tx-semibold.wd-30p.text-center[role='button']", {
-                                                style: { "cursor": "pointer" },
-                                                onclick: () => {
-                                                    Flebotomista.pedidos = null;
-                                                    Flebotomista.fetchPendientes();
-                                                }
-                                            },
-                                            "Actualizar"
-                                        )
+
                                     ]),
                                     m('div.pd-5', [
                                         m(Stopwatch)
@@ -407,6 +406,9 @@ class Flebotomista extends App {
         super();
         App.title = "Flebotomia";
         this.view = this.page;
+        Flebotomista.showPendientes = true;
+        Flebotomista.reLoader = true;
+
     }
 
     static autorizar() {
