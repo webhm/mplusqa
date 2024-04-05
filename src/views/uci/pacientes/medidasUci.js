@@ -806,20 +806,44 @@ class MedidasUci {
                     return m.mount(nTd, {
                         view: () => {
                             return [
-                                m('div.text-center.pd-l-0.pd-r-0', {
+                                m('div', {
                                     ondblclick: (e) => {
                                         MedidasUci.nuevoRegistro = null;
                                         valores.filter((v, i) => {
 
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
+
                                                 MedidasUci.verRegistro(resultNro[_i]);
+
+                                                if (MedidasUci.nuevoRegistro !== null && MedidasUci.nuevoRegistro.hora == null) {
+                                                    if (MedidasUci.setHora != undefined) {
+                                                        MedidasUci.nuevoRegistro.hora = MedidasUci.setHora;
+                                                        document.getElementById('medidasHora' + resultNro[_i].nro).value = MedidasUci.setHora;
+                                                    }
+                                                }
+
+                                                document.getElementById('medidasHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
+                                                document.getElementById('txtMedidasHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                document.getElementById('medidasValor' + resultNro[_i].nro).className = "form-control";
+                                                document.getElementById('txtMedidasValor' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                if (document.getElementById('btn' + resultNro[_i].nro) != null) {
+                                                    document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
+                                                    setTimeout(() => {
+                                                        new Cleave("#medidasHora" + resultNro[_i].nro, {
+                                                            time: true,
+                                                            timePattern: ['h', 'm']
+                                                        });
+                                                    }, 90);
+                                                }
+
                                             }
                                         })
                                     },
                                     onclick: (e) => {
                                         e.preventDefault();
                                     },
+
                                     oncontextmenu: (e) => {
                                         e.preventDefault();
                                         if (index == 0) {
@@ -829,8 +853,10 @@ class MedidasUci {
 
                                         if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
                                             valores.filter((v, i) => {
+
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
+
                                                     MedidasUci.eliminarRegistro(resultNro[_i]);
                                                     FecthUci.eliminarSeccion(resultNro[_i]);
                                                     MedidasUci.nuevoRegistro = null;
@@ -849,6 +875,8 @@ class MedidasUci {
                                         }
                                     },
                                     oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
                                         valores.filter((v, i) => {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
@@ -861,8 +889,10 @@ class MedidasUci {
                                                             el.dom.title = _v;
                                                         }
                                                         el.dom.innerHTML = resultNro[_i].valor;
+                                                        el.dom.id = "txtMedidasValor" + resultNro[_i].nro;
                                                     } else {
-                                                        el.dom.innerHTML = '<button type="button" class="btn btn-xs btn-success btn-block tx-12 ">Registrar</button>';
+                                                        el.dom.id = "txtMedidasValor" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = '<button type="button" id="btn' + resultNro[_i].nro + '" class="btn btn-xs btn-success btn-block tx-12">Registrar</button>';
                                                     }
                                                 } else {
                                                     el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
@@ -871,7 +901,41 @@ class MedidasUci {
                                         })
                                     }
 
-                                }, [])
+                                }, []),
+                                m('div.d-flex', [
+                                    m("input", {
+                                        type: "text",
+                                        placeholder: "...",
+                                        oncreate: (el) => {
+                                            valores.filter((v, i) => {
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+                                                    if (resultNro[_i] !== undefined) {
+                                                        if (resultNro[_i].valor !== null) {
+                                                            el.dom.value = resultNro[_i].valor;
+                                                            el.dom.id = "medidasValor" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control tx-semibold tx-14 d-none";
+
+                                                        } else {
+                                                            el.dom.id = "medidasValor" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control tx-semibold tx-14 d-none";
+                                                        }
+                                                    } else {
+                                                        el.dom.className = "form-control tx-semibold tx-14 d-none";
+
+                                                    }
+                                                }
+                                            })
+                                        },
+                                        oninput: (e) => {
+                                            MedidasUci.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
+                                        },
+
+
+                                    })
+
+                                ]),
+
                             ]
                         }
                     });
@@ -886,25 +950,82 @@ class MedidasUci {
                     return m.mount(nTd, {
                         view: () => {
                             return [
-                                m('div.text-center.pd-l-0.pd-r-0', {
+                                m('div', {
                                     ondblclick: (e) => {
-                                        MedidasUci.nuevoRegistro = null
+                                        MedidasUci.nuevoRegistro = null;
                                         valores.filter((v, i) => {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 MedidasUci.verRegistro(resultNro[_i]);
+                                                if (MedidasUci.nuevoRegistro !== null && MedidasUci.nuevoRegistro.hora == null) {
+                                                    if (MedidasUci.setHora != undefined) {
+                                                        MedidasUci.nuevoRegistro.hora = MedidasUci.setHora;
+                                                        document.getElementById('medidasHora' + resultNro[_i].nro).value = MedidasUci.setHora;
+                                                    }
+                                                }
+                                                document.getElementById('medidasHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
+                                                document.getElementById('txtMedidasHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                document.getElementById('medidasValor' + resultNro[_i].nro).className = "form-control";
+                                                document.getElementById('txtMedidasValor' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                if (document.getElementById('btn' + resultNro[_i].nro) != null) {
+                                                    document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
+                                                    setTimeout(() => {
+                                                        new Cleave("#medidasHora" + resultNro[_i].nro, {
+                                                            time: true,
+                                                            timePattern: ['h', 'm']
+                                                        });
+                                                    }, 90);
+                                                }
+
                                             }
                                         })
+                                    },
+                                    onclick: (e) => {
+                                        e.preventDefault();
+                                    },
 
+                                    oncontextmenu: (e) => {
+                                        e.preventDefault();
+                                        if (index == 0) {
+                                            alert('No se puede eliminar el registro predeterminado.');
+                                            throw 'No se puede eliminar el registro predeterminado.';
+                                        }
+
+                                        if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                            valores.filter((v, i) => {
+
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+
+                                                    MedidasUci.eliminarRegistro(resultNro[_i]);
+                                                    FecthUci.eliminarSeccion(resultNro[_i]);
+                                                    MedidasUci.nuevoRegistro = null;
+                                                    MedidasUci.destroyTable();
+                                                    MedidasUci.filterRegistros();
+                                                    MedidasUci.show = false;
+                                                    m.redraw();
+                                                    setTimeout(() => {
+                                                        MedidasUci.show = true;
+                                                        m.redraw();
+                                                    }, 100);
+                                                }
+                                            })
+
+
+                                        }
                                     },
                                     oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
                                         valores.filter((v, i) => {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].hora !== null) {
                                                         el.dom.innerHTML = resultNro[_i].hora;
+                                                        el.dom.id = "txtMedidasHora" + resultNro[_i].nro;
                                                     } else {
+                                                        el.dom.id = "txtMedidasHora" + resultNro[_i].nro;
                                                         el.dom.innerHTML = '';
                                                     }
                                                 } else {
@@ -913,7 +1034,109 @@ class MedidasUci {
                                             }
                                         })
                                     }
-                                }, [])
+
+                                }, []),
+                                m('div.d-flex', [
+                                    m("input[type='text'][placeholder='HH:mm']", {
+
+                                        oncreate: (el) => {
+                                            valores.filter((v, i) => {
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+                                                    if (resultNro[_i] !== undefined) {
+                                                        if (resultNro[_i].hora !== null) {
+                                                            el.dom.value = resultNro[_i].hora;
+                                                            el.dom.id = "medidasHora" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control d-none";
+
+
+                                                            setTimeout(() => {
+                                                                new Cleave("#" + el.dom.id, {
+                                                                    time: true,
+                                                                    timePattern: ['h', 'm']
+                                                                });
+                                                            }, 90);
+
+                                                        } else {
+                                                            el.dom.id = "medidasHora" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control d-none";
+                                                        }
+                                                    } else {
+                                                        el.dom.className = "form-control d-none";
+
+                                                    }
+                                                }
+                                            })
+
+
+
+
+
+                                        },
+                                        oninput: (e) => {
+                                            setTimeout(() => {
+                                                MedidasUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                                MedidasUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            }, 50);
+                                        },
+                                        onkeypress: (e) => {
+                                            if (e.keyCode == 13) {
+                                                MedidasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                MedidasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                if (MedidasUci.nuevoRegistro.editar == null) {
+                                                    MedidasUci.agregarRegistro();
+                                                    let _nro = MedidasUci.nuevoRegistro.nro;
+                                                    setTimeout(() => {
+                                                        FecthUci.registrarSeccion(MedidasUci.nuevoRegistro);
+                                                        MedidasUci.nuevoRegistro = null;
+                                                        MedidasUci.destroyTable();
+                                                        MedidasUci.filterRegistros();
+                                                        MedidasUci.show = false;
+                                                        m.redraw();
+                                                        setTimeout(() => {
+                                                            MedidasUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
+                                                    }, 100);
+
+                                                    setTimeout(() => {
+
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#txtMedidasHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
+                                                } else {
+
+                                                    let _nro = MedidasUci.nuevoRegistro.nro;
+                                                    setTimeout(() => {
+                                                        MedidasUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(MedidasUci.nuevoRegistro);
+                                                        MedidasUci.nuevoRegistro = null;
+                                                        MedidasUci.destroyTable();
+                                                        MedidasUci.filterRegistros();
+                                                        MedidasUci.show = false;
+                                                        m.redraw();
+                                                        setTimeout(() => {
+                                                            MedidasUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
+                                                    }, 100);
+
+                                                    setTimeout(() => {
+
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#txtMedidasHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
+                                                }
+                                            }
+                                        },
+
+                                    }),
+                                ]),
+
                             ]
                         }
                     });
@@ -934,7 +1157,14 @@ class MedidasUci {
                                 m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
                                         class: (MedidasUci.nuevoRegistro !== null && MedidasUci.nuevoRegistro.editar && MedidasUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
                                         onclick: () => {
-                                            oData.editar = null;
+                                            document.getElementById('medidasValor' + MedidasUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
+                                            document.getElementById('txtMedidasValor' + MedidasUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                            document.getElementById('medidasHora' + MedidasUci.nuevoRegistro.nro).className = "form-control d-none";
+                                            document.getElementById('txtMedidasHora' + MedidasUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                            if (document.getElementById('btn' + MedidasUci.nuevoRegistro.nro) != null) {
+                                                document.getElementById('btn' + MedidasUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
+                                            }
+
                                             MedidasUci.nuevoRegistro = null;
                                         },
                                     },
@@ -955,6 +1185,20 @@ class MedidasUci {
                                             MedidasUci.nuevoRegistro.instrumento = oData.instrumento;
                                             MedidasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             MedidasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+
+                                            setTimeout(() => {
+                                                MedidasUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(MedidasUci.nuevoRegistro);
+                                                MedidasUci.nuevoRegistro = null;
+                                                MedidasUci.destroyTable();
+                                                MedidasUci.filterRegistros();
+                                                MedidasUci.show = false;
+                                                m.redraw();
+                                                setTimeout(() => {
+                                                    MedidasUci.show = true;
+                                                    m.redraw();
+                                                }, 100);
+                                            }, 100);
 
                                         },
                                     },
@@ -1018,6 +1262,7 @@ class MedidasUci {
                 },
 
             },
+            retrieve: true,
             cache: false,
             destroy: true,
             order: false,
@@ -1056,7 +1301,7 @@ class MedidasUci {
 
 
 
-                m("tr.bd.bd-2.tx-uppercase", {
+                m("tr.bd.bd-2.tx-uppercase.d-none", {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
@@ -1072,11 +1317,11 @@ class MedidasUci {
 
 
                 ]),
-                m("tr.bd.bd-2", {
+                m("tr.bd.bd-2.d-none", {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
-                    m("td.tx-14.tx-normal[colspan='3']",
+                    m("td.tx-14.tx-normal.d-none[colspan='3']",
                         (MedidasUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
@@ -1216,11 +1461,11 @@ class MedidasUci {
                             m('option[id="' + x.id + '"][orden="' + x.orden + '"][rango="' + x.rango + '"][intrumento="' + x.intrumento + '"]', x.label)
                         ))
                     ),
-                    m("td.tx-14.tx-normal[colspan='4']",
+                    m("td.tx-14.tx-normal.d-none[colspan='4']",
                         (MedidasUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "valor" + MedidasUci.nuevoRegistro.id,
+                                    id: "_valor" + MedidasUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
@@ -1238,11 +1483,11 @@ class MedidasUci {
                             ]),
                         ] : [])
                     ),
-                    m("td.tx-14.tx-normal[colspan='4']",
+                    m("td.tx-14.tx-normal.d-none[colspan='4']",
                         (MedidasUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input.form-control[type='text'][placeholder='HH:mm']", {
-                                    id: "horaMedida" + MedidasUci.nuevoRegistro.id,
+                                    id: "_horaMedida" + MedidasUci.nuevoRegistro.id,
                                     oncreate: (el) => {
                                         if (MedidasUci.nuevoRegistro.hora != undefined) {
                                             el.dom.value = MedidasUci.nuevoRegistro.hora;
@@ -1253,12 +1498,7 @@ class MedidasUci {
                                                 el.dom.value = MedidasUci.setHora;
                                             }
                                         }
-                                        setTimeout(() => {
-                                            new Cleave("#horaMedida" + MedidasUci.nuevoRegistro.id, {
-                                                time: true,
-                                                timePattern: ['h', 'm']
-                                            });
-                                        }, 50);
+
                                     },
                                     oninput: (e) => {
                                         setTimeout(() => {
