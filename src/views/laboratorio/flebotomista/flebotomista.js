@@ -10,7 +10,7 @@ function stopwatchModel() {
     return {
         interval: null,
         seconds: 15,
-        isPaused: false
+        isPaused: true
     };
 }
 
@@ -24,8 +24,8 @@ const actions = {
             model.seconds--;
             if (model.seconds == 0) {
                 model.seconds = 15;
-                Flebotomista.pedidos = null;
-                Flebotomista.fetchPendientes();
+                // Flebotomista.pedidos = null;
+                // Flebotomista.fetchPendientes();
             }
             m.redraw();
         }
@@ -57,7 +57,7 @@ function Stopwatch() {
     return {
         view() {
             return [
-                m("div.mg-b-0", [
+                m("div.mg-b-0.d-none", [
                     m("div.progress.ht-4.mg-b-0.op-5",
                         m(".progress-bar.bg-primary.[role='progressbar'][aria-valuenow='" + model.seconds + "'][aria-valuemin='0'][aria-valuemax='60']", {
                             oncreate: (el) => {
