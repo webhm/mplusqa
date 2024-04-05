@@ -445,6 +445,10 @@ class InicioFlebotomista extends App {
                 })
                 .catch(function(e) {
 
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 100);
+
                     return {
                         'status': null,
                         'message': e
@@ -482,10 +486,16 @@ class InicioFlebotomista extends App {
                 })
                 .catch(function(e) {
 
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 100);
+
                     return {
                         'status': null,
                         'message': e
                     };
+
+
 
                 });
 
