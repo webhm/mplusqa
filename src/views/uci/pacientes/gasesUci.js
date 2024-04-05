@@ -1032,7 +1032,9 @@ class GasesUci {
     view() {
         return [
             m("thead.bd.bd-2", {
-                    style: { "border-color": "#5173a1" }
+                    style: { "border-color": "#5173a1" },
+                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+
                 },
 
                 m("tr.tx-uppercase", {

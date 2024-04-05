@@ -170,6 +170,8 @@ class PacientesUCI extends App {
                             m('br')
 
                         ]),
+
+
                         // Cuidados Generales
                         m(CuidadosUci2),
                         // Vias
