@@ -197,7 +197,18 @@ class MenuFlebot {
 
                                 ]),
                             m('div.bg-white.wd-100p.pd-2', {
-                                class: InicioFlebotomista.showPendientes ? '' : 'd-none'
+                                oncreate: () => {
+                                    setTimeout(() => {
+                                        InicioFlebotomista.showPendientes = !InicioFlebotomista.showPendientes;
+                                        InicioFlebotomista.reLoader = !InicioFlebotomista.reLoader;
+                                        if (InicioFlebotomista.pedidos == null) {
+                                            InicioFlebotomista.fetchPendientes();
+                                        }
+                                        if (InicioFlebotomista.tomasPendientes == null) {
+                                            InicioFlebotomista.fetchTomasPendientes();
+                                        }
+                                    }, 500);
+                                }
                             }, [
                                 m("div.d-flex.bg-gray-200", [
                                     m("div.pd-10.wd-10p.tx-center.tx-semibold[role='button']", {
@@ -411,59 +422,79 @@ class InicioFlebotomista extends App {
     }
 
     static fetchPendientes() {
+        try {
 
-        return m.request({
-                method: "GET",
-                url: "https://lisa.hospitalmetropolitano.org/v1/listar?type=ingresadasFlebotomia&idFiltro=4",
-                headers: {
-                    "Content-Type": "application/json; charset=utf-8",
-                },
-            })
-            .then(function(result) {
-                let _arr = [];
-                let hash = {};
-                let res = result;
-                let filtrados = res.data.filter(o => hash[o.paciente] ? false : hash[o.paciente] = true);
-                _arr = filtrados.sort((a, b) => a.wid - b.wid);
-                console.log(22, _arr)
-                res.data = _arr;
-                InicioFlebotomista.pedidos = res;
-                return result;
+            return m.request({
+                    method: "GET",
+                    url: "https://lisa.hospitalmetropolitano.org/v1/listar?type=ingresadasFlebotomia&idFiltro=4",
+                    headers: {
+                        "Content-Type": "application/json; charset=utf-8",
+                    },
+                })
+                .then(function(result) {
+                    let _arr = [];
+                    let hash = {};
+                    let res = result;
+                    let filtrados = res.data.filter(o => hash[o.paciente] ? false : hash[o.paciente] = true);
+                    _arr = filtrados.sort((a, b) => a.wid - b.wid);
+                    console.log(22, _arr)
+                    res.data = _arr;
+                    InicioFlebotomista.pedidos = res;
+                    return result;
 
-            })
-            .catch(function(e) {
+                })
+                .catch(function(e) {
 
-                return {
-                    'status': null,
-                    'message': e
-                };
+                    return {
+                        'status': null,
+                        'message': e
+                    };
 
-            });
+                });
+
+        } catch (error) {
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+
+        }
+
+
     }
 
     static fetchTomasPendientes() {
 
-        return m.request({
-                method: "GET",
-                url: "https://lisa.hospitalmetropolitano.org/v1/listar?type=ingresadasFlebotomia&idFiltro=6",
-                headers: {
-                    "Content-Type": "application/json; charset=utf-8",
-                },
-            })
-            .then(function(result) {
+        try {
 
-                InicioFlebotomista.tomasPendientes = result;
-                return result;
 
-            })
-            .catch(function(e) {
+            return m.request({
+                    method: "GET",
+                    url: "https://lisa.hospitalmetropolitano.org/v1/listar?type=ingresadasFlebotomia&idFiltro=6",
+                    headers: {
+                        "Content-Type": "application/json; charset=utf-8",
+                    },
+                })
+                .then(function(result) {
 
-                return {
-                    'status': null,
-                    'message': e
-                };
+                    InicioFlebotomista.tomasPendientes = result;
+                    return result;
 
-            });
+                })
+                .catch(function(e) {
+
+                    return {
+                        'status': null,
+                        'message': e
+                    };
+
+                });
+
+        } catch (error) {
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+        }
+
     }
 
     static tomaPendiente(sc) {
