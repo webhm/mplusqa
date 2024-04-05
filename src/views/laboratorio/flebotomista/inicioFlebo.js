@@ -9,7 +9,7 @@ import Table from "../../utils/table";
 function stopwatchModel() {
     return {
         interval: null,
-        seconds: 25,
+        seconds: 15,
         isPaused: false
     };
 }
@@ -23,7 +23,7 @@ const actions = {
         if (InicioFlebotomista.pedidos !== null && InicioFlebotomista.pedidos.length !== 0 && InicioFlebotomista.reLoader) {
             model.seconds--;
             if (model.seconds == 0) {
-                model.seconds = 25;
+                model.seconds = 15;
                 InicioFlebotomista.pedidos = null;
                 InicioFlebotomista.fetchPendientes();
                 InicioFlebotomista.tomasPendientes = null;
@@ -41,7 +41,7 @@ const actions = {
         model.interval = clearInterval(model.interval);
     },
     reset(model) {
-        model.seconds = 25;
+        model.seconds = 15;
     },
     toggle(model) {
         if (model.isPaused) {
@@ -398,7 +398,7 @@ class InicioFlebotomista extends App {
             })
             .then(function(result) {
 
-                alert('Proceso realizado con éxito.');
+                //  alert('Proceso realizado con éxito.');
                 InicioFlebotomista.pedidos = null;
                 InicioFlebotomista.fetchPendientes();
             })
