@@ -582,20 +582,44 @@ class ComburTestUci {
                     return m.mount(nTd, {
                         view: () => {
                             return [
-                                m('div.text-center.pd-l-0.pd-r-0', {
+                                m('div', {
                                     ondblclick: (e) => {
                                         ComburTestUci.nuevoRegistro = null;
                                         valores.filter((v, i) => {
 
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
+
                                                 ComburTestUci.verRegistro(resultNro[_i]);
+
+                                                if (ComburTestUci.nuevoRegistro !== null && ComburTestUci.nuevoRegistro.hora == null) {
+                                                    if (ComburTestUci.setHora != undefined) {
+                                                        ComburTestUci.nuevoRegistro.hora = ComburTestUci.setHora;
+                                                        document.getElementById('comburHora' + resultNro[_i].nro).value = ComburTestUci.setHora;
+                                                    }
+                                                }
+
+                                                document.getElementById('comburHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
+                                                document.getElementById('txtComburHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                document.getElementById('comburValor' + resultNro[_i].nro).className = "form-control";
+                                                document.getElementById('txtComburValor' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                if (document.getElementById('btn' + resultNro[_i].nro) != null) {
+                                                    document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
+                                                    setTimeout(() => {
+                                                        new Cleave("#comburHora" + resultNro[_i].nro, {
+                                                            time: true,
+                                                            timePattern: ['h', 'm']
+                                                        });
+                                                    }, 90);
+                                                }
+
                                             }
                                         })
                                     },
                                     onclick: (e) => {
                                         e.preventDefault();
                                     },
+
                                     oncontextmenu: (e) => {
                                         e.preventDefault();
                                         if (index == 0) {
@@ -605,8 +629,10 @@ class ComburTestUci {
 
                                         if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
                                             valores.filter((v, i) => {
+
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
+
                                                     ComburTestUci.eliminarRegistro(resultNro[_i]);
                                                     FecthUci.eliminarSeccion(resultNro[_i]);
                                                     ComburTestUci.nuevoRegistro = null;
@@ -625,14 +651,19 @@ class ComburTestUci {
                                         }
                                     },
                                     oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
                                         valores.filter((v, i) => {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].valor !== null) {
+
                                                         el.dom.innerHTML = resultNro[_i].valor;
+                                                        el.dom.id = "txtComburValor" + resultNro[_i].nro;
                                                     } else {
-                                                        el.dom.innerHTML = '<button type="button" class="btn btn-xs btn-success btn-block tx-12 ">Registrar</button>';
+                                                        el.dom.id = "txtComburValor" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = '<button type="button" id="btn' + resultNro[_i].nro + '" class="btn btn-xs btn-success btn-block tx-12">Registrar</button>';
                                                     }
                                                 } else {
                                                     el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
@@ -641,7 +672,40 @@ class ComburTestUci {
                                         })
                                     }
 
-                                }, [])
+                                }, []),
+                                m('div.d-flex', [
+                                    m("input", {
+                                        type: "text",
+                                        placeholder: "...",
+                                        oncreate: (el) => {
+                                            valores.filter((v, i) => {
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+                                                    if (resultNro[_i] !== undefined) {
+                                                        if (resultNro[_i].valor !== null) {
+                                                            el.dom.value = resultNro[_i].valor;
+                                                            el.dom.id = "comburValor" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control tx-semibold tx-14 d-none";
+
+                                                        } else {
+                                                            el.dom.id = "comburValor" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control tx-semibold tx-14 d-none";
+                                                        }
+                                                    } else {
+                                                        el.dom.className = "form-control tx-semibold tx-14 d-none";
+
+                                                    }
+                                                }
+                                            })
+                                        },
+                                        oninput: (e) => {
+                                            ComburTestUci.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
+                                        },
+
+
+                                    })
+
+                                ]),
                             ]
                         }
                     });
@@ -656,25 +720,82 @@ class ComburTestUci {
                     return m.mount(nTd, {
                         view: () => {
                             return [
-                                m('div.text-center.pd-l-0.pd-r-0', {
+                                m('div', {
                                     ondblclick: (e) => {
-                                        ComburTestUci.nuevoRegistro = null
+                                        ComburTestUci.nuevoRegistro = null;
                                         valores.filter((v, i) => {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 ComburTestUci.verRegistro(resultNro[_i]);
+                                                if (ComburTestUci.nuevoRegistro !== null && ComburTestUci.nuevoRegistro.hora == null) {
+                                                    if (ComburTestUci.setHora != undefined) {
+                                                        ComburTestUci.nuevoRegistro.hora = ComburTestUci.setHora;
+                                                        document.getElementById('comburHora' + resultNro[_i].nro).value = ComburTestUci.setHora;
+                                                    }
+                                                }
+                                                document.getElementById('comburHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
+                                                document.getElementById('txtComburHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                document.getElementById('comburValor' + resultNro[_i].nro).className = "form-control";
+                                                document.getElementById('txtComburValor' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                if (document.getElementById('btn' + resultNro[_i].nro) != null) {
+                                                    document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
+                                                    setTimeout(() => {
+                                                        new Cleave("#comburHora" + resultNro[_i].nro, {
+                                                            time: true,
+                                                            timePattern: ['h', 'm']
+                                                        });
+                                                    }, 90);
+                                                }
+
                                             }
                                         })
+                                    },
+                                    onclick: (e) => {
+                                        e.preventDefault();
+                                    },
 
+                                    oncontextmenu: (e) => {
+                                        e.preventDefault();
+                                        if (index == 0) {
+                                            alert('No se puede eliminar el registro predeterminado.');
+                                            throw 'No se puede eliminar el registro predeterminado.';
+                                        }
+
+                                        if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                            valores.filter((v, i) => {
+
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+
+                                                    ComburTestUci.eliminarRegistro(resultNro[_i]);
+                                                    FecthUci.eliminarSeccion(resultNro[_i]);
+                                                    ComburTestUci.nuevoRegistro = null;
+                                                    ComburTestUci.destroyTable();
+                                                    ComburTestUci.filterRegistros();
+                                                    ComburTestUci.show = false;
+                                                    m.redraw();
+                                                    setTimeout(() => {
+                                                        ComburTestUci.show = true;
+                                                        m.redraw();
+                                                    }, 100);
+                                                }
+                                            })
+
+
+                                        }
                                     },
                                     oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
                                         valores.filter((v, i) => {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].hora !== null) {
                                                         el.dom.innerHTML = resultNro[_i].hora;
+                                                        el.dom.id = "txtComburHora" + resultNro[_i].nro;
                                                     } else {
+                                                        el.dom.id = "txtComburHora" + resultNro[_i].nro;
                                                         el.dom.innerHTML = '';
                                                     }
                                                 } else {
@@ -683,7 +804,108 @@ class ComburTestUci {
                                             }
                                         })
                                     }
-                                }, [])
+
+                                }, []),
+                                m('div.d-flex', [
+                                    m("input[type='text'][placeholder='HH:mm']", {
+
+                                        oncreate: (el) => {
+                                            valores.filter((v, i) => {
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+                                                    if (resultNro[_i] !== undefined) {
+                                                        if (resultNro[_i].hora !== null) {
+                                                            el.dom.value = resultNro[_i].hora;
+                                                            el.dom.id = "comburHora" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control d-none";
+
+
+                                                            setTimeout(() => {
+                                                                new Cleave("#" + el.dom.id, {
+                                                                    time: true,
+                                                                    timePattern: ['h', 'm']
+                                                                });
+                                                            }, 90);
+
+                                                        } else {
+                                                            el.dom.id = "comburHora" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control d-none";
+                                                        }
+                                                    } else {
+                                                        el.dom.className = "form-control d-none";
+
+                                                    }
+                                                }
+                                            })
+
+
+
+
+
+                                        },
+                                        oninput: (e) => {
+                                            setTimeout(() => {
+                                                ComburTestUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                                ComburTestUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            }, 50);
+                                        },
+                                        onkeypress: (e) => {
+                                            if (e.keyCode == 13) {
+                                                ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                if (ComburTestUci.nuevoRegistro.editar == null) {
+                                                    ComburTestUci.agregarRegistro();
+                                                    let _nro = ComburTestUci.nuevoRegistro.nro;
+                                                    setTimeout(() => {
+                                                        FecthUci.registrarSeccion(ComburTestUci.nuevoRegistro);
+                                                        ComburTestUci.nuevoRegistro = null;
+                                                        ComburTestUci.destroyTable();
+                                                        ComburTestUci.filterRegistros();
+                                                        ComburTestUci.show = false;
+                                                        m.redraw();
+                                                        setTimeout(() => {
+                                                            ComburTestUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
+                                                    }, 100);
+
+                                                    setTimeout(() => {
+
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#txtComburHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
+                                                } else {
+
+                                                    let _nro = ComburTestUci.nuevoRegistro.nro;
+                                                    setTimeout(() => {
+                                                        ComburTestUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(ComburTestUci.nuevoRegistro);
+                                                        ComburTestUci.nuevoRegistro = null;
+                                                        ComburTestUci.destroyTable();
+                                                        ComburTestUci.filterRegistros();
+                                                        ComburTestUci.show = false;
+                                                        m.redraw();
+                                                        setTimeout(() => {
+                                                            ComburTestUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
+                                                    }, 100);
+
+                                                    setTimeout(() => {
+
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#txtComburHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
+                                                }
+                                            }
+                                        },
+
+                                    }),
+                                ]),
                             ]
                         }
                     });
@@ -705,6 +927,13 @@ class ComburTestUci {
                                         class: (ComburTestUci.nuevoRegistro !== null && ComburTestUci.nuevoRegistro.editar && ComburTestUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
                                         onclick: () => {
                                             oData.editar = null;
+                                            document.getElementById('comburValor' + ComburTestUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
+                                            document.getElementById('txtComburValor' + ComburTestUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                            document.getElementById('comburHora' + ComburTestUci.nuevoRegistro.nro).className = "form-control d-none";
+                                            document.getElementById('txtComburHora' + ComburTestUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                            if (document.getElementById('btn' + ComburTestUci.nuevoRegistro.nro) != null) {
+                                                document.getElementById('btn' + ComburTestUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
+                                            }
                                             ComburTestUci.nuevoRegistro = null;
                                         },
                                     },
@@ -723,6 +952,21 @@ class ComburTestUci {
                                             ComburTestUci.nuevoRegistro.orden = oData.orden;
                                             ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+
+
+                                            setTimeout(() => {
+                                                ComburTestUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(ComburTestUci.nuevoRegistro);
+                                                ComburTestUci.nuevoRegistro = null;
+                                                ComburTestUci.destroyTable();
+                                                ComburTestUci.filterRegistros();
+                                                ComburTestUci.show = false;
+                                                m.redraw();
+                                                setTimeout(() => {
+                                                    ComburTestUci.show = true;
+                                                    m.redraw();
+                                                }, 100);
+                                            }, 100);
 
                                         },
                                     },
@@ -786,6 +1030,7 @@ class ComburTestUci {
                 },
 
             },
+            retrieve: true,
             cache: false,
             destroy: true,
             order: false,
@@ -824,7 +1069,7 @@ class ComburTestUci {
 
 
 
-                m("tr.bd.bd-2.tx-uppercase", {
+                m("tr.bd.bd-2.tx-uppercase.d-none", {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
@@ -840,11 +1085,11 @@ class ComburTestUci {
 
 
                 ]),
-                m("tr.bd.bd-2", {
+                m("tr.bd.bd-2.d-none", {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
-                    m("td.tx-14.tx-normal[colspan='3']",
+                    m("td.tx-14.tx-normal.d-none[colspan='3']",
                         (ComburTestUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
@@ -915,11 +1160,11 @@ class ComburTestUci {
                             m('option[id="' + x.id + '"][orden="' + x.orden + '"]', x.label)
                         ))
                     ),
-                    m("td.tx-14.tx-normal[colspan='4']",
+                    m("td.tx-14.tx-normal.d-none[colspan='4']",
                         (ComburTestUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "valor" + ComburTestUci.nuevoRegistro.id,
+                                    id: "_valor" + ComburTestUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
@@ -937,7 +1182,7 @@ class ComburTestUci {
                             ]),
                         ] : [])
                     ),
-                    m("td.tx-14.tx-normal[colspan='4']",
+                    m("td.tx-14.tx-normal.d-none[colspan='4']",
                         (ComburTestUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input.form-control[type='text'][placeholder='HH:mm']", {
@@ -952,12 +1197,7 @@ class ComburTestUci {
                                                 el.dom.value = ComburTestUci.setHora;
                                             }
                                         }
-                                        setTimeout(() => {
-                                            new Cleave("#horaMedida" + ComburTestUci.nuevoRegistro.id, {
-                                                time: true,
-                                                timePattern: ['h', 'm']
-                                            });
-                                        }, 50);
+
                                     },
                                     oninput: (e) => {
                                         setTimeout(() => {
