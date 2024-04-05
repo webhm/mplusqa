@@ -3473,6 +3473,14 @@ class PacientesUCI extends App {
                                         class: (MedidasUci.nuevoRegistro !== null && MedidasUci.nuevoRegistro.editar && MedidasUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
                                         onclick: () => {
                                             oData.editar = null;
+                                            document.getElementById('medidasValor' + MedidasUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
+                                            document.getElementById('txtMedidasValor' + MedidasUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                            document.getElementById('medidasHora' + MedidasUci.nuevoRegistro.nro).className = "form-control d-none";
+                                            document.getElementById('txtMedidasHora' + MedidasUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                            if (document.getElementById('btn' + MedidasUci.nuevoRegistro.nro) != null) {
+                                                document.getElementById('btn' + MedidasUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
+                                            }
+
                                             MedidasUci.nuevoRegistro = null;
                                         },
                                     },
