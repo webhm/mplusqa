@@ -946,7 +946,18 @@ class VentilatoriosUci {
                 mRender: function(data, type, full) {
                     return full.ventilatorio;
                 },
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+                                    id: 'Ventilatorios_' + oData.id,
+                                }, [oData.ventilatorio]),
 
+                            ]
+                        }
+                    });
+                },
                 visible: true,
                 aTargets: [3],
                 orderable: true,
@@ -1005,17 +1016,28 @@ class VentilatoriosUci {
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
 
-                                                    VentilatoriosUci.eliminarRegistro(resultNro[_i]);
-                                                    FecthUci.eliminarSeccion(resultNro[_i]);
-                                                    VentilatoriosUci.nuevoRegistro = null;
-                                                    VentilatoriosUci.destroyTable();
-                                                    VentilatoriosUci.filterRegistros();
-                                                    VentilatoriosUci.show = false;
-                                                    m.redraw();
                                                     setTimeout(() => {
-                                                        VentilatoriosUci.show = true;
+                                                        VentilatoriosUci.eliminarRegistro(resultNro[_i]);
+                                                        FecthUci.eliminarSeccion(resultNro[_i]);
+                                                        VentilatoriosUci.nuevoRegistro = null;
+                                                        VentilatoriosUci.destroyTable();
+                                                        VentilatoriosUci.filterRegistros();
+                                                        VentilatoriosUci.show = false;
                                                         m.redraw();
+                                                        setTimeout(() => {
+                                                            VentilatoriosUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
                                                     }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#Ventilatorios_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
+
+
                                                 }
                                             })
 
@@ -1200,29 +1222,47 @@ class VentilatoriosUci {
                                                 VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                 VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                 if (VentilatoriosUci.nuevoRegistro.editar == null) {
-                                                    VentilatoriosUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(VentilatoriosUci.nuevoRegistro);
-                                                    VentilatoriosUci.nuevoRegistro = null;
-                                                    VentilatoriosUci.destroyTable();
-                                                    VentilatoriosUci.filterRegistros();
-                                                    VentilatoriosUci.show = false;
-                                                    m.redraw();
                                                     setTimeout(() => {
-                                                        VentilatoriosUci.show = true;
+                                                        VentilatoriosUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(VentilatoriosUci.nuevoRegistro);
+                                                        VentilatoriosUci.nuevoRegistro = null;
+                                                        VentilatoriosUci.destroyTable();
+                                                        VentilatoriosUci.filterRegistros();
+                                                        VentilatoriosUci.show = false;
                                                         m.redraw();
+                                                        setTimeout(() => {
+                                                            VentilatoriosUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
                                                     }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#Ventilatorios_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
                                                 } else {
-                                                    VentilatoriosUci.editarRegistro();
-                                                    FecthUci.actualizarSeccion(VentilatoriosUci.nuevoRegistro);
-                                                    VentilatoriosUci.nuevoRegistro = null;
-                                                    VentilatoriosUci.destroyTable();
-                                                    VentilatoriosUci.filterRegistros();
-                                                    VentilatoriosUci.show = false;
-                                                    m.redraw();
                                                     setTimeout(() => {
-                                                        VentilatoriosUci.show = true;
+                                                        VentilatoriosUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(VentilatoriosUci.nuevoRegistro);
+                                                        VentilatoriosUci.nuevoRegistro = null;
+                                                        VentilatoriosUci.destroyTable();
+                                                        VentilatoriosUci.filterRegistros();
+                                                        VentilatoriosUci.show = false;
                                                         m.redraw();
+                                                        setTimeout(() => {
+                                                            VentilatoriosUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
                                                     }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#Ventilatorios_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
                                                 }
                                             }
                                         },
@@ -1290,6 +1330,13 @@ class VentilatoriosUci {
                                                     m.redraw();
                                                 }, 100);
                                             }, 100);
+
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('html,body').animate({ scrollTop: $("#Ventilatorios_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                    isAnimating = false;
+                                                })
+                                            }, 250);
 
 
                                         },
@@ -1381,6 +1428,9 @@ class VentilatoriosUci {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
+                        if (VentilatoriosUci.show) {
+                            VentilatoriosUci.destroyTable();
+                        }
                         VentilatoriosUci.show = !VentilatoriosUci.show;
                     }
 

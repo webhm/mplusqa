@@ -567,7 +567,18 @@ class ComburTestUci {
                 mRender: function(data, type, full) {
                     return full.medida;
                 },
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+                                    id: 'ComburTest_' + oData.id,
+                                }, [oData.medida]),
 
+                            ]
+                        }
+                    });
+                },
                 visible: true,
                 aTargets: [3],
                 orderable: true,
@@ -633,17 +644,28 @@ class ComburTestUci {
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
 
-                                                    ComburTestUci.eliminarRegistro(resultNro[_i]);
-                                                    FecthUci.eliminarSeccion(resultNro[_i]);
-                                                    ComburTestUci.nuevoRegistro = null;
-                                                    ComburTestUci.destroyTable();
-                                                    ComburTestUci.filterRegistros();
-                                                    ComburTestUci.show = false;
-                                                    m.redraw();
                                                     setTimeout(() => {
-                                                        ComburTestUci.show = true;
+                                                        ComburTestUci.eliminarRegistro(resultNro[_i]);
+                                                        FecthUci.eliminarSeccion(resultNro[_i]);
+                                                        ComburTestUci.nuevoRegistro = null;
+                                                        ComburTestUci.destroyTable();
+                                                        ComburTestUci.filterRegistros();
+                                                        ComburTestUci.show = false;
                                                         m.redraw();
+                                                        setTimeout(() => {
+                                                            ComburTestUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
                                                     }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
+
+
                                                 }
                                             })
 
@@ -767,17 +789,26 @@ class ComburTestUci {
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
 
-                                                    ComburTestUci.eliminarRegistro(resultNro[_i]);
-                                                    FecthUci.eliminarSeccion(resultNro[_i]);
-                                                    ComburTestUci.nuevoRegistro = null;
-                                                    ComburTestUci.destroyTable();
-                                                    ComburTestUci.filterRegistros();
-                                                    ComburTestUci.show = false;
-                                                    m.redraw();
                                                     setTimeout(() => {
-                                                        ComburTestUci.show = true;
+                                                        ComburTestUci.eliminarRegistro(resultNro[_i]);
+                                                        FecthUci.eliminarSeccion(resultNro[_i]);
+                                                        ComburTestUci.nuevoRegistro = null;
+                                                        ComburTestUci.destroyTable();
+                                                        ComburTestUci.filterRegistros();
+                                                        ComburTestUci.show = false;
                                                         m.redraw();
+                                                        setTimeout(() => {
+                                                            ComburTestUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
                                                     }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
                                                 }
                                             })
 
@@ -854,9 +885,9 @@ class ComburTestUci {
                                                 ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                 ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                 if (ComburTestUci.nuevoRegistro.editar == null) {
-                                                    ComburTestUci.agregarRegistro();
-                                                    let _nro = ComburTestUci.nuevoRegistro.nro;
+
                                                     setTimeout(() => {
+                                                        ComburTestUci.agregarRegistro();
                                                         FecthUci.registrarSeccion(ComburTestUci.nuevoRegistro);
                                                         ComburTestUci.nuevoRegistro = null;
                                                         ComburTestUci.destroyTable();
@@ -870,15 +901,13 @@ class ComburTestUci {
                                                     }, 100);
 
                                                     setTimeout(() => {
-
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#txtComburHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
                                                 } else {
 
-                                                    let _nro = ComburTestUci.nuevoRegistro.nro;
                                                     setTimeout(() => {
                                                         ComburTestUci.editarRegistro();
                                                         FecthUci.actualizarSeccion(ComburTestUci.nuevoRegistro);
@@ -894,9 +923,8 @@ class ComburTestUci {
                                                     }, 100);
 
                                                     setTimeout(() => {
-
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#txtComburHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
@@ -967,6 +995,13 @@ class ComburTestUci {
                                                     m.redraw();
                                                 }, 100);
                                             }, 100);
+
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                    isAnimating = false;
+                                                })
+                                            }, 250);
 
                                         },
                                     },
@@ -1047,12 +1082,15 @@ class ComburTestUci {
             m("thead.bd.bd-2", {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
-
                 },
+
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
+                        if (ComburTestUci.show) {
+                            ComburTestUci.destroyTable();
+                        }
                         ComburTestUci.show = !ComburTestUci.show;
                     }
 

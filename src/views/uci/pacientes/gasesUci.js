@@ -566,7 +566,18 @@ class GasesUci {
                 mRender: function(data, type, full) {
                     return full.gas;
                 },
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+                                    id: 'Gases_' + oData.id,
+                                }, [oData.gas]),
 
+                            ]
+                        }
+                    });
+                },
                 visible: true,
                 aTargets: [3],
                 orderable: true,
@@ -754,17 +765,29 @@ class GasesUci {
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
 
-                                                    GasesUci.eliminarRegistro(resultNro[_i]);
-                                                    FecthUci.eliminarSeccion(resultNro[_i]);
-                                                    GasesUci.nuevoRegistro = null;
-                                                    GasesUci.destroyTable();
-                                                    GasesUci.filterRegistros();
-                                                    GasesUci.show = false;
-                                                    m.redraw();
                                                     setTimeout(() => {
-                                                        GasesUci.show = true;
+                                                        GasesUci.eliminarRegistro(resultNro[_i]);
+                                                        FecthUci.eliminarSeccion(resultNro[_i]);
+                                                        GasesUci.nuevoRegistro = null;
+                                                        GasesUci.destroyTable();
+                                                        GasesUci.filterRegistros();
+                                                        GasesUci.show = false;
                                                         m.redraw();
+                                                        setTimeout(() => {
+                                                            GasesUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
                                                     }, 100);
+
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
+
+
                                                 }
                                             })
 
@@ -828,12 +851,9 @@ class GasesUci {
                                                 GasesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                 GasesUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                 if (GasesUci.nuevoRegistro.editar == null) {
-                                                    GasesUci.agregarRegistro();
-                                                    let _nro = GasesUci.nuevoRegistro.nro;
-
 
                                                     setTimeout(() => {
-
+                                                        GasesUci.agregarRegistro();
                                                         FecthUci.registrarSeccion(GasesUci.nuevoRegistro);
                                                         GasesUci.nuevoRegistro = null;
                                                         GasesUci.destroyTable();
@@ -847,15 +867,14 @@ class GasesUci {
                                                     }, 100);
 
                                                     setTimeout(() => {
-
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#txtGasesHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
+
                                                 } else {
 
-                                                    let _nro = GasesUci.nuevoRegistro.nro;
                                                     setTimeout(() => {
                                                         GasesUci.editarRegistro();
                                                         FecthUci.actualizarSeccion(GasesUci.nuevoRegistro);
@@ -871,9 +890,8 @@ class GasesUci {
                                                     }, 100);
 
                                                     setTimeout(() => {
-
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#txtGasesHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
@@ -921,8 +939,9 @@ class GasesUci {
                                 m("button.btn.btn-xs.btn-dark[type='button']", {
                                         //class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                         onclick: () => {
+                                            console.log(99, oData)
 
-                                            if (oData.gas == null) {
+                                            if (oData.hora == null) {
                                                 alert('No se permite copiar. Ya existe un registro disponible.');
                                                 throw 'No se permite copiar. Ya existe un registro disponible.'
                                             }
@@ -930,10 +949,15 @@ class GasesUci {
                                             GasesUci.nuevoRegistro.id = oData.id;
                                             GasesUci.nuevoRegistro.gas = oData.gas;
                                             GasesUci.nuevoRegistro.orden = oData.orden;
-                                            GasesUci.nuevoRegistro.hora = oData.hora;
+                                            if (GasesUci.setHora != undefined) {
+                                                GasesUci.nuevoRegistro.hora = GasesUci.setHora;
+                                            } else {
+                                                GasesUci.nuevoRegistro.hora = oData.hora;
+                                            }
                                             GasesUci.nuevoRegistro.fechaHora = oData.fechaHora;
                                             GasesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             GasesUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+
 
 
                                             setTimeout(() => {
@@ -949,6 +973,15 @@ class GasesUci {
                                                     m.redraw();
                                                 }, 100);
                                             }, 100);
+
+
+                                            setTimeout(() => {
+
+                                                let isAnimating = true;
+                                                $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                    isAnimating = false;
+                                                })
+                                            }, 250);
 
                                         },
                                     },
@@ -1041,6 +1074,9 @@ class GasesUci {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
+                        if (GasesUci.show) {
+                            GasesUci.destroyTable();
+                        }
                         GasesUci.show = !GasesUci.show;
                     }
 
@@ -1302,7 +1338,7 @@ class GasesUci {
                     ),
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
-                    m("td[colspan='12']",
+                    m("td[colspan='12']", { style: "max-width: 100px;overflow: auto;" },
                         (GasesUci.show != false ? [PacientesUCI.vTable('table-gases', GasesUci.getRegistros(), GasesUci.arqTable())] : [])
                     ),
                 ]),

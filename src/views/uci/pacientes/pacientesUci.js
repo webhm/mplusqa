@@ -1247,7 +1247,18 @@ class PacientesUCI extends App {
                 mRender: function(data, type, full) {
                     return full.ventilatorio;
                 },
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+                                    id: 'Ventilatorios_' + oData.id,
+                                }, [oData.ventilatorio]),
 
+                            ]
+                        }
+                    });
+                },
                 visible: true,
                 aTargets: [3],
                 orderable: true,
@@ -1306,17 +1317,26 @@ class PacientesUCI extends App {
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
 
-                                                    VentilatoriosUci.eliminarRegistro(resultNro[_i]);
-                                                    FecthUci.eliminarSeccion(resultNro[_i]);
-                                                    VentilatoriosUci.nuevoRegistro = null;
-                                                    VentilatoriosUci.destroyTable();
-                                                    VentilatoriosUci.filterRegistros();
-                                                    VentilatoriosUci.show = false;
-                                                    m.redraw();
                                                     setTimeout(() => {
-                                                        VentilatoriosUci.show = true;
+                                                        VentilatoriosUci.eliminarRegistro(resultNro[_i]);
+                                                        FecthUci.eliminarSeccion(resultNro[_i]);
+                                                        VentilatoriosUci.nuevoRegistro = null;
+                                                        VentilatoriosUci.destroyTable();
+                                                        VentilatoriosUci.filterRegistros();
+                                                        VentilatoriosUci.show = false;
                                                         m.redraw();
+                                                        setTimeout(() => {
+                                                            VentilatoriosUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
                                                     }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#Ventilatorios_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
                                                 }
                                             })
 
@@ -1501,29 +1521,47 @@ class PacientesUCI extends App {
                                                 VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                 VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                 if (VentilatoriosUci.nuevoRegistro.editar == null) {
-                                                    VentilatoriosUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(VentilatoriosUci.nuevoRegistro);
-                                                    VentilatoriosUci.nuevoRegistro = null;
-                                                    VentilatoriosUci.destroyTable();
-                                                    VentilatoriosUci.filterRegistros();
-                                                    VentilatoriosUci.show = false;
-                                                    m.redraw();
                                                     setTimeout(() => {
-                                                        VentilatoriosUci.show = true;
+                                                        VentilatoriosUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(VentilatoriosUci.nuevoRegistro);
+                                                        VentilatoriosUci.nuevoRegistro = null;
+                                                        VentilatoriosUci.destroyTable();
+                                                        VentilatoriosUci.filterRegistros();
+                                                        VentilatoriosUci.show = false;
                                                         m.redraw();
+                                                        setTimeout(() => {
+                                                            VentilatoriosUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
                                                     }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#Ventilatorios_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
                                                 } else {
-                                                    VentilatoriosUci.editarRegistro();
-                                                    FecthUci.actualizarSeccion(VentilatoriosUci.nuevoRegistro);
-                                                    VentilatoriosUci.nuevoRegistro = null;
-                                                    VentilatoriosUci.destroyTable();
-                                                    VentilatoriosUci.filterRegistros();
-                                                    VentilatoriosUci.show = false;
-                                                    m.redraw();
                                                     setTimeout(() => {
-                                                        VentilatoriosUci.show = true;
+                                                        VentilatoriosUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(VentilatoriosUci.nuevoRegistro);
+                                                        VentilatoriosUci.nuevoRegistro = null;
+                                                        VentilatoriosUci.destroyTable();
+                                                        VentilatoriosUci.filterRegistros();
+                                                        VentilatoriosUci.show = false;
                                                         m.redraw();
+                                                        setTimeout(() => {
+                                                            VentilatoriosUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
                                                     }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#Ventilatorios_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
                                                 }
                                             }
                                         },
@@ -1594,6 +1632,13 @@ class PacientesUCI extends App {
                                                     m.redraw();
                                                 }, 100);
                                             }, 100);
+
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('html,body').animate({ scrollTop: $("#Ventilatorios_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                    isAnimating = false;
+                                                })
+                                            }, 250);
 
 
                                         },
@@ -2125,6 +2170,18 @@ class PacientesUCI extends App {
                 mRender: function(data, type, full) {
                     return full.gas;
                 },
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+                                    id: 'Gases_' + oData.id,
+                                }, [oData.gas]),
+
+                            ]
+                        }
+                    });
+                },
 
                 visible: true,
                 aTargets: [3],
@@ -2306,17 +2363,28 @@ class PacientesUCI extends App {
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
 
-                                                    GasesUci.eliminarRegistro(resultNro[_i]);
-                                                    FecthUci.eliminarSeccion(resultNro[_i]);
-                                                    GasesUci.nuevoRegistro = null;
-                                                    GasesUci.destroyTable();
-                                                    GasesUci.filterRegistros();
-                                                    GasesUci.show = false;
-                                                    m.redraw();
                                                     setTimeout(() => {
-                                                        GasesUci.show = true;
+                                                        GasesUci.eliminarRegistro(resultNro[_i]);
+                                                        FecthUci.eliminarSeccion(resultNro[_i]);
+                                                        GasesUci.nuevoRegistro = null;
+                                                        GasesUci.destroyTable();
+                                                        GasesUci.filterRegistros();
+                                                        GasesUci.show = false;
                                                         m.redraw();
+                                                        setTimeout(() => {
+                                                            GasesUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
                                                     }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
+
+
                                                 }
                                             })
 
@@ -2380,11 +2448,9 @@ class PacientesUCI extends App {
                                                 GasesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                 GasesUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                 if (GasesUci.nuevoRegistro.editar == null) {
-                                                    GasesUci.agregarRegistro();
-                                                    let _nro = GasesUci.nuevoRegistro.nro;
 
                                                     setTimeout(() => {
-
+                                                        GasesUci.agregarRegistro();
                                                         FecthUci.registrarSeccion(GasesUci.nuevoRegistro);
                                                         GasesUci.nuevoRegistro = null;
                                                         GasesUci.destroyTable();
@@ -2393,22 +2459,19 @@ class PacientesUCI extends App {
                                                         m.redraw();
                                                         setTimeout(() => {
                                                             GasesUci.show = true;
-
                                                             m.redraw();
                                                         }, 100);
                                                     }, 100);
 
                                                     setTimeout(() => {
-
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#txtGasesHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
 
 
                                                 } else {
-                                                    let _nro = GasesUci.nuevoRegistro.nro;
 
                                                     setTimeout(() => {
                                                         GasesUci.editarRegistro();
@@ -2425,9 +2488,8 @@ class PacientesUCI extends App {
                                                     }, 100);
 
                                                     setTimeout(() => {
-
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#txtGasesHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
@@ -2477,7 +2539,7 @@ class PacientesUCI extends App {
                                         //class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                         onclick: () => {
 
-                                            if (oData.gas == null) {
+                                            if (oData.hora == null) {
                                                 alert('No se permite copiar. Ya existe un registro disponible.');
                                                 throw 'No se permite copiar. Ya existe un registro disponible.'
                                             }
@@ -2485,7 +2547,11 @@ class PacientesUCI extends App {
                                             GasesUci.nuevoRegistro.id = oData.id;
                                             GasesUci.nuevoRegistro.gas = oData.gas;
                                             GasesUci.nuevoRegistro.orden = oData.orden;
-                                            GasesUci.nuevoRegistro.hora = oData.hora;
+                                            if (GasesUci.setHora != undefined) {
+                                                GasesUci.nuevoRegistro.hora = GasesUci.setHora;
+                                            } else {
+                                                GasesUci.nuevoRegistro.hora = oData.hora;
+                                            }
                                             GasesUci.nuevoRegistro.fechaHora = oData.fechaHora;
                                             GasesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             GasesUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
@@ -2504,6 +2570,13 @@ class PacientesUCI extends App {
                                                     m.redraw();
                                                 }, 100);
                                             }, 100);
+
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                    isAnimating = false;
+                                                })
+                                            }, 250);
 
                                         },
                                     },
@@ -3110,7 +3183,18 @@ class PacientesUCI extends App {
                 mRender: function(data, type, full) {
                     return full.medida;
                 },
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+                                    id: 'MedidasUci_' + oData.id,
+                                }, [oData.medida]),
 
+                            ]
+                        }
+                    });
+                },
                 visible: true,
                 aTargets: [3],
                 orderable: true,
@@ -3176,17 +3260,26 @@ class PacientesUCI extends App {
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
 
-                                                    MedidasUci.eliminarRegistro(resultNro[_i]);
-                                                    FecthUci.eliminarSeccion(resultNro[_i]);
-                                                    MedidasUci.nuevoRegistro = null;
-                                                    MedidasUci.destroyTable();
-                                                    MedidasUci.filterRegistros();
-                                                    MedidasUci.show = false;
-                                                    m.redraw();
                                                     setTimeout(() => {
-                                                        MedidasUci.show = true;
+                                                        MedidasUci.eliminarRegistro(resultNro[_i]);
+                                                        FecthUci.eliminarSeccion(resultNro[_i]);
+                                                        MedidasUci.nuevoRegistro = null;
+                                                        MedidasUci.destroyTable();
+                                                        MedidasUci.filterRegistros();
+                                                        MedidasUci.show = false;
                                                         m.redraw();
+                                                        setTimeout(() => {
+                                                            MedidasUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
                                                     }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
                                                 }
                                             })
 
@@ -3314,18 +3407,26 @@ class PacientesUCI extends App {
 
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
-
-                                                    MedidasUci.eliminarRegistro(resultNro[_i]);
-                                                    FecthUci.eliminarSeccion(resultNro[_i]);
-                                                    MedidasUci.nuevoRegistro = null;
-                                                    MedidasUci.destroyTable();
-                                                    MedidasUci.filterRegistros();
-                                                    MedidasUci.show = false;
-                                                    m.redraw();
                                                     setTimeout(() => {
-                                                        MedidasUci.show = true;
+                                                        MedidasUci.eliminarRegistro(resultNro[_i]);
+                                                        FecthUci.eliminarSeccion(resultNro[_i]);
+                                                        MedidasUci.nuevoRegistro = null;
+                                                        MedidasUci.destroyTable();
+                                                        MedidasUci.filterRegistros();
+                                                        MedidasUci.show = false;
                                                         m.redraw();
+                                                        setTimeout(() => {
+                                                            MedidasUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
                                                     }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
                                                 }
                                             })
 
@@ -3402,9 +3503,9 @@ class PacientesUCI extends App {
                                                 MedidasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                 MedidasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                 if (MedidasUci.nuevoRegistro.editar == null) {
-                                                    MedidasUci.agregarRegistro();
-                                                    let _nro = MedidasUci.nuevoRegistro.nro;
+
                                                     setTimeout(() => {
+                                                        MedidasUci.agregarRegistro();
                                                         FecthUci.registrarSeccion(MedidasUci.nuevoRegistro);
                                                         MedidasUci.nuevoRegistro = null;
                                                         MedidasUci.destroyTable();
@@ -3418,15 +3519,14 @@ class PacientesUCI extends App {
                                                     }, 100);
 
                                                     setTimeout(() => {
-
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#txtMedidasHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
                                                 } else {
 
-                                                    let _nro = MedidasUci.nuevoRegistro.nro;
+
                                                     setTimeout(() => {
                                                         MedidasUci.editarRegistro();
                                                         FecthUci.actualizarSeccion(MedidasUci.nuevoRegistro);
@@ -3442,9 +3542,8 @@ class PacientesUCI extends App {
                                                     }, 100);
 
                                                     setTimeout(() => {
-
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#txtMedidasHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
@@ -3517,6 +3616,13 @@ class PacientesUCI extends App {
                                                     m.redraw();
                                                 }, 100);
                                             }, 100);
+
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                    isAnimating = false;
+                                                })
+                                            }, 250);
 
                                         },
                                     },
@@ -3941,7 +4047,18 @@ class PacientesUCI extends App {
                 mRender: function(data, type, full) {
                     return full.medida;
                 },
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+                                    id: 'ComburTest_' + oData.id,
+                                }, [oData.medida]),
 
+                            ]
+                        }
+                    });
+                },
                 visible: true,
                 aTargets: [3],
                 orderable: true,
@@ -4006,18 +4123,26 @@ class PacientesUCI extends App {
 
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
-
-                                                    ComburTestUci.eliminarRegistro(resultNro[_i]);
-                                                    FecthUci.eliminarSeccion(resultNro[_i]);
-                                                    ComburTestUci.nuevoRegistro = null;
-                                                    ComburTestUci.destroyTable();
-                                                    ComburTestUci.filterRegistros();
-                                                    ComburTestUci.show = false;
-                                                    m.redraw();
                                                     setTimeout(() => {
-                                                        ComburTestUci.show = true;
+                                                        ComburTestUci.eliminarRegistro(resultNro[_i]);
+                                                        FecthUci.eliminarSeccion(resultNro[_i]);
+                                                        ComburTestUci.nuevoRegistro = null;
+                                                        ComburTestUci.destroyTable();
+                                                        ComburTestUci.filterRegistros();
+                                                        ComburTestUci.show = false;
                                                         m.redraw();
+                                                        setTimeout(() => {
+                                                            ComburTestUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
                                                     }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
                                                 }
                                             })
 
@@ -4141,17 +4266,26 @@ class PacientesUCI extends App {
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
 
-                                                    ComburTestUci.eliminarRegistro(resultNro[_i]);
-                                                    FecthUci.eliminarSeccion(resultNro[_i]);
-                                                    ComburTestUci.nuevoRegistro = null;
-                                                    ComburTestUci.destroyTable();
-                                                    ComburTestUci.filterRegistros();
-                                                    ComburTestUci.show = false;
-                                                    m.redraw();
                                                     setTimeout(() => {
-                                                        ComburTestUci.show = true;
+                                                        ComburTestUci.eliminarRegistro(resultNro[_i]);
+                                                        FecthUci.eliminarSeccion(resultNro[_i]);
+                                                        ComburTestUci.nuevoRegistro = null;
+                                                        ComburTestUci.destroyTable();
+                                                        ComburTestUci.filterRegistros();
+                                                        ComburTestUci.show = false;
                                                         m.redraw();
+                                                        setTimeout(() => {
+                                                            ComburTestUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
                                                     }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
                                                 }
                                             })
 
@@ -4228,9 +4362,8 @@ class PacientesUCI extends App {
                                                 ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                 ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                 if (ComburTestUci.nuevoRegistro.editar == null) {
-                                                    ComburTestUci.agregarRegistro();
-                                                    let _nro = ComburTestUci.nuevoRegistro.nro;
                                                     setTimeout(() => {
+                                                        ComburTestUci.agregarRegistro();
                                                         FecthUci.registrarSeccion(ComburTestUci.nuevoRegistro);
                                                         ComburTestUci.nuevoRegistro = null;
                                                         ComburTestUci.destroyTable();
@@ -4244,15 +4377,13 @@ class PacientesUCI extends App {
                                                     }, 100);
 
                                                     setTimeout(() => {
-
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#txtComburHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
                                                 } else {
 
-                                                    let _nro = ComburTestUci.nuevoRegistro.nro;
                                                     setTimeout(() => {
                                                         ComburTestUci.editarRegistro();
                                                         FecthUci.actualizarSeccion(ComburTestUci.nuevoRegistro);
@@ -4268,9 +4399,8 @@ class PacientesUCI extends App {
                                                     }, 100);
 
                                                     setTimeout(() => {
-
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#txtComburHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
@@ -4327,7 +4457,6 @@ class PacientesUCI extends App {
                                             ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
-
                                             setTimeout(() => {
                                                 ComburTestUci.agregarRegistro();
                                                 FecthUci.registrarSeccion(ComburTestUci.nuevoRegistro);
@@ -4341,6 +4470,14 @@ class PacientesUCI extends App {
                                                     m.redraw();
                                                 }, 100);
                                             }, 100);
+
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                    isAnimating = false;
+                                                })
+                                            }, 250);
+
 
                                         },
                                     },
@@ -4581,7 +4718,18 @@ class PacientesUCI extends App {
                 mRender: function(data, type, full) {
                     return full.medida;
                 },
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+                                    id: 'GasesMed_' + oData.id,
+                                }, [oData.medida]),
 
+                            ]
+                        }
+                    });
+                },
                 visible: true,
                 aTargets: [3],
                 orderable: true,
@@ -4596,20 +4744,44 @@ class PacientesUCI extends App {
                     return m.mount(nTd, {
                         view: () => {
                             return [
-                                m('div.text-center.pd-l-0.pd-r-0', {
+                                m('div', {
                                     ondblclick: (e) => {
                                         GasesMedUci.nuevoRegistro = null;
                                         valores.filter((v, i) => {
 
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
+
                                                 GasesMedUci.verRegistro(resultNro[_i]);
+
+                                                if (GasesMedUci.nuevoRegistro !== null && GasesMedUci.nuevoRegistro.hora == null) {
+                                                    if (GasesMedUci.setHora != undefined) {
+                                                        GasesMedUci.nuevoRegistro.hora = GasesMedUci.setHora;
+                                                        document.getElementById('gasesMedHora' + resultNro[_i].nro).value = GasesMedUci.setHora;
+                                                    }
+                                                }
+
+                                                document.getElementById('gasesMedHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
+                                                document.getElementById('txtGasesMedHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                document.getElementById('gasesMedValor' + resultNro[_i].nro).className = "form-control";
+                                                document.getElementById('txtGasesMedValor' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                if (document.getElementById('btn' + resultNro[_i].nro) != null) {
+                                                    document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
+                                                    setTimeout(() => {
+                                                        new Cleave("#gasesMedHora" + resultNro[_i].nro, {
+                                                            time: true,
+                                                            timePattern: ['h', 'm']
+                                                        });
+                                                    }, 90);
+                                                }
+
                                             }
                                         })
                                     },
                                     onclick: (e) => {
                                         e.preventDefault();
                                     },
+
                                     oncontextmenu: (e) => {
                                         e.preventDefault();
                                         if (index == 0) {
@@ -4619,19 +4791,32 @@ class PacientesUCI extends App {
 
                                         if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
                                             valores.filter((v, i) => {
+
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
-                                                    GasesMedUci.eliminarRegistro(resultNro[_i]);
-                                                    FecthUci.eliminarSeccion(resultNro[_i]);
-                                                    GasesMedUci.nuevoRegistro = null;
-                                                    GasesMedUci.destroyTable();
-                                                    GasesMedUci.filterRegistros();
-                                                    GasesMedUci.show = false;
-                                                    m.redraw();
+
                                                     setTimeout(() => {
-                                                        GasesMedUci.show = true;
+                                                        GasesMedUci.eliminarRegistro(resultNro[_i]);
+                                                        FecthUci.eliminarSeccion(resultNro[_i]);
+                                                        GasesMedUci.nuevoRegistro = null;
+                                                        GasesMedUci.destroyTable();
+                                                        GasesMedUci.filterRegistros();
+                                                        GasesMedUci.show = false;
                                                         m.redraw();
+                                                        setTimeout(() => {
+                                                            GasesMedUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
                                                     }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
+
+
                                                 }
                                             })
 
@@ -4639,14 +4824,19 @@ class PacientesUCI extends App {
                                         }
                                     },
                                     oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
                                         valores.filter((v, i) => {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].valor !== null) {
+
                                                         el.dom.innerHTML = resultNro[_i].valor;
+                                                        el.dom.id = "txtGasesMedValor" + resultNro[_i].nro;
                                                     } else {
-                                                        el.dom.innerHTML = '<button type="button" class="btn btn-xs btn-success btn-block tx-12 ">Registrar</button>';
+                                                        el.dom.id = "txtGasesMedValor" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = '<button type="button" id="btn' + resultNro[_i].nro + '" class="btn btn-xs btn-success btn-block tx-12">Registrar</button>';
                                                     }
                                                 } else {
                                                     el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
@@ -4655,7 +4845,40 @@ class PacientesUCI extends App {
                                         })
                                     }
 
-                                }, [])
+                                }, []),
+                                m('div.d-flex', [
+                                    m("input", {
+                                        type: "text",
+                                        placeholder: "...",
+                                        oncreate: (el) => {
+                                            valores.filter((v, i) => {
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+                                                    if (resultNro[_i] !== undefined) {
+                                                        if (resultNro[_i].valor !== null) {
+                                                            el.dom.value = resultNro[_i].valor;
+                                                            el.dom.id = "gasesMedValor" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control tx-semibold tx-14 d-none";
+
+                                                        } else {
+                                                            el.dom.id = "gasesMedValor" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control tx-semibold tx-14 d-none";
+                                                        }
+                                                    } else {
+                                                        el.dom.className = "form-control tx-semibold tx-14 d-none";
+
+                                                    }
+                                                }
+                                            })
+                                        },
+                                        oninput: (e) => {
+                                            GasesMedUci.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
+                                        },
+
+
+                                    })
+
+                                ]),
                             ]
                         }
                     });
@@ -4670,25 +4893,91 @@ class PacientesUCI extends App {
                     return m.mount(nTd, {
                         view: () => {
                             return [
-                                m('div.text-center.pd-l-0.pd-r-0', {
+                                m('div', {
                                     ondblclick: (e) => {
-                                        GasesMedUci.nuevoRegistro = null
+                                        GasesMedUci.nuevoRegistro = null;
                                         valores.filter((v, i) => {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 GasesMedUci.verRegistro(resultNro[_i]);
+                                                if (GasesMedUci.nuevoRegistro !== null && GasesMedUci.nuevoRegistro.hora == null) {
+                                                    if (GasesMedUci.setHora != undefined) {
+                                                        GasesMedUci.nuevoRegistro.hora = GasesMedUci.setHora;
+                                                        document.getElementById('gasesMedHora' + resultNro[_i].nro).value = GasesMedUci.setHora;
+                                                    }
+                                                }
+                                                document.getElementById('gasesMedHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
+                                                document.getElementById('txtGasesMedHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                document.getElementById('gasesMedValor' + resultNro[_i].nro).className = "form-control";
+                                                document.getElementById('txtGasesMedValor' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                if (document.getElementById('btn' + resultNro[_i].nro) != null) {
+                                                    document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
+                                                    setTimeout(() => {
+                                                        new Cleave("#gasesMedHora" + resultNro[_i].nro, {
+                                                            time: true,
+                                                            timePattern: ['h', 'm']
+                                                        });
+                                                    }, 90);
+                                                }
+
                                             }
                                         })
+                                    },
+                                    onclick: (e) => {
+                                        e.preventDefault();
+                                    },
 
+                                    oncontextmenu: (e) => {
+                                        e.preventDefault();
+                                        if (index == 0) {
+                                            alert('No se puede eliminar el registro predeterminado.');
+                                            throw 'No se puede eliminar el registro predeterminado.';
+                                        }
+
+                                        if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                            valores.filter((v, i) => {
+
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+
+                                                    setTimeout(() => {
+                                                        GasesMedUci.eliminarRegistro(resultNro[_i]);
+                                                        FecthUci.eliminarSeccion(resultNro[_i]);
+                                                        GasesMedUci.nuevoRegistro = null;
+                                                        GasesMedUci.destroyTable();
+                                                        GasesMedUci.filterRegistros();
+                                                        GasesMedUci.show = false;
+                                                        m.redraw();
+                                                        setTimeout(() => {
+                                                            GasesMedUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
+                                                    }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
+                                                }
+                                            })
+
+
+                                        }
                                     },
                                     oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
                                         valores.filter((v, i) => {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].hora !== null) {
                                                         el.dom.innerHTML = resultNro[_i].hora;
+                                                        el.dom.id = "txtGasesMedHora" + resultNro[_i].nro;
                                                     } else {
+                                                        el.dom.id = "txtGasesMedHora" + resultNro[_i].nro;
                                                         el.dom.innerHTML = '';
                                                     }
                                                 } else {
@@ -4697,7 +4986,104 @@ class PacientesUCI extends App {
                                             }
                                         })
                                     }
-                                }, [])
+
+                                }, []),
+                                m('div.d-flex', [
+                                    m("input[type='text'][placeholder='HH:mm']", {
+
+                                        oncreate: (el) => {
+                                            valores.filter((v, i) => {
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+                                                    if (resultNro[_i] !== undefined) {
+                                                        if (resultNro[_i].hora !== null) {
+                                                            el.dom.value = resultNro[_i].hora;
+                                                            el.dom.id = "gasesMedHora" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control d-none";
+
+                                                            setTimeout(() => {
+                                                                new Cleave("#" + el.dom.id, {
+                                                                    time: true,
+                                                                    timePattern: ['h', 'm']
+                                                                });
+                                                            }, 90);
+
+                                                        } else {
+                                                            el.dom.id = "gasesMedHora" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control d-none";
+                                                        }
+                                                    } else {
+                                                        el.dom.className = "form-control d-none";
+
+                                                    }
+                                                }
+                                            })
+
+
+
+
+
+                                        },
+                                        oninput: (e) => {
+                                            setTimeout(() => {
+                                                GasesMedUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                                GasesMedUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            }, 50);
+                                        },
+                                        onkeypress: (e) => {
+                                            if (e.keyCode == 13) {
+                                                GasesMedUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                GasesMedUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                if (GasesMedUci.nuevoRegistro.editar == null) {
+
+                                                    setTimeout(() => {
+                                                        GasesMedUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(GasesMedUci.nuevoRegistro);
+                                                        GasesMedUci.nuevoRegistro = null;
+                                                        GasesMedUci.destroyTable();
+                                                        GasesMedUci.filterRegistros();
+                                                        GasesMedUci.show = false;
+                                                        m.redraw();
+                                                        setTimeout(() => {
+                                                            GasesMedUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
+                                                    }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
+                                                } else {
+
+                                                    setTimeout(() => {
+                                                        GasesMedUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(GasesMedUci.nuevoRegistro);
+                                                        GasesMedUci.nuevoRegistro = null;
+                                                        GasesMedUci.destroyTable();
+                                                        GasesMedUci.filterRegistros();
+                                                        GasesMedUci.show = false;
+                                                        m.redraw();
+                                                        setTimeout(() => {
+                                                            GasesMedUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
+                                                    }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
+                                                }
+                                            }
+                                        },
+
+                                    }),
+                                ]),
                             ]
                         }
                     });
@@ -4715,10 +5101,18 @@ class PacientesUCI extends App {
                         return [
                             m("div.btn-block.btn-group.wd-100p.pd-5", [
 
+
                                 m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
                                         class: (GasesMedUci.nuevoRegistro !== null && GasesMedUci.nuevoRegistro.editar && GasesMedUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
                                         onclick: () => {
                                             oData.editar = null;
+                                            document.getElementById('gasesMedValor' + GasesMedUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
+                                            document.getElementById('txtGasesMedValor' + GasesMedUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                            document.getElementById('gasesMedHora' + GasesMedUci.nuevoRegistro.nro).className = "form-control d-none";
+                                            document.getElementById('txtGasesMedHora' + GasesMedUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                            if (document.getElementById('btn' + GasesMedUci.nuevoRegistro.nro) != null) {
+                                                document.getElementById('btn' + GasesMedUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
+                                            }
                                             GasesMedUci.nuevoRegistro = null;
                                         },
                                     },
@@ -4738,10 +5132,32 @@ class PacientesUCI extends App {
                                             GasesMedUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             GasesMedUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
+                                            setTimeout(() => {
+                                                GasesMedUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(GasesMedUci.nuevoRegistro);
+                                                GasesMedUci.nuevoRegistro = null;
+                                                GasesMedUci.destroyTable();
+                                                GasesMedUci.filterRegistros();
+                                                GasesMedUci.show = false;
+                                                m.redraw();
+                                                setTimeout(() => {
+                                                    GasesMedUci.show = true;
+                                                    m.redraw();
+                                                }, 100);
+                                            }, 100);
+
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                    isAnimating = false;
+                                                })
+                                            }, 250);
+
                                         },
                                     },
                                     'Copiar',
                                 ),
+
 
 
                             ])

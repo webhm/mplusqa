@@ -791,7 +791,18 @@ class MedidasUci {
                 mRender: function(data, type, full) {
                     return full.medida;
                 },
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+                                    id: 'MedidasUci_' + oData.id,
+                                }, [oData.medida]),
 
+                            ]
+                        }
+                    });
+                },
                 visible: true,
                 aTargets: [3],
                 orderable: true,
@@ -857,17 +868,28 @@ class MedidasUci {
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
 
-                                                    MedidasUci.eliminarRegistro(resultNro[_i]);
-                                                    FecthUci.eliminarSeccion(resultNro[_i]);
-                                                    MedidasUci.nuevoRegistro = null;
-                                                    MedidasUci.destroyTable();
-                                                    MedidasUci.filterRegistros();
-                                                    MedidasUci.show = false;
-                                                    m.redraw();
                                                     setTimeout(() => {
-                                                        MedidasUci.show = true;
+                                                        MedidasUci.eliminarRegistro(resultNro[_i]);
+                                                        FecthUci.eliminarSeccion(resultNro[_i]);
+                                                        MedidasUci.nuevoRegistro = null;
+                                                        MedidasUci.destroyTable();
+                                                        MedidasUci.filterRegistros();
+                                                        MedidasUci.show = false;
                                                         m.redraw();
+                                                        setTimeout(() => {
+                                                            MedidasUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
                                                     }, 100);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                            isAnimating = false;
+                                                        })
+                                                    }, 250);
+
+
                                                 }
                                             })
 
@@ -1084,9 +1106,10 @@ class MedidasUci {
                                                 MedidasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                 MedidasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                 if (MedidasUci.nuevoRegistro.editar == null) {
-                                                    MedidasUci.agregarRegistro();
-                                                    let _nro = MedidasUci.nuevoRegistro.nro;
+
+
                                                     setTimeout(() => {
+                                                        MedidasUci.agregarRegistro();
                                                         FecthUci.registrarSeccion(MedidasUci.nuevoRegistro);
                                                         MedidasUci.nuevoRegistro = null;
                                                         MedidasUci.destroyTable();
@@ -1100,15 +1123,14 @@ class MedidasUci {
                                                     }, 100);
 
                                                     setTimeout(() => {
-
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#txtMedidasHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
+
                                                 } else {
 
-                                                    let _nro = MedidasUci.nuevoRegistro.nro;
                                                     setTimeout(() => {
                                                         MedidasUci.editarRegistro();
                                                         FecthUci.actualizarSeccion(MedidasUci.nuevoRegistro);
@@ -1124,9 +1146,8 @@ class MedidasUci {
                                                     }, 100);
 
                                                     setTimeout(() => {
-
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#txtMedidasHora" + _nro).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
@@ -1200,6 +1221,13 @@ class MedidasUci {
                                                     m.redraw();
                                                 }, 100);
                                             }, 100);
+
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                    isAnimating = false;
+                                                })
+                                            }, 250);
 
                                         },
                                     },
@@ -1286,6 +1314,9 @@ class MedidasUci {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
+                        if (MedidasUci.show) {
+                            MedidasUci.destroyTable();
+                        }
                         MedidasUci.show = !MedidasUci.show;
                     }
 
