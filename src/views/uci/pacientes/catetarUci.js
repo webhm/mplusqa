@@ -490,6 +490,14 @@ class CateterUci {
         };
     }
 
+    static destroyTable() {
+        let table = document.getElementById('table-cateter');
+        // clear first
+        if (table != null) {
+            $('#table-cateter').DataTable().clear().destroy();
+        }
+    }
+
     view() {
         return [
             m("thead.bd.bd-2", {
@@ -502,6 +510,9 @@ class CateterUci {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
+                        if (CateterUci.show) {
+                            CateterUci.destroyTable();
+                        }
                         CateterUci.show = !CateterUci.show;
                     }
 

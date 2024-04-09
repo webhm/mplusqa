@@ -309,6 +309,14 @@ class CultivosUci {
         };
     }
 
+    static destroyTable() {
+        let table = document.getElementById('table-cultivos');
+        // clear first
+        if (table != null) {
+            $('#table-cultivos').DataTable().clear().destroy();
+        }
+    }
+
     view() {
         return [
             m("thead.bd.bd-2", {
@@ -321,6 +329,9 @@ class CultivosUci {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
+                        if (CultivosUci.show) {
+                            CultivosUci.destroyTable();
+                        }
                         CultivosUci.show = !CultivosUci.show;
                     }
 

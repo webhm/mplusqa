@@ -440,6 +440,13 @@ class GasesMedUci {
                                                     }, 90);
                                                 }
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        isAnimating = false;
+                                                    })
+                                                }, 250);
+
                                             }
                                         })
                                     },
@@ -584,6 +591,15 @@ class GasesMedUci {
                                                         });
                                                     }, 90);
                                                 }
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        isAnimating = false;
+                                                    })
+                                                }, 250);
+
+
 
                                             }
                                         })

@@ -489,6 +489,14 @@ class HemodialisisUci {
         };
     }
 
+    static destroyTable() {
+        let table = document.getElementById('table-hemodialisis');
+        // clear first
+        if (table != null) {
+            $('#table-hemodialisis').DataTable().clear().destroy();
+        }
+    }
+
     view() {
         return [
             m("thead.bd.bd-2", {
@@ -500,6 +508,9 @@ class HemodialisisUci {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
+                        if (HemodialisisUci.show) {
+                            HemodialisisUci.destroyTable();
+                        }
                         HemodialisisUci.show = !HemodialisisUci.show;
                     }
 

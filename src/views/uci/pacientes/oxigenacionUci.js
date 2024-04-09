@@ -488,6 +488,14 @@ class OxigenacionUci {
         };
     }
 
+    static destroyTable() {
+        let table = document.getElementById('table-oxigenacion');
+        // clear first
+        if (table != null) {
+            $('#table-oxigenacion').DataTable().clear().destroy();
+        }
+    }
+
     view() {
 
         return [
@@ -500,6 +508,9 @@ class OxigenacionUci {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
+                        if (OxigenacionUci.show) {
+                            OxigenacionUci.destroyTable();
+                        }
                         OxigenacionUci.show = !OxigenacionUci.show;
                     }
 

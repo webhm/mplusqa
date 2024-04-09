@@ -996,6 +996,14 @@ class VentilatoriosUci {
                                                     }, 90);
                                                 }
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({ scrollTop: $("#Ventilatorios_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        isAnimating = false;
+                                                    })
+                                                }, 250);
+
+
                                             }
                                         })
                                     },
@@ -1136,6 +1144,14 @@ class VentilatoriosUci {
                                                         });
                                                     }, 90);
                                                 }
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({ scrollTop: $("#Ventilatorios_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        isAnimating = false;
+                                                    })
+                                                }, 250);
+
 
                                             }
                                         });

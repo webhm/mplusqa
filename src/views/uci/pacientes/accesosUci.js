@@ -389,6 +389,15 @@ class AccesosUci {
         };
     }
 
+    static destroyTable() {
+        let table = document.getElementById('table-accesos');
+        // clear first
+        if (table != null) {
+            $('#table-accesos').DataTable().clear().destroy();
+
+        }
+    }
+
     view() {
         return [
             m("thead.bd.bd-2", {
@@ -401,6 +410,9 @@ class AccesosUci {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
+                        if (AccesosUci.show) {
+                            AccesosUci.destroyTable();
+                        }
                         AccesosUci.show = !AccesosUci.show;
                     }
 

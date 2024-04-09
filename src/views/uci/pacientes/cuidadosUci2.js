@@ -119,6 +119,15 @@ class CuidadosUci2 {
         return CuidadosUci2.registros;
     }
 
+    static destroyTable() {
+        let table = document.getElementById('table-cuidados');
+        // clear first
+        if (table != null) {
+            $('#table-cuidados').DataTable().clear().destroy();
+
+        }
+    }
+
     static arqTable() {
         return {
             data: null,
@@ -537,6 +546,9 @@ class CuidadosUci2 {
                 m("tr.tx-uppercase", {
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
+                        if (CuidadosUci2.show) {
+                            CuidadosUci2.destroyTable();
+                        }
                         CuidadosUci2.show = !CuidadosUci2.show;
                     }
 

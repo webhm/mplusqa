@@ -489,6 +489,14 @@ class MarcapasosUci {
         };
     }
 
+    static destroyTable() {
+        let table = document.getElementById('table-marcapasos');
+        // clear first
+        if (table != null) {
+            $('#table-marcapasos').DataTable().clear().destroy();
+        }
+    }
+
     view() {
 
         return [
@@ -501,6 +509,9 @@ class MarcapasosUci {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
+                        if (MarcapasosUci.show) {
+                            MarcapasosUci.destroyTable();
+                        }
                         MarcapasosUci.show = !MarcapasosUci.show;
                     }
 

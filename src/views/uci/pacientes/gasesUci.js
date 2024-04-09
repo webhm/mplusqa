@@ -623,6 +623,13 @@ class GasesUci {
                                                     }, 90);
                                                 }
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        isAnimating = false;
+                                                    })
+                                                }, 250);
+
                                             }
                                         });
 
@@ -744,6 +751,13 @@ class GasesUci {
                                                         });
                                                     }, 90);
                                                 }
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        isAnimating = false;
+                                                    })
+                                                }, 250);
 
                                             }
                                         })

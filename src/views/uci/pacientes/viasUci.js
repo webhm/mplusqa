@@ -399,6 +399,15 @@ class ViasUci {
         };
     }
 
+    static destroyTable() {
+        let table = document.getElementById('table-vias');
+        // clear first
+        if (table != null) {
+            $('#table-vias').DataTable().clear().destroy();
+
+        }
+    }
+
     view() {
         return [
             m("thead.bd.bd-2", {
@@ -411,6 +420,9 @@ class ViasUci {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
+                        if (ViasUci.show) {
+                            ViasUci.destroyTable();
+                        }
                         ViasUci.show = !ViasUci.show;
                     }
                 }, [

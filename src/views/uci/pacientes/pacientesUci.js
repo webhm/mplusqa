@@ -1297,6 +1297,13 @@ class PacientesUCI extends App {
                                                     }, 90);
                                                 }
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({ scrollTop: $("#Ventilatorios_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        isAnimating = false;
+                                                    })
+                                                }, 250);
+
                                             }
                                         })
                                     },
@@ -1435,6 +1442,13 @@ class PacientesUCI extends App {
                                                         });
                                                     }, 90);
                                                 }
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({ scrollTop: $("#Ventilatorios_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        isAnimating = false;
+                                                    })
+                                                }, 250);
 
                                             }
                                         });
@@ -2225,6 +2239,13 @@ class PacientesUCI extends App {
                                                     }, 90);
                                                 }
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        isAnimating = false;
+                                                    })
+                                                }, 250);
+
                                             }
                                         });
 
@@ -2342,6 +2363,13 @@ class PacientesUCI extends App {
                                                         });
                                                     }, 90);
                                                 }
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        isAnimating = false;
+                                                    })
+                                                }, 250);
 
                                             }
                                         })
@@ -3240,6 +3268,13 @@ class PacientesUCI extends App {
                                                     }, 90);
                                                 }
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        isAnimating = false;
+                                                    })
+                                                }, 250);
+
                                             }
                                         })
                                     },
@@ -3387,6 +3422,14 @@ class PacientesUCI extends App {
                                                         });
                                                     }, 90);
                                                 }
+
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        isAnimating = false;
+                                                    })
+                                                }, 250);
 
                                             }
                                         })
@@ -4104,6 +4147,14 @@ class PacientesUCI extends App {
                                                     }, 90);
                                                 }
 
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        isAnimating = false;
+                                                    })
+                                                }, 250);
+
                                             }
                                         })
                                     },
@@ -4245,6 +4296,14 @@ class PacientesUCI extends App {
                                                         });
                                                     }, 90);
                                                 }
+
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        isAnimating = false;
+                                                    })
+                                                }, 250);
 
                                             }
                                         })
@@ -4775,6 +4834,13 @@ class PacientesUCI extends App {
                                                     }, 90);
                                                 }
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        isAnimating = false;
+                                                    })
+                                                }, 250);
+
                                             }
                                         })
                                     },
@@ -4919,6 +4985,13 @@ class PacientesUCI extends App {
                                                         });
                                                     }, 90);
                                                 }
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        isAnimating = false;
+                                                    })
+                                                }, 250);
 
                                             }
                                         })
@@ -5101,7 +5174,6 @@ class PacientesUCI extends App {
                         return [
                             m("div.btn-block.btn-group.wd-100p.pd-5", [
 
-
                                 m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
                                         class: (GasesMedUci.nuevoRegistro !== null && GasesMedUci.nuevoRegistro.editar && GasesMedUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
                                         onclick: () => {
@@ -5125,6 +5197,7 @@ class PacientesUCI extends App {
                                                 alert('No se permite copiar. Ya existe un registro disponible.');
                                                 throw 'No se permite copiar. Ya existe un registro disponible.'
                                             }
+
                                             GasesMedUci.iniciarRegistro();
                                             GasesMedUci.nuevoRegistro.id = oData.id;
                                             GasesMedUci.nuevoRegistro.medida = oData.medida;

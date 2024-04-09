@@ -486,6 +486,15 @@ class VentilacionUci {
         };
     }
 
+    static destroyTable() {
+        let table = document.getElementById('table-ventilacion');
+        // clear first
+        if (table != null) {
+            $('#table-ventilacion').DataTable().clear().destroy();
+
+        }
+    }
+
     view() {
         return [
             m("thead.bd.bd-2", {
@@ -497,6 +506,9 @@ class VentilacionUci {
                 m("tr.tx-uppercase", {
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
+                        if (VentilacionUci.show) {
+                            VentilacionUci.destroyTable();
+                        }
                         VentilacionUci.show = !VentilacionUci.show;
                     }
 
