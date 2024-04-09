@@ -463,7 +463,11 @@ class CateterUci {
                                                     }
                                                     CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-
+                                                    CateterUci.agregarRegistro();
+                                                    FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
+                                                    CateterUci.nuevoRegistro = null;
+                                                    CateterUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
                                                 },
                                             },
                                             'Copiar',

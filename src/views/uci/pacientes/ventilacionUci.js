@@ -459,7 +459,11 @@ class VentilacionUci {
                                                     }
                                                     VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-
+                                                    VentilacionUci.agregarRegistro();
+                                                    FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
+                                                    VentilacionUci.nuevoRegistro = null;
+                                                    VentilacionUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
                                                 },
                                             },
                                             'Copiar',

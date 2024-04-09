@@ -461,7 +461,11 @@ class OxigenacionUci {
                                                     }
                                                     OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-
+                                                    OxigenacionUci.agregarRegistro();
+                                                    FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
+                                                    OxigenacionUci.nuevoRegistro = null;
+                                                    OxigenacionUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-hemodialisis', OxigenacionUci.getRegistros());
                                                 },
                                             },
                                             'Copiar',

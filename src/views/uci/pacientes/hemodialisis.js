@@ -462,7 +462,11 @@ class HemodialisisUci {
                                                     }
                                                     HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-
+                                                    HemodialisisUci.agregarRegistro();
+                                                    FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
+                                                    HemodialisisUci.nuevoRegistro = null;
+                                                    HemodialisisUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
                                                 },
                                             },
                                             'Copiar',

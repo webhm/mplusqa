@@ -508,7 +508,11 @@ class CuidadosUci2 {
                                                     console.log(66, CuidadosUci2.nuevoRegistro)
                                                     CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    m.redraw();
+                                                    CuidadosUci2.agregarRegistro();
+                                                    FecthUci.registrarSeccion(CuidadosUci2.nuevoRegistro);
+                                                    CuidadosUci2.nuevoRegistro = null;
+                                                    CuidadosUci2.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
 
                                                 },
                                             },
