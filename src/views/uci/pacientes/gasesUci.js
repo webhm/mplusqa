@@ -1352,7 +1352,7 @@ class GasesUci {
                     ),
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
-                    m("td[colspan='12']", { style: "max-width: 100px;overflow: auto;" },
+                    m("td[colspan='12']", { style: "max-width: 150px;overflow: auto;" },
                         (GasesUci.show != false ? [PacientesUCI.vTable('table-gases', GasesUci.getRegistros(), GasesUci.arqTable())] : [])
                     ),
                 ]),

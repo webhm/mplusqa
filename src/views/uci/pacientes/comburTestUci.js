@@ -1309,7 +1309,7 @@ class ComburTestUci {
                     ),
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
-                    m("td[colspan='12']",
+                    m("td[colspan='12']", { style: "max-width: 150px;overflow: auto;" },
                         (ComburTestUci.show != false ? [PacientesUCI.vTable('table-comburtest', ComburTestUci.getRegistros(), ComburTestUci.arqTable())] : [])
                     ),
                 ]),

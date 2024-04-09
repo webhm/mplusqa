@@ -1604,7 +1604,7 @@ class MedidasUci {
                     ),
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
-                    m("td[colspan='12']",
+                    m("td[colspan='12']", { style: "max-width: 150px;overflow: auto;" },
                         (MedidasUci.show != false ? [PacientesUCI.vTable('table-medidas', MedidasUci.getRegistros(), MedidasUci.arqTable())] : [])
                     ),
                 ]),

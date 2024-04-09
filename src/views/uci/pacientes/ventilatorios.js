@@ -1749,7 +1749,7 @@ class VentilatoriosUci {
                     ),
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
-                    m("td[colspan='12']",
+                    m("td[colspan='12']", { style: "max-width: 150px;overflow: auto;" },
                         (VentilatoriosUci.show != false ? [PacientesUCI.vTable('table-ventilatorios', VentilatoriosUci.getRegistros(), VentilatoriosUci.arqTable())] : [])
                     ),
                 ]),
