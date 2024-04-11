@@ -271,6 +271,27 @@ class FecthUci {
 
     }
 
+    static validarTipoAtencion() {
+
+        return m.request({
+            method: "POST",
+            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/validar-atencion",
+            body: {
+                numeroAtencion: PacientesUCI.numeroAtencion,
+            },
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        }).then(function(res) {
+            console.log(88, res)
+
+        }).catch(function(e) {
+
+        });
+
+
+    }
+
     static loadSecciones() {
 
         FecthUci.loaderSecciones = false;

@@ -38,6 +38,7 @@ class PacientesUCI extends App {
     static idFiltro = 1;
     static fechaHasta = null;
     static fechaDesde = null;
+    static tipoAtencion = null;
 
     constructor(_data) {
 
@@ -49,6 +50,7 @@ class PacientesUCI extends App {
         PacientesUCI.numeroTurno = (_data.attrs.numeroTurno !== undefined ? _data.attrs.numeroTurno : null);
         PacientesUCI.usuarioTurno = _data.attrs.usuario;
         PacientesUCI.validarAtencion();
+        PacientesUCI.validarTipoAtencion();
 
     }
 
@@ -56,10 +58,11 @@ class PacientesUCI extends App {
         console.log('data', _data);
     }
 
-
+    static validarTipoAtencion() {
+        FecthUci.validarTipoAtencion();
+    }
 
     static validarAtencion() {
-
         FecthUci.validarAtencion();
     }
 
@@ -106,6 +109,8 @@ class PacientesUCI extends App {
 
         // Pediatrica y Neo
         UlcerasUciPed.registros = PacientesUCI.parseAllSeccion('UlcerasPed');
+
+        ValoracionUciNeo.registros = PacientesUCI.parseAllSeccion('ValoracionFisicaNeo');
 
 
     }

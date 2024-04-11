@@ -10,7 +10,7 @@ class Valoracion {
     tipo = null;
     valoracion = null;
     editar = null;
-    seccion = 'ValoracionNeo';
+    seccion = 'ValoracionFisicaNeo';
     constructor() {
         this.id = this.id;
         this.nro = this.nro;

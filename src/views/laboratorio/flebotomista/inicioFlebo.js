@@ -620,6 +620,9 @@ class InicioFlebotomista extends App {
                     title: "NHC:",
                 },
                 {
+                    title: "FECHA:",
+                },
+                {
                     title: "DEJAR PENDIENTE:",
                 }
             ],
@@ -702,6 +705,16 @@ class InicioFlebotomista extends App {
 
                 },
                 {
+                    mRender: function(data, type, full) {
+                        return full.fechaTurnoAtencion;
+
+                    },
+                    visible: true,
+                    aTargets: [4],
+                    orderable: true,
+
+                },
+                {
                     fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                         return m.mount(nTd, {
                             view: () => {
@@ -724,7 +737,7 @@ class InicioFlebotomista extends App {
 
                     },
                     visible: true,
-                    aTargets: [4],
+                    aTargets: [5],
                     orderable: true,
 
                 }
@@ -785,6 +798,9 @@ class InicioFlebotomista extends App {
                 },
                 {
                     title: "NHC:",
+                },
+                {
+                    title: "FECHA:",
                 },
                 {
                     title: "DESHACER PENDIENTE:",
@@ -869,6 +885,16 @@ class InicioFlebotomista extends App {
 
                 },
                 {
+                    mRender: function(data, type, full) {
+                        return full.fechaTurnoAtencion;
+
+                    },
+                    visible: true,
+                    aTargets: [4],
+                    orderable: true,
+
+                },
+                {
                     fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                         return m.mount(nTd, {
                             view: () => {
@@ -891,7 +917,7 @@ class InicioFlebotomista extends App {
 
                     },
                     visible: true,
-                    aTargets: [4],
+                    aTargets: [5],
                     orderable: true,
 
                 }
