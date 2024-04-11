@@ -127,16 +127,10 @@ class ValoracionUciNeo {
                     title: "N°:",
                 },
                 {
-                    title: "Trae:",
+                    title: "Tipo:",
                 },
                 {
-                    title: "Fecha de Inicio:",
-                },
-                {
-                    title: "Localización:",
-                },
-                {
-                    title: "Grado:",
+                    title: "Valor:",
                 },
                 {
                     title: "Opciones:",
@@ -197,7 +191,7 @@ class ValoracionUciNeo {
 
                 {
                     mRender: function(data, type, full) {
-                        return full.trae != null ? full.trae : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                        return full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
                     },
 
                     visible: true,
@@ -207,29 +201,11 @@ class ValoracionUciNeo {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return (full.inicio != null ? full.inicio : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                        return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                     },
                     visible: true,
                     aTargets: [5],
                     orderable: true,
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.localizacion != null ? full.localizacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    visible: true,
-                    aTargets: [6],
-                    orderable: true,
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.grado != null ? full.grado : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    visible: true,
-                    aTargets: [7],
-                    orderable: true,
-
 
                 },
 
@@ -302,7 +278,7 @@ class ValoracionUciNeo {
                     },
                     width: '10%',
                     visible: true,
-                    aTargets: [8],
+                    aTargets: [6],
                     orderable: true,
 
                 }
