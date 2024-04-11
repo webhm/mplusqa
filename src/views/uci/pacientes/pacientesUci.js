@@ -21,6 +21,8 @@ import OxigenacionUci from "./oxigenacionUci";
 import MedidasUci from "./medidasUci";
 import ComburTestUci from "./comburTestUci";
 import GasesMedUci from "./gasesMedUci";
+import UlcerasUciPed from "./ulcerasUciPed";
+import ValoracionUciNeo from "./valorarionUciNeo";
 
 
 // Pacientes UCI
@@ -101,6 +103,10 @@ class PacientesUCI extends App {
         //  ComburTestUci.show = true;
 
         // GasesMedUci.show = true;
+
+        // Pediatrica y Neo
+        UlcerasUciPed.registros = PacientesUCI.parseAllSeccion('UlcerasPed');
+
 
     }
 
@@ -200,6 +206,10 @@ class PacientesUCI extends App {
                         m(ComburTestUci),
                         // GasesMedUci
                         m(GasesMedUci),
+                        // UlcerasUciPed
+                        m(UlcerasUciPed),
+                        // ValoracionUciNeo
+                        m(ValoracionUciNeo),
                     ])
                 ])
             ),
@@ -4459,9 +4469,13 @@ class PacientesUCI extends App {
 
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
+                                                        $('html,body').animate({
+                                                                scrollTop: $("#ComburTest_" + oData.id).offset().top
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
                                                 }
                                             }
@@ -4532,9 +4546,24 @@ class PacientesUCI extends App {
 
                                             setTimeout(() => {
                                                 let isAnimating = true;
-                                                $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                    isAnimating = false;
-                                                })
+                                                $('html,body').animate({
+                                                        scrollTop: $("#ComburTest_" + oData.id).offset().top,
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
+                                            }, 250);
+
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('#registrosComburTest').animate({
+                                                        scrollLeft: '+=460'
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
                                             }, 250);
 
 
@@ -5374,6 +5403,28 @@ class PacientesUCI extends App {
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.nro - b.nro);
 
+        return _arr;
+    }
+
+    static parseAllSeccion(idSeccion) {
+        let res = [];
+        let result = [];
+        let _arr = [];
+        let hash = {};
+
+
+        FecthUci.dataSecciones.map((obj) => {
+            let _obj = JSON.parse(obj.DATASECCION);
+            if (_obj.seccion === idSeccion) {
+                res.push(_obj);
+            }
+        });
+
+        // Quitar duplicados
+        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+
+        // Ordenar desc
+        _arr = result.sort((a, b) => a.nro - b.nro);
         return _arr;
     }
 

@@ -1011,13 +1011,27 @@ class ComburTestUci {
                                                     m.redraw();
                                                 }, 100);
                                             }, 100);
-
                                             setTimeout(() => {
                                                 let isAnimating = true;
-                                                $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                    isAnimating = false;
-                                                })
+                                                $('html,body').animate({
+                                                        scrollTop: $("#ComburTest_" + oData.id).offset().top,
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
                                             }, 250);
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('#registrosComburTest').animate({
+                                                        scrollLeft: '+=460'
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
+                                            }, 250);
+
 
                                         },
                                     },
@@ -1309,7 +1323,7 @@ class ComburTestUci {
                     ),
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
-                    m("td[colspan='12']", { style: "max-width: 150px;overflow: auto;" },
+                    m("td[colspan='12'][id='registrosComburTest']", { style: "max-width: 150px;overflow: auto;" },
                         (ComburTestUci.show != false ? [PacientesUCI.vTable('table-comburtest', ComburTestUci.getRegistros(), ComburTestUci.arqTable())] : [])
                     ),
                 ]),
