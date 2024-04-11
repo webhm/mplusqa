@@ -934,7 +934,7 @@ class VentilatoriosUci {
                     });
                 },
                 width: '15%',
-                visible: true,
+                visible: false,
                 aTargets: [2],
                 orderable: false,
 

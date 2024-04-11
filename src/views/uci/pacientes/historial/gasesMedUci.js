@@ -12,7 +12,7 @@ class Medida {
     valor = null;
     hora = null;
     editar = null;
-    seccion = 'ComburTest';
+    seccion = 'GasesMed';
     constructor() {
         this.id = this.id;
         this.orden = this.orden;
@@ -27,7 +27,7 @@ class Medida {
 }
 
 
-class ComburTestUci {
+class GasesMedUci {
     static registros = [];
     static allRegistros = [];
     static nuevoRegistro = null;
@@ -43,28 +43,28 @@ class ComburTestUci {
 
     }
     static iniciarRegistro() {
-        ComburTestUci.nuevoRegistro = new Medida();
+        GasesMedUci.nuevoRegistro = new Medida();
     }
     static agregarRegistro() {
 
-        if (ComburTestUci.allRegistros.length == 0) {
-            ComburTestUci.nuevoRegistro.nro = 1;
-            ComburTestUci.allRegistros.push(ComburTestUci.nuevoRegistro);
+        if (GasesMedUci.allRegistros.length == 0) {
+            GasesMedUci.nuevoRegistro.nro = 1;
+            GasesMedUci.allRegistros.push(GasesMedUci.nuevoRegistro);
         } else {
-            ComburTestUci.nuevoRegistro.nro = (ComburTestUci.allRegistros[ComburTestUci.allRegistros.reverse().length - 1].nro + 1);
-            ComburTestUci.allRegistros.push(ComburTestUci.nuevoRegistro);
+            GasesMedUci.nuevoRegistro.nro = (GasesMedUci.allRegistros[GasesMedUci.allRegistros.reverse().length - 1].nro + 1);
+            GasesMedUci.allRegistros.push(GasesMedUci.nuevoRegistro);
         }
     }
     static verRegistro(registro) {
         registro.editar = true;
-        ComburTestUci.nuevoRegistro = registro;
-        console.log(ComburTestUci.nuevoRegistro)
+        GasesMedUci.nuevoRegistro = registro;
+        console.log(GasesMedUci.nuevoRegistro)
     }
     static editarRegistro() {
-        ComburTestUci.nuevoRegistro.editar = null;
-        ComburTestUci.allRegistros.map((_v, _i) => {
-            if (_v.nro == ComburTestUci.nuevoRegistro.nro) {
-                ComburTestUci.allRegistros[_i] = ComburTestUci.nuevoRegistro;
+        GasesMedUci.nuevoRegistro.editar = null;
+        GasesMedUci.allRegistros.map((_v, _i) => {
+            if (_v.nro == GasesMedUci.nuevoRegistro.nro) {
+                GasesMedUci.allRegistros[_i] = GasesMedUci.nuevoRegistro;
             }
         });
 
@@ -78,7 +78,7 @@ class ComburTestUci {
         let result = [];
         let resultNro = [];
 
-        ComburTestUci.allRegistros.map((_v, _i) => {
+        GasesMedUci.allRegistros.map((_v, _i) => {
             if (_v.nro !== obj.nro) {
                 res.push(_v);
             }
@@ -90,7 +90,7 @@ class ComburTestUci {
 
         _arr = resultNro.sort((a, b) => a.nro - b.nro);
 
-        ComburTestUci.allRegistros = _arr;
+        GasesMedUci.allRegistros = _arr;
 
     }
     static valorarRango(valor, id) {
@@ -196,7 +196,7 @@ class ComburTestUci {
         let valores = [];
         let r = [];
 
-        result = ComburTestUci.allRegistros;
+        result = GasesMedUci.allRegistros;
         r = result.sort((a, b) => b.nro - a.nro);
         // Quitar duplicados
         resultNro = r.filter(o => hash[o.nro] ? false : hash[o.nro] = true).sort((a, b) => a.nro - b.nro);
@@ -205,59 +205,30 @@ class ComburTestUci {
         // 'data-orden'ar desc
         _arr = resultId.sort((a, b) => a.orden - b.orden);
 
-        ComburTestUci.registros = _arr;
+        GasesMedUci.registros = _arr;
 
         // Establecer Columnas
-        let cbPH = 0;
-        let cbProteinas = 0;
-        let cbDensidad = 0;
-        let cbGlucosa = 0;
-        let cbSangre = 0;
-        let cbCetonas = 0;
-        let cbLeucocitos = 0;
-        let cbNitritos = 0;
-        let cbUrobilinogeno = 0;
-        let cbBilirubina = 0;
+        let AireComprimido = 0;
+        let Heliox = 0;
+        let OxidoNitrico = 0;
 
         resultNro.map((col, i) => {
-            if (col.id == 'cbPH') {
-                cbPH++;
+            if (col.id == 'AireComprimido') {
+                AireComprimido++;
             }
-            if (col.id == 'cbProteinas') {
-                cbProteinas++;
+            if (col.id == 'Heliox') {
+                Heliox++;
             }
-            if (col.id == 'cbDensidad') {
-                cbDensidad++;
+            if (col.id == 'OxidoNitrico') {
+                OxidoNitrico++;
             }
-            if (col.id == 'cbGlucosa') {
-                cbGlucosa++;
-            }
-            if (col.id == 'cbSangre') {
-                cbSangre++;
-            }
-            if (col.id == 'cbCetonas') {
-                cbCetonas++;
-            }
-            if (col.id == 'cbLeucocitos') {
-                cbLeucocitos++;
-            }
-            if (col.id == 'cbNitritos') {
-                cbNitritos++;
-            }
-            if (col.id == 'cbUrobilinogeno') {
-                cbUrobilinogeno++;
-            }
-            if (col.id == 'cbBilirubina') {
-                cbBilirubina++;
-            }
-
         });
 
-        columnas = [cbPH, cbProteinas, cbDensidad, cbGlucosa, cbSangre, cbCetonas, cbLeucocitos, cbNitritos, cbUrobilinogeno, cbBilirubina];
+        columnas = [AireComprimido, Heliox, OxidoNitrico];
 
         resultNro.map((col, i) => {
             let fila = {};
-            if (col.id == 'cbPH') {
+            if (col.id == 'AireComprimido') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -281,7 +252,7 @@ class ComburTestUci {
 
 
             }
-            if (col.id == 'cbProteinas') {
+            if (col.id == 'Heliox') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -305,7 +276,7 @@ class ComburTestUci {
 
 
             }
-            if (col.id == 'cbDensidad') {
+            if (col.id == 'OxidoNitrico') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -327,165 +298,10 @@ class ComburTestUci {
                     });
                 }
             }
-            if (col.id == 'cbGlucosa') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'cbSangre') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'cbCetonas') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'cbLeucocitos') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'cbNitritos') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'cbUrobilinogeno') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'cbBilirubina') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-
         });
 
-        ComburTestUci.sColumns = [];
-        ComburTestUci.sColumns = [{
+        GasesMedUci.sColumns = [];
+        GasesMedUci.sColumns = [{
                 title: "Turno: ",
             },
             {
@@ -508,20 +324,20 @@ class ComburTestUci {
         }
 
         for (let index = 0; index < orderCol[0]; index++) {
-            ComburTestUci.sColumns.push({
+            GasesMedUci.sColumns.push({
                 title: "Valor:",
             });
-            ComburTestUci.sColumns.push({
+            GasesMedUci.sColumns.push({
                 title: "Hora:",
             });
         }
 
-        ComburTestUci.sColumns.push({
+        GasesMedUci.sColumns.push({
             title: "Opciones:",
         });
 
-        ComburTestUci.sRows = [];
-        ComburTestUci.sRows = [{
+        GasesMedUci.sRows = [];
+        GasesMedUci.sRows = [{
                 mRender: function(data, type, full) {
                     return full.fechaHoraTurno;
                 },
@@ -572,7 +388,7 @@ class ComburTestUci {
                         view: () => {
                             return [
                                 m('div', {
-                                    id: 'ComburTest_' + oData.id,
+                                    id: 'GasesMed_' + oData.id,
                                 }, [oData.medida]),
 
                             ]
@@ -588,59 +404,47 @@ class ComburTestUci {
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
-            ComburTestUci.sRows.push({
+            GasesMedUci.sRows.push({
                 fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
                                 m('div', {
                                     ondblclick: (e) => {
-                                        ComburTestUci.nuevoRegistro = null;
+                                        GasesMedUci.nuevoRegistro = null;
                                         valores.filter((v, i) => {
 
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
 
-                                                ComburTestUci.verRegistro(resultNro[_i]);
+                                                GasesMedUci.verRegistro(resultNro[_i]);
 
-                                                if (ComburTestUci.nuevoRegistro !== null && ComburTestUci.nuevoRegistro.hora == null) {
-                                                    if (ComburTestUci.setHora != undefined) {
-                                                        ComburTestUci.nuevoRegistro.hora = ComburTestUci.setHora;
-                                                        document.getElementById('comburHora' + resultNro[_i].nro).value = ComburTestUci.setHora;
+                                                if (GasesMedUci.nuevoRegistro !== null && GasesMedUci.nuevoRegistro.hora == null) {
+                                                    if (GasesMedUci.setHora != undefined) {
+                                                        GasesMedUci.nuevoRegistro.hora = GasesMedUci.setHora;
+                                                        document.getElementById('gasesMedHora' + resultNro[_i].nro).value = GasesMedUci.setHora;
                                                     }
                                                 }
 
-                                                document.getElementById('comburHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
-                                                document.getElementById('txtComburHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
-                                                document.getElementById('comburValor' + resultNro[_i].nro).className = "form-control";
-                                                document.getElementById('txtComburValor' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                document.getElementById('gasesMedHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
+                                                document.getElementById('txtGasesMedHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                document.getElementById('gasesMedValor' + resultNro[_i].nro).className = "form-control";
+                                                document.getElementById('txtGasesMedValor' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
                                                 if (document.getElementById('btn' + resultNro[_i].nro) != null) {
                                                     document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
                                                     setTimeout(() => {
-                                                        new Cleave("#comburHora" + resultNro[_i].nro, {
+                                                        new Cleave("#gasesMedHora" + resultNro[_i].nro, {
                                                             time: true,
                                                             timePattern: ['h', 'm']
                                                         });
                                                     }, 90);
                                                 }
 
-
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                    $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                         isAnimating = false;
                                                     })
-                                                }, 250);
-
-                                                setTimeout(() => {
-                                                    let isAnimating = true;
-                                                    $('#registrosComburTest').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
-                                                        700, "easeInOutSine",
-                                                        function() {
-                                                            isAnimating = false;
-                                                        })
                                                 }, 250);
 
                                             }
@@ -664,35 +468,24 @@ class ComburTestUci {
                                                     let _i = v.idObj[index];
 
                                                     setTimeout(() => {
-                                                        ComburTestUci.eliminarRegistro(resultNro[_i]);
+                                                        GasesMedUci.eliminarRegistro(resultNro[_i]);
                                                         FecthUci.eliminarSeccion(resultNro[_i]);
-                                                        ComburTestUci.nuevoRegistro = null;
-                                                        ComburTestUci.destroyTable();
-                                                        ComburTestUci.filterRegistros();
-                                                        ComburTestUci.show = false;
+                                                        GasesMedUci.nuevoRegistro = null;
+                                                        GasesMedUci.destroyTable();
+                                                        GasesMedUci.filterRegistros();
+                                                        GasesMedUci.show = false;
                                                         m.redraw();
                                                         setTimeout(() => {
-                                                            ComburTestUci.show = true;
+                                                            GasesMedUci.show = true;
                                                             m.redraw();
                                                         }, 100);
                                                     }, 100);
 
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
-                                                    }, 250);
-
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosComburTest').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
                                                     }, 250);
 
 
@@ -712,9 +505,9 @@ class ComburTestUci {
                                                     if (resultNro[_i].valor !== null) {
 
                                                         el.dom.innerHTML = resultNro[_i].valor;
-                                                        el.dom.id = "txtComburValor" + resultNro[_i].nro;
+                                                        el.dom.id = "txtGasesMedValor" + resultNro[_i].nro;
                                                     } else {
-                                                        el.dom.id = "txtComburValor" + resultNro[_i].nro;
+                                                        el.dom.id = "txtGasesMedValor" + resultNro[_i].nro;
                                                         el.dom.innerHTML = '<button type="button" id="btn' + resultNro[_i].nro + '" class="btn btn-xs btn-success btn-block tx-12">Registrar</button>';
                                                     }
                                                 } else {
@@ -736,11 +529,11 @@ class ComburTestUci {
                                                     if (resultNro[_i] !== undefined) {
                                                         if (resultNro[_i].valor !== null) {
                                                             el.dom.value = resultNro[_i].valor;
-                                                            el.dom.id = "comburValor" + resultNro[_i].nro;
+                                                            el.dom.id = "gasesMedValor" + resultNro[_i].nro;
                                                             el.dom.className = "form-control tx-semibold tx-14 d-none";
 
                                                         } else {
-                                                            el.dom.id = "comburValor" + resultNro[_i].nro;
+                                                            el.dom.id = "gasesMedValor" + resultNro[_i].nro;
                                                             el.dom.className = "form-control tx-semibold tx-14 d-none";
                                                         }
                                                     } else {
@@ -751,7 +544,7 @@ class ComburTestUci {
                                             })
                                         },
                                         oninput: (e) => {
-                                            ComburTestUci.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
+                                            GasesMedUci.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
                                         },
 
 
@@ -767,56 +560,46 @@ class ComburTestUci {
                 orderable: true,
 
             });
-            ComburTestUci.sRows.push({
+            GasesMedUci.sRows.push({
                 fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
                                 m('div', {
                                     ondblclick: (e) => {
-                                        ComburTestUci.nuevoRegistro = null;
+                                        GasesMedUci.nuevoRegistro = null;
                                         valores.filter((v, i) => {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
-                                                ComburTestUci.verRegistro(resultNro[_i]);
-                                                if (ComburTestUci.nuevoRegistro !== null && ComburTestUci.nuevoRegistro.hora == null) {
-                                                    if (ComburTestUci.setHora != undefined) {
-                                                        ComburTestUci.nuevoRegistro.hora = ComburTestUci.setHora;
-                                                        document.getElementById('comburHora' + resultNro[_i].nro).value = ComburTestUci.setHora;
+                                                GasesMedUci.verRegistro(resultNro[_i]);
+                                                if (GasesMedUci.nuevoRegistro !== null && GasesMedUci.nuevoRegistro.hora == null) {
+                                                    if (GasesMedUci.setHora != undefined) {
+                                                        GasesMedUci.nuevoRegistro.hora = GasesMedUci.setHora;
+                                                        document.getElementById('gasesMedHora' + resultNro[_i].nro).value = GasesMedUci.setHora;
                                                     }
                                                 }
-                                                document.getElementById('comburHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
-                                                document.getElementById('txtComburHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
-                                                document.getElementById('comburValor' + resultNro[_i].nro).className = "form-control";
-                                                document.getElementById('txtComburValor' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                document.getElementById('gasesMedHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
+                                                document.getElementById('txtGasesMedHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                document.getElementById('gasesMedValor' + resultNro[_i].nro).className = "form-control";
+                                                document.getElementById('txtGasesMedValor' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
                                                 if (document.getElementById('btn' + resultNro[_i].nro) != null) {
                                                     document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
                                                     setTimeout(() => {
-                                                        new Cleave("#comburHora" + resultNro[_i].nro, {
+                                                        new Cleave("#gasesMedHora" + resultNro[_i].nro, {
                                                             time: true,
                                                             timePattern: ['h', 'm']
                                                         });
                                                     }, 90);
                                                 }
 
-
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                    $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                         isAnimating = false;
                                                     })
                                                 }, 250);
 
-                                                setTimeout(() => {
-                                                    let isAnimating = true;
-                                                    $('#registrosComburTest').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
-                                                        700, "easeInOutSine",
-                                                        function() {
-                                                            isAnimating = false;
-                                                        })
-                                                }, 250);
+
 
                                             }
                                         })
@@ -839,35 +622,24 @@ class ComburTestUci {
                                                     let _i = v.idObj[index];
 
                                                     setTimeout(() => {
-                                                        ComburTestUci.eliminarRegistro(resultNro[_i]);
+                                                        GasesMedUci.eliminarRegistro(resultNro[_i]);
                                                         FecthUci.eliminarSeccion(resultNro[_i]);
-                                                        ComburTestUci.nuevoRegistro = null;
-                                                        ComburTestUci.destroyTable();
-                                                        ComburTestUci.filterRegistros();
-                                                        ComburTestUci.show = false;
+                                                        GasesMedUci.nuevoRegistro = null;
+                                                        GasesMedUci.destroyTable();
+                                                        GasesMedUci.filterRegistros();
+                                                        GasesMedUci.show = false;
                                                         m.redraw();
                                                         setTimeout(() => {
-                                                            ComburTestUci.show = true;
+                                                            GasesMedUci.show = true;
                                                             m.redraw();
                                                         }, 100);
                                                     }, 100);
 
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
-                                                    }, 250);
-
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosComburTest').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
                                                     }, 250);
                                                 }
                                             })
@@ -884,9 +656,9 @@ class ComburTestUci {
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].hora !== null) {
                                                         el.dom.innerHTML = resultNro[_i].hora;
-                                                        el.dom.id = "txtComburHora" + resultNro[_i].nro;
+                                                        el.dom.id = "txtGasesMedHora" + resultNro[_i].nro;
                                                     } else {
-                                                        el.dom.id = "txtComburHora" + resultNro[_i].nro;
+                                                        el.dom.id = "txtGasesMedHora" + resultNro[_i].nro;
                                                         el.dom.innerHTML = '';
                                                     }
                                                 } else {
@@ -907,9 +679,8 @@ class ComburTestUci {
                                                     if (resultNro[_i] !== undefined) {
                                                         if (resultNro[_i].hora !== null) {
                                                             el.dom.value = resultNro[_i].hora;
-                                                            el.dom.id = "comburHora" + resultNro[_i].nro;
+                                                            el.dom.id = "gasesMedHora" + resultNro[_i].nro;
                                                             el.dom.className = "form-control d-none";
-
 
                                                             setTimeout(() => {
                                                                 new Cleave("#" + el.dom.id, {
@@ -919,7 +690,7 @@ class ComburTestUci {
                                                             }, 90);
 
                                                         } else {
-                                                            el.dom.id = "comburHora" + resultNro[_i].nro;
+                                                            el.dom.id = "gasesMedHora" + resultNro[_i].nro;
                                                             el.dom.className = "form-control d-none";
                                                         }
                                                     } else {
@@ -936,79 +707,57 @@ class ComburTestUci {
                                         },
                                         oninput: (e) => {
                                             setTimeout(() => {
-                                                ComburTestUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                                ComburTestUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                                GasesMedUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                                GasesMedUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
                                             }, 50);
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
-                                                ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                if (ComburTestUci.nuevoRegistro.editar == null) {
+                                                GasesMedUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                GasesMedUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                if (GasesMedUci.nuevoRegistro.editar == null) {
 
                                                     setTimeout(() => {
-                                                        ComburTestUci.agregarRegistro();
-                                                        FecthUci.registrarSeccion(ComburTestUci.nuevoRegistro);
-                                                        ComburTestUci.nuevoRegistro = null;
-                                                        ComburTestUci.destroyTable();
-                                                        ComburTestUci.filterRegistros();
-                                                        ComburTestUci.show = false;
+                                                        GasesMedUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(GasesMedUci.nuevoRegistro);
+                                                        GasesMedUci.nuevoRegistro = null;
+                                                        GasesMedUci.destroyTable();
+                                                        GasesMedUci.filterRegistros();
+                                                        GasesMedUci.show = false;
                                                         m.redraw();
                                                         setTimeout(() => {
-                                                            ComburTestUci.show = true;
+                                                            GasesMedUci.show = true;
                                                             m.redraw();
                                                         }, 100);
                                                     }, 100);
 
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
-                                                    }, 250);
-
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosComburTest').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
                                                     }, 250);
                                                 } else {
 
                                                     setTimeout(() => {
-                                                        ComburTestUci.editarRegistro();
-                                                        FecthUci.actualizarSeccion(ComburTestUci.nuevoRegistro);
-                                                        ComburTestUci.nuevoRegistro = null;
-                                                        ComburTestUci.destroyTable();
-                                                        ComburTestUci.filterRegistros();
-                                                        ComburTestUci.show = false;
+                                                        GasesMedUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(GasesMedUci.nuevoRegistro);
+                                                        GasesMedUci.nuevoRegistro = null;
+                                                        GasesMedUci.destroyTable();
+                                                        GasesMedUci.filterRegistros();
+                                                        GasesMedUci.show = false;
                                                         m.redraw();
                                                         setTimeout(() => {
-                                                            ComburTestUci.show = true;
+                                                            GasesMedUci.show = true;
                                                             m.redraw();
                                                         }, 100);
                                                     }, 100);
 
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                        $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
-                                                    }, 250);
-
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosComburTest').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
                                                     }, 250);
                                                 }
                                             }
@@ -1026,7 +775,7 @@ class ComburTestUci {
             });
         }
 
-        ComburTestUci.sRows.push({
+        GasesMedUci.sRows.push({
             fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                 return m.mount(nTd, {
                     view: () => {
@@ -1034,17 +783,17 @@ class ComburTestUci {
                             m("div.btn-block.btn-group.wd-100p.pd-5", [
 
                                 m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                        class: (ComburTestUci.nuevoRegistro !== null && ComburTestUci.nuevoRegistro.editar && ComburTestUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
+                                        class: (GasesMedUci.nuevoRegistro !== null && GasesMedUci.nuevoRegistro.editar && GasesMedUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
                                         onclick: () => {
                                             oData.editar = null;
-                                            document.getElementById('comburValor' + ComburTestUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
-                                            document.getElementById('txtComburValor' + ComburTestUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
-                                            document.getElementById('comburHora' + ComburTestUci.nuevoRegistro.nro).className = "form-control d-none";
-                                            document.getElementById('txtComburHora' + ComburTestUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
-                                            if (document.getElementById('btn' + ComburTestUci.nuevoRegistro.nro) != null) {
-                                                document.getElementById('btn' + ComburTestUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
+                                            document.getElementById('gasesMedValor' + GasesMedUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
+                                            document.getElementById('txtGasesMedValor' + GasesMedUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                            document.getElementById('gasesMedHora' + GasesMedUci.nuevoRegistro.nro).className = "form-control d-none";
+                                            document.getElementById('txtGasesMedHora' + GasesMedUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                            if (document.getElementById('btn' + GasesMedUci.nuevoRegistro.nro) != null) {
+                                                document.getElementById('btn' + GasesMedUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
                                             }
-                                            ComburTestUci.nuevoRegistro = null;
+                                            GasesMedUci.nuevoRegistro = null;
                                         },
                                     },
                                     'Cancelar Edición',
@@ -1056,48 +805,33 @@ class ComburTestUci {
                                                 alert('No se permite copiar. Ya existe un registro disponible.');
                                                 throw 'No se permite copiar. Ya existe un registro disponible.'
                                             }
-                                            ComburTestUci.iniciarRegistro();
-                                            ComburTestUci.nuevoRegistro.id = oData.id;
-                                            ComburTestUci.nuevoRegistro.medida = oData.medida;
-                                            ComburTestUci.nuevoRegistro.orden = oData.orden;
-                                            ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-
+                                            GasesMedUci.iniciarRegistro();
+                                            GasesMedUci.nuevoRegistro.id = oData.id;
+                                            GasesMedUci.nuevoRegistro.medida = oData.medida;
+                                            GasesMedUci.nuevoRegistro.orden = oData.orden;
+                                            GasesMedUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            GasesMedUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
                                             setTimeout(() => {
-                                                ComburTestUci.agregarRegistro();
-                                                FecthUci.registrarSeccion(ComburTestUci.nuevoRegistro);
-                                                ComburTestUci.nuevoRegistro = null;
-                                                ComburTestUci.destroyTable();
-                                                ComburTestUci.filterRegistros();
-                                                ComburTestUci.show = false;
+                                                GasesMedUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(GasesMedUci.nuevoRegistro);
+                                                GasesMedUci.nuevoRegistro = null;
+                                                GasesMedUci.destroyTable();
+                                                GasesMedUci.filterRegistros();
+                                                GasesMedUci.show = false;
                                                 m.redraw();
                                                 setTimeout(() => {
-                                                    ComburTestUci.show = true;
+                                                    GasesMedUci.show = true;
                                                     m.redraw();
                                                 }, 100);
                                             }, 100);
-                                            setTimeout(() => {
-                                                let isAnimating = true;
-                                                $('html,body').animate({
-                                                        scrollTop: $("#ComburTest_" + oData.id).offset().top,
-                                                    },
-                                                    700, "easeInOutSine",
-                                                    function() {
-                                                        isAnimating = false;
-                                                    })
-                                            }, 250);
-                                            setTimeout(() => {
-                                                let isAnimating = true;
-                                                $('#registrosComburTest').animate({
-                                                        scrollLeft: '+=460'
-                                                    },
-                                                    700, "easeInOutSine",
-                                                    function() {
-                                                        isAnimating = false;
-                                                    })
-                                            }, 250);
 
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                    isAnimating = false;
+                                                })
+                                            }, 250);
 
                                         },
                                     },
@@ -1118,22 +852,22 @@ class ComburTestUci {
 
         });
 
-        ComburTestUci.sRows.map((c, i) => {
-            ComburTestUci.sRows[i].aTargets = [i];
+        GasesMedUci.sRows.map((c, i) => {
+            GasesMedUci.sRows[i].aTargets = [i];
         });
 
 
     }
     static destroyTable() {
-        let table = document.getElementById('table-comburtest');
+        let table = document.getElementById('table-gasesmed');
         // clear first
         if (table != null) {
-            $('#table-comburtest').DataTable().clear().destroy();
+            $('#table-gasesmed').DataTable().clear().destroy();
 
         }
     }
     static getRegistros() {
-        return ComburTestUci.registros;
+        return GasesMedUci.registros;
     }
     static arqTable() {
         return {
@@ -1161,13 +895,12 @@ class ComburTestUci {
                 },
 
             },
-            retrieve: true,
             cache: false,
             destroy: true,
             order: false,
             pageLength: 100,
-            columns: ComburTestUci.sColumns,
-            aoColumnDefs: ComburTestUci.sRows,
+            columns: GasesMedUci.sColumns,
+            aoColumnDefs: GasesMedUci.sRows,
             fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
             },
@@ -1178,29 +911,26 @@ class ComburTestUci {
             m("thead.bd.bd-2", {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+
                 },
-
                 m("tr.tx-uppercase", {
-
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
-                        if (ComburTestUci.show) {
-                            ComburTestUci.destroyTable();
+                        if (GasesMedUci.show) {
+                            GasesMedUci.destroyTable();
                         }
-                        ComburTestUci.show = !ComburTestUci.show;
+                        GasesMedUci.show = !GasesMedUci.show;
                     }
-
-
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "COMBUR TEST"
+                        "GASES MEDICINALES"
                     ),
 
                 ])
             ),
             m("tbody.bd.bd-2", {
                 style: { "border-color": "#5173a1" },
-                class: (ComburTestUci.show ? '' : 'd-none')
+                class: (GasesMedUci.show ? '' : 'd-none')
             }, [
 
 
@@ -1221,19 +951,19 @@ class ComburTestUci {
 
 
                 ]),
-                m("tr.bd.bd-2.d-none", {
+                m("tr.bd.bd-2", {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
                     m("td.tx-14.tx-normal.d-none[colspan='3']",
-                        (ComburTestUci.nuevoRegistro !== null ? [
+                        (GasesMedUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     disabled: true,
-                                    value: ComburTestUci.nuevoRegistro.medida,
+                                    value: GasesMedUci.nuevoRegistro.medida,
                                 })
 
                             ]),
@@ -1241,133 +971,105 @@ class ComburTestUci {
                     ),
                     m("td.tx-14.tx-normal.d-none[colspan='4']",
                         m('select.tx-semibold', {
-                            id: 'sec_ComburTest',
+                            id: 'sec_GasesMed',
                             disabled: true,
                             onchange: (e) => {
                                 let _id = e.target.options[e.target.selectedIndex].id;
                                 let _value = e.target.options[e.target.selectedIndex].value;
-                                ComburTestUci.iniciarRegistro();
-                                ComburTestUci.nuevoRegistro.id = _id;
-                                ComburTestUci.nuevoRegistro.medida = _value;
+                                GasesMedUci.iniciarRegistro();
+                                GasesMedUci.nuevoRegistro.id = _id;
+                                GasesMedUci.nuevoRegistro.medida = _value;
                             },
                             class: "custom-select",
-                            value: (ComburTestUci.nuevoRegistro !== null ? ComburTestUci.nuevoRegistro.medida : 0),
+                            value: (GasesMedUci.nuevoRegistro !== null ? GasesMedUci.nuevoRegistro.medida : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
                             orden: 1,
-                            id: "cbPH",
-                            label: "PH"
+                            id: "AireComprimido",
+                            label: "AIRE COMPRIMIDO (PORCENTAJE)"
                         }, {
                             orden: 2,
-                            id: "cbProteinas",
-                            label: "PROTEINAS"
+                            id: "Heliox",
+                            label: "HELIOX (LITROS)"
                         }, {
                             orden: 3,
-                            id: "cbDensidad",
-                            label: "DENSIDAD"
-                        }, {
-                            orden: 4,
-                            id: "cbGlucosa",
-                            label: "GLUCOSA"
-                        }, {
-                            orden: 5,
-                            id: "cbSangre",
-                            label: "SANGRE"
-                        }, {
-                            orden: 6,
-                            id: "cbCetonas",
-                            label: "CETONAS"
-                        }, {
-                            orden: 7,
-                            id: "cbLeucocitos",
-                            label: "LEUCOCITOS"
-                        }, {
-                            orden: 8,
-                            id: "cbNitritos",
-                            label: "NITRITOS"
-                        }, {
-                            orden: 9,
-                            id: "cbUrobilinogeno",
-                            label: "UROBILINOGENO",
-                        }, {
-                            orden: 10,
-                            id: "cbBilirubina",
-                            label: "BILIRRUBINA"
+                            id: "OxidoNitrico",
+                            label: "OXIDO NITRICO (PARTES POR MILLON)"
                         }].map(x =>
                             m('option[id="' + x.id + '"][orden="' + x.orden + '"]', x.label)
                         ))
                     ),
                     m("td.tx-14.tx-normal.d-none[colspan='4']",
-                        (ComburTestUci.nuevoRegistro !== null ? [
+                        (GasesMedUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input", {
-                                    id: "_valor" + ComburTestUci.nuevoRegistro.id,
+                                    id: "_valor" + GasesMedUci.nuevoRegistro.id,
                                     class: "form-control tx-semibold tx-14",
                                     type: "text",
                                     placeholder: "...",
                                     oncreate: (el) => {
-                                        if (ComburTestUci.nuevoRegistro.valor != undefined) {
-                                            el.dom.value = ComburTestUci.nuevoRegistro.valor;
+                                        if (GasesMedUci.nuevoRegistro.valor != undefined) {
+                                            el.dom.value = GasesMedUci.nuevoRegistro.valor;
                                         }
                                     },
                                     oninput: (e) => {
-                                        ComburTestUci.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
+                                        GasesMedUci.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
                                     },
-                                    value: ComburTestUci.nuevoRegistro.valor
+                                    value: GasesMedUci.nuevoRegistro.valor
                                 })
 
                             ]),
                         ] : [])
                     ),
                     m("td.tx-14.tx-normal.d-none[colspan='4']",
-                        (ComburTestUci.nuevoRegistro !== null ? [
+                        (GasesMedUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
                                 m("input.form-control[type='text'][placeholder='HH:mm']", {
-                                    id: "horaMedida" + ComburTestUci.nuevoRegistro.id,
+                                    id: "horaMedida" + GasesMedUci.nuevoRegistro.id,
                                     oncreate: (el) => {
-                                        if (ComburTestUci.nuevoRegistro.hora != undefined) {
-                                            el.dom.value = ComburTestUci.nuevoRegistro.hora;
+                                        if (GasesMedUci.nuevoRegistro.hora != undefined) {
+                                            el.dom.value = GasesMedUci.nuevoRegistro.hora;
                                         }
-                                        if (ComburTestUci.nuevoRegistro.hora == null) {
-                                            if (ComburTestUci.setHora != undefined) {
-                                                ComburTestUci.nuevoRegistro.hora = ComburTestUci.setHora;
-                                                el.dom.value = ComburTestUci.setHora;
+                                        if (GasesMedUci.nuevoRegistro.hora == null) {
+                                            if (GasesMedUci.setHora != undefined) {
+                                                GasesMedUci.nuevoRegistro.hora = GasesMedUci.setHora;
+                                                el.dom.value = GasesMedUci.setHora;
                                             }
                                         }
 
                                     },
                                     oninput: (e) => {
                                         setTimeout(() => {
-                                            //ComburTestUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                            ComburTestUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                            ComburTestUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            //GasesMedUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                            GasesMedUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            GasesMedUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
                                         }, 50);
                                     },
                                     onkeypress: (e) => {
                                         if (e.keyCode == 13) {
-                                            ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                            if (ComburTestUci.nuevoRegistro.editar == null) {
-                                                ComburTestUci.agregarRegistro();
-                                                FecthUci.registrarSeccion(ComburTestUci.nuevoRegistro);
-                                                ComburTestUci.nuevoRegistro = null;
-                                                ComburTestUci.destroyTable();
-                                                ComburTestUci.filterRegistros();
-                                                ComburTestUci.show = false;
+                                            GasesMedUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            GasesMedUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            if (GasesMedUci.nuevoRegistro.editar == null) {
+                                                GasesMedUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(GasesMedUci.nuevoRegistro);
+                                                GasesMedUci.nuevoRegistro = null;
+                                                GasesMedUci.destroyTable();
+                                                GasesMedUci.filterRegistros();
+                                                GasesMedUci.show = false;
                                                 m.redraw();
                                                 setTimeout(() => {
-                                                    ComburTestUci.show = true;
+                                                    GasesMedUci.show = true;
                                                     m.redraw();
                                                 }, 100);
                                             } else {
-                                                ComburTestUci.editarRegistro();
-                                                FecthUci.actualizarSeccion(ComburTestUci.nuevoRegistro);
-                                                ComburTestUci.nuevoRegistro = null;
-                                                ComburTestUci.destroyTable();
-                                                ComburTestUci.filterRegistros();
-                                                ComburTestUci.show = false;
+                                                GasesMedUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(GasesMedUci.nuevoRegistro);
+                                                GasesMedUci.nuevoRegistro = null;
+                                                GasesMedUci.destroyTable();
+                                                GasesMedUci.filterRegistros();
+                                                GasesMedUci.show = false;
                                                 m.redraw();
                                                 setTimeout(() => {
-                                                    ComburTestUci.show = true;
+                                                    GasesMedUci.show = true;
                                                     m.redraw();
                                                 }, 100);
                                             }
@@ -1389,8 +1091,8 @@ class ComburTestUci {
                     ),
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
-                    m("td[colspan='12'][id='registrosComburTest']", { style: "max-width: 150px;overflow: auto;" },
-                        (ComburTestUci.show != false ? [PacientesUCI.vTable('table-comburtest', ComburTestUci.getRegistros(), ComburTestUci.arqTable())] : [])
+                    m("td[colspan='12']", { style: "max-width: 150px;overflow: auto;" },
+                        (GasesMedUci.show != false ? [PacientesUCI.vTable('table-gasesmed', GasesMedUci.getRegistros(), GasesMedUci.arqTable())] : [])
                     ),
                 ]),
             ]),
@@ -1398,4 +1100,4 @@ class ComburTestUci {
     }
 }
 
-export default ComburTestUci;
+export default GasesMedUci;
