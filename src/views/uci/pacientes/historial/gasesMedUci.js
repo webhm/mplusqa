@@ -910,17 +910,11 @@ class GasesMedUci {
         return [
             m("thead.bd.bd-2", {
                     style: { "border-color": "#5173a1" },
-                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
                 },
                 m("tr.tx-uppercase", {
                     style: { "background-color": "#CCCCFF" },
-                    onclick: () => {
-                        if (GasesMedUci.show) {
-                            GasesMedUci.destroyTable();
-                        }
-                        GasesMedUci.show = !GasesMedUci.show;
-                    }
+                    class: (GasesMedUci.show ? '' : 'd-none')
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
                         "GASES MEDICINALES"
