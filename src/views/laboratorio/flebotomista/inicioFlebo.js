@@ -24,9 +24,9 @@ const actions = {
             model.seconds--;
             if (model.seconds == 0) {
                 model.seconds = 11;
-                InicioFlebotomista.pedidos = null;
+                // InicioFlebotomista.pedidos = null;
                 InicioFlebotomista.fetchPendientes();
-                InicioFlebotomista.tomasPendientes = null;
+                //  InicioFlebotomista.tomasPendientes = null;
                 InicioFlebotomista.fetchTomasPendientes();
             }
             m.redraw();
@@ -60,14 +60,14 @@ function Stopwatch() {
         view() {
             return [
                 m("div.mg-b-0", [
-                    m("div.progress.ht-4.mg-b-0.op-5",
-                        m(".progress-bar.bg-primary.[role='progressbar'][aria-valuenow='" + model.seconds + "'][aria-valuemin='0'][aria-valuemax='60']", {
+                    m("div.progress.ht-8.mg-b-0.op-8",
+                        m(".progress-bar.bg-primary.[role='progressbar'][aria-valuenow='" + model.seconds + "'][aria-valuemin='0'][aria-valuemax='100']", {
                             oncreate: (el) => {
                                 el.dom.style.width = "100%";
 
                             },
                             onupdate: (el) => {
-                                el.dom.style.width = model.seconds + "%";
+                                el.dom.style.width = (model.seconds * 100 / 10) + "%";
 
                             },
 
@@ -440,13 +440,14 @@ class InicioFlebotomista extends App {
                     console.log(22, _arr)
                     res.data = _arr;
                     InicioFlebotomista.pedidos = res;
+                    InicioFlebotomista.vReloadTable('table-pedidos', InicioFlebotomista.pedidos.data);
                     return result;
 
                 })
                 .catch(function(e) {
 
                     setTimeout(() => {
-                        window.location.reload();
+                        InicioFlebotomista.fetchPendientes();
                     }, 100);
 
                     return {
@@ -458,7 +459,7 @@ class InicioFlebotomista extends App {
 
         } catch (error) {
             setTimeout(() => {
-                window.location.reload();
+                InicioFlebotomista.fetchPendientes();
             }, 100);
 
         }
@@ -481,13 +482,14 @@ class InicioFlebotomista extends App {
                 .then(function(result) {
 
                     InicioFlebotomista.tomasPendientes = result;
+                    InicioFlebotomista.vReloadTable('table-tomasPendientes', InicioFlebotomista.tomasPendientes.data);
                     return result;
 
                 })
                 .catch(function(e) {
 
                     setTimeout(() => {
-                        window.location.reload();
+                        InicioFlebotomista.fetchTomasPendientes();
                     }, 100);
 
                     return {
@@ -501,7 +503,7 @@ class InicioFlebotomista extends App {
 
         } catch (error) {
             setTimeout(() => {
-                window.location.reload();
+                InicioFlebotomista.fetchTomasPendientes();
             }, 100);
         }
 
@@ -564,6 +566,10 @@ class InicioFlebotomista extends App {
             .catch(function(e) {
                 alert('Error: ' + e);
             });
+    }
+
+    static vReloadTable(idTable, _data) {
+        $('#' + idTable).DataTable().clear().rows.add(_data).draw();
     }
 
     static vTablePedidos(idTable, dataTable, arqTable) {

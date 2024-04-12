@@ -716,6 +716,10 @@ class CuidadosUci2 {
                             {
                                 id: "RiesgoTromboembolismo",
                                 label: "RIESGO DE TROMBOEMBOLISMO"
+                            },
+                            {
+                                id: "VisitaFamiliar",
+                                label: "VISITA FAMILIAR"
                             }
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)

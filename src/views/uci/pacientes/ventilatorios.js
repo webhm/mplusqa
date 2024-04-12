@@ -1003,6 +1003,17 @@ class VentilatoriosUci {
                                                     })
                                                 }, 250);
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosVentilatorios').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
 
                                             }
                                         })
@@ -1043,6 +1054,17 @@ class VentilatoriosUci {
                                                         $('html,body').animate({ scrollTop: $("#Ventilatorios_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
+                                                    }, 250);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosVentilatorios').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
 
@@ -1152,6 +1174,17 @@ class VentilatoriosUci {
                                                     })
                                                 }, 250);
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosVentilatorios').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
 
                                             }
                                         });
@@ -1258,6 +1291,18 @@ class VentilatoriosUci {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosVentilatorios').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
+                                                    }, 250);
+
                                                 } else {
                                                     setTimeout(() => {
                                                         VentilatoriosUci.editarRegistro();
@@ -1278,6 +1323,17 @@ class VentilatoriosUci {
                                                         $('html,body').animate({ scrollTop: $("#Ventilatorios_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
+                                                    }, 250);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosVentilatorios').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
                                                 }
                                             }
@@ -1352,6 +1408,16 @@ class VentilatoriosUci {
                                                 $('html,body').animate({ scrollTop: $("#Ventilatorios_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                     isAnimating = false;
                                                 })
+                                            }, 250);
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('#registrosVentilatorios').animate({
+                                                        scrollLeft: '+=460'
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
                                             }, 250);
 
 
@@ -1749,7 +1815,7 @@ class VentilatoriosUci {
                     ),
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
-                    m("td[colspan='12']", { style: "max-width: 150px;overflow: auto;" },
+                    m("td[colspan='12'][id='registrosVentilatorios']", { style: "max-width: 150px;overflow: auto;" },
                         (VentilatoriosUci.show != false ? [PacientesUCI.vTable('table-ventilatorios', VentilatoriosUci.getRegistros(), VentilatoriosUci.arqTable())] : [])
                     ),
                 ]),

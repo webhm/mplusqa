@@ -447,6 +447,17 @@ class GasesMedUci {
                                                     })
                                                 }, 250);
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosGasesMedUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
                                             }
                                         })
                                     },
@@ -486,6 +497,17 @@ class GasesMedUci {
                                                         $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
+                                                    }, 250);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosGasesMedUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
 
@@ -599,6 +621,17 @@ class GasesMedUci {
                                                     })
                                                 }, 250);
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosGasesMedUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
 
 
                                             }
@@ -641,6 +674,19 @@ class GasesMedUci {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosGasesMedUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
+                                                    }, 250);
+
+
                                                 }
                                             })
 
@@ -737,6 +783,18 @@ class GasesMedUci {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosGasesMedUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
+                                                    }, 250);
+
                                                 } else {
 
                                                     setTimeout(() => {
@@ -758,6 +816,17 @@ class GasesMedUci {
                                                         $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
+                                                    }, 250);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosGasesMedUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
                                                 }
                                             }
@@ -831,6 +900,18 @@ class GasesMedUci {
                                                 $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                     isAnimating = false;
                                                 })
+                                            }, 250);
+
+
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('#registrosGasesMedUci').animate({
+                                                        scrollLeft: '+=460'
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
                                             }, 250);
 
                                         },
@@ -1091,7 +1172,7 @@ class GasesMedUci {
                     ),
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
-                    m("td[colspan='12']", { style: "max-width: 150px;overflow: auto;" },
+                    m("td[colspan='12'][id='registrosGasesMedUci']", { style: "max-width: 150px;overflow: auto;" },
                         (GasesMedUci.show != false ? [PacientesUCI.vTable('table-gasesmed', GasesMedUci.getRegistros(), GasesMedUci.arqTable())] : [])
                     ),
                 ]),

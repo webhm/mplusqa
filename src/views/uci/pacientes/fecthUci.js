@@ -283,7 +283,11 @@ class FecthUci {
                 "Content-Type": "application/json; charset=utf-8"
             }
         }).then(function(res) {
-            console.log(88, res)
+
+            if (res.status) {
+                PacientesUCI.tipoAtencion = res.data.ATENCION;
+            }
+
 
         }).catch(function(e) {
 

@@ -1319,6 +1319,20 @@ class PacientesUCI extends App {
                                                     })
                                                 }, 250);
 
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosVentilatorios').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
+
+
                                             }
                                         })
                                     },
@@ -1359,6 +1373,20 @@ class PacientesUCI extends App {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
+
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosVentilatorios').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
+                                                    }, 250);
+
+
                                                 }
                                             })
 
@@ -1465,6 +1493,19 @@ class PacientesUCI extends App {
                                                     })
                                                 }, 250);
 
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosVentilatorios').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
+
                                             }
                                         });
 
@@ -1570,6 +1611,20 @@ class PacientesUCI extends App {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
+
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosVentilatorios').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
+                                                    }, 250);
+
+
                                                 } else {
                                                     setTimeout(() => {
                                                         VentilatoriosUci.editarRegistro();
@@ -1591,6 +1646,19 @@ class PacientesUCI extends App {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
+
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosVentilatorios').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
+                                                    }, 250);
+
                                                 }
                                             }
                                         },
@@ -1668,6 +1736,19 @@ class PacientesUCI extends App {
                                                     isAnimating = false;
                                                 })
                                             }, 250);
+
+
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('#registrosVentilatorios').animate({
+                                                        scrollLeft: '+=460'
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
+                                            }, 250);
+
 
 
                                         },
@@ -2261,6 +2342,17 @@ class PacientesUCI extends App {
                                                     })
                                                 }, 250);
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosGasesUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
                                             }
                                         });
 
@@ -2386,6 +2478,18 @@ class PacientesUCI extends App {
                                                     })
                                                 }, 250);
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosGasesUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
+
                                             }
                                         })
                                     },
@@ -2425,6 +2529,17 @@ class PacientesUCI extends App {
                                                         $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
+                                                    }, 250);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosGasesUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
 
@@ -2513,6 +2628,17 @@ class PacientesUCI extends App {
                                                         })
                                                     }, 250);
 
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosGasesUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
+                                                    }, 250);
+
 
                                                 } else {
 
@@ -2535,6 +2661,17 @@ class PacientesUCI extends App {
                                                         $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
+                                                    }, 250);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosGasesUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
                                                 }
@@ -2619,6 +2756,17 @@ class PacientesUCI extends App {
                                                 $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                     isAnimating = false;
                                                 })
+                                            }, 250);
+
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('#registrosGasesUci').animate({
+                                                        scrollLeft: '+=460'
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
                                             }, 250);
 
                                         },
@@ -3290,6 +3438,18 @@ class PacientesUCI extends App {
                                                     })
                                                 }, 250);
 
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosMedidasUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
                                             }
                                         })
                                     },
@@ -3330,6 +3490,19 @@ class PacientesUCI extends App {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
+
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosMedidasUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
+                                                    }, 250);
+
                                                 }
                                             })
 
@@ -3446,6 +3619,20 @@ class PacientesUCI extends App {
                                                     })
                                                 }, 250);
 
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosMedidasUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
+
+
                                             }
                                         })
                                     },
@@ -3465,6 +3652,7 @@ class PacientesUCI extends App {
 
                                                 if (v.id == oData.id) {
                                                     let _i = v.idObj[index];
+
                                                     setTimeout(() => {
                                                         MedidasUci.eliminarRegistro(resultNro[_i]);
                                                         FecthUci.eliminarSeccion(resultNro[_i]);
@@ -3484,6 +3672,18 @@ class PacientesUCI extends App {
                                                         $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
+                                                    }, 250);
+
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosMedidasUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
                                                 }
                                             })
@@ -3582,6 +3782,20 @@ class PacientesUCI extends App {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
+
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosMedidasUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
+                                                    }, 250);
+
+
                                                 } else {
 
 
@@ -3604,6 +3818,18 @@ class PacientesUCI extends App {
                                                         $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
+                                                    }, 250);
+
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosMedidasUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
                                                 }
                                             }
@@ -3680,6 +3906,18 @@ class PacientesUCI extends App {
                                                 $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                     isAnimating = false;
                                                 })
+                                            }, 250);
+
+
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('#registrosMedidasUci').animate({
+                                                        scrollLeft: '+=460'
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
                                             }, 250);
 
                                         },
@@ -4941,6 +5179,17 @@ class PacientesUCI extends App {
                                                     })
                                                 }, 250);
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosGasesMedUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
                                             }
                                         })
                                     },
@@ -4980,6 +5229,17 @@ class PacientesUCI extends App {
                                                         $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
+                                                    }, 250);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosGasesMedUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
 
@@ -5093,6 +5353,17 @@ class PacientesUCI extends App {
                                                     })
                                                 }, 250);
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosGasesMedUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
                                             }
                                         })
                                     },
@@ -5133,6 +5404,19 @@ class PacientesUCI extends App {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosGasesMedUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
+                                                    }, 250);
+
+
                                                 }
                                             })
 
@@ -5229,6 +5513,18 @@ class PacientesUCI extends App {
                                                             isAnimating = false;
                                                         })
                                                     }, 250);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosGasesMedUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
+                                                    }, 250);
+
                                                 } else {
 
                                                     setTimeout(() => {
@@ -5250,6 +5546,17 @@ class PacientesUCI extends App {
                                                         $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
+                                                    }, 250);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosGasesMedUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
                                                 }
                                             }
@@ -5324,6 +5631,17 @@ class PacientesUCI extends App {
                                                 $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                     isAnimating = false;
                                                 })
+                                            }, 250);
+
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('#registrosGasesMedUci').animate({
+                                                        scrollLeft: '+=460'
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
                                             }, 250);
 
                                         },

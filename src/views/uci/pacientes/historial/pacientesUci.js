@@ -18,6 +18,7 @@ import OxigenacionUci from "./oxigenacionUci";
 import MedidasUci from "./medidiasUci";
 import GasesMedUci from "./gasesMedUci";
 import ComburTestUci from "./comburTestUci";
+import UlcerasUciPed from "./ulcerasUciPed";
 
 
 // Pacientes UCI
@@ -176,7 +177,35 @@ class PacientesUCIHistorial extends App {
 
         GasesMedUci.show = true;
 
+        // Pediatrica y Neo
+        UlcerasUciPed.show = true;
+        UlcerasUciPed.registros = PacientesUCIHistorial.parseAllSeccion('UlcerasPed');
 
+
+
+    }
+
+
+    static parseAllSeccion(idSeccion) {
+        let res = [];
+        let result = [];
+        let _arr = [];
+        let hash = {};
+
+
+        FecthUci.dataHistorial.map((obj) => {
+            let _obj = JSON.parse(obj.DATASECCION);
+            if (_obj.seccion === idSeccion) {
+                res.push(_obj);
+            }
+        });
+
+        // Quitar duplicados
+        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+
+        // Ordenar desc
+        _arr = result.sort((a, b) => a.nro - b.nro);
+        return _arr;
     }
 
 
@@ -295,6 +324,8 @@ class PacientesUCIHistorial extends App {
                         m(ComburTestUci),
                         // GasesMedUci
                         m(GasesMedUci),
+                        // UlcerasUciPed
+                        m(UlcerasUciPed),
 
                     ])
                 ])

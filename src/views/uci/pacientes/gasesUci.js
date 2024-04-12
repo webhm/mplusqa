@@ -630,6 +630,17 @@ class GasesUci {
                                                     })
                                                 }, 250);
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosGasesUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
                                             }
                                         });
 
@@ -759,6 +770,17 @@ class GasesUci {
                                                     })
                                                 }, 250);
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosGasesUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
                                             }
                                         })
                                     },
@@ -799,6 +821,17 @@ class GasesUci {
                                                         $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
+                                                    }, 250);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosGasesUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
 
@@ -887,6 +920,17 @@ class GasesUci {
                                                         })
                                                     }, 250);
 
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosGasesUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
+                                                    }, 250);
+
                                                 } else {
 
                                                     setTimeout(() => {
@@ -908,6 +952,17 @@ class GasesUci {
                                                         $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                             isAnimating = false;
                                                         })
+                                                    }, 250);
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosGasesUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
                                                 }
                                             }
@@ -995,6 +1050,17 @@ class GasesUci {
                                                 $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
                                                     isAnimating = false;
                                                 })
+                                            }, 250);
+
+                                            setTimeout(() => {
+                                                let isAnimating = true;
+                                                $('#registrosGasesUci').animate({
+                                                        scrollLeft: '+=460'
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
                                             }, 250);
 
                                         },
@@ -1352,7 +1418,7 @@ class GasesUci {
                     ),
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
-                    m("td[colspan='12']", { style: "max-width: 150px;overflow: auto;" },
+                    m("td[colspan='12'][id='registrosGasesUci']", { style: "max-width: 150px;overflow: auto;" },
                         (GasesUci.show != false ? [PacientesUCI.vTable('table-gases', GasesUci.getRegistros(), GasesUci.arqTable())] : [])
                     ),
                 ]),
