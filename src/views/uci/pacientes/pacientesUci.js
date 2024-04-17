@@ -994,11 +994,16 @@ class PacientesUCI extends App {
                                                     }, 90);
                                                 }
 
+                                                let tt = $('#Gases_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                        isAnimating = false;
-                                                    })
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
 
                                                 setTimeout(() => {
@@ -1130,11 +1135,16 @@ class PacientesUCI extends App {
                                                     }, 90);
                                                 }
 
+                                                let tt = $('#Gases_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                        isAnimating = false;
-                                                    })
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
 
                                                 setTimeout(() => {
@@ -1183,11 +1193,16 @@ class PacientesUCI extends App {
                                                         }, 100);
                                                     }, 100);
 
+                                                    let tt = $('#Gases_' + oData.id).offset().top;
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
                                                     setTimeout(() => {
@@ -1280,25 +1295,6 @@ class PacientesUCI extends App {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
-                                                    }, 250);
-
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosGasesUci').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
-
-
                                                 } else {
 
                                                     setTimeout(() => {
@@ -1315,25 +1311,31 @@ class PacientesUCI extends App {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                }
+
+                                                let tt = $('#Gases_' + oData.id).offset().top;
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
                                                             isAnimating = false;
                                                         })
-                                                    }, 250);
+                                                }, 250);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosGasesUci').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosGasesUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
 
-                                                }
                                             }
                                         },
 
@@ -2090,11 +2092,17 @@ class PacientesUCI extends App {
                                                     }, 90);
                                                 }
 
+
+                                                let tt = $('#MedidasUci_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                        isAnimating = false;
-                                                    })
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
 
 
@@ -2143,13 +2151,18 @@ class PacientesUCI extends App {
                                                         }, 100);
                                                     }, 100);
 
+
+                                                    let tt = $('#MedidasUci_' + oData.id).offset().top;
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
-
 
                                                     setTimeout(() => {
                                                         let isAnimating = true;
@@ -2271,13 +2284,18 @@ class PacientesUCI extends App {
                                                 }
 
 
+
+                                                let tt = $('#MedidasUci_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                        isAnimating = false;
-                                                    })
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
-
 
                                                 setTimeout(() => {
                                                     let isAnimating = true;
@@ -2326,11 +2344,17 @@ class PacientesUCI extends App {
                                                         }, 100);
                                                     }, 100);
 
+
+                                                    let tt = $('#MedidasUci_' + oData.id).offset().top;
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
 
@@ -2435,26 +2459,6 @@ class PacientesUCI extends App {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
-                                                    }, 250);
-
-
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosMedidasUci').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
-
-
                                                 } else {
 
 
@@ -2472,25 +2476,32 @@ class PacientesUCI extends App {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+
+                                                }
+
+                                                let tt = $('#MedidasUci_' + oData.id).offset().top;
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
                                                             isAnimating = false;
                                                         })
-                                                    }, 250);
+                                                }, 250);
 
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosMedidasUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosMedidasUci').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
-                                                }
                                             }
                                         },
 
@@ -2560,13 +2571,17 @@ class PacientesUCI extends App {
                                                 }, 100);
                                             }, 100);
 
+                                            let tt = $('#MedidasUci_' + oData.id).offset().top;
                                             setTimeout(() => {
                                                 let isAnimating = true;
-                                                $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                    isAnimating = false;
-                                                })
+                                                $('html,body').animate({
+                                                        scrollTop: tt
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
                                             }, 250);
-
 
                                             setTimeout(() => {
                                                 let isAnimating = true;
@@ -3060,11 +3075,16 @@ class PacientesUCI extends App {
                                                 }
 
 
+                                                let tt = $('#ComburTest_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                        isAnimating = false;
-                                                    })
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
 
                                                 setTimeout(() => {
@@ -3111,11 +3131,16 @@ class PacientesUCI extends App {
                                                         }, 100);
                                                     }, 100);
 
+                                                    let tt = $('#ComburTest_' + oData.id).offset().top;
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
                                                     setTimeout(() => {
@@ -3232,12 +3257,18 @@ class PacientesUCI extends App {
                                                 }
 
 
+                                                let tt = $('#ComburTest_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                        isAnimating = false;
-                                                    })
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
+
 
                                                 setTimeout(() => {
                                                     let isAnimating = true;
@@ -3284,11 +3315,16 @@ class PacientesUCI extends App {
                                                         }, 100);
                                                     }, 100);
 
+                                                    let tt = $('#ComburTest_' + oData.id).offset().top;
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
                                                     setTimeout(() => {
@@ -3391,23 +3427,7 @@ class PacientesUCI extends App {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
-                                                    }, 250);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosComburTest').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
                                                 } else {
 
                                                     setTimeout(() => {
@@ -3424,28 +3444,30 @@ class PacientesUCI extends App {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({
-                                                                scrollTop: $("#ComburTest_" + oData.id).offset().top
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
-
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosComburTest').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
                                                 }
+
+                                                let tt = $('#ComburTest_' + oData.id).offset().top;
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosComburTest').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
                                             }
                                         },
 
@@ -3512,10 +3534,11 @@ class PacientesUCI extends App {
                                                 }, 100);
                                             }, 100);
 
+                                            let tt = $('#ComburTest_' + oData.id).offset().top;
                                             setTimeout(() => {
                                                 let isAnimating = true;
                                                 $('html,body').animate({
-                                                        scrollTop: $("#ComburTest_" + oData.id).offset().top,
+                                                        scrollTop: tt
                                                     },
                                                     700, "easeInOutSine",
                                                     function() {
@@ -3533,6 +3556,8 @@ class PacientesUCI extends App {
                                                         isAnimating = false;
                                                     })
                                             }, 250);
+
+
 
 
                                         },
@@ -3831,12 +3856,18 @@ class PacientesUCI extends App {
                                                     }, 90);
                                                 }
 
+                                                let tt = $('#GasesMed_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                        isAnimating = false;
-                                                    })
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
+
 
                                                 setTimeout(() => {
                                                     let isAnimating = true;
@@ -3883,11 +3914,16 @@ class PacientesUCI extends App {
                                                         }, 100);
                                                     }, 100);
 
+                                                    let tt = $('#GasesMed_' + oData.id).offset().top;
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
                                                     setTimeout(() => {
@@ -4005,11 +4041,16 @@ class PacientesUCI extends App {
                                                     }, 90);
                                                 }
 
+                                                let tt = $('#GasesMed_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                        isAnimating = false;
-                                                    })
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
 
                                                 setTimeout(() => {
@@ -4057,11 +4098,16 @@ class PacientesUCI extends App {
                                                         }, 100);
                                                     }, 100);
 
+                                                    let tt = $('#GasesMed_' + oData.id).offset().top;
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
                                                     setTimeout(() => {
@@ -4166,23 +4212,7 @@ class PacientesUCI extends App {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
-                                                    }, 250);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosGasesMedUci').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
 
                                                 } else {
 
@@ -4200,24 +4230,31 @@ class PacientesUCI extends App {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+
+                                                }
+
+                                                let tt = $('#GasesMed_' + oData.id).offset().top;
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
                                                             isAnimating = false;
                                                         })
-                                                    }, 250);
+                                                }, 250);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosGasesMedUci').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
-                                                }
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosGasesMedUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
                                             }
                                         },
 
@@ -4285,12 +4322,18 @@ class PacientesUCI extends App {
                                                 }, 100);
                                             }, 100);
 
+                                            let tt = $('#GasesMed_' + oData.id).offset().top;
                                             setTimeout(() => {
                                                 let isAnimating = true;
-                                                $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                    isAnimating = false;
-                                                })
+                                                $('html,body').animate({
+                                                        scrollTop: tt
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
                                             }, 250);
+
 
                                             setTimeout(() => {
                                                 let isAnimating = true;

@@ -848,12 +848,16 @@ class MedidasUci {
                                                     }, 90);
                                                 }
 
-
+                                                let tt = $('#MedidasUci_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                        isAnimating = false;
-                                                    })
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
 
                                                 setTimeout(() => {
@@ -901,12 +905,19 @@ class MedidasUci {
                                                         }, 100);
                                                     }, 100);
 
+
+                                                    let tt = $('#MedidasUci_' + oData.id).offset().top;
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
+
 
                                                     setTimeout(() => {
                                                         let isAnimating = true;
@@ -1029,12 +1040,16 @@ class MedidasUci {
                                                     }, 90);
                                                 }
 
-
+                                                let tt = $('#MedidasUci_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                        isAnimating = false;
-                                                    })
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
 
                                                 setTimeout(() => {
@@ -1082,11 +1097,17 @@ class MedidasUci {
                                                         }, 100);
                                                     }, 100);
 
+
+                                                    let tt = $('#MedidasUci_' + oData.id).offset().top;
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
 
@@ -1194,24 +1215,6 @@ class MedidasUci {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
-                                                    }, 250);
-
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosMedidasUci').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
-
                                                 } else {
 
                                                     setTimeout(() => {
@@ -1228,24 +1231,30 @@ class MedidasUci {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                }
+
+                                                let tt = $('#MedidasUci_' + oData.id).offset().top;
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
                                                             isAnimating = false;
                                                         })
-                                                    }, 250);
+                                                }, 250);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosMedidasUci').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
-                                                }
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosMedidasUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
                                             }
                                         },
 
@@ -1316,11 +1325,17 @@ class MedidasUci {
                                                 }, 100);
                                             }, 100);
 
+
+                                            let tt = $('#MedidasUci_' + oData.id).offset().top;
                                             setTimeout(() => {
                                                 let isAnimating = true;
-                                                $('html,body').animate({ scrollTop: $("#MedidasUci_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                    isAnimating = false;
-                                                })
+                                                $('html,body').animate({
+                                                        scrollTop: tt
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
                                             }, 250);
 
                                             setTimeout(() => {

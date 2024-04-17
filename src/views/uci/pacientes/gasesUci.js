@@ -623,11 +623,16 @@ class GasesUci {
                                                     }, 90);
                                                 }
 
+                                                let tt = $('#Gases_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                        isAnimating = false;
-                                                    })
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
 
                                                 setTimeout(() => {
@@ -763,11 +768,16 @@ class GasesUci {
                                                     }, 90);
                                                 }
 
+                                                let tt = $('#Gases_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                        isAnimating = false;
-                                                    })
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
 
                                                 setTimeout(() => {
@@ -816,11 +826,16 @@ class GasesUci {
                                                     }, 100);
 
 
+                                                    let tt = $('#Gases_' + oData.id).offset().top;
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
                                                     setTimeout(() => {
@@ -913,24 +928,6 @@ class GasesUci {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
-                                                    }, 250);
-
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosGasesUci').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
-
                                                 } else {
 
                                                     setTimeout(() => {
@@ -947,24 +944,31 @@ class GasesUci {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                }
+
+
+                                                let tt = $('#Gases_' + oData.id).offset().top;
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
                                                             isAnimating = false;
                                                         })
-                                                    }, 250);
+                                                }, 250);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosGasesUci').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
-                                                }
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosGasesUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
                                             }
                                         },
 
@@ -1044,12 +1048,16 @@ class GasesUci {
                                             }, 100);
 
 
+                                            let tt = $('#Gases_' + oData.id).offset().top;
                                             setTimeout(() => {
-
                                                 let isAnimating = true;
-                                                $('html,body').animate({ scrollTop: $("#Gases_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                    isAnimating = false;
-                                                })
+                                                $('html,body').animate({
+                                                        scrollTop: tt
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
                                             }, 250);
 
                                             setTimeout(() => {

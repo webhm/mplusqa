@@ -440,11 +440,17 @@ class GasesMedUci {
                                                     }, 90);
                                                 }
 
+
+                                                let tt = $('#GasesMed_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                        isAnimating = false;
-                                                    })
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
 
                                                 setTimeout(() => {
@@ -492,11 +498,17 @@ class GasesMedUci {
                                                         }, 100);
                                                     }, 100);
 
+
+                                                    let tt = $('#GasesMed_' + oData.id).offset().top;
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
                                                     setTimeout(() => {
@@ -614,11 +626,17 @@ class GasesMedUci {
                                                     }, 90);
                                                 }
 
+
+                                                let tt = $('#GasesMed_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                        isAnimating = false;
-                                                    })
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
 
                                                 setTimeout(() => {
@@ -668,11 +686,17 @@ class GasesMedUci {
                                                         }, 100);
                                                     }, 100);
 
+
+                                                    let tt = $('#GasesMed_' + oData.id).offset().top;
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
                                                     setTimeout(() => {
@@ -777,23 +801,6 @@ class GasesMedUci {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
-                                                    }, 250);
-
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosGasesMedUci').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
 
                                                 } else {
 
@@ -810,25 +817,31 @@ class GasesMedUci {
                                                             m.redraw();
                                                         }, 100);
                                                     }, 100);
+                                                }
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+                                                let tt = $('#GasesMed_' + oData.id).offset().top;
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
                                                             isAnimating = false;
                                                         })
-                                                    }, 250);
+                                                }, 250);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosGasesMedUci').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
-                                                }
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosGasesMedUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
                                             }
                                         },
 
@@ -895,13 +908,18 @@ class GasesMedUci {
                                                 }, 100);
                                             }, 100);
 
+
+                                            let tt = $('#GasesMed_' + oData.id).offset().top;
                                             setTimeout(() => {
                                                 let isAnimating = true;
-                                                $('html,body').animate({ scrollTop: $("#GasesMed_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                    isAnimating = false;
-                                                })
+                                                $('html,body').animate({
+                                                        scrollTop: tt
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
                                             }, 250);
-
 
                                             setTimeout(() => {
                                                 let isAnimating = true;

@@ -624,13 +624,18 @@ class ComburTestUci {
                                                     }, 90);
                                                 }
 
-
+                                                let tt = $('#ComburTest_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                        isAnimating = false;
-                                                    })
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
+
 
                                                 setTimeout(() => {
                                                     let isAnimating = true;
@@ -677,12 +682,18 @@ class ComburTestUci {
                                                         }, 100);
                                                     }, 100);
 
+                                                    let tt = $('#ComburTest_' + oData.id).offset().top;
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
+
 
                                                     setTimeout(() => {
                                                         let isAnimating = true;
@@ -799,12 +810,16 @@ class ComburTestUci {
                                                     }, 90);
                                                 }
 
-
+                                                let tt = $('#ComburTest_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
-                                                    $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                        isAnimating = false;
-                                                    })
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
 
                                                 setTimeout(() => {
@@ -852,11 +867,16 @@ class ComburTestUci {
                                                         }, 100);
                                                     }, 100);
 
+                                                    let tt = $('#ComburTest_' + oData.id).offset().top;
                                                     setTimeout(() => {
                                                         let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
                                                     setTimeout(() => {
@@ -960,23 +980,7 @@ class ComburTestUci {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
-                                                            isAnimating = false;
-                                                        })
-                                                    }, 250);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosComburTest').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
                                                 } else {
 
                                                     setTimeout(() => {
@@ -993,24 +997,32 @@ class ComburTestUci {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({ scrollTop: $("#ComburTest_" + oData.id).offset().top }, 700, "easeInOutSine", function() {
+
+                                                }
+
+                                                let tt = $('#ComburTest_' + oData.id).offset().top;
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
                                                             isAnimating = false;
                                                         })
-                                                    }, 250);
+                                                }, 250);
 
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosComburTest').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
-                                                }
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosComburTest').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
                                             }
                                         },
 
@@ -1077,16 +1089,20 @@ class ComburTestUci {
                                                     m.redraw();
                                                 }, 100);
                                             }, 100);
+
+
+                                            let tt = $('#ComburTest_' + oData.id).offset().top;
                                             setTimeout(() => {
                                                 let isAnimating = true;
                                                 $('html,body').animate({
-                                                        scrollTop: $("#ComburTest_" + oData.id).offset().top,
+                                                        scrollTop: tt
                                                     },
                                                     700, "easeInOutSine",
                                                     function() {
                                                         isAnimating = false;
                                                     })
                                             }, 250);
+
                                             setTimeout(() => {
                                                 let isAnimating = true;
                                                 $('#registrosComburTest').animate({
