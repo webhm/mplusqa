@@ -978,8 +978,16 @@ class VentilatoriosUci {
                                                     }, 90);
                                                 }
 
+                                                let tt = $('#Ventilatorios_' + oData.id).offset().top;
                                                 setTimeout(() => {
-                                                    document.getElementById("Ventilatorios_" + oData.id).scrollIntoView(true);
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
 
                                                 setTimeout(() => {
@@ -1028,8 +1036,17 @@ class VentilatoriosUci {
                                                         }, 100);
                                                     }, 100);
 
+
+                                                    let tt = $('#Ventilatorios_' + oData.id).offset().top;
                                                     setTimeout(() => {
-                                                        document.getElementById("Ventilatorios_" + oData.id).scrollIntoView(true);
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
                                                     }, 250);
 
                                                     setTimeout(() => {
@@ -1143,8 +1160,17 @@ class VentilatoriosUci {
                                                     }, 90);
                                                 }
 
+
+                                                let tt = $('#Ventilatorios_' + oData.id).offset().top;
                                                 setTimeout(() => {
-                                                    document.getElementById("Ventilatorios_" + oData.id).scrollIntoView(true);
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
                                                 }, 250);
 
                                                 setTimeout(() => {
@@ -1258,21 +1284,6 @@ class VentilatoriosUci {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        document.getElementById("Ventilatorios_" + oData.id).scrollIntoView(true);
-                                                    }, 250);
-
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosVentilatorios').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
-
                                                 } else {
                                                     setTimeout(() => {
                                                         VentilatoriosUci.editarRegistro();
@@ -1288,21 +1299,32 @@ class VentilatoriosUci {
                                                         }, 100);
                                                     }, 100);
 
-                                                    setTimeout(() => {
-                                                        document.getElementById("Ventilatorios_" + oData.id).scrollIntoView(true);
-                                                    }, 250);
-
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosVentilatorios').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
                                                 }
+
+
+                                                let tt = $('#Ventilatorios_' + oData.id).offset().top;
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosVentilatorios').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
                                             }
                                         },
                                     }),
@@ -1370,8 +1392,17 @@ class VentilatoriosUci {
                                                 }, 100);
                                             }, 100);
 
+
+                                            let tt = $('#Ventilatorios_' + oData.id).offset().top;
                                             setTimeout(() => {
-                                                document.getElementById("Ventilatorios_" + oData.id).scrollIntoView(true);
+                                                let isAnimating = true;
+                                                $('html,body').animate({
+                                                        scrollTop: tt
+                                                    },
+                                                    700, "easeInOutSine",
+                                                    function() {
+                                                        isAnimating = false;
+                                                    })
                                             }, 250);
 
                                             setTimeout(() => {
