@@ -10,7 +10,7 @@ class FetchCalendario {
         Calendario.setLoader();
         return m.request({
             method: "GET",
-            url: "https://api.hospitalmetropolitano.org/v2/date/citas/agendadas",
+            url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/agendadas",
             params: {
                 idCalendar: Calendario.idCalendar
             },
@@ -41,7 +41,7 @@ class FetchCalendario {
             setTimeout(() => {
                 return m.request({
                     method: "GET",
-                    url: "https://api.hospitalmetropolitano.org/v2/date/citas/agendadas",
+                    url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/agendadas",
                     params: {
                         idCalendar: Calendario.idCalendar,
                         searchPaciente: Calendario.searchPaciente
@@ -93,7 +93,7 @@ class FetchCalendario {
             Calendario.setLoader();
             return m.request({
                 method: "POST",
-                url: "https://api.hospitalmetropolitano.org/v2/date/citas/perfil",
+                url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/perfil",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": localStorage.userToken
