@@ -436,7 +436,7 @@ class Cita {
 
         m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/date/citas/upcall",
+            url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/upcall",
             body: Cita.data,
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
@@ -472,7 +472,7 @@ class Cita {
 
         m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/date/citas/delcall",
+            url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/delcall",
             body: Cita.data,
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
@@ -522,7 +522,7 @@ class Cita {
 
         m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/date/citas/call",
+            url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/call",
             body: Cita.data,
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
@@ -554,7 +554,7 @@ class Cita {
 
         m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/date/citas/call",
+            url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/call",
             body: Cita.data,
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
@@ -584,7 +584,7 @@ class Cita {
         Cita.loader = true;
         m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/date/citas/reagendar",
+            url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/reagendar",
             body: Cita.data,
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
@@ -613,7 +613,7 @@ class Cita {
 
         m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/date/citas/reagendar/cancel",
+            url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/reagendar/cancel",
             body: Cita.data,
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
@@ -642,7 +642,7 @@ class Cita {
 
         m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/date/citas/nueva",
+            url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/nueva",
             body: Cita.data,
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
@@ -670,7 +670,7 @@ class Cita {
         Cita.loader = true;
         m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/date/citas/update",
+            url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/update",
             body: Cita.data,
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
@@ -698,7 +698,7 @@ class Cita {
 
         m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/date/citas/delete",
+            url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/delete",
             body: Cita.data,
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
