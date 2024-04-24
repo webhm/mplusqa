@@ -377,6 +377,7 @@ class Cita {
             Cita.data = null;
         });
         Cita.buscarPacientes = false;
+        Cita.buscarMedicos = false;
         Cita.buscarItems = false;
         Cita.error = null;
         Cita.data = null;
@@ -395,6 +396,7 @@ class Cita {
     static crearEvento() {
         $('[data-toggle="tooltip"]').tooltip("hide");
         Cita.buscarPacientes = false;
+        Cita.buscarMedicos = false;
         Cita.buscarItems = false;
         let _data;
         _data = Cita.data;

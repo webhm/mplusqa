@@ -1102,7 +1102,7 @@ class Calendario extends App {
         Cita.error = null;
         Cita.data.nhc = params.CD_PACIENTE;
         Cita.data.paciente = params.NM_PACIENTE;
-        Cita.data.telefono = "0998785402";
+        Cita.data.telefono = params.NR_CELULAR;
         Cita.data.sexo = params.TP_SEXO;
         Cita.data.fecha_nacimiento = moment(params.DT_NASCIMENTO, "DD-MM-YYYY").format("DD/MM/YYYY");
         Cita.data.email = params.EMAIL;
@@ -2487,6 +2487,7 @@ class Calendario extends App {
 
         Cita.buscarItems = false;
         Cita.buscarPacientes = false;
+        Cita.buscarMedicos = false;
 
         let _track = false;
         let _timeInicio = "";
