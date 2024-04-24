@@ -832,6 +832,7 @@ class Calendario extends App {
                 },
                 navLinks: true,
                 selectable: true,
+                eventDurationEditable: false,
                 defaultDate: moment().format("YYYY-MM-DD"),
                 selectLongPressDelay: 100,
                 nowIndicator: true,
@@ -2534,7 +2535,7 @@ class Calendario extends App {
         }
 
         if (track == 'Agendar') {
-            Cita.agendarCitaHttp(Calendario);
+            Cita.validarCitaHttp(Calendario);
         }
 
         if (track == 'Reagendar') {
