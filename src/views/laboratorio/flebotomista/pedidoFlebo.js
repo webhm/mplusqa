@@ -928,6 +928,30 @@ const TomaMuestras = {
 
 
     },
+
+    actualizaFleboFinaliza: (at) => {
+
+        return m.request({
+                method: "POST",
+                url: "https://lisa.hospitalmetropolitano.org/v1/up-status-pedido-flebo-finaliza",
+                body: {
+                    id: at,
+                },
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+            })
+            .then(function(result) {
+                return result;
+            })
+            .catch(function(e) {
+                return {
+                    'status': null,
+                    'message': e
+                };
+            });
+    },
+
     udpateStatusTomaMuestra: () => {
         StatusPedido.documento.dataTomaMuestra.insumosToma = Insumos;
         m.request({
@@ -2048,6 +2072,7 @@ const TomaMuestras = {
                                         StatusPedido.documento.dataTomaMuestra.fechaToma = _fechaToma;
                                         TomaMuestras.disabledToma = true;
                                         TomaMuestras.udpateStatusTomaMuestra();
+                                        TomaMuestras.actualizaFleboFinaliza(PedidoFlebotomista.numeroAtencion);
 
 
                                     }

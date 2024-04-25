@@ -392,6 +392,29 @@ class InicioFlebotomista extends App {
         }
     }
 
+    static actualizaFleboLlama(id) {
+
+        return m.request({
+                method: "POST",
+                url: "https://lisa.hospitalmetropolitano.org/v1/up-status-pedido-flebo-llama",
+                body: {
+                    id: id,
+                },
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+            })
+            .then(function(result) {
+                return result;
+            })
+            .catch(function(e) {
+                return {
+                    'status': null,
+                    'message': e
+                };
+            });
+    }
+
     static fetchLlamada(at, id, numero) {
 
         return m.request({
@@ -412,6 +435,7 @@ class InicioFlebotomista extends App {
                 //  alert('Proceso realizado con éxito.');
                 InicioFlebotomista.pedidos = null;
                 InicioFlebotomista.fetchPendientes();
+                InicioFlebotomista.actualizaFleboLlama(id);
             })
             .catch(function(e) {
                 return {
