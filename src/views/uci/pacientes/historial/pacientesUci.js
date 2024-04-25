@@ -1536,7 +1536,6 @@ class PacientesUCIHistorial extends App {
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.orden - b.orden);
 
-
         // Establecer Columnas
         let PH = 0;
         let PaCO2 = 0;
@@ -1920,14 +1919,16 @@ class PacientesUCIHistorial extends App {
 
         for (let index = 0; index < orderCol[0]; index++) {
             GasesUci.sColumns.push({
-                title: "Fecha y Hora:",
+                title: "Hora:",
             });
             GasesUci.sColumns.push({
                 title: "Valores:",
             });
         }
 
-
+        GasesUci.sColumns.push({
+            title: "Opciones:",
+        });
 
         GasesUci.sRows = [];
         GasesUci.sRows = [{
@@ -1967,7 +1968,7 @@ class PacientesUCIHistorial extends App {
                     });
                 },
                 width: '15%',
-                visible: true,
+                visible: false,
                 aTargets: [2],
                 orderable: false,
 
@@ -1975,6 +1976,18 @@ class PacientesUCIHistorial extends App {
             {
                 mRender: function(data, type, full) {
                     return full.gas;
+                },
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+                                    id: 'Gases_' + oData.id,
+                                }, [oData.gas]),
+
+                            ]
+                        }
+                    });
                 },
 
                 visible: true,
@@ -1991,21 +2004,23 @@ class PacientesUCIHistorial extends App {
                     return m.mount(nTd, {
                         view: () => {
                             return [
-                                m('div.text-center.pd-l-0.pd-r-0', {
-
-                                    onclick: (e) => {
-                                        e.preventDefault();
-                                    },
+                                m('div', {
 
                                     oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
                                         valores.filter((v, i) => {
+
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
+
                                                 if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].fechaHora !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].fechaHora;
+                                                    if (resultNro[_i].hora !== null) {
+                                                        el.dom.id = "txtGasesHora" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = resultNro[_i].hora;
                                                     } else {
-                                                        el.dom.innerHTML = '<button type="button" class="btn btn-xs btn-success btn-block tx-12 ">Registrar</button>';
+                                                        el.dom.id = "txtGasesHora" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
                                                     }
                                                 } else {
                                                     el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
@@ -2013,8 +2028,8 @@ class PacientesUCIHistorial extends App {
                                             }
                                         })
                                     }
+                                }, []),
 
-                                }, [])
                             ]
                         }
                     });
@@ -2024,10 +2039,63 @@ class PacientesUCIHistorial extends App {
                 orderable: true,
 
             });
+            GasesUci.sRows.push({
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
 
+
+                                    oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
+                                        valores.filter((v, i) => {
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                if (resultNro[_i] !== undefined) {
+                                                    if (resultNro[_i].valores !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].valores;
+                                                        el.dom.id = "txtGasesValores" + resultNro[_i].nro;
+                                                    } else {
+                                                        el.dom.id = "txtGasesValores" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                    }
+                                                } else {
+                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                }
+                                            }
+                                        })
+                                    }
+
+                                }, []),
+
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: null,
+                orderable: true,
+            });
         }
 
+        GasesUci.sRows.push({
+            fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
 
+                        ]
+                    }
+                });
+            },
+            width: '5%',
+            visible: false,
+            aTargets: null,
+            orderable: true,
+
+        });
 
         GasesUci.sRows.map((c, i) => {
             GasesUci.sRows[i].aTargets = [i];
