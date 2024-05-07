@@ -151,12 +151,26 @@ class PacientesUCI extends App {
                                 m("td[colspan='6']",
                                     m("button.btn.btn-xs.btn-primary.tx-semibold.tx-14.mg-r-2[type='button']", {
                                         onclick: () => {
-                                            if (confirm("¿Esta Ud seguro de registrar un nuevo turno para este paciente?") == true) {
-                                                TurnosUci.iniciarTurno();
-                                                PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
 
-                                            }
+                                            $.confirm({
+                                                title: 'Registrar Nuevo Turno',
+                                                content: '¿Esta Ud seguro de registrar un nuevo turno para este paciente?',
+                                                buttons: {
+                                                    confirm: {
+                                                        text: 'Confirmar',
+                                                        btnClass: "btn-success op-8",
+                                                        action: function() {
+                                                            TurnosUci.iniciarTurno();
+                                                            PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
+                                                        }
+                                                    },
+                                                    cancel: {
+                                                        btnClass: "btn-danger op-8",
+                                                        text: 'Cancelar',
+                                                    }
 
+                                                }
+                                            });
 
 
                                         }
@@ -5114,10 +5128,11 @@ class PacientesUCI extends App {
                 },
             },
             cache: false,
+            orden: false,
             destroy: true,
             // pageLength: 3,
             columns: [{
-                    title: "N° : ",
+                    title: "Tipo: ",
                 },
                 {
                     title: "Fecha Turno:",
@@ -5480,8 +5495,40 @@ class PacientesUCI extends App {
                                                 disabled: (oData.status == 1 && FecthUci.loaderSecciones == true || moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') ? '' : 'disabled'),
 
                                                 onclick: () => {
-                                                    FecthUci.loaderSecciones = false;
-                                                    FecthUci.asumirTurno(oData, PacientesUCI.usuarioTurno);
+
+                                                    $.confirm({
+                                                        title: '¿Asumir?',
+                                                        content: '' +
+                                                            '<form action="" class="formName">' +
+                                                            '<div class="form-group ">' +
+                                                            '<label>Comentario:</label>' +
+                                                            '<textarea placeholder="Comentario" class="comment form-control wd-100p" rows="3" required></textarea>' +
+                                                            '</div>' +
+                                                            '</form>',
+                                                        buttons: {
+                                                            formSubmit: {
+                                                                text: 'Confirmar',
+                                                                btnClass: 'btn-success op-8',
+                                                                action: function() {
+                                                                    let comment = this.$content.find('.comment').val();
+                                                                    if (!comment) {
+                                                                        $.alert('Un comentario es obligatorio.');
+                                                                        return false;
+                                                                    }
+                                                                    // $.alert('Ud asumira todos los registros de esta turno.');
+                                                                    FecthUci.loaderSecciones = false;
+                                                                    FecthUci.asumirTurno(oData, PacientesUCI.usuarioTurno, comment);
+                                                                }
+                                                            },
+                                                            cancel: {
+                                                                btnClass: "btn-danger op-8",
+                                                                text: 'Cancelar',
+                                                            }
+
+                                                        }
+
+                                                    });
+
                                                 },
                                             },
                                             'Asumir',

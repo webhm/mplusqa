@@ -90,12 +90,18 @@ class TurnosUci {
         for (let index = 0; index < TurnosUci.turnos.length; index++) {
             let element = TurnosUci.turnos[index];
             if (element.status == 1) {
-                alert("Ya existe un turno abierto");
+                $.alert("Ya existe un turno abierto");
                 throw "Ya existe un turno abierto";
             }
             if (element.numeroTurno == PacientesUCI.numeroTurno && moment(element.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY')) {
-                alert("Ya existe un turno generado. Espere la hora del siguiente turno para generar nuevos registros. ");
-                window.location.reload();
+                $.alert({
+                    title: "Error:",
+                    content: "Ya existe un turno generado. Espere la hora del siguiente turno para generar nuevos registros.",
+                    onClose: function() {
+                        window.location.reload();
+                    }
+                });
+
                 throw "Ya existe un turno generado. Espere la hora del siguiente turno para generar nuevos registros.";
             }
         }

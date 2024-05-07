@@ -20,28 +20,56 @@ const actions = {
     show: false,
     increment(model) {
 
-        if (InicioFlebotomista.pedidos !== null && InicioFlebotomista.pedidos.length !== 0 && InicioFlebotomista.reLoader) {
-            model.seconds--;
-            if (model.seconds == 0) {
-                model.seconds = 11;
-                // InicioFlebotomista.pedidos = null;
-                InicioFlebotomista.fetchPendientes();
-                //  InicioFlebotomista.tomasPendientes = null;
-                InicioFlebotomista.fetchTomasPendientes();
+        try {
+
+            if (InicioFlebotomista.pedidos !== null && InicioFlebotomista.pedidos.length !== 0 && InicioFlebotomista.reLoader) {
+                model.seconds--;
+                if (model.seconds == 0) {
+                    model.seconds = 11;
+                    // InicioFlebotomista.pedidos = null;
+                    InicioFlebotomista.fetchPendientes();
+                    //  InicioFlebotomista.tomasPendientes = null;
+                    InicioFlebotomista.fetchTomasPendientes();
+                }
+                m.redraw();
             }
-            m.redraw();
+
+        } catch (error) {
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
         }
+
+
 
     },
 
     start(model) {
-        model.interval = setInterval(actions.increment, 1000, model);
+        try {
+            model.interval = setInterval(actions.increment, 1000, model);
+        } catch (error) {
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+        }
     },
     stop(model) {
-        model.interval = clearInterval(model.interval);
+        try {
+            model.interval = clearInterval(model.interval);
+        } catch (error) {
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+        }
     },
     reset(model) {
-        model.seconds = 11;
+        try {
+            model.seconds = 11;
+        } catch (error) {
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+        }
     },
     toggle(model) {
         if (model.isPaused) {

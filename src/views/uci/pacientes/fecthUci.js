@@ -231,7 +231,7 @@ class FecthUci {
 
     }
 
-    static asumirTurno(oData, usuarioTurno) {
+    static asumirTurno(oData, usuarioTurno, comentario) {
 
 
 
@@ -244,7 +244,8 @@ class FecthUci {
                 numeroTurno: oData.numeroTurno,
                 fechaHoraTurno: oData.fechaHoraTurno,
                 usuarioTurno: usuarioTurno,
-                status: 1
+                status: 1,
+                comentario: comentario
             },
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
