@@ -1160,8 +1160,9 @@ class GasesUci {
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (GasesUci.show ? '' : 'd-none')
-
+                    onclick: () => {
+                        GasesUci.show = !GasesUci.show;
+                    }
 
 
                 }, [

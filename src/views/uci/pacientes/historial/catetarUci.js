@@ -275,7 +275,9 @@ class CateterUci {
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (CateterUci.show ? '' : 'd-none')
+                    onclick: () => {
+                        CateterUci.show = !CateterUci.show;
+                    }
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",

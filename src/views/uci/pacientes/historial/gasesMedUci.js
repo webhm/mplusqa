@@ -914,7 +914,9 @@ class GasesMedUci {
                 },
                 m("tr.tx-uppercase", {
                     style: { "background-color": "#CCCCFF" },
-                    class: (GasesMedUci.show ? '' : 'd-none')
+                    onclick: () => {
+                        GasesMedUci.show = !GasesMedUci.show;
+                    }
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
                         "GASES MEDICINALES"

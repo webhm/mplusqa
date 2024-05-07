@@ -33,6 +33,11 @@ class Turno {
             this.status = 1;
         }
     }
+    reAbrirTurno() {
+        if (this.status == 2) {
+            this.status = 1;
+        }
+    }
     cerrarTurno() {
         this.gestion = 2;
         this.status = 2;

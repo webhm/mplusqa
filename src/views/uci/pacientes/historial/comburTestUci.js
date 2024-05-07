@@ -1182,7 +1182,9 @@ class ComburTestUci {
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (ComburTestUci.show ? '' : 'd-none')
+                    onclick: () => {
+                        ComburTestUci.show = !ComburTestUci.show;
+                    }
 
 
 

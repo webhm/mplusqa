@@ -205,6 +205,61 @@ class FecthUci {
 
     }
 
+    static reAbrirTurno(oData) {
+
+        return m.request({
+            method: "POST",
+            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/reabrir-turno",
+            body: {
+                numeroHistoriaClinica: oData.numeroHistoriaClinica,
+                numeroAtencion: oData.numeroAtencion,
+                numeroTurno: oData.numeroTurno,
+                fechaHoraTurno: oData.fechaHoraTurno,
+                status: 1
+            },
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        }).then(function(res) {
+
+            window.location.reload();
+
+        }).catch(function(e) {
+
+        });
+
+
+    }
+
+    static asumirTurno(oData, usuarioTurno) {
+
+
+
+        return m.request({
+            method: "POST",
+            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/asumir-turno",
+            body: {
+                numeroHistoriaClinica: oData.numeroHistoriaClinica,
+                numeroAtencion: oData.numeroAtencion,
+                numeroTurno: oData.numeroTurno,
+                fechaHoraTurno: oData.fechaHoraTurno,
+                usuarioTurno: usuarioTurno,
+                status: 1
+            },
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        }).then(function(res) {
+
+            window.location.reload();
+
+        }).catch(function(e) {
+
+        });
+
+
+    }
+
     static validarAtencion() {
 
         return m.request({

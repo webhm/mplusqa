@@ -1328,8 +1328,9 @@ class MedidasUci {
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (MedidasUci.show ? '' : 'd-none')
-
+                    onclick: () => {
+                        MedidasUci.show = !MedidasUci.show;
+                    }
 
 
                 }, [

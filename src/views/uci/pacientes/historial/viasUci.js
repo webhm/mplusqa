@@ -327,7 +327,9 @@ class ViasUci {
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (ViasUci.show ? '' : 'd-none')
+                    onclick: () => {
+                        ViasUci.show = !ViasUci.show;
+                    }
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
                         "VIAS:"

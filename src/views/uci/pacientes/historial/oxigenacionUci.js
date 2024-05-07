@@ -271,8 +271,9 @@ class OxigenacionUci {
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (OxigenacionUci.show ? '' : 'd-none')
-
+                    onclick: () => {
+                        OxigenacionUci.show = !OxigenacionUci.show;
+                    }
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",

@@ -5143,7 +5143,10 @@ class PacientesUCI extends App {
                     title: "Gestionar:",
                 },
                 {
-                    title: "Cerrar:",
+                    title: "Abrir/Cerrar:",
+                },
+                {
+                    title: "Asumir:",
                 }
             ],
             aoColumnDefs: [{
@@ -5198,7 +5201,7 @@ class PacientesUCI extends App {
                             }
                         });
                     },
-                    width: '20%',
+                    width: '15%',
                     visible: true,
                     aTargets: [1],
                     orderable: false,
@@ -5260,7 +5263,7 @@ class PacientesUCI extends App {
                             }
                         });
                     },
-                    width: '20%',
+                    width: '15%',
                     visible: true,
                     aTargets: [2],
                     orderable: false,
@@ -5284,7 +5287,7 @@ class PacientesUCI extends App {
                             }
                         });
                     },
-                    width: '20%',
+                    width: '15%',
                     visible: true,
                     aTargets: [3],
                     orderable: false,
@@ -5342,8 +5345,11 @@ class PacientesUCI extends App {
                                         m("button.btn.btn-xs.btn-block.btn-success.tx-13[type='button']", {
                                                 disabled: (oData.status == 1 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
                                                 onclick: () => {
+
                                                     TurnosUci.nuevoTurno = oData;
+
                                                     oData.iniciarGestion();
+
                                                     PacientesUCI.fechaHoraTurno = oData.fechaTurno + ' ' + oData.horaTurno;
 
                                                     CuidadosUci2.registros = PacientesUCI.parseSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options));
@@ -5409,17 +5415,48 @@ class PacientesUCI extends App {
                         return m.mount(nTd, {
                             view: () => {
                                 return [
-                                    m('div.text-center', [
+                                    m('div.text-center', {
+                                        class: (FecthUci.loaderSecciones == false ? '' : 'd-none'),
+                                    }, [
+                                        m("button.btn.btn-xs.btn-block.btn-secondary.tx-13[type='button']", {
+                                                disabled: 'disabled',
+                                            },
+                                            'Espere...',
+                                        ),
+                                    ]),
+                                    m('div.text-center', {
+                                        class: (oData.status == 1 && FecthUci.loaderSecciones == true || moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') ? '' : 'd-none'),
+                                    }, [
                                         m("button.btn.btn-xs.btn-block.btn-danger.tx-13[type='button']", {
+                                                class: (oData.status == 1 && FecthUci.loaderSecciones == true || moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') ? '' : 'd-none'),
                                                 disabled: (oData.status == 1 && FecthUci.loaderSecciones == true || moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') ? '' : 'disabled'),
-
                                                 onclick: () => {
+                                                    FecthUci.loaderSecciones = false;
+
                                                     oData.cerrarTurno();
                                                     FecthUci.cerrarTurno(oData);
                                                 },
                                             },
                                             'Cerrar',
                                         ),
+
+
+                                    ]),
+                                    m('div.text-center', {
+                                        class: (oData.status == 2 && FecthUci.loaderSecciones == true || moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') ? '' : 'd-none'),
+                                    }, [
+                                        m("button.btn.btn-xs.btn-block.btn-success.tx-13[type='button']", {
+                                                disabled: (oData.status == 2 && oData.numeroTurno == PacientesUCI.numeroTurno && FecthUci.loaderSecciones == true || moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') ? '' : 'disabled'),
+                                                onclick: () => {
+                                                    FecthUci.loaderSecciones = false;
+
+                                                    oData.reAbrirTurno();
+                                                    FecthUci.reAbrirTurno(oData);
+                                                },
+                                            },
+                                            'Abrir',
+                                        ),
+
 
                                     ])
 
@@ -5430,6 +5467,35 @@ class PacientesUCI extends App {
                     width: '10%',
                     visible: true,
                     aTargets: [8],
+                    orderable: false,
+
+                },
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center', [
+                                        m("button.btn.btn-xs.btn-block.btn-warning.tx-13[type='button']", {
+                                                disabled: (oData.status == 1 && FecthUci.loaderSecciones == true || moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') ? '' : 'disabled'),
+
+                                                onclick: () => {
+                                                    FecthUci.loaderSecciones = false;
+                                                    FecthUci.asumirTurno(oData, PacientesUCI.usuarioTurno);
+                                                },
+                                            },
+                                            'Asumir',
+                                        ),
+
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    width: '10%',
+                    visible: true,
+                    aTargets: [9],
                     orderable: false,
 
                 }

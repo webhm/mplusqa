@@ -289,12 +289,14 @@ class CuidadosUci2 {
             m("thead.bd.bd-2", {
                     style: { "border-color": "#5173a1" },
 
+
                 },
 
                 m("tr.tx-uppercase", {
                     style: { "background-color": "#CCCCFF" },
-
-                    class: (CuidadosUci2.show ? '' : 'd-none')
+                    onclick: () => {
+                        CuidadosUci2.show = !CuidadosUci2.show;
+                    }
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
                         "CUIDADOS GENERALES: "

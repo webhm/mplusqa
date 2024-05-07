@@ -385,13 +385,13 @@ class OxigenacionUci {
                                                         FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
                                                         OxigenacionUci.nuevoRegistro = null;
                                                         OxigenacionUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-hemodialisis', OxigenacionUci.getRegistros());
+                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
                                                     } else {
                                                         OxigenacionUci.editarRegistro();
                                                         FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
                                                         OxigenacionUci.nuevoRegistro = null;
                                                         OxigenacionUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-hemodialisis', OxigenacionUci.getRegistros());
+                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
 
                                                     }
 
@@ -465,7 +465,7 @@ class OxigenacionUci {
                                                     FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
                                                     OxigenacionUci.nuevoRegistro = null;
                                                     OxigenacionUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-hemodialisis', OxigenacionUci.getRegistros());
+                                                    PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
                                                 },
                                             },
                                             'Copiar',

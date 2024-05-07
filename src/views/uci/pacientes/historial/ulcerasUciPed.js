@@ -285,7 +285,9 @@ class UlcerasUciPed {
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
-                    class: (UlcerasUciPed.show ? '' : 'd-none')
+                    onclick: () => {
+                        UlcerasUciPed.show = !UlcerasUciPed.show;
+                    }
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
