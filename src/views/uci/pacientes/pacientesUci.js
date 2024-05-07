@@ -229,6 +229,10 @@ class PacientesUCI extends App {
                         m(UlcerasUciPed),
                         // ValoracionUciNeo
                         m(ValoracionUciNeo),
+                        m('br'),
+                        m('br'),
+                        m('br'),
+                        m('br'),
                     ])
                 ])
             ),
