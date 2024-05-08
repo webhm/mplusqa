@@ -20,24 +20,16 @@ const actions = {
     show: false,
     increment(model) {
 
-        try {
-
-            if (InicioFlebotomista.pedidos !== null && InicioFlebotomista.pedidos.length !== 0 && InicioFlebotomista.reLoader) {
-                model.seconds--;
-                if (model.seconds == 0) {
-                    model.seconds = 11;
-                    // InicioFlebotomista.pedidos = null;
-                    InicioFlebotomista.fetchPendientes();
-                    //  InicioFlebotomista.tomasPendientes = null;
-                    InicioFlebotomista.fetchTomasPendientes();
-                }
-                m.redraw();
+        if (InicioFlebotomista.pedidos !== null && InicioFlebotomista.pedidos.length !== 0 && InicioFlebotomista.reLoader) {
+            model.seconds--;
+            if (model.seconds == 0) {
+                model.seconds = 11;
+                // InicioFlebotomista.pedidos = null;
+                InicioFlebotomista.fetchPendientes();
+                //  InicioFlebotomista.tomasPendientes = null;
+                InicioFlebotomista.fetchTomasPendientes();
             }
-
-        } catch (error) {
-            setTimeout(() => {
-                window.location.reload();
-            }, 100);
+            m.redraw();
         }
 
 
@@ -45,31 +37,16 @@ const actions = {
     },
 
     start(model) {
-        try {
-            model.interval = setInterval(actions.increment, 1000, model);
-        } catch (error) {
-            setTimeout(() => {
-                window.location.reload();
-            }, 100);
-        }
+        model.interval = setInterval(actions.increment, 1000, model);
+
     },
     stop(model) {
-        try {
-            model.interval = clearInterval(model.interval);
-        } catch (error) {
-            setTimeout(() => {
-                window.location.reload();
-            }, 100);
-        }
+        model.interval = clearInterval(model.interval);
+
     },
     reset(model) {
-        try {
-            model.seconds = 11;
-        } catch (error) {
-            setTimeout(() => {
-                window.location.reload();
-            }, 100);
-        }
+        model.seconds = 11;
+
     },
     toggle(model) {
         if (model.isPaused) {
@@ -511,7 +488,7 @@ class InicioFlebotomista extends App {
 
         } catch (error) {
             setTimeout(() => {
-                InicioFlebotomista.fetchPendientes();
+                window.location.reload();
             }, 100);
 
         }
@@ -555,7 +532,7 @@ class InicioFlebotomista extends App {
 
         } catch (error) {
             setTimeout(() => {
-                InicioFlebotomista.fetchTomasPendientes();
+                window.location.reload();
             }, 100);
         }
 
