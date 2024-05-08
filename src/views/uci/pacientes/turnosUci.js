@@ -16,6 +16,7 @@ class Turno {
     usuarioTurno = null;
     paciente = null;
     especialidad = null;
+    statusHora = null;
     status = 0; // [1 => Turno Abierto, 2 Turno Cerrado]
     gestion = 0;
     constructor() {
@@ -26,6 +27,7 @@ class Turno {
         this.usuarioTurno = this.usuarioTurno;
         this.paciente = this.paciente;
         this.especialidad = this.especialidad;
+        this.statusHora = this.statusHora;
         this.gestion = this.gestion;
     }
     abrirTurno() {
@@ -62,6 +64,7 @@ class TurnosUci {
         TurnosUci.nuevoTurno.numeroAtencion = t.numeroAtencion;
         TurnosUci.nuevoTurno.numeroTurno = t.numeroTurno;
         TurnosUci.nuevoTurno.paciente = t.paciente;
+        TurnosUci.nuevoTurno.statusHora = t.statusHora;
         TurnosUci.nuevoTurno.especialidad = t.especialidad;
         TurnosUci.nuevoTurno.fechaHoraTurno = t.fechaHoraTurno;
         TurnosUci.nuevoTurno.fechaTurno = t.fechaHoraTurno.split(' ')[0];

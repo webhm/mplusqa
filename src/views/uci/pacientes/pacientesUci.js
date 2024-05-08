@@ -5138,13 +5138,13 @@ class PacientesUCI extends App {
                     title: "Tipo: ",
                 },
                 {
-                    title: "Fecha Turno:",
+                    title: "Fecha:",
                 },
                 {
-                    title: "Hora Turno:",
+                    title: "Hora:",
                 },
                 {
-                    title: "Usuario Turno:",
+                    title: "Usuario:",
                 },
                 {
                     title: "Paciente:",
@@ -5263,7 +5263,7 @@ class PacientesUCI extends App {
                                             },
                                         }),
                                         m("div.input-group-append", {
-                                                class: (oData.status == 1 ? '' : 'd-none')
+                                                class: (oData.status == 1 && sData.statusHora == 1 ? '' : 'd-none')
                                             },
                                             m("button.btn.btn-xs.btn-light[type='button']", {
                                                     title: "Editar Hora",
