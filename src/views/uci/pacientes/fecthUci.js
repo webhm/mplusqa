@@ -28,6 +28,7 @@ class FecthUci {
                 numeroTurno: parseInt(_v.PK_TURNO),
                 paciente: 'PACIENTE PRUEBA MV',
                 especialidad: 'MEDICINA INTERNA',
+                statusHora: _v.STATUS_HORA,
                 status: parseInt(_v.STATUS),
                 gestion: 0,
             });
