@@ -80,6 +80,7 @@ class TurnosUci {
         TurnosUci.nuevoTurno.numeroHistoriaClinica = PacientesUCI.numeroHistoriaClinica;
         TurnosUci.nuevoTurno.numeroAtencion = PacientesUCI.numeroAtencion;
         TurnosUci.nuevoTurno.numeroTurno = PacientesUCI.numeroTurno;
+        TurnosUci.nuevoTurno.statusHora = 1;
         TurnosUci.nuevoTurno.fechaTurno = moment().format('DD-MM-YYYY');
         TurnosUci.nuevoTurno.horaTurno = moment().format('HH:mm');
         TurnosUci.nuevoTurno.fechaHoraTurno = TurnosUci.nuevoTurno.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno;

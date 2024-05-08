@@ -5165,6 +5165,9 @@ class PacientesUCI extends App {
                 },
                 {
                     title: "Asumir:",
+                },
+                {
+                    title: "Cancelar:",
                 }
             ],
             aoColumnDefs: [{
@@ -5337,10 +5340,11 @@ class PacientesUCI extends App {
                                 return [
                                     m('div.text-center', [
                                         m("button.btn-xs.btn-block.tx-semibold.tx-13[type='button']", {
-                                                class: (oData.status == 1 ? 'bg-warning' : 'bg-success'),
+                                                class: (oData.status == 1 || oData.status == 4 ? 'bg-warning' : 'bg-success'),
                                             },
                                             (oData.status == 1 ? 'Turno Abierto' : ''),
                                             (oData.status == 2 ? 'Turno Cerado' : ''),
+                                            (oData.status == 4 ? 'Turno Abierto' : ''),
                                         ),
 
                                     ])
@@ -5360,10 +5364,11 @@ class PacientesUCI extends App {
                             view: () => {
                                 return [
                                     m('div.text-center', [
-                                        m("button.btn.btn-xs.btn-block.btn-success.tx-13[type='button']", {
+                                        m("button.btn.btn-xs.btn-block.btn-success.tx-13.tx-semibold[type='button']", {
                                                 disabled: (oData.status == 1 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
                                                 onclick: () => {
 
+                                                    oData.statusHora = 2;
                                                     TurnosUci.nuevoTurno = oData;
 
                                                     oData.iniciarGestion();
@@ -5436,21 +5441,20 @@ class PacientesUCI extends App {
                                     m('div.text-center', {
                                         class: (FecthUci.loaderSecciones == false ? '' : 'd-none'),
                                     }, [
-                                        m("button.btn.btn-xs.btn-block.btn-secondary.tx-13[type='button']", {
+                                        m("button.btn.btn-xs.btn-block.btn-secondary.tx-13.tx-semibold[type='button']", {
                                                 disabled: 'disabled',
                                             },
                                             'Espere...',
                                         ),
                                     ]),
                                     m('div.text-center', {
-                                        class: (oData.status == 1 && FecthUci.loaderSecciones == true || moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') ? '' : 'd-none'),
+
+                                        class: ((oData.status == 1 || oData.status == 4) && FecthUci.loaderSecciones == true ? '' : 'd-none'),
                                     }, [
-                                        m("button.btn.btn-xs.btn-block.btn-danger.tx-13[type='button']", {
-                                                class: (oData.status == 1 && FecthUci.loaderSecciones == true || moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') ? '' : 'd-none'),
-                                                disabled: (oData.status == 1 && FecthUci.loaderSecciones == true || moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') ? '' : 'disabled'),
+                                        m("button.btn.btn-xs.btn-block.btn-danger.tx-13.tx-semibold[type='button']", {
+                                                disabled: ((oData.status == 1 || oData.status == 4) && FecthUci.loaderSecciones == true ? '' : 'disabled'),
                                                 onclick: () => {
                                                     FecthUci.loaderSecciones = false;
-
                                                     oData.cerrarTurno();
                                                     FecthUci.cerrarTurno(oData);
                                                 },
@@ -5461,13 +5465,12 @@ class PacientesUCI extends App {
 
                                     ]),
                                     m('div.text-center', {
-                                        class: (oData.status == 2 && FecthUci.loaderSecciones == true || moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') ? '' : 'd-none'),
+                                        class: (oData.status == 2 && FecthUci.loaderSecciones == true ? '' : 'd-none'),
                                     }, [
-                                        m("button.btn.btn-xs.btn-block.btn-success.tx-13[type='button']", {
-                                                disabled: (oData.status == 2 && oData.numeroTurno == PacientesUCI.numeroTurno && FecthUci.loaderSecciones == true || moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') ? '' : 'disabled'),
+                                        m("button.btn.btn-xs.btn-block.btn-success.tx-13.tx-semibold[type='button']", {
+                                                disabled: (oData.status == 2 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
                                                 onclick: () => {
                                                     FecthUci.loaderSecciones = false;
-
                                                     oData.reAbrirTurno();
                                                     FecthUci.reAbrirTurno(oData);
                                                 },
@@ -5494,8 +5497,8 @@ class PacientesUCI extends App {
                             view: () => {
                                 return [
                                     m('div.text-center', [
-                                        m("button.btn.btn-xs.btn-block.btn-warning.tx-13[type='button']", {
-                                                disabled: (oData.status == 1 && FecthUci.loaderSecciones == true || moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') ? '' : 'disabled'),
+                                        m("button.btn.btn-xs.btn-block.btn-warning.tx-13.tx-semibold[type='button']", {
+                                                disabled: (oData.status == 1 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
 
                                                 onclick: () => {
 
@@ -5546,6 +5549,67 @@ class PacientesUCI extends App {
                     width: '10%',
                     visible: true,
                     aTargets: [9],
+                    orderable: false,
+
+                },
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center', [
+                                        m("button.btn.btn-xs.btn-block.btn-danger.tx-13.tx-semibold[type='button']", {
+                                                disabled: ((oData.status == 1 || oData.status == 2 || oData.status == 4) && FecthUci.loaderSecciones == true ? '' : 'disabled'),
+
+                                                onclick: () => {
+
+                                                    $.confirm({
+                                                        title: '¿Cancelar?',
+                                                        content: '' +
+                                                            '<form action="" class="formName">' +
+                                                            '<div class="form-group ">' +
+                                                            '<label>Comentario:</label>' +
+                                                            '<textarea placeholder="Comentario" class="comment form-control wd-100p" rows="3" required></textarea>' +
+                                                            '</div>' +
+                                                            '</form>',
+                                                        buttons: {
+                                                            formSubmit: {
+                                                                text: 'Confirmar',
+                                                                btnClass: 'btn-success op-8',
+                                                                action: function() {
+                                                                    let comment = this.$content.find('.comment').val();
+                                                                    if (!comment) {
+                                                                        $.alert('Un comentario es obligatorio.');
+                                                                        return false;
+                                                                    }
+                                                                    // $.alert('Ud asumira todos los registros de esta turno.');
+                                                                    FecthUci.loaderSecciones = false;
+                                                                    FecthUci.cancelarTurno(oData, PacientesUCI.usuarioTurno, comment);
+                                                                }
+                                                            },
+                                                            cancel: {
+                                                                btnClass: "btn-danger op-8",
+                                                                text: 'Cancelar',
+                                                            }
+
+                                                        }
+
+                                                    });
+
+                                                },
+                                            },
+                                            'Cancelar',
+                                        ),
+
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    width: '10%',
+                    visible: true,
+                    aTargets: [10],
                     orderable: false,
 
                 }

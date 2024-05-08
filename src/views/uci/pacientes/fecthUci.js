@@ -39,6 +39,28 @@ class FecthUci {
 
     }
 
+    static setTurnosAbiertos(dataTurnos) {
+
+        dataTurnos.map((_v) => {
+            TurnosUci.setTurno({
+                fechaHoraTurno: _v.FECHA,
+                usuarioTurno: _v.USUARIO,
+                numeroHistoriaClinica: _v.NHC,
+                numeroAtencion: _v.ATENCION,
+                numeroTurno: parseInt(_v.PK_TURNO),
+                paciente: 'PACIENTE PRUEBA MV',
+                especialidad: 'MEDICINA INTERNA',
+                statusHora: _v.STATUS_HORA,
+                status: 4,
+                gestion: 0,
+            });
+            TurnosUci.turnos.push(TurnosUci.nuevoTurno);
+        });
+
+        return TurnosUci.turnos;
+
+    }
+
     static registrarTurno() {
 
         return m.request({
@@ -73,6 +95,7 @@ class FecthUci {
                 numeroTurno: PacientesUCI.numeroTurno,
                 usuarioTurno: PacientesUCI.usuarioTurno,
                 fechaHoraTurno: PacientesUCI.fechaHoraTurno,
+                numeroHistoriaClinica: PacientesUCI.numeroHistoriaClinica,
                 dataSeccion: _dataAllSeccion
             },
             headers: {
@@ -262,6 +285,35 @@ class FecthUci {
 
     }
 
+    static cancelarTurno(oData, usuarioTurno, comentario) {
+
+
+        return m.request({
+            method: "POST",
+            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/cancelar-turno",
+            body: {
+                numeroHistoriaClinica: oData.numeroHistoriaClinica,
+                numeroAtencion: oData.numeroAtencion,
+                numeroTurno: oData.numeroTurno,
+                fechaHoraTurno: oData.fechaHoraTurno,
+                usuarioTurno: usuarioTurno,
+                status: 1,
+                comentario: comentario
+            },
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        }).then(function(res) {
+
+            window.location.reload();
+
+        }).catch(function(e) {
+
+        });
+
+
+    }
+
     static validarAtencion() {
 
         return m.request({
@@ -295,13 +347,14 @@ class FecthUci {
                 let turnosAbiertos = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') && v.STATUS == 1)
 
                 if (turnosAbiertos.length > 0) {
-
-                    TurnosUci.turnos = FecthUci.setTurnos(turnosAbiertos);
+                    FecthUci.loaderSecciones = true;
+                    TurnosUci.turnos = FecthUci.setTurnosAbiertos(turnosAbiertos);
                     PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
                     setTimeout(() => {
-                        alert('Existen turnos abiertos. Por favor cierre los turnos para continuar.');
-
+                        $.alert('Existen turnos abiertos. Por favor cierre los turnos para continuar.');
                     }, 500);
+
+
 
                 } else {
 
