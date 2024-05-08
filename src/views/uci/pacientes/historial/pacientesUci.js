@@ -39,7 +39,7 @@ class PacientesUCIHistorial extends App {
     constructor(_data) {
 
         super();
-        App.setTitle("Pacientes U.C.I.");
+        App.setTitle("Historial Bitácora U.C.I.");
         this.view = PacientesUCIHistorial.page;
         PacientesUCIHistorial.numeroHistoriaClinica = _data.attrs.numeroHistoriaClinica;
         PacientesUCIHistorial.numeroAtencion = _data.attrs.numeroAtencion;

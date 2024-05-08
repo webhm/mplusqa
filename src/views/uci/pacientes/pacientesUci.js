@@ -43,7 +43,7 @@ class PacientesUCI extends App {
     constructor(_data) {
 
         super();
-        App.setTitle("Pacientes U.C.I.");
+        App.setTitle("Bitácora U.C.I.");
         this.view = PacientesUCI.page;
         PacientesUCI.numeroHistoriaClinica = _data.attrs.numeroHistoriaClinica;
         PacientesUCI.numeroAtencion = _data.attrs.numeroAtencion;
@@ -5263,7 +5263,7 @@ class PacientesUCI extends App {
                                             },
                                         }),
                                         m("div.input-group-append", {
-                                                class: (oData.status == 1 && sData.statusHora == 1 ? '' : 'd-none')
+                                                class: (oData.status == 1 && oData.statusHora == 1 ? '' : 'd-none')
                                             },
                                             m("button.btn.btn-xs.btn-light[type='button']", {
                                                     title: "Editar Hora",
