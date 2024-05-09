@@ -5559,7 +5559,7 @@ class PacientesUCI extends App {
                                 return [
                                     m('div.text-center', [
                                         m("button.btn.btn-xs.btn-block.btn-danger.tx-13.tx-semibold[type='button']", {
-                                                disabled: ((oData.status == 1 || oData.status == 2 || oData.status == 4) && oData.fechaHoraTurno == PacientesUCI.fechaHoraTurno && FecthUci.loaderSecciones == true ? '' : 'disabled'),
+                                                disabled: ((oData.status == 1 || oData.status == 4) && FecthUci.loaderSecciones == true ? '' : 'disabled'),
 
                                                 onclick: () => {
 
