@@ -5343,7 +5343,7 @@ class PacientesUCI extends App {
                                                 class: (oData.status == 1 || oData.status == 4 ? 'bg-warning' : 'bg-success'),
                                             },
                                             (oData.status == 1 ? 'Turno Abierto' : ''),
-                                            (oData.status == 2 ? 'Turno Cerado' : ''),
+                                            (oData.status == 2 ? 'Turno Cerrado' : ''),
                                             (oData.status == 4 ? 'Turno Abierto' : ''),
                                         ),
 
@@ -5468,7 +5468,7 @@ class PacientesUCI extends App {
                                         class: (oData.status == 2 && FecthUci.loaderSecciones == true ? '' : 'd-none'),
                                     }, [
                                         m("button.btn.btn-xs.btn-block.btn-success.tx-13.tx-semibold[type='button']", {
-                                                disabled: (oData.status == 2 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
+                                                disabled: (oData.status == 2 && oData.fechaHoraTurno == PacientesUCI.fechaHoraTurno && FecthUci.loaderSecciones == true ? '' : 'disabled'),
                                                 onclick: () => {
                                                     FecthUci.loaderSecciones = false;
                                                     oData.reAbrirTurno();
@@ -5559,7 +5559,7 @@ class PacientesUCI extends App {
                                 return [
                                     m('div.text-center', [
                                         m("button.btn.btn-xs.btn-block.btn-danger.tx-13.tx-semibold[type='button']", {
-                                                disabled: ((oData.status == 1 || oData.status == 2 || oData.status == 4) && FecthUci.loaderSecciones == true ? '' : 'disabled'),
+                                                disabled: ((oData.status == 1 || oData.status == 2 || oData.status == 4) && oData.fechaHoraTurno == PacientesUCI.fechaHoraTurno && FecthUci.loaderSecciones == true ? '' : 'disabled'),
 
                                                 onclick: () => {
 
