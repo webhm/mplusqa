@@ -23,6 +23,7 @@ import ComburTestUci from "./comburTestUci";
 import GasesMedUci from "./gasesMedUci";
 import UlcerasUciPed from "./ulcerasUciPed";
 import ValoracionUciNeo from "./valorarionUciNeo";
+import PrescripcionesUci from "./prescripcionesUci";
 
 
 // Pacientes UCI
@@ -83,6 +84,9 @@ class PacientesUCI extends App {
 
         // AccesosUci.show = true;
         AccesosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Accesos').options));
+
+        PrescripcionesUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_PrescripcionesUci').options));
+
 
         //  CateterUci.show = true;
 
@@ -229,8 +233,8 @@ class PacientesUCI extends App {
                         m(UlcerasUciPed),
                         // ValoracionUciNeo
                         m(ValoracionUciNeo),
-
-
+                        // Prescripciones Uci
+                        m(PrescripcionesUci),
                     ]),
                     m('div.ht-100'),
                 ])
@@ -5468,7 +5472,7 @@ class PacientesUCI extends App {
                                         class: (oData.status == 2 && FecthUci.loaderSecciones == true ? '' : 'd-none'),
                                     }, [
                                         m("button.btn.btn-xs.btn-block.btn-success.tx-13.tx-semibold[type='button']", {
-                                                disabled: (oData.status == 2 && oData.fechaHoraTurno == PacientesUCI.fechaHoraTurno && FecthUci.loaderSecciones == true ? '' : 'disabled'),
+                                                disabled: (oData.status == 2 && oData.numeroTurno == PacientesUCI.numeroTurno && FecthUci.loaderSecciones == true ? '' : 'disabled'),
                                                 onclick: () => {
                                                     FecthUci.loaderSecciones = false;
                                                     oData.reAbrirTurno();
