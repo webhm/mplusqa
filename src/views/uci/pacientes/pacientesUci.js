@@ -85,8 +85,6 @@ class PacientesUCI extends App {
         // AccesosUci.show = true;
         AccesosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Accesos').options));
 
-        PrescripcionesUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_PrescripcionesUci').options));
-
 
         //  CateterUci.show = true;
 
@@ -477,6 +475,33 @@ class PacientesUCI extends App {
 
 
         result = res.sort((a, b) => b.nro - a.nro);
+
+        resultNro = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+
+        return resultNro;
+
+    }
+
+    static parseSeccionPrescripcionesUci_AllRegistros(options) {
+
+        let res = [];
+        let result = [];
+        let resultNro = [];
+        let hash = {};
+
+        options.map((option) => {
+            FecthUci.dataSecciones.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id && _obj.seccion == 'PrescripcionesUci') {
+                    res.push(_obj);
+                }
+            });
+        });
+
+
+        result = res.sort((a, b) => b.nro - a.nro);
+
+        console.log(7777777777777, result)
 
         resultNro = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
 
@@ -1300,6 +1325,8 @@ class PacientesUCI extends App {
                                             if (e.keyCode == 13) {
                                                 GasesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                 GasesUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                GasesUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+
                                                 if (GasesUci.nuevoRegistro.editar == null) {
 
                                                     setTimeout(() => {
@@ -4395,6 +4422,47 @@ class PacientesUCI extends App {
 
     }
 
+    static parseSeccionPrescripcionesUci_v2(options) {
+
+
+        let res = [];
+        let result = [];
+        let resultId = [];
+        let resultNro = [];
+        let _arr = [];
+        let hash = {};
+
+
+        options.map((option) => {
+            FecthUci.dataSecciones.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id && _obj.seccion == 'PrescripcionesUci') {
+                    res.push(_obj);
+                }
+            });
+        });
+
+        if (res.length == 0) {
+            res = PrescripcionesUci.allRegistros;
+        }
+
+        result = res.sort((a, b) => b.nro - a.nro);
+
+        resultNro = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true).sort((a, b) => a.nro - b.nro);
+
+        // Quitar duplicados
+        //_arr = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
+        // Ordenar desc
+        // _arr = resultId.sort((a, b) => a.orden - b.orden);
+        _arr = resultNro.filter(o => o.status == 1);
+
+        // Extablecer columnas por horarios
+        PrescripcionesUci.filterRegistros();
+
+        return _arr;
+
+    }
+
 
     static parseSeccionMedidas_AllRegistros(options) {
 
@@ -5416,6 +5484,9 @@ class PacientesUCI extends App {
                                                     GasesMedUci.allRegistros = PacientesUCI.parseSeccionGasesMed_AllRegistros(Array.from(document.getElementById('sec_GasesMed').options));
                                                     PacientesUCI.setTurnoSeccionGasesMed(Array.from(document.getElementById('sec_GasesMed').options));
                                                     GasesMedUci.registros = PacientesUCI.parseSeccionGasesMed_v2(Array.from(document.getElementById('sec_GasesMed').options));
+
+                                                    PrescripcionesUci.allRegistros = PacientesUCI.parseSeccionPrescripcionesUci_AllRegistros(Array.from(document.getElementById('sec_PrescripcionesUci').options));
+                                                    PrescripcionesUci.registros = PacientesUCI.parseSeccionPrescripcionesUci_v2(Array.from(document.getElementById('sec_PrescripcionesUci').options));
 
 
                                                     PacientesUCI.showSecciones();

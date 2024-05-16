@@ -1,7 +1,4 @@
 import m from "mithril";
-import App from "../../../models/App";
-import Loader from "../../utils/loader";
-import Errors from "../../utils/errors";
 import PacientesUCI from "./pacientesUci";
 import FecthUci from "./fecthUci";
 import TurnosUci from "./turnosUci";
