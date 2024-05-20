@@ -1088,7 +1088,7 @@ class Calendario extends App {
     static setItem(params) {
         Cita.error = null;
         let fecha1 = moment(Cita.data.inicio, "DD/MM/YYYY HH:mm");
-        let _duracion = moment(params.DURACION, "HH:mm").minutes();
+        let _duracion = moment.duration(params.DURACION.format("HH:mm")).asMinutes();
         let _suma = fecha1.add(_duracion, "minutes");
         Cita.data.end = moment(_suma).format("dddd, DD-MM-YYYY HH:mm");
         Cita.data.fin = moment(_suma).format("DD/MM/YYYY HH:mm");
