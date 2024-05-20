@@ -931,11 +931,18 @@ const TomaMuestras = {
 
     actualizaFleboFinaliza: (at) => {
 
+        let usr = localStorage.getItem('peerId');
+
+        if (usr === undefined) {
+            usr = '';
+        }
+
         return m.request({
                 method: "POST",
                 url: "https://lisa.hospitalmetropolitano.org/v1/up-status-pedido-flebo-finaliza",
                 body: {
                     id: at,
+                    usr: usr
                 },
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
