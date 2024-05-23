@@ -208,6 +208,24 @@ class PrescripcionesUci {
         PrescripcionesUci.setTableRegistros();
 
     }
+
+    static extraerInfusiones(data) {
+        let iText = '';
+        let infusiones = [];
+        infusiones = PrescripcionesUci.allRegistros.filter(o => o.prescripcion == data.prescripcion && o.velocidadInfusion != undefined && o.velocidadInfusion != null);
+
+        if (infusiones.length > 0) {
+            for (let index = 0; index < infusiones.length; index++) {
+                const element = infusiones[index];
+                iText += 'Velocidad: ' + element.velocidadInfusion + ' Fecha: ' + element.timestamp + ' Usuario: ' + element.usuarioTurno + '</br>';
+            }
+        }
+
+
+        return iText;
+
+    }
+
     static setTableRegistros() {
 
         // Extraer prescripciones 
@@ -455,6 +473,10 @@ class PrescripcionesUci {
                                                         '<input type="text" id="velocidadGest" class="form-control velocidadGest">' +
                                                         '</div>' +
                                                         '<div class="form-group pd-b-5">' +
+                                                        '<label>Historial de Infusiones:</label>' +
+                                                        '<div id="historialInfusiones"></div>' +
+                                                        '</div>' +
+                                                        '<div class="form-group pd-b-5">' +
                                                         '<label>Comentario:</label>' +
                                                         '<textarea type="text" id="commentGest"  rows="4" class="commentGest form-control "></textarea>' +
                                                         '</div>' +
@@ -539,32 +561,47 @@ class PrescripcionesUci {
                                                     },
                                                     onContentReady: function() {
 
+
+
+                                                        document.getElementById('historialInfusiones').innerHTML = PrescripcionesUci.extraerInfusiones(oData);
+
+                                                        document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
                                                         document.getElementById('commentGest').parentElement.style = 'display:none;';
                                                         document.getElementById('velocidadGest').parentElement.style = 'display:none;';
 
                                                         document.getElementById('tipoGest2').onclick = function() {
                                                             document.getElementById('commentGest').parentElement.style = 'display:none;';
                                                             document.getElementById('velocidadGest').parentElement.style = 'display:none;';
+                                                            document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
+
                                                         };
 
                                                         document.getElementById('tipoGest3').onclick = function() {
                                                             document.getElementById('commentGest').parentElement.style = '';
                                                             document.getElementById('velocidadGest').parentElement.style = 'display:none;';
+                                                            document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
+
                                                         };
 
                                                         document.getElementById('tipoGest4').onclick = function() {
                                                             document.getElementById('commentGest').parentElement.style = '';
                                                             document.getElementById('velocidadGest').parentElement.style = 'display:none;';
+                                                            document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
+
                                                         };
 
                                                         document.getElementById('tipoGest5').onclick = function() {
                                                             document.getElementById('commentGest').parentElement.style = '';
                                                             document.getElementById('velocidadGest').parentElement.style = 'display:none;';
+                                                            document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
+
                                                         };
 
                                                         document.getElementById('tipoGest6').onclick = function() {
                                                             document.getElementById('commentGest').parentElement.style = 'display:none;';
                                                             document.getElementById('velocidadGest').parentElement.style = '';
+                                                            document.getElementById('historialInfusiones').parentElement.style = '';
+
                                                         };
 
                                                     },
