@@ -148,7 +148,7 @@ class PrescripcionesUci {
 
     static validarStatus(data, timestamp) {
 
-        let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.timestamp == timestamp);
+        let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.timestamp == timestamp && v.status != 4);
         return _p[0];
 
     }
@@ -212,12 +212,29 @@ class PrescripcionesUci {
     static extraerInfusiones(data) {
         let iText = '';
         let infusiones = [];
-        infusiones = PrescripcionesUci.allRegistros.filter(o => o.prescripcion == data.prescripcion && o.velocidadInfusion != undefined && o.velocidadInfusion != null);
+        infusiones = PrescripcionesUci.allRegistros.filter(o => o.prescripcion == data.prescripcion && o.velocidadInfusion != undefined && o.velocidadInfusion != null && o.status != 4);
 
         if (infusiones.length > 0) {
             for (let index = 0; index < infusiones.length; index++) {
                 const element = infusiones[index];
                 iText += 'Velocidad: ' + element.velocidadInfusion + ' Fecha: ' + element.timestamp + ' Usuario: ' + element.usuarioTurno + '</br>';
+            }
+        }
+
+
+        return iText;
+
+    }
+
+    static extraerRevisiones(data) {
+        let iText = '';
+        let infusiones = [];
+        infusiones = PrescripcionesUci.allRegistros.filter(o => o.prescripcion == data.prescripcion && o.status == 4);
+
+        if (infusiones.length > 0) {
+            for (let index = 0; index < infusiones.length; index++) {
+                const element = infusiones[index];
+                iText += 'Fecha: ' + element.timestamp + ' Comentario: ' + element.comentario + ' Usuario: ' + element.usuarioTurno + '</br>';
             }
         }
 
@@ -326,6 +343,10 @@ class PrescripcionesUci {
                                                 '<b>Fecha:</b> ' + oData.timestamp + ' <br/>' +
                                                 '<b>Médico:</b> ' + oData.medico + ' <br/>' +
                                                 '<b>Frecuencia:</b> Cada ' + oData.frecuencia + ' Horas <br/>' +
+                                                '<b>Historial de Infusiones:</b>' +
+                                                '<div>' + PrescripcionesUci.extraerInfusiones(oData) + '</div>' +
+                                                '<b>Revisiones o Reaplazamientos::</b>' +
+                                                '<div>' + PrescripcionesUci.extraerRevisiones(oData) + '</div>' +
                                                 '<br/>',
                                         });
                                     },
@@ -515,26 +536,33 @@ class PrescripcionesUci {
                                                                 }
 
 
-                                                                // Para reaplazar distinto
-                                                                if (tipoGest != 4) {
 
-                                                                    setTimeout(() => {
-                                                                        PrescripcionesUci.iniciarRegistro();
-                                                                        PrescripcionesUci.nuevoRegistro.id = oData.id;
-                                                                        PrescripcionesUci.nuevoRegistro.fechaHoraTurno = oData.fechaHoraTurno;
-                                                                        PrescripcionesUci.nuevoRegistro.tipo = oData.tipo;
-                                                                        PrescripcionesUci.nuevoRegistro.prescripcion = oData.prescripcion;
-                                                                        PrescripcionesUci.nuevoRegistro.frecuencia = oData.frecuencia;
-                                                                        PrescripcionesUci.nuevoRegistro.hora = oData.hora;
-                                                                        PrescripcionesUci.nuevoRegistro.medico = oData.medico;
-                                                                        PrescripcionesUci.nuevoRegistro.timestamp = horas[index].fechaHora;
-                                                                        PrescripcionesUci.nuevoRegistro.status = (tipoGest == 6 ? 2 : tipoGest);
-                                                                        PrescripcionesUci.nuevoRegistro.velocidadInfusion = velocidadGest;
-                                                                        PrescripcionesUci.nuevoRegistro.comentario = commentGest;
-                                                                        PrescripcionesUci.nuevoRegistro.seccion = oData.seccion;
-                                                                        PrescripcionesUci.nuevoRegistro.usuarioTurno = PacientesUCI.usuarioTurno;
-                                                                        PrescripcionesUci.agregarRegistro();
-                                                                        FecthUci.registrarSeccion(PrescripcionesUci.nuevoRegistro);
+
+                                                                setTimeout(() => {
+                                                                    PrescripcionesUci.iniciarRegistro();
+                                                                    PrescripcionesUci.nuevoRegistro.id = oData.id;
+                                                                    PrescripcionesUci.nuevoRegistro.fechaHoraTurno = oData.fechaHoraTurno;
+                                                                    PrescripcionesUci.nuevoRegistro.tipo = oData.tipo;
+                                                                    PrescripcionesUci.nuevoRegistro.prescripcion = oData.prescripcion;
+                                                                    PrescripcionesUci.nuevoRegistro.frecuencia = oData.frecuencia;
+                                                                    PrescripcionesUci.nuevoRegistro.hora = oData.hora;
+                                                                    PrescripcionesUci.nuevoRegistro.medico = oData.medico;
+                                                                    PrescripcionesUci.nuevoRegistro.timestamp = (tipoGest == 4 ? moment().format('DD-MM-YYYY HH:mm') : horas[index].fechaHora);
+                                                                    PrescripcionesUci.nuevoRegistro.status = (tipoGest == 6 ? 2 : tipoGest);
+                                                                    PrescripcionesUci.nuevoRegistro.velocidadInfusion = velocidadGest;
+                                                                    PrescripcionesUci.nuevoRegistro.comentario = commentGest;
+                                                                    PrescripcionesUci.nuevoRegistro.seccion = oData.seccion;
+                                                                    PrescripcionesUci.nuevoRegistro.usuarioTurno = PacientesUCI.usuarioTurno;
+                                                                    PrescripcionesUci.agregarRegistro();
+                                                                    FecthUci.registrarSeccion(PrescripcionesUci.nuevoRegistro);
+
+
+                                                                    // Para reaplazar distinto
+                                                                    if (tipoGest == 4) {
+                                                                        PrescripcionesUci.nuevoRegistro = oData;
+                                                                        PrescripcionesUci.nuevoRegistro.editar = true;
+                                                                        m.redraw();
+                                                                    } else {
                                                                         PrescripcionesUci.nuevoRegistro = null;
                                                                         PrescripcionesUci.destroyTable();
                                                                         PrescripcionesUci.filterRegistros();
@@ -544,14 +572,10 @@ class PrescripcionesUci {
                                                                             PrescripcionesUci.show = true;
                                                                             m.redraw();
                                                                         }, 100);
-                                                                    }, 100);
+                                                                    }
 
-                                                                } else {
 
-                                                                    PrescripcionesUci.nuevoRegistro = oData;
-                                                                    PrescripcionesUci.nuevoRegistro.editar = true;
-                                                                    m.redraw();
-                                                                }
+                                                                }, 100);
 
 
 
