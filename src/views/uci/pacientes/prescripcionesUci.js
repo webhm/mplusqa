@@ -337,6 +337,7 @@ class PrescripcionesUci {
                                     id: 'PrescripcionUci_' + oData.id,
                                     onclick: () => {
                                         $.alert({
+                                            columnClass: 'col-md-12',
                                             title: 'Detalle de Prescripción',
                                             content: '' +
                                                 '<b>Prescripción:</b> ' + oData.prescripcion + ' <br/>' +
