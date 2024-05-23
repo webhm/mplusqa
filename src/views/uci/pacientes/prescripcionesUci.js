@@ -546,6 +546,11 @@ class PrescripcionesUci {
                                                                         }, 100);
                                                                     }, 100);
 
+                                                                } else {
+
+                                                                    PrescripcionesUci.nuevoRegistro = oData;
+                                                                    PrescripcionesUci.nuevoRegistro.editar = true;
+                                                                    m.redraw();
                                                                 }
 
 
