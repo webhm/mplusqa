@@ -459,13 +459,17 @@ class PrescripcionesUci {
                         view: () => {
                             return [
                                 m('div.text-center', {
-                                    ondblclick: () => {
+                                    ondblclick: (el) => {
 
                                         let _status = 1;
                                         let _obj = null;
                                         let _det = undefined;
 
                                         try {
+
+
+
+                                            console.log(55, oData)
 
 
                                             _det = PrescripcionesUci.validarStatus(oData, horas[index].fechaHora)
@@ -493,9 +497,19 @@ class PrescripcionesUci {
 
 
                                             if (_det == undefined) {
-                                                _status = 1;
-                                                throw '';
+
+                                                _det = PrescripcionesUci.validarDeshacer(oData, horas[index].fechaHora);
+                                                if (_det !== undefined && _det.status == 5) {
+                                                    return false;
+                                                } else {
+                                                    _status = 1;
+                                                    throw '';
+                                                }
+
                                             }
+
+
+
 
 
                                         } catch (error) {
@@ -782,8 +796,6 @@ class PrescripcionesUci {
                                                 });
                                             } else if (oData.frecuencia == '0') {
 
-                                                console.log(55, oData)
-
                                                 $.confirm({
                                                     columnClass: 'col-md-12',
                                                     title: '¿Registrar Adminstración?',
@@ -964,6 +976,9 @@ class PrescripcionesUci {
                                                     },
 
                                                 });
+
+
+
                                             }
 
 
@@ -998,15 +1013,18 @@ class PrescripcionesUci {
                                                     } else {
                                                         let _det = undefined;
                                                         _det = PrescripcionesUci.validarDeshacer(oData, horas[index].fechaHora);
-                                                        if (_det !== undefined && _det.status == 5) {
-                                                            el.dom.className = "fa fa-check-square tx-20 d-none";
+                                                        if (_det !== undefined && _det.frecuencia !== '0' && _det.status == 5) {
+                                                            el.dom.className = "fa fa-check-square tx-20 tx-dark op-2";
+
                                                         } else {
                                                             el.dom.className = "fa fa-check-square tx-20 tx-teal";
                                                         }
 
                                                     }
                                                 } else {
-                                                    el.dom.className = "fa fa-check-square tx-20 tx-teal";
+                                                    el.dom.className = "pd-10 tx-20 tx-white";
+                                                    el.dom.innerHTML = " ";
+
 
                                                 }
 
