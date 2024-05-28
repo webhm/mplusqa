@@ -3,6 +3,7 @@ import PacientesUCI from "./pacientesUci";
 import FecthUci from "./fecthUci";
 import TurnosUci from "./turnosUci";
 import { UNDERLINE } from "construct-ui/lib/esm/components/icon/generated/IconNames";
+import { format } from "crypto-js";
 
 
 class Prescripcion {
@@ -151,7 +152,7 @@ class PrescripcionesUci {
 
     static validarStatus(data, timestamp) {
 
-        let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.timestamp == timestamp && v.status != 4);
+        let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() >= moment(timestamp, 'DD-MM-YYYY HH:mm').unix() && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() <= moment(timestamp, 'DD-MM-YYYY HH:mm').unix());
         return _p[0];
 
     }
@@ -427,7 +428,7 @@ class PrescripcionesUci {
                                                     '<b>Prescripción:</b> ' + oData.prescripcion + ' <br/>' +
                                                     '<b>Fecha:</b> ' + oData.timestamp + ' <br/>' +
                                                     '<b>Médico:</b> ' + oData.medico + ' <br/>' +
-                                                    '<b>Frecuencia:</b> PRM (Por Razones Médicas.)<br/>' +
+                                                    '<b>Frecuencia:</b> PRN (Por Razones Necesarias )<br/>' +
                                                     '<b>Historial de Modificaciones:</b>' +
                                                     '<div>' + PrescripcionesUci.extraerAdministraciones(oData) + '</div>' +
                                                     '<br/>',
@@ -436,7 +437,7 @@ class PrescripcionesUci {
 
 
                                     },
-                                }, [oData.prescripcion + (oData.frecuencia !== '0' ? ' Cada ' + oData.frecuencia + ' Horas.' : ' (PRM)')]),
+                                }, [oData.prescripcion + (oData.frecuencia !== '0' ? ' Cada ' + oData.frecuencia + ' Horas.' : (oData.id == 'BombasInfusion' ? ' - (Continuo) ' : '(PRN)'))]),
 
                             ]
                         }
@@ -643,8 +644,8 @@ class PrescripcionesUci {
                                                         '<label for="tipoGest6" class="custom-control-label">Velocidad de Infusión</label>' +
                                                         '</div></div></div>' +
                                                         '<div class="form-group pd-b-5">' +
-                                                        '<label>Fecha y Hora:</label>' +
-                                                        '<input type="text" id="timestampGest" class="form-control timestampGest" value="' + horas[index].fechaHora + '" disabled>' +
+                                                        '<label>Hora:</label>' +
+                                                        '<input type="text" id="timestampGest" class="form-control timestampGest" value="' + moment().format('HH:mm') + '">' +
                                                         '</div>' +
                                                         '<div class="form-group pd-b-5">' +
                                                         '<label>Velocidad de Infusión:</label>' +
@@ -669,6 +670,8 @@ class PrescripcionesUci {
                                                                 let ele = document.getElementsByName('tipoGest');
                                                                 let commentGest = this.$content.find('.commentGest').val();
                                                                 let velocidadGest = this.$content.find('.velocidadGest').val();
+                                                                let timestampGest = this.$content.find('.timestampGest').val();
+
 
 
                                                                 for (let i = 0; i < ele.length; i++) {
@@ -704,7 +707,7 @@ class PrescripcionesUci {
                                                                     PrescripcionesUci.nuevoRegistro.frecuencia = oData.frecuencia;
                                                                     PrescripcionesUci.nuevoRegistro.hora = oData.hora;
                                                                     PrescripcionesUci.nuevoRegistro.medico = oData.medico;
-                                                                    PrescripcionesUci.nuevoRegistro.timestamp = (tipoGest == 4 ? moment().format('DD-MM-YYYY HH:mm') : horas[index].fechaHora);
+                                                                    PrescripcionesUci.nuevoRegistro.timestamp = (tipoGest == 4 ? moment().format('DD-MM-YYYY HH:mm') : moment().format('DD-MM-YYYY') + ' ' + timestampGest);
                                                                     PrescripcionesUci.nuevoRegistro.status = (tipoGest == 6 ? 2 : tipoGest);
                                                                     PrescripcionesUci.nuevoRegistro.velocidadInfusion = velocidadGest;
                                                                     PrescripcionesUci.nuevoRegistro.comentario = commentGest;
@@ -791,10 +794,21 @@ class PrescripcionesUci {
 
                                                         };
 
+                                                        setTimeout(() => {
+
+                                                            new Cleave("#timestampGest", {
+                                                                time: true,
+                                                                timePattern: ['h', 'm']
+                                                            });
+
+                                                        }, 50);
+
                                                     },
 
                                                 });
                                             } else if (oData.frecuencia == '0') {
+
+                                                // horas[index].fechaHora
 
                                                 $.confirm({
                                                     columnClass: 'col-md-12',
@@ -825,8 +839,8 @@ class PrescripcionesUci {
                                                         '<label for="tipoGest6" class="custom-control-label">Velocidad de Infusión</label>' +
                                                         '</div></div></div>' +
                                                         '<div class="form-group pd-b-5">' +
-                                                        '<label>Fecha y Hora:</label>' +
-                                                        '<input type="text" id="timestampGest" class="form-control timestampGest" value="' + horas[index].fechaHora + '" disabled>' +
+                                                        '<label>Hora:</label>' +
+                                                        '<input type="text" id="timestampGest" class="form-control timestampGest" value="' + moment().format('HH:mm') + '">' +
                                                         '</div>' +
                                                         '<div class="form-group pd-b-5">' +
                                                         '<label>Velocidad de Infusión:</label>' +
@@ -851,7 +865,7 @@ class PrescripcionesUci {
                                                                 let ele = document.getElementsByName('tipoGest');
                                                                 let commentGest = this.$content.find('.commentGest').val();
                                                                 let velocidadGest = this.$content.find('.velocidadGest').val();
-
+                                                                let timestampGest = this.$content.find('.timestampGest').val();
 
                                                                 for (let i = 0; i < ele.length; i++) {
                                                                     if (ele[i].checked) {
@@ -875,8 +889,6 @@ class PrescripcionesUci {
                                                                 }
 
 
-
-
                                                                 setTimeout(() => {
                                                                     PrescripcionesUci.iniciarRegistro();
                                                                     PrescripcionesUci.nuevoRegistro.id = oData.id;
@@ -886,7 +898,7 @@ class PrescripcionesUci {
                                                                     PrescripcionesUci.nuevoRegistro.frecuencia = oData.frecuencia;
                                                                     PrescripcionesUci.nuevoRegistro.hora = oData.hora;
                                                                     PrescripcionesUci.nuevoRegistro.medico = oData.medico;
-                                                                    PrescripcionesUci.nuevoRegistro.timestamp = (tipoGest == 4 ? moment().format('DD-MM-YYYY HH:mm') : horas[index].fechaHora);
+                                                                    PrescripcionesUci.nuevoRegistro.timestamp = (tipoGest == 4 ? moment().format('DD-MM-YYYY HH:mm') : moment().format('DD-MM-YYYY') + ' ' + timestampGest);
                                                                     PrescripcionesUci.nuevoRegistro.status = (tipoGest == 6 ? 2 : tipoGest);
                                                                     PrescripcionesUci.nuevoRegistro.velocidadInfusion = velocidadGest;
                                                                     PrescripcionesUci.nuevoRegistro.comentario = commentGest;
@@ -930,10 +942,7 @@ class PrescripcionesUci {
                                                     },
                                                     onContentReady: function() {
 
-
-
                                                         document.getElementById('historialInfusiones').innerHTML = PrescripcionesUci.extraerInfusiones(oData);
-
                                                         document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
                                                         document.getElementById('commentGest').parentElement.style = 'display:none;';
                                                         document.getElementById('velocidadGest').parentElement.style = 'display:none;';
@@ -942,36 +951,32 @@ class PrescripcionesUci {
                                                             document.getElementById('commentGest').parentElement.style = 'display:none;';
                                                             document.getElementById('velocidadGest').parentElement.style = 'display:none;';
                                                             document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
-
                                                         };
 
                                                         document.getElementById('tipoGest3').onclick = function() {
                                                             document.getElementById('commentGest').parentElement.style = '';
                                                             document.getElementById('velocidadGest').parentElement.style = 'display:none;';
                                                             document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
-
                                                         };
 
                                                         document.getElementById('tipoGest4').onclick = function() {
                                                             document.getElementById('commentGest').parentElement.style = '';
                                                             document.getElementById('velocidadGest').parentElement.style = 'display:none;';
                                                             document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
-
                                                         };
 
                                                         document.getElementById('tipoGest5').onclick = function() {
                                                             document.getElementById('commentGest').parentElement.style = '';
                                                             document.getElementById('velocidadGest').parentElement.style = 'display:none;';
                                                             document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
-
                                                         };
 
                                                         document.getElementById('tipoGest6').onclick = function() {
                                                             document.getElementById('commentGest').parentElement.style = 'display:none;';
                                                             document.getElementById('velocidadGest').parentElement.style = '';
                                                             document.getElementById('historialInfusiones').parentElement.style = '';
-
                                                         };
+
 
                                                     },
 
@@ -1006,7 +1011,7 @@ class PrescripcionesUci {
                                                         el.dom.className = "fa fa-check-square tx-20 tx-success";
                                                     } else if (_det !== undefined && _det.status == 3) {
                                                         // No Administrado
-                                                        el.dom.className = "fa fa-check-square tx-20 tx-dark ";
+                                                        el.dom.className = "fa fa-check-square tx-20 tx-danger ";
                                                     } else if (_det !== undefined && _det.status == 5) {
                                                         // Deshacer Verificacion
                                                         el.dom.className = "fa fa-check-square tx-20 tx-success";
@@ -1183,6 +1188,14 @@ class PrescripcionesUci {
                                 id: "TerapiaRespiratoria",
                                 label: "TERAPIA RESPIRATORIA"
                             },
+                            {
+                                id: "BombasInfusion",
+                                label: "BOMBAS DE INFUSION"
+                            },
+                            {
+                                id: "Nutricion",
+                                label: "NUTRICIÓN"
+                            },
 
                         ].map(x =>
                             m('option[id="' + x.id + '"][value="' + x.id + '"]', x.label)
@@ -1309,7 +1322,17 @@ class PrescripcionesUci {
                                     {
                                         id: 8,
                                         value: 0,
-                                        label: "PRM (Por Razones Médicas)"
+                                        label: "PRN (Por Razones Necesarias)"
+                                    },
+                                    {
+                                        id: 9,
+                                        value: 0,
+                                        label: "Es Continuo"
+                                    },
+                                    {
+                                        id: 10,
+                                        value: 0,
+                                        label: "En este momento"
                                     },
                                 ].map(x =>
                                     m('option[id="' + x.id + '"][value="' + x.value + '"]', x.label)

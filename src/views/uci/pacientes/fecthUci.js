@@ -63,9 +63,16 @@ class FecthUci {
 
     static registrarTurno() {
 
+        let _url = '';
+        if (window.location.hostname == 'testmplus.hospitalmetropolitano.org') {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci/trn';
+        } else {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci';
+        }
+
         return m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/registrar-turno",
+            url: _url + "/registrar-turno",
             body: {
                 numeroHistoriaClinica: TurnosUci.nuevoTurno.numeroHistoriaClinica,
                 numeroAtencion: TurnosUci.nuevoTurno.numeroAtencion,
@@ -87,9 +94,16 @@ class FecthUci {
 
     static registrarAllSeccion(_dataAllSeccion) {
 
+        let _url = '';
+        if (window.location.hostname == 'testmplus.hospitalmetropolitano.org') {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci/trn';
+        } else {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci';
+        }
+
         return m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/registrar-allseccion",
+            url: _url + "/registrar-allseccion",
             body: {
                 numeroAtencion: PacientesUCI.numeroAtencion,
                 numeroTurno: PacientesUCI.numeroTurno,
@@ -111,9 +125,16 @@ class FecthUci {
 
     static registrarSeccion(_dataSeccion) {
 
+        let _url = '';
+        if (window.location.hostname == 'testmplus.hospitalmetropolitano.org') {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci/trn';
+        } else {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci';
+        }
+
         return m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/registrar-seccion",
+            url: _url + "/registrar-seccion",
             body: {
                 numeroAtencion: PacientesUCI.numeroAtencion,
                 numeroTurno: PacientesUCI.numeroTurno,
@@ -134,9 +155,16 @@ class FecthUci {
 
     static eliminarSeccion(_dataSeccion) {
 
+        let _url = '';
+        if (window.location.hostname == 'testmplus.hospitalmetropolitano.org') {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci/trn';
+        } else {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci';
+        }
+
         return m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/eliminar-seccion",
+            url: _url + "/eliminar-seccion",
             body: {
                 numeroAtencion: PacientesUCI.numeroAtencion,
                 numeroTurno: _dataSeccion.numeroTurno,
@@ -158,9 +186,16 @@ class FecthUci {
 
     static actualizarHoraAtencion() {
 
+        let _url = '';
+        if (window.location.hostname == 'testmplus.hospitalmetropolitano.org') {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci/trn';
+        } else {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci';
+        }
+
         return m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/actualizar-atencion",
+            url: _url + "/actualizar-atencion",
             body: {
                 numeroAtencion: PacientesUCI.numeroAtencion,
                 numeroTurno: PacientesUCI.numeroTurno,
@@ -181,9 +216,16 @@ class FecthUci {
 
     static actualizarSeccion(_dataSeccion) {
 
+        let _url = '';
+        if (window.location.hostname == 'testmplus.hospitalmetropolitano.org') {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci/trn';
+        } else {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci';
+        }
+
         return m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/actualizar-seccion",
+            url: _url + "/actualizar-seccion",
             body: {
                 numeroAtencion: PacientesUCI.numeroAtencion,
                 numeroTurno: PacientesUCI.numeroTurno,
@@ -205,9 +247,16 @@ class FecthUci {
 
     static cerrarTurno(oData) {
 
+        let _url = '';
+        if (window.location.hostname == 'testmplus.hospitalmetropolitano.org') {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci/trn';
+        } else {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci';
+        }
+
         return m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/cerrar-turno",
+            url: _url + "/cerrar-turno",
             body: {
                 numeroHistoriaClinica: oData.numeroHistoriaClinica,
                 numeroAtencion: oData.numeroAtencion,
@@ -231,9 +280,16 @@ class FecthUci {
 
     static reAbrirTurno(oData) {
 
+        let _url = '';
+        if (window.location.hostname == 'testmplus.hospitalmetropolitano.org') {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci/trn';
+        } else {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci';
+        }
+
         return m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/reabrir-turno",
+            url: _url + "/reabrir-turno",
             body: {
                 numeroHistoriaClinica: oData.numeroHistoriaClinica,
                 numeroAtencion: oData.numeroAtencion,
@@ -257,11 +313,16 @@ class FecthUci {
 
     static asumirTurno(oData, usuarioTurno, comentario) {
 
-
+        let _url = '';
+        if (window.location.hostname == 'testmplus.hospitalmetropolitano.org') {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci/trn';
+        } else {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci';
+        }
 
         return m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/asumir-turno",
+            url: _url + "/asumir-turno",
             body: {
                 numeroHistoriaClinica: oData.numeroHistoriaClinica,
                 numeroAtencion: oData.numeroAtencion,
@@ -287,10 +348,16 @@ class FecthUci {
 
     static cancelarTurno(oData, usuarioTurno, comentario) {
 
+        let _url = '';
+        if (window.location.hostname == 'testmplus.hospitalmetropolitano.org') {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci/trn';
+        } else {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci';
+        }
 
         return m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/cancelar-turno",
+            url: _url + "/cancelar-turno",
             body: {
                 numeroHistoriaClinica: oData.numeroHistoriaClinica,
                 numeroAtencion: oData.numeroAtencion,
@@ -316,9 +383,16 @@ class FecthUci {
 
     static validarAtencion() {
 
+        let _url = '';
+        if (window.location.hostname == 'testmplus.hospitalmetropolitano.org') {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci/trn';
+        } else {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci';
+        }
+
         return m.request({
             method: "GET",
-            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/turnos-abiertos",
+            url: _url + "/turnos-abiertos",
             params: {
                 numeroHistoriaClinica: PacientesUCI.numeroHistoriaClinica,
                 numeroAtencion: PacientesUCI.numeroAtencion,
@@ -383,9 +457,16 @@ class FecthUci {
 
     static validarTipoAtencion() {
 
+        let _url = '';
+        if (window.location.hostname == 'testmplus.hospitalmetropolitano.org') {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci/trn';
+        } else {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci';
+        }
+
         return m.request({
             method: "POST",
-            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/validar-atencion",
+            url: _url + "/validar-atencion",
             body: {
                 numeroAtencion: PacientesUCI.numeroAtencion,
             },
@@ -410,9 +491,16 @@ class FecthUci {
 
         FecthUci.loaderSecciones = false;
 
+        let _url = '';
+        if (window.location.hostname == 'testmplus.hospitalmetropolitano.org') {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci/trn';
+        } else {
+            _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci';
+        }
+
         return m.request({
             method: "GET",
-            url: "https://api.hospitalmetropolitano.org/v2/metroplus/uci/detalle-all-secciones",
+            url: _url + "/detalle-all-secciones",
             params: {
                 numeroAtencion: PacientesUCI.numeroAtencion,
             },
