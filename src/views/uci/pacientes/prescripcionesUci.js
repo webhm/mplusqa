@@ -20,6 +20,7 @@ class Prescripcion {
     status = null; // 1: Administrado 2: Cancelado 3: Aplazado
     velocidadInfusion = null; // 1: Administrado 2: Cancelado 3: Aplazado
     comentario = null;
+    label = null;
     editar = null;
     seccion = 'PrescripcionesUci';
     constructor() {
@@ -36,6 +37,7 @@ class Prescripcion {
         this.status = this.status;
         this.velocidadInfusion = this.velocidadInfusion;
         this.comentario = this.comentario;
+        this.label = this.label;
         this.editar = this.editar;
         this.seccion = this.seccion;
     }
@@ -152,7 +154,7 @@ class PrescripcionesUci {
 
     static validarStatus(data, timestamp) {
 
-        let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() >= moment(timestamp, 'DD-MM-YYYY HH:mm').unix() && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() <= moment(timestamp, 'DD-MM-YYYY HH:mm').unix());
+        let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() >= moment(timestamp, 'DD-MM-YYYY HH:mm').unix() && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() <= moment(timestamp, 'DD-MM-YYYY HH:mm').add(1, 'hours').unix());
         return _p[0];
 
     }
@@ -165,6 +167,9 @@ class PrescripcionesUci {
     }
 
     static comprobarFrecuencia(data, horario, fechaHora) {
+
+
+
 
         if (data.frecuencia !== '0') {
             let _h = moment.duration(horario).asHours();
@@ -182,7 +187,7 @@ class PrescripcionesUci {
                 return false;
             }
         } else {
-            return true;
+            return false;
         }
 
 
@@ -405,7 +410,7 @@ class PrescripcionesUci {
                                     },
                                     onclick: () => {
 
-                                        if (oData.frecuencia !== '0') {
+                                        if (oData.frecuencia !== '0' || oData.frecuencia !== '1') {
                                             $.alert({
                                                 columnClass: 'col-md-12',
                                                 title: 'Detalle de Prescripción',
@@ -437,7 +442,7 @@ class PrescripcionesUci {
 
 
                                     },
-                                }, [oData.prescripcion + (oData.frecuencia !== '0' ? ' Cada ' + oData.frecuencia + ' Horas.' : (oData.id == 'BombasInfusion' ? ' - (Continuo) ' : '(PRN)'))]),
+                                }, [oData.prescripcion + ': ' + oData.label]),
 
                             ]
                         }
@@ -470,11 +475,21 @@ class PrescripcionesUci {
 
 
 
-                                            console.log(55, oData)
+                                            //  console.log(450, oData)
 
 
                                             _det = PrescripcionesUci.validarStatus(oData, horas[index].fechaHora)
                                             console.log(888, _det)
+
+
+                                            if (_det !== undefined && _det.status == 1) {
+                                                _status = 1;
+                                                _obj = _det;
+                                                console.log(54, _obj)
+                                                throw _obj.timestamp;
+                                            }
+
+
                                             if (_det !== undefined && _det.status == 2) {
                                                 _status = 2;
                                                 _obj = _det;
@@ -513,8 +528,10 @@ class PrescripcionesUci {
 
 
 
+
+
                                         } catch (error) {
-                                            if (_status == 2 && oData.frecuencia !== '0') {
+                                            if (_status == 2) {
                                                 $.confirm({
                                                     title: 'Registro de Administración',
                                                     content: 'Status: Administrado </br>Fecha: ' + _obj.timestamp + '<br/>' + 'Usuario: ' + _obj.usuarioTurno,
@@ -806,7 +823,7 @@ class PrescripcionesUci {
                                                     },
 
                                                 });
-                                            } else if (oData.frecuencia == '0') {
+                                            } else {
 
                                                 // horas[index].fechaHora
 
@@ -993,7 +1010,7 @@ class PrescripcionesUci {
                                     },
                                 }, [
 
-                                    (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false ? [
+                                    (PrescripcionesUci.validarStatus(oData, horas[index].fechaHora) != false ? [
                                         m("i.fa.fa-check-square.tx-20", {
 
                                             oncreate: (el) => {
@@ -1006,6 +1023,7 @@ class PrescripcionesUci {
                                                     let _det = undefined;
                                                     _det = PrescripcionesUci.validarStatus(oData, horas[index].fechaHora)
 
+                                                    console.log(999, _det);
                                                     if (_det !== undefined && _det.status == 2) {
                                                         // Administrado
                                                         el.dom.className = "fa fa-check-square tx-20 tx-success";
@@ -1018,13 +1036,15 @@ class PrescripcionesUci {
                                                     } else {
                                                         let _det = undefined;
                                                         _det = PrescripcionesUci.validarDeshacer(oData, horas[index].fechaHora);
-                                                        if (_det !== undefined && _det.frecuencia !== '0' && _det.status == 5) {
+                                                        if (_det !== undefined && _det.status == 5) {
                                                             el.dom.className = "fa fa-check-square tx-20 tx-dark op-2";
-
                                                         } else {
-                                                            el.dom.className = "fa fa-check-square tx-20 tx-teal";
+                                                            if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false) {
+                                                                el.dom.className = "fa fa-check-square tx-20 tx-teal";
+                                                            } else {
+                                                                el.dom.className = "";
+                                                            }
                                                         }
-
                                                     }
                                                 } else {
                                                     el.dom.className = "pd-10 tx-20 tx-white";
@@ -1278,9 +1298,10 @@ class PrescripcionesUci {
                                 m('select.tx-semibold', {
                                     id: 'sec_FrecuenciaPres',
                                     onchange: (e) => {
-                                        let _id = e.target.options[e.target.selectedIndex].id;
+                                        let _label = e.target.options[e.target.selectedIndex].label;
                                         let _value = e.target.options[e.target.selectedIndex].value;
                                         PrescripcionesUci.nuevoRegistro.frecuencia = _value;
+                                        PrescripcionesUci.nuevoRegistro.label = _label;
                                     },
                                     class: "custom-select",
                                     value: (PrescripcionesUci.nuevoRegistro !== null && PrescripcionesUci.nuevoRegistro.frecuencia !== null ? PrescripcionesUci.nuevoRegistro.frecuencia : 0),
@@ -1335,7 +1356,7 @@ class PrescripcionesUci {
                                         label: "En este momento"
                                     },
                                 ].map(x =>
-                                    m('option[id="' + x.id + '"][value="' + x.value + '"]', x.label)
+                                    m('option[id="' + x.id + '"][value="' + x.value + '"][label="' + x.label + '"]', x.label)
                                 )),
 
                             ]),
