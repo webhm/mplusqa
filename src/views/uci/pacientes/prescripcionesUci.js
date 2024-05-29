@@ -712,7 +712,12 @@ class PrescripcionesUci {
                                                                     throw 'No existe ningún valor en velocidad de infusión.';
                                                                 }
 
-
+                                                                // Validacion de hora ingresada
+                                                                let _timestampIngresado = moment().format('DD-MM-YYYY ' + timestampGest);
+                                                                if (moment(_timestampIngresado, 'DD-MM-YYYY HH:mm').unix() > moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').unix()) {
+                                                                    $.alert('La hora ingresada no puede ser menor a la hora de verificación.');
+                                                                    throw 'La hora ingresada no puede ser menor a la hora de verificación.';
+                                                                }
 
 
                                                                 setTimeout(() => {
