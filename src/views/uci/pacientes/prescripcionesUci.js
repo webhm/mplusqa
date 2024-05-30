@@ -442,6 +442,8 @@ class PrescripcionesUci {
                                                     '<b>Prescripción:</b> ' + oData.prescripcion + ' <br/>' +
                                                     '<b>Fecha:</b> ' + oData.timestamp + ' <br/>' +
                                                     '<b>Médico:</b> ' + oData.medico + ' <br/>' +
+                                                    '<b>Hora Inicio:</b> ' + oData.hora + '<br/>' +
+
                                                     '<b>Frecuencia:</b> ' + oData.label + '<br/>' +
                                                     '<b>Historial de Infusiones:</b>' +
                                                     '<div>' + PrescripcionesUci.extraerInfusiones(oData) + '</div>' +
@@ -457,6 +459,7 @@ class PrescripcionesUci {
                                                     '<b>Prescripción:</b> ' + oData.prescripcion + ' <br/>' +
                                                     '<b>Fecha:</b> ' + oData.timestamp + ' <br/>' +
                                                     '<b>Médico:</b> ' + oData.medico + ' <br/>' +
+                                                    '<b>Hora Inicio:</b> ' + oData.hora + '<br/>' +
                                                     '<b>Frecuencia:</b> ' + oData.label + '<br/>' +
                                                     '<b>Historial de Modificaciones:</b>' +
                                                     '<div>' + PrescripcionesUci.extraerAdministraciones(oData) + '</div>' +
@@ -802,7 +805,7 @@ class PrescripcionesUci {
 
                                                                 if (oData.frecuencia !== '0' && moment(_timestampIngresado, 'DD-MM-YYYY HH:mm').unix() > moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').add(1, 'hours').unix()) {
                                                                     $.alert('La hora ingresada no puede ser mayor a la hora de verificación ' + horas[index].title + ' Hrs.');
-                                                                    throw 'La hora ingresada no puede ser menor a la hora de verificación.';
+                                                                    throw 'La hora ingresada no puede ser mayor a la hora de verificación.';
                                                                 }
 
 
@@ -965,8 +968,12 @@ class PrescripcionesUci {
                                                         if (_det !== undefined && _det.status == 5) {
                                                             el.dom.className = "fa fa-check-square tx-20 tx-dark op-2";
                                                         } else {
-                                                            if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false) {
-                                                                el.dom.className = "fa fa-check-square tx-20 tx-teal";
+                                                            if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').unix()) {
+
+                                                                el.dom.className = "fa fa-check-square tx-20 tx-orange";
+                                                            } else if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').unix() && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').add(15, 'minutes').unix()) {
+
+                                                                el.dom.className = "fa fa-check-square tx-20 tx-warning";
                                                             } else {
                                                                 el.dom.className = "";
                                                             }
