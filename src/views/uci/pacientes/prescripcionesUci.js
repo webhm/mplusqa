@@ -970,10 +970,10 @@ class PrescripcionesUci {
                                                         } else {
                                                             if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').unix()) {
 
-                                                                el.dom.className = "fa fa-check-square tx-20 tx-orange";
-                                                            } else if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').unix() && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').add(15, 'minutes').unix()) {
-
                                                                 el.dom.className = "fa fa-check-square tx-20 tx-warning";
+                                                            } else if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').unix() && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').add(15, 'minutes').unix()) {
+
+                                                                el.dom.className = "fa fa-check-square tx-20 tx-orange";
                                                             } else {
                                                                 el.dom.className = "";
                                                             }
