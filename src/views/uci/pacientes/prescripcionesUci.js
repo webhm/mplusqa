@@ -175,7 +175,7 @@ class PrescripcionesUci {
             let _h = moment.duration(horario).asHours();
             let _ho = moment.duration(data.hora).asHours();
             let fechaHorario = moment(fechaHora, 'DD-MM-YYYY HH:mm').unix();
-            let fechaPres = moment('15-05-2024 ' + data.hora, 'DD-MM-YYYY HH:mm').unix();
+            let fechaPres = moment(data.timestamp, 'DD-MM-YYYY HH:mm').unix();
 
             if (fechaHorario >= fechaPres) {
                 if ((_ho > 0 || _ho >= _h) && (_h - _ho) % data.frecuencia == 0) {
@@ -184,7 +184,11 @@ class PrescripcionesUci {
                     return false;
                 }
             } else {
-                return false;
+                if ((_ho > 0 || _ho >= _h) && (_h - _ho) % data.frecuencia == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         } else {
             return false;
@@ -249,8 +253,28 @@ class PrescripcionesUci {
 
         if (infusiones.length > 0) {
             for (let index = 0; index < infusiones.length; index++) {
+
+
+
                 const element = infusiones[index];
-                iText += 'Status: ' + element.status + ' Fecha: ' + element.timestamp + ' Usuario: ' + element.usuarioTurno + '</br>';
+
+                if (element.status == '2') {
+                    element.statusLabel = 'Administrado';
+                }
+
+                if (element.status == '3') {
+                    element.statusLabel = 'No Administrado';
+                }
+
+                if (element.status == '5') {
+                    element.statusLabel = 'Cancelado';
+                }
+
+                if (element.status == '2' || element.status == '3' || element.status == '5') {
+                    iText += 'Status: ' + element.statusLabel + ' Fecha: ' + element.timestamp + ' Usuario: ' + element.usuarioTurno + '</br>';
+
+                }
+
             }
         }
 
@@ -418,7 +442,7 @@ class PrescripcionesUci {
                                                     '<b>Prescripción:</b> ' + oData.prescripcion + ' <br/>' +
                                                     '<b>Fecha:</b> ' + oData.timestamp + ' <br/>' +
                                                     '<b>Médico:</b> ' + oData.medico + ' <br/>' +
-                                                    '<b>Frecuencia:</b> Cada ' + oData.frecuencia + ' Horas <br/>' +
+                                                    '<b>Frecuencia:</b> ' + oData.label + '<br/>' +
                                                     '<b>Historial de Infusiones:</b>' +
                                                     '<div>' + PrescripcionesUci.extraerInfusiones(oData) + '</div>' +
                                                     '<b>Revisiones o Reaplazamientos::</b>' +
@@ -433,7 +457,7 @@ class PrescripcionesUci {
                                                     '<b>Prescripción:</b> ' + oData.prescripcion + ' <br/>' +
                                                     '<b>Fecha:</b> ' + oData.timestamp + ' <br/>' +
                                                     '<b>Médico:</b> ' + oData.medico + ' <br/>' +
-                                                    '<b>Frecuencia:</b> PRN (Por Razones Necesarias )<br/>' +
+                                                    '<b>Frecuencia:</b> ' + oData.label + '<br/>' +
                                                     '<b>Historial de Modificaciones:</b>' +
                                                     '<div>' + PrescripcionesUci.extraerAdministraciones(oData) + '</div>' +
                                                     '<br/>',
@@ -507,9 +531,24 @@ class PrescripcionesUci {
                                             if (_det !== undefined && _det.status == 5) {
                                                 _status = 5;
                                                 _obj = _det;
+                                                console.log(55, _obj)
+                                                throw _obj.timestamp;
+                                            }
+
+                                            if (_det !== undefined && _det.status == 5) {
+                                                _status = 5;
+                                                _obj = _det;
                                                 console.log(54, _obj)
                                                 throw _obj.timestamp;
                                             }
+
+                                            if (_det !== undefined && _det.status == 4) {
+                                                _status = 1;
+                                                _obj = _det;
+                                                console.log(54, _obj)
+                                                throw _obj.timestamp;
+                                            }
+
 
 
                                             if (_det == undefined) {
@@ -532,40 +571,80 @@ class PrescripcionesUci {
 
                                         } catch (error) {
                                             if (_status == 2) {
-                                                $.confirm({
-                                                    title: 'Registro de Administración',
-                                                    content: 'Status: Administrado </br>Fecha: ' + _obj.timestamp + '<br/>' + 'Usuario: ' + _obj.usuarioTurno,
-                                                    buttons: {
-                                                        deshacer: {
-                                                            btnClass: "btn-light op-8",
-                                                            text: 'Deshacer',
-                                                            action: function() {
 
-                                                                console.log('pppp', _obj)
-                                                                PrescripcionesUci.eliminarRegistro(_obj);
-                                                                FecthUci.eliminarSeccion(_obj);
-                                                                PrescripcionesUci.nuevoRegistro = null;
-                                                                PrescripcionesUci.destroyTable();
-                                                                PrescripcionesUci.filterRegistros();
-                                                                PrescripcionesUci.show = false;
-                                                                m.redraw();
-                                                                setTimeout(() => {
-                                                                    PrescripcionesUci.show = true;
+                                                if (oData.frecuencia == '0') {
+                                                    $.confirm({
+                                                        title: 'Registro de Administración',
+                                                        content: '<b>Historial de Modificaciones:</b><br/>' +
+                                                            '<div>' + PrescripcionesUci.extraerAdministraciones(oData) + '</div>',
+                                                        buttons: {
+                                                            deshacer: {
+                                                                btnClass: "btn-light op-8",
+                                                                text: 'Deshacer',
+                                                                action: function() {
+
+                                                                    console.log('pppp', _obj)
+                                                                    PrescripcionesUci.eliminarRegistro(_obj);
+                                                                    FecthUci.eliminarSeccion(_obj);
+                                                                    PrescripcionesUci.nuevoRegistro = null;
+                                                                    PrescripcionesUci.destroyTable();
+                                                                    PrescripcionesUci.filterRegistros();
+                                                                    PrescripcionesUci.show = false;
                                                                     m.redraw();
-                                                                }, 100);
+                                                                    setTimeout(() => {
+                                                                        PrescripcionesUci.show = true;
+                                                                        m.redraw();
+                                                                    }, 100);
 
 
 
+                                                                }
+                                                            },
+                                                            cancel: {
+                                                                btnClass: "btn-danger op-8",
+                                                                text: 'Cancelar',
                                                             }
-                                                        },
-                                                        cancel: {
-                                                            btnClass: "btn-danger op-8",
-                                                            text: 'Cancelar',
+
                                                         }
 
-                                                    }
+                                                    });
+                                                } else {
+                                                    $.confirm({
+                                                        title: 'Registro de Administración',
+                                                        content: 'Status: Administrado </br>Fecha: ' + _obj.timestamp + '<br/>' + 'Usuario: ' + _obj.usuarioTurno,
+                                                        buttons: {
+                                                            deshacer: {
+                                                                btnClass: "btn-light op-8",
+                                                                text: 'Deshacer',
+                                                                action: function() {
 
-                                                });
+                                                                    console.log('pppp', _obj)
+                                                                    PrescripcionesUci.eliminarRegistro(_obj);
+                                                                    FecthUci.eliminarSeccion(_obj);
+                                                                    PrescripcionesUci.nuevoRegistro = null;
+                                                                    PrescripcionesUci.destroyTable();
+                                                                    PrescripcionesUci.filterRegistros();
+                                                                    PrescripcionesUci.show = false;
+                                                                    m.redraw();
+                                                                    setTimeout(() => {
+                                                                        PrescripcionesUci.show = true;
+                                                                        m.redraw();
+                                                                    }, 100);
+
+
+
+                                                                }
+                                                            },
+                                                            cancel: {
+                                                                btnClass: "btn-danger op-8",
+                                                                text: 'Cancelar',
+                                                            }
+
+                                                        }
+
+                                                    });
+                                                }
+
                                             } else if (_status == 3) {
                                                 $.confirm({
                                                     title: 'Registro de Administración',
@@ -602,7 +681,7 @@ class PrescripcionesUci {
                                             } else if (_status == 5) {
                                                 $.confirm({
                                                     title: 'Registro de Administración',
-                                                    content: 'Status: Descontinuado </br>Fecha:' + _obj.timestamp + '<br/>' + 'Usuario: ' + _obj.usuarioTurno,
+                                                    content: 'Status: Cancelado </br>Fecha:' + _obj.timestamp + '<br/>' + 'Usuario: ' + _obj.usuarioTurno,
                                                     buttons: {
                                                         deshacer: {
                                                             btnClass: "btn-light op-8",
@@ -634,7 +713,7 @@ class PrescripcionesUci {
                                             } else if (_status == 1) {
                                                 $.confirm({
                                                     columnClass: 'col-md-12',
-                                                    title: '¿Registrar Adminstración?',
+                                                    title: '¿Registrar Administración?',
                                                     content: '' +
                                                         '<form action="" class="formName">' +
                                                         '<div class="form-group pd-b-5">' +
@@ -654,7 +733,7 @@ class PrescripcionesUci {
                                                         '</div>' +
                                                         '<div class="custom-control custom-radio mg-l-20">' +
                                                         '<input type="radio" id="tipoGest5" name="tipoGest" class="custom-control-input" value="5"> ' +
-                                                        '<label for="tipoGest5" class="custom-control-label">Suspender verificación</label>' +
+                                                        '<label for="tipoGest5" class="custom-control-label">Cancelar prescripción</label>' +
                                                         '</div>' +
                                                         '<div class="custom-control custom-radio mg-l-20">' +
                                                         '<input type="radio" id="tipoGest6" name="tipoGest" class="custom-control-input" value="6">' +
@@ -713,11 +792,19 @@ class PrescripcionesUci {
                                                                 }
 
                                                                 // Validacion de hora ingresada
+
+
                                                                 let _timestampIngresado = moment().format('DD-MM-YYYY ' + timestampGest);
-                                                                if (moment(_timestampIngresado, 'DD-MM-YYYY HH:mm').unix() > moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').unix()) {
-                                                                    $.alert('La hora ingresada no puede ser menor a la hora de verificación.');
+                                                                if (oData.frecuencia !== '0' && moment(_timestampIngresado, 'DD-MM-YYYY HH:mm').unix() < moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').unix()) {
+                                                                    $.alert('La hora ingresada no puede ser menor a la hora de verificación ' + horas[index].title + ' Hrs.');
                                                                     throw 'La hora ingresada no puede ser menor a la hora de verificación.';
                                                                 }
+
+                                                                if (oData.frecuencia !== '0' && moment(_timestampIngresado, 'DD-MM-YYYY HH:mm').unix() > moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').add(1, 'hours').unix()) {
+                                                                    $.alert('La hora ingresada no puede ser mayor a la hora de verificación ' + horas[index].title + ' Hrs.');
+                                                                    throw 'La hora ingresada no puede ser menor a la hora de verificación.';
+                                                                }
+
 
 
                                                                 setTimeout(() => {
@@ -833,178 +920,7 @@ class PrescripcionesUci {
 
                                                 // horas[index].fechaHora
 
-                                                $.confirm({
-                                                    columnClass: 'col-md-12',
-                                                    title: '¿Registrar Adminstración?',
-                                                    content: '' +
-                                                        '<form action="" class="formName">' +
-                                                        '<div class="form-group pd-b-5">' +
-                                                        '<label>Tipo de Gestión:</label>' +
-                                                        '<div class="input-group">' +
-                                                        '<div class="custom-control custom-radio">' +
-                                                        '<input type="radio" id="tipoGest2" name="tipoGest" class="custom-control-input" value="2" >' +
-                                                        '<label for="tipoGest2" class="custom-control-label">Administrado</label>' +
-                                                        '</div>' +
-                                                        '<div class="custom-control custom-radio mg-l-20">' +
-                                                        '<input type="radio" id="tipoGest3" name="tipoGest" class="custom-control-input" value="3">' +
-                                                        '<label for="tipoGest3" class="custom-control-label">No Administrado</label>' +
-                                                        '</div>' +
-                                                        '<div class="custom-control custom-radio mg-l-20">' +
-                                                        '<input type="radio" id="tipoGest4" name="tipoGest" class="custom-control-input" value="4">' +
-                                                        '<label for="tipoGest4" class="custom-control-label">Reaplazar</label>' +
-                                                        '</div>' +
-                                                        '<div class="custom-control custom-radio mg-l-20">' +
-                                                        '<input type="radio" id="tipoGest5" name="tipoGest" class="custom-control-input" value="5"> ' +
-                                                        '<label for="tipoGest5" class="custom-control-label">Suspender verificación</label>' +
-                                                        '</div>' +
-                                                        '<div class="custom-control custom-radio mg-l-20">' +
-                                                        '<input type="radio" id="tipoGest6" name="tipoGest" class="custom-control-input" value="6">' +
-                                                        '<label for="tipoGest6" class="custom-control-label">Velocidad de Infusión</label>' +
-                                                        '</div></div></div>' +
-                                                        '<div class="form-group pd-b-5">' +
-                                                        '<label>Hora:</label>' +
-                                                        '<input type="text" id="timestampGest" class="form-control timestampGest" value="' + moment().format('HH:mm') + '">' +
-                                                        '</div>' +
-                                                        '<div class="form-group pd-b-5">' +
-                                                        '<label>Velocidad de Infusión:</label>' +
-                                                        '<input type="text" id="velocidadGest" class="form-control velocidadGest">' +
-                                                        '</div>' +
-                                                        '<div class="form-group pd-b-5">' +
-                                                        '<label>Historial de Infusiones:</label>' +
-                                                        '<div id="historialInfusiones"></div>' +
-                                                        '</div>' +
-                                                        '<div class="form-group pd-b-5">' +
-                                                        '<label>Comentario:</label>' +
-                                                        '<textarea type="text" id="commentGest"  rows="4" class="commentGest form-control "></textarea>' +
-                                                        '</div>' +
-                                                        '</form>',
-                                                    buttons: {
-                                                        confirm: {
-                                                            text: 'Confirmar',
-                                                            btnClass: 'btn-success op-8',
-                                                            action: function() {
-
-                                                                let tipoGest = null;
-                                                                let ele = document.getElementsByName('tipoGest');
-                                                                let commentGest = this.$content.find('.commentGest').val();
-                                                                let velocidadGest = this.$content.find('.velocidadGest').val();
-                                                                let timestampGest = this.$content.find('.timestampGest').val();
-
-                                                                for (let i = 0; i < ele.length; i++) {
-                                                                    if (ele[i].checked) {
-                                                                        tipoGest = ele[i].value;
-                                                                    }
-                                                                }
-
-                                                                if (tipoGest == null) {
-                                                                    $.alert('No existe ningún estado para gestionar.');
-                                                                    throw 'No existe ningún estado para gestionar.';
-                                                                }
-
-                                                                if ((tipoGest == 3 || tipoGest == 4 || tipoGest == 5) && !commentGest) {
-                                                                    $.alert('No existe ningún comentario.');
-                                                                    throw 'No existe ningún comentario.';
-                                                                }
-
-                                                                if (tipoGest == 6 && !velocidadGest) {
-                                                                    $.alert('No existe ningún valor en velocidad de infusión.');
-                                                                    throw 'No existe ningún valor en velocidad de infusión.';
-                                                                }
-
-
-                                                                setTimeout(() => {
-                                                                    PrescripcionesUci.iniciarRegistro();
-                                                                    PrescripcionesUci.nuevoRegistro.id = oData.id;
-                                                                    PrescripcionesUci.nuevoRegistro.fechaHoraTurno = oData.fechaHoraTurno;
-                                                                    PrescripcionesUci.nuevoRegistro.tipo = oData.tipo;
-                                                                    PrescripcionesUci.nuevoRegistro.prescripcion = oData.prescripcion;
-                                                                    PrescripcionesUci.nuevoRegistro.frecuencia = oData.frecuencia;
-                                                                    PrescripcionesUci.nuevoRegistro.hora = oData.hora;
-                                                                    PrescripcionesUci.nuevoRegistro.medico = oData.medico;
-                                                                    PrescripcionesUci.nuevoRegistro.timestamp = (tipoGest == 4 ? moment().format('DD-MM-YYYY HH:mm') : moment().format('DD-MM-YYYY') + ' ' + timestampGest);
-                                                                    PrescripcionesUci.nuevoRegistro.status = (tipoGest == 6 ? 2 : tipoGest);
-                                                                    PrescripcionesUci.nuevoRegistro.velocidadInfusion = velocidadGest;
-                                                                    PrescripcionesUci.nuevoRegistro.comentario = commentGest;
-                                                                    PrescripcionesUci.nuevoRegistro.label = oData.label;
-                                                                    PrescripcionesUci.nuevoRegistro.seccion = oData.seccion;
-                                                                    PrescripcionesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                                    PrescripcionesUci.nuevoRegistro.usuarioTurno = PacientesUCI.usuarioTurno;
-                                                                    PrescripcionesUci.agregarRegistro();
-                                                                    FecthUci.registrarSeccion(PrescripcionesUci.nuevoRegistro);
-
-
-                                                                    // Para reaplazar distinto
-                                                                    if (tipoGest == 4) {
-                                                                        PrescripcionesUci.nuevoRegistro = oData;
-                                                                        PrescripcionesUci.nuevoRegistro.editar = true;
-                                                                        m.redraw();
-                                                                    } else {
-                                                                        PrescripcionesUci.nuevoRegistro = null;
-                                                                        PrescripcionesUci.destroyTable();
-                                                                        PrescripcionesUci.filterRegistros();
-                                                                        PrescripcionesUci.show = false;
-                                                                        m.redraw();
-                                                                        setTimeout(() => {
-                                                                            PrescripcionesUci.show = true;
-                                                                            m.redraw();
-                                                                        }, 100);
-                                                                    }
-
-
-                                                                }, 100);
-
-
-
-
-                                                            }
-                                                        },
-                                                        cancel: {
-                                                            btnClass: "btn-danger op-8",
-                                                            text: 'Cancelar',
-                                                        }
-
-                                                    },
-                                                    onContentReady: function() {
-
-                                                        document.getElementById('historialInfusiones').innerHTML = PrescripcionesUci.extraerInfusiones(oData);
-                                                        document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
-                                                        document.getElementById('commentGest').parentElement.style = 'display:none;';
-                                                        document.getElementById('velocidadGest').parentElement.style = 'display:none;';
-
-                                                        document.getElementById('tipoGest2').onclick = function() {
-                                                            document.getElementById('commentGest').parentElement.style = 'display:none;';
-                                                            document.getElementById('velocidadGest').parentElement.style = 'display:none;';
-                                                            document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
-                                                        };
-
-                                                        document.getElementById('tipoGest3').onclick = function() {
-                                                            document.getElementById('commentGest').parentElement.style = '';
-                                                            document.getElementById('velocidadGest').parentElement.style = 'display:none;';
-                                                            document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
-                                                        };
-
-                                                        document.getElementById('tipoGest4').onclick = function() {
-                                                            document.getElementById('commentGest').parentElement.style = '';
-                                                            document.getElementById('velocidadGest').parentElement.style = 'display:none;';
-                                                            document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
-                                                        };
-
-                                                        document.getElementById('tipoGest5').onclick = function() {
-                                                            document.getElementById('commentGest').parentElement.style = '';
-                                                            document.getElementById('velocidadGest').parentElement.style = 'display:none;';
-                                                            document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
-                                                        };
-
-                                                        document.getElementById('tipoGest6').onclick = function() {
-                                                            document.getElementById('commentGest').parentElement.style = 'display:none;';
-                                                            document.getElementById('velocidadGest').parentElement.style = '';
-                                                            document.getElementById('historialInfusiones').parentElement.style = '';
-                                                        };
-
-
-                                                    },
-
-                                                });
+                                                return false;
 
 
 
@@ -1037,9 +953,12 @@ class PrescripcionesUci {
                                                     } else if (_det !== undefined && _det.status == 3) {
                                                         // No Administrado
                                                         el.dom.className = "fa fa-check-square tx-20 tx-danger ";
-                                                    } else if (_det !== undefined && _det.status == 5) {
+                                                    } else if (_det !== undefined && _det.status == 5 && oData.frecuencia !== '0') {
                                                         // Deshacer Verificacion
                                                         el.dom.className = "fa fa-check-square tx-20 tx-success";
+                                                    } else if (_det !== undefined && _det.status == 5 && oData.frecuencia == '0') {
+                                                        // Deshacer Verificacion
+                                                        el.dom.className = "fa fa-check-square tx-20 tx-dark op-2";
                                                     } else {
                                                         let _det = undefined;
                                                         _det = PrescripcionesUci.validarDeshacer(oData, horas[index].fechaHora);
