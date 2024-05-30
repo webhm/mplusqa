@@ -442,7 +442,7 @@ class PrescripcionesUci {
 
 
                                     },
-                                }, [oData.prescripcion + ': ' + oData.label]),
+                                }, [oData.prescripcion + ' (' + oData.label + ')']),
 
                             ]
                         }
@@ -733,6 +733,7 @@ class PrescripcionesUci {
                                                                     PrescripcionesUci.nuevoRegistro.status = (tipoGest == 6 ? 2 : tipoGest);
                                                                     PrescripcionesUci.nuevoRegistro.velocidadInfusion = velocidadGest;
                                                                     PrescripcionesUci.nuevoRegistro.comentario = commentGest;
+                                                                    PrescripcionesUci.nuevoRegistro.label = oData.label;
                                                                     PrescripcionesUci.nuevoRegistro.seccion = oData.seccion;
                                                                     PrescripcionesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                                     PrescripcionesUci.nuevoRegistro.usuarioTurno = PacientesUCI.usuarioTurno;
@@ -924,6 +925,7 @@ class PrescripcionesUci {
                                                                     PrescripcionesUci.nuevoRegistro.status = (tipoGest == 6 ? 2 : tipoGest);
                                                                     PrescripcionesUci.nuevoRegistro.velocidadInfusion = velocidadGest;
                                                                     PrescripcionesUci.nuevoRegistro.comentario = commentGest;
+                                                                    PrescripcionesUci.nuevoRegistro.label = oData.label;
                                                                     PrescripcionesUci.nuevoRegistro.seccion = oData.seccion;
                                                                     PrescripcionesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                                     PrescripcionesUci.nuevoRegistro.usuarioTurno = PacientesUCI.usuarioTurno;
@@ -1052,7 +1054,7 @@ class PrescripcionesUci {
                                                         }
                                                     }
                                                 } else {
-                                                    el.dom.className = "pd-10 tx-20 tx-white";
+                                                    el.dom.className = "pd-20 tx-20 tx-white";
                                                     el.dom.innerHTML = " ";
 
 
