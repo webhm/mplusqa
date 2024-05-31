@@ -1607,7 +1607,7 @@ class VentilatoriosUci {
                         }, m("option[value='0']", 'Seleccione...'), [{
                                 orden: 1,
                                 id: "ModoVentilatorio",
-                                label: "MODO VENTILARIO"
+                                label: "MODO VENTILATORIO"
                             }, {
                                 orden: 2,
                                 id: "PresionInspiratoria",

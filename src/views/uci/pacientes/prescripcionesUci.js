@@ -17,7 +17,7 @@ class Prescripcion {
     hora = null; // Feha y hora del registro Médico
     medico = null;
     timestamp = null; // Fecha y hora del registro de enfermeria
-    status = null; // 1: Administrado 2: Cancelado 3: Aplazado
+    status = null; // 1: Registrado 2: Administrado 3: No Administrado 4: Reaplazar 5: Suspender Administracion
     velocidadInfusion = null; // 1: Administrado 2: Cancelado 3: Aplazado
     comentario = null;
     label = null;
@@ -172,10 +172,11 @@ class PrescripcionesUci {
 
 
         if (data.frecuencia !== '0') {
+
             let _h = moment.duration(horario).asHours();
             let _ho = moment.duration(data.hora).asHours();
             let fechaHorario = moment(fechaHora, 'DD-MM-YYYY HH:mm').unix();
-            let fechaPres = moment(data.timestamp, 'DD-MM-YYYY HH:mm').unix();
+            let fechaPres = moment('15-05-2024 08:00', 'DD-MM-YYYY HH:mm').unix();
 
             if (fechaHorario >= fechaPres) {
                 if ((_ho > 0 || _ho >= _h) && (_h - _ho) % data.frecuencia == 0) {
@@ -950,7 +951,10 @@ class PrescripcionesUci {
                                                     _det = PrescripcionesUci.validarStatus(oData, horas[index].fechaHora)
 
                                                     console.log(999, _det);
-                                                    if (_det !== undefined && _det.status == 2) {
+                                                    if (_det !== undefined && _det.status == 2 && oData.frecuencia !== '0') {
+                                                        // Administrado
+                                                        el.dom.className = "fa fa-check-square tx-20 tx-success";
+                                                    } else if (_det !== undefined && _det.status == 2 && oData.frecuencia == '0' && _det.velocidadInfusion == '') {
                                                         // Administrado
                                                         el.dom.className = "fa fa-check-square tx-20 tx-success";
                                                     } else if (_det !== undefined && _det.status == 3) {
@@ -968,18 +972,15 @@ class PrescripcionesUci {
                                                         if (_det !== undefined && _det.status == 5) {
                                                             el.dom.className = "fa fa-check-square tx-20 tx-dark op-2";
                                                         } else {
-                                                            if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').unix()) {
-
-                                                                el.dom.className = "fa fa-check-square tx-20 tx-warning";
-                                                            } else if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').unix() && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').add(15, 'minutes').unix()) {
-
-                                                                el.dom.className = "fa fa-check-square tx-20 tx-orange";
+                                                            if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false) {
+                                                                el.dom.className = "fa fa-check-square tx-20 tx-teal";
                                                             } else {
                                                                 el.dom.className = "";
                                                             }
                                                         }
                                                     }
                                                 } else {
+
                                                     el.dom.className = "pd-20 tx-20 tx-white";
                                                     el.dom.innerHTML = " ";
 
