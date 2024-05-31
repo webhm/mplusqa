@@ -452,6 +452,7 @@ class PrescripcionesUci {
                                                         text: 'Editar',
                                                         action: function() {
                                                             PrescripcionesUci.nuevoRegistro = oData;
+                                                            m.redraw();
                                                         }
                                                     },
                                                     Ok: {
@@ -480,6 +481,7 @@ class PrescripcionesUci {
                                                         text: 'Editar',
                                                         action: function() {
                                                             PrescripcionesUci.nuevoRegistro = oData;
+                                                            m.redraw();
                                                         }
                                                     },
                                                     Ok: {
