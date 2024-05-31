@@ -178,7 +178,7 @@ class PrescripcionesUci {
             let _h = moment.duration(horario).asHours();
             let _ho = moment.duration(data.hora).asHours();
             let fechaHorario = moment(fechaHora, 'DD-MM-YYYY HH:mm').unix();
-            let fechaPres = moment('15-05-2024 08:00', 'DD-MM-YYYY HH:mm').unix();
+            let fechaPres = moment(moment().format('DD-MM-YYYY') + ' ' + data.horaPres, 'DD-MM-YYYY HH:mm').unix();
 
             if (fechaHorario >= fechaPres) {
                 if ((_ho > 0 || _ho >= _h) && (_h - _ho) % data.frecuencia == 0) {
@@ -187,11 +187,7 @@ class PrescripcionesUci {
                     return false;
                 }
             } else {
-                if ((_ho > 0 || _ho >= _h) && (_h - _ho) % data.frecuencia == 0) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return false;
             }
         } else {
             return false;
