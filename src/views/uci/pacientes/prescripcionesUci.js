@@ -14,6 +14,7 @@ class Prescripcion {
     tipo = null;
     prescripcion = null;
     frecuencia = null;
+    horaPres = null;
     hora = null; // Feha y hora del registro Médico
     medico = null;
     timestamp = null; // Fecha y hora del registro de enfermeria
@@ -31,6 +32,7 @@ class Prescripcion {
         this.tipo = this.tipo;
         this.prescripcion = this.prescripcion;
         this.frecuencia = this.frecuencia;
+        this.horaPres = this.horaPres;
         this.hora = this.hora;
         this.medico = this.medico;
         this.timestamp = this.timestamp;
@@ -119,8 +121,8 @@ class PrescripcionesUci {
             for (let index = 0; index < registros.length; index++) {
                 if (registros[index].status == 1) {
                     horarios.push({
-                        'fechaHora': moment(registros[index].timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + registros[index].hora,
-                        'hora': registros[index].hora,
+                        'fechaHora': moment(registros[index].timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + registros[index].horaPres,
+                        'hora': registros[index].horaPres,
                     });
                 }
 
@@ -154,7 +156,7 @@ class PrescripcionesUci {
 
     static validarStatus(data, timestamp) {
 
-        let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() >= moment(timestamp, 'DD-MM-YYYY HH:mm').unix() && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() <= moment(timestamp, 'DD-MM-YYYY HH:mm').add(1, 'hours').unix());
+        let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.velocidadInfusion == '' && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() >= moment(timestamp, 'DD-MM-YYYY HH:mm').unix() && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() <= moment(timestamp, 'DD-MM-YYYY HH:mm').add(1, 'hours').unix());
         return _p[0];
 
     }
@@ -250,7 +252,7 @@ class PrescripcionesUci {
     static extraerAdministraciones(data) {
         let iText = '';
         let infusiones = [];
-        infusiones = PrescripcionesUci.allRegistros.filter(o => o.prescripcion == data.prescripcion && o.status != 4 && o.status > 1);
+        infusiones = PrescripcionesUci.allRegistros.filter(o => o.prescripcion == data.prescripcion && o.status != 4 && o.status > 1 && o.velocidadInfusion == '');
 
         if (infusiones.length > 0) {
             for (let index = 0; index < infusiones.length; index++) {
@@ -950,11 +952,10 @@ class PrescripcionesUci {
                                                     let _det = undefined;
                                                     _det = PrescripcionesUci.validarStatus(oData, horas[index].fechaHora)
 
-                                                    console.log(999, _det);
                                                     if (_det !== undefined && _det.status == 2 && oData.frecuencia !== '0') {
                                                         // Administrado
                                                         el.dom.className = "fa fa-check-square tx-20 tx-success";
-                                                    } else if (_det !== undefined && _det.status == 2 && oData.frecuencia == '0' && _det.velocidadInfusion == '') {
+                                                    } else if (_det !== undefined && _det.status == 2 && oData.frecuencia == '0') {
                                                         // Administrado
                                                         el.dom.className = "fa fa-check-square tx-20 tx-success";
                                                     } else if (_det !== undefined && _det.status == 3) {
@@ -962,15 +963,21 @@ class PrescripcionesUci {
                                                         el.dom.className = "fa fa-check-square tx-20 tx-danger ";
                                                     } else if (_det !== undefined && _det.status == 5 && oData.frecuencia !== '0') {
                                                         // Deshacer Verificacion
-                                                        el.dom.className = "fa fa-check-square tx-20 tx-success";
+                                                        el.dom.className = "fa fa-check-square tx-20 tx-dark op-2";
                                                     } else if (_det !== undefined && _det.status == 5 && oData.frecuencia == '0') {
                                                         // Deshacer Verificacion
                                                         el.dom.className = "fa fa-check-square tx-20 tx-dark op-2";
+
                                                     } else {
                                                         let _det = undefined;
                                                         _det = PrescripcionesUci.validarDeshacer(oData, horas[index].fechaHora);
                                                         if (_det !== undefined && _det.status == 5) {
-                                                            el.dom.className = "fa fa-check-square tx-20 tx-dark op-2";
+                                                            if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false) {
+                                                                el.dom.className = "fa fa-check-square tx-20 tx-dark op-2";
+                                                            } else {
+                                                                el.dom.className = "";
+                                                            }
+
                                                         } else {
                                                             if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false) {
                                                                 el.dom.className = "fa fa-check-square tx-20 tx-teal";
@@ -1225,7 +1232,12 @@ class PrescripcionesUci {
                                     },
                                     oninput: (e) => {
                                         setTimeout(() => {
-                                            PrescripcionesUci.nuevoRegistro.hora = e.target.value;
+                                            if (PrescripcionesUci.nuevoRegistro.editar == null) {
+                                                PrescripcionesUci.nuevoRegistro.horaPres = e.target.value;
+                                                PrescripcionesUci.nuevoRegistro.hora = e.target.value;
+                                            } else {
+                                                PrescripcionesUci.nuevoRegistro.hora = e.target.value;
+                                            }
                                         }, 50);
                                     },
                                 }),
