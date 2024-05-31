@@ -193,6 +193,8 @@ class PrescripcionesUci {
             return false;
         }
 
+
+
     }
 
 
@@ -1001,9 +1003,9 @@ class PrescripcionesUci {
                                                             } else {
                                                                 el.dom.className = "";
                                                             }
-
                                                         } else {
-                                                            if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false && oData.label !== 'En este momento') {
+
+                                                            if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false) {
                                                                 el.dom.className = "fa fa-check-square tx-20 tx-teal";
                                                             } else {
                                                                 el.dom.className = "";
@@ -1012,9 +1014,15 @@ class PrescripcionesUci {
                                                     }
                                                 } else {
 
-                                                    el.dom.className = "pd-20 tx-20 tx-white";
-                                                    el.dom.innerHTML = " ";
+                                                    let fechaHorario = moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').unix();
+                                                    let fechaPres = moment(moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + oData.horaPres, 'DD-MM-YYYY HH:mm').unix();
 
+                                                    if (fechaHorario == fechaPres && oData.label == 'En este momento') {
+                                                        el.dom.className = "fa fa-check-square tx-20 tx-teal";
+                                                    } else {
+                                                        el.dom.className = "pd-20 tx-20 tx-white";
+                                                        el.dom.innerHTML = " ";
+                                                    }
 
                                                 }
 
