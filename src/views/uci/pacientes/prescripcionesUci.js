@@ -156,7 +156,10 @@ class PrescripcionesUci {
 
     static validarStatus(data, timestamp) {
 
-        let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.velocidadInfusion == '' && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() >= moment(timestamp, 'DD-MM-YYYY HH:mm').unix() && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() <= moment(timestamp, 'DD-MM-YYYY HH:mm').add(1, 'hours').unix());
+
+
+
+        let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.velocidadInfusion == '' && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() >= moment(timestamp, 'DD-MM-YYYY HH:mm').unix() && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() < moment(timestamp, 'DD-MM-YYYY HH:mm').add(1, 'hours').unix());
         return _p[0];
 
     }
@@ -171,14 +174,11 @@ class PrescripcionesUci {
     static comprobarFrecuencia(data, horario, fechaHora) {
 
 
-
-
         if (data.frecuencia !== '0') {
-
             let _h = moment.duration(horario).asHours();
             let _ho = moment.duration(data.hora).asHours();
             let fechaHorario = moment(fechaHora, 'DD-MM-YYYY HH:mm').unix();
-            let fechaPres = moment(moment().format('DD-MM-YYYY') + ' ' + data.horaPres, 'DD-MM-YYYY HH:mm').unix();
+            let fechaPres = moment(moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + data.horaPres, 'DD-MM-YYYY HH:mm').unix();
 
             if (fechaHorario >= fechaPres) {
                 if ((_ho > 0 || _ho >= _h) && (_h - _ho) % data.frecuencia == 0) {
@@ -193,11 +193,9 @@ class PrescripcionesUci {
             return false;
         }
 
-
-
-
-
     }
+
+
     static filterRegistros() {
 
         let result = [];
@@ -433,7 +431,7 @@ class PrescripcionesUci {
                                     },
                                     onclick: () => {
 
-                                        if (oData.frecuencia !== '0' || oData.frecuencia !== '1') {
+                                        if (oData.frecuencia !== '0') {
                                             $.alert({
                                                 columnClass: 'col-md-12',
                                                 title: 'Detalle de Prescripción',
@@ -442,13 +440,26 @@ class PrescripcionesUci {
                                                     '<b>Fecha:</b> ' + oData.timestamp + ' <br/>' +
                                                     '<b>Médico:</b> ' + oData.medico + ' <br/>' +
                                                     '<b>Hora Inicio:</b> ' + oData.hora + '<br/>' +
-
                                                     '<b>Frecuencia:</b> ' + oData.label + '<br/>' +
                                                     '<b>Historial de Infusiones:</b>' +
                                                     '<div>' + PrescripcionesUci.extraerInfusiones(oData) + '</div>' +
                                                     '<b>Revisiones o Reaplazamientos::</b>' +
                                                     '<div>' + PrescripcionesUci.extraerRevisiones(oData) + '</div>' +
                                                     '<br/>',
+                                                buttons: {
+                                                    editar: {
+                                                        btnClass: "btn-danger op-8",
+                                                        text: 'Editar',
+                                                        action: function() {
+                                                            PrescripcionesUci.nuevoRegistro = oData;
+                                                        }
+                                                    },
+                                                    Ok: {
+                                                        btnClass: "btn-light op-8",
+                                                        text: 'Ok',
+                                                    }
+
+                                                }
                                             });
                                         } else {
                                             $.alert({
@@ -463,6 +474,21 @@ class PrescripcionesUci {
                                                     '<b>Historial de Modificaciones:</b>' +
                                                     '<div>' + PrescripcionesUci.extraerAdministraciones(oData) + '</div>' +
                                                     '<br/>',
+                                                buttons: {
+                                                    editar: {
+                                                        btnClass: "btn-danger op-8",
+                                                        text: 'Editar',
+                                                        action: function() {
+                                                            PrescripcionesUci.nuevoRegistro = oData;
+                                                        }
+                                                    },
+                                                    Ok: {
+                                                        btnClass: "btn-light op-8",
+                                                        text: 'Ok',
+                                                    }
+
+                                                }
+
                                             });
                                         }
 
@@ -975,7 +1001,7 @@ class PrescripcionesUci {
                                                             }
 
                                                         } else {
-                                                            if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false) {
+                                                            if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false && oData.label !== 'En este momento') {
                                                                 el.dom.className = "fa fa-check-square tx-20 tx-teal";
                                                             } else {
                                                                 el.dom.className = "";
