@@ -899,6 +899,7 @@ class PrescripcionesUci {
                                                                     throw 'No existe ningún valor en velocidad de infusión.';
                                                                 }
 
+
                                                                 // Validacion de hora ingresada
 
 
@@ -914,8 +915,8 @@ class PrescripcionesUci {
                                                                 }
 
 
-
-                                                                setTimeout(() => {
+                                                                if (tipoGest == 6 && velocidadGest) {
+                                                                    this.$content.find('.velocidadGest').val('');
                                                                     PrescripcionesUci.iniciarRegistro();
                                                                     PrescripcionesUci.nuevoRegistro.id = oData.id;
                                                                     PrescripcionesUci.nuevoRegistro.fechaHoraTurno = oData.fechaHoraTurno;
@@ -934,27 +935,73 @@ class PrescripcionesUci {
                                                                     PrescripcionesUci.nuevoRegistro.usuarioTurno = PacientesUCI.usuarioTurno;
                                                                     PrescripcionesUci.agregarRegistro();
                                                                     FecthUci.registrarSeccion(PrescripcionesUci.nuevoRegistro);
+                                                                    PrescripcionesUci.nuevoRegistro = null;
+                                                                    PrescripcionesUci.destroyTable();
+                                                                    PrescripcionesUci.filterRegistros();
+                                                                    PrescripcionesUci.show = false;
+                                                                    m.redraw();
 
 
-                                                                    // Para reaplazar distinto
-                                                                    if (tipoGest == 4) {
-                                                                        PrescripcionesUci.nuevoRegistro = oData;
-                                                                        PrescripcionesUci.nuevoRegistro.editar = true;
+                                                                    setTimeout(() => {
+                                                                        PrescripcionesUci.show = true;
                                                                         m.redraw();
-                                                                    } else {
-                                                                        PrescripcionesUci.nuevoRegistro = null;
-                                                                        PrescripcionesUci.destroyTable();
-                                                                        PrescripcionesUci.filterRegistros();
-                                                                        PrescripcionesUci.show = false;
-                                                                        m.redraw();
+
+                                                                        document.getElementById('historialInfusiones').innerHTML = PrescripcionesUci.extraerInfusiones(oData);
                                                                         setTimeout(() => {
-                                                                            PrescripcionesUci.show = true;
+                                                                            PrescripcionesUci.addEventoEliminarInfusion(oData);
+                                                                        }, 50);
+                                                                    }, 100);
+                                                                    return false;
+                                                                } else {
+
+                                                                    setTimeout(() => {
+                                                                        PrescripcionesUci.iniciarRegistro();
+                                                                        PrescripcionesUci.nuevoRegistro.id = oData.id;
+                                                                        PrescripcionesUci.nuevoRegistro.fechaHoraTurno = oData.fechaHoraTurno;
+                                                                        PrescripcionesUci.nuevoRegistro.tipo = oData.tipo;
+                                                                        PrescripcionesUci.nuevoRegistro.prescripcion = oData.prescripcion;
+                                                                        PrescripcionesUci.nuevoRegistro.frecuencia = oData.frecuencia;
+                                                                        PrescripcionesUci.nuevoRegistro.hora = oData.hora;
+                                                                        PrescripcionesUci.nuevoRegistro.medico = oData.medico;
+                                                                        PrescripcionesUci.nuevoRegistro.timestamp = (tipoGest == 4 ? moment().format('DD-MM-YYYY HH:mm') : moment().format('DD-MM-YYYY') + ' ' + timestampGest);
+                                                                        PrescripcionesUci.nuevoRegistro.status = (tipoGest == 6 ? 2 : tipoGest);
+                                                                        PrescripcionesUci.nuevoRegistro.velocidadInfusion = velocidadGest;
+                                                                        PrescripcionesUci.nuevoRegistro.comentario = commentGest;
+                                                                        PrescripcionesUci.nuevoRegistro.label = oData.label;
+                                                                        PrescripcionesUci.nuevoRegistro.seccion = oData.seccion;
+                                                                        PrescripcionesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                                        PrescripcionesUci.nuevoRegistro.usuarioTurno = PacientesUCI.usuarioTurno;
+                                                                        PrescripcionesUci.agregarRegistro();
+                                                                        FecthUci.registrarSeccion(PrescripcionesUci.nuevoRegistro);
+
+
+
+
+
+                                                                        // Para reaplazar distinto
+                                                                        if (tipoGest == 4) {
+                                                                            PrescripcionesUci.nuevoRegistro = oData;
+                                                                            PrescripcionesUci.nuevoRegistro.editar = true;
                                                                             m.redraw();
-                                                                        }, 100);
-                                                                    }
+                                                                        } else {
+                                                                            PrescripcionesUci.nuevoRegistro = null;
+                                                                            PrescripcionesUci.destroyTable();
+                                                                            PrescripcionesUci.filterRegistros();
+                                                                            PrescripcionesUci.show = false;
+                                                                            m.redraw();
+                                                                            setTimeout(() => {
+                                                                                PrescripcionesUci.show = true;
+                                                                                m.redraw();
+                                                                            }, 100);
+                                                                        }
 
 
-                                                                }, 100);
+                                                                    }, 100);
+
+                                                                }
+
+
+
 
 
 
@@ -963,7 +1010,7 @@ class PrescripcionesUci {
                                                         },
                                                         cancel: {
                                                             btnClass: "btn-danger op-8",
-                                                            text: 'Cancelar',
+                                                            text: 'Cerrar',
                                                         }
 
                                                     },
