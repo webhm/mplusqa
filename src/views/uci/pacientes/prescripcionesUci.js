@@ -164,7 +164,7 @@ class PrescripcionesUci {
 
     }
 
-    static validarDeshacer(data, timestamp) {
+    static validarDeshacer(data, timestamp = '') {
 
         let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.status == 5);
         return _p[0];
@@ -236,12 +236,27 @@ class PrescripcionesUci {
         if (infusiones.length > 0) {
             for (let index = 0; index < infusiones.length; index++) {
                 const element = infusiones[index];
-                iText += 'Velocidad: ' + element.velocidadInfusion + ' Fecha: ' + element.timestamp + ' Usuario: ' + element.usuarioTurno + '</br>';
+                let _button = '<i id="velocidadInfusion_' + index + '" class="fas fa-times-circle tx-danger"></i>';
+                iText += 'Velocidad: ' + element.velocidadInfusion + ' Fecha: ' + element.timestamp + ' Usuario: ' + element.usuarioTurno + ' ' + _button + '</br>';
+
             }
         }
 
 
         return iText;
+
+    }
+
+    static addEventoEliminarInfusion(data) {
+
+        let infusiones = [];
+        infusiones = PrescripcionesUci.allRegistros.filter(o => o.prescripcion == data.prescripcion && o.velocidadInfusion != undefined && o.velocidadInfusion != '' && o.status == 2);
+        if (infusiones.length > 0) {
+            for (let index = 0; index < infusiones.length; index++) {
+                const element = infusiones[index];
+                document.getElementById("velocidadInfusion_" + index).onclick = function() { PrescripcionesUci.deshacerVelocidadInfusion(element); };
+            }
+        }
 
     }
 
@@ -296,6 +311,49 @@ class PrescripcionesUci {
 
 
         return iText;
+
+    }
+    static deshacerVelocidadInfusion(_obj) {
+
+        $.confirm({
+            title: 'Historial de Infusiones',
+            content: '¿Esta Ud. seguro de eliminar este registro?',
+            buttons: {
+                Si: {
+                    btnClass: "btn-light op-8",
+                    text: 'Si',
+                    action: function() {
+
+                        console.log('pppp', _obj)
+                        PrescripcionesUci.eliminarRegistro(_obj);
+                        FecthUci.eliminarSeccion(_obj);
+                        PrescripcionesUci.nuevoRegistro = null;
+                        PrescripcionesUci.destroyTable();
+                        PrescripcionesUci.filterRegistros();
+                        PrescripcionesUci.show = false;
+                        m.redraw();
+                        setTimeout(() => {
+                            PrescripcionesUci.show = true;
+                            m.redraw();
+                            document.getElementById('historialInfusiones').innerHTML = PrescripcionesUci.extraerInfusiones(_obj);
+                            setTimeout(() => {
+                                PrescripcionesUci.addEventoEliminarInfusion(_obj);
+                            }, 50);
+                        }, 100);
+
+
+
+                    }
+                },
+                No: {
+                    btnClass: "btn-danger op-8",
+                    text: 'No',
+                }
+
+            }
+
+        });
+
 
     }
 
@@ -370,7 +428,15 @@ class PrescripcionesUci {
                     return m.mount(nTd, {
                         view: () => {
                             return [
-                                m('div.tx-12.tx-semibold', [oData.tipo]),
+                                m('div.tx-12.tx-semibold', {
+                                    oncreate: (el) => {
+                                        let _det = PrescripcionesUci.validarDeshacer(oData);
+                                        if (_det !== undefined && _det.status == 5) {
+
+                                            el.dom.parentElement.className = 'tx-12 tx-semibold bg-light op-5';
+                                        }
+                                    },
+                                }, [oData.tipo]),
 
                             ]
                         }
@@ -431,7 +497,7 @@ class PrescripcionesUci {
 
 
                                     },
-                                    onclick: () => {
+                                    ondblclick: () => {
 
                                         if (oData.frecuencia !== '0') {
                                             $.alert({
@@ -454,6 +520,7 @@ class PrescripcionesUci {
                                                         text: 'Editar',
                                                         action: function() {
                                                             PrescripcionesUci.nuevoRegistro = oData;
+                                                            PrescripcionesUci.nuevoRegistro.editar = true;
                                                             m.redraw();
                                                         }
                                                     },
@@ -483,6 +550,7 @@ class PrescripcionesUci {
                                                         text: 'Editar',
                                                         action: function() {
                                                             PrescripcionesUci.nuevoRegistro = oData;
+                                                            PrescripcionesUci.nuevoRegistro.editar = true;
                                                             m.redraw();
                                                         }
                                                     },
@@ -497,6 +565,13 @@ class PrescripcionesUci {
                                         }
 
 
+                                    },
+                                    oncreate: (el) => {
+                                        let _det = PrescripcionesUci.validarDeshacer(oData);
+                                        if (_det !== undefined && _det.status == 5) {
+
+                                            el.dom.parentElement.className = 'tx-12 tx-semibold bg-light op-5';
+                                        }
                                     },
                                 }, [oData.prescripcion + ' (' + oData.label + ')']),
 
@@ -897,6 +972,7 @@ class PrescripcionesUci {
 
                                                         document.getElementById('historialInfusiones').innerHTML = PrescripcionesUci.extraerInfusiones(oData);
 
+
                                                         document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
                                                         document.getElementById('commentGest').parentElement.style = 'display:none;';
                                                         document.getElementById('velocidadGest').parentElement.style = 'display:none;';
@@ -942,6 +1018,9 @@ class PrescripcionesUci {
                                                                 time: true,
                                                                 timePattern: ['h', 'm']
                                                             });
+
+                                                            PrescripcionesUci.addEventoEliminarInfusion(oData);
+
 
                                                         }, 50);
 
