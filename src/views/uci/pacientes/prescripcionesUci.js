@@ -173,7 +173,6 @@ class PrescripcionesUci {
 
     static comprobarFrecuencia(data, horario, fechaHora) {
 
-
         if (data.frecuencia !== '0') {
             let _h = moment.duration(horario).asHours();
             let _ho = moment.duration(data.hora).asHours();
@@ -356,6 +355,8 @@ class PrescripcionesUci {
 
 
     }
+
+
 
     static setTableRegistros() {
 
@@ -1078,6 +1079,7 @@ class PrescripcionesUci {
                                                         _det = PrescripcionesUci.validarDeshacer(oData, horas[index].fechaHora);
                                                         if (_det !== undefined && _det.status == 5) {
                                                             if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false) {
+
                                                                 el.dom.className = "fa fa-check-square tx-20 tx-dark op-2";
                                                             } else {
                                                                 el.dom.className = "";
@@ -1085,7 +1087,24 @@ class PrescripcionesUci {
                                                         } else {
 
                                                             if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false) {
-                                                                el.dom.className = "fa fa-check-square tx-20 tx-teal";
+
+
+
+                                                                let __startTime = moment().format('YYYY-MM-DDTHH:mm');
+                                                                let __endTime = moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm');
+
+                                                                let __duration = moment.duration(moment(__endTime).diff(__startTime));
+                                                                let __hours = __duration.asHours();
+
+                                                                if (__hours <= -2) {
+                                                                    el.dom.className = "fa fa-check-square tx-20 tx-warning ";
+                                                                } else {
+                                                                    el.dom.className = "fa fa-check-square tx-20 tx-teal ";
+                                                                }
+
+
+
+
                                                             } else {
                                                                 el.dom.className = "";
                                                             }
@@ -1097,7 +1116,21 @@ class PrescripcionesUci {
                                                     let fechaPres = moment(moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + oData.horaPres, 'DD-MM-YYYY HH:mm').unix();
 
                                                     if (fechaHorario == fechaPres && oData.label == 'En este momento') {
-                                                        el.dom.className = "fa fa-check-square tx-20 tx-teal";
+
+
+                                                        let __startTime = moment().format('YYYY-MM-DDTHH:mm');
+                                                        let __endTime = moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm');
+
+                                                        let __duration = moment.duration(moment(__endTime).diff(__startTime));
+                                                        let __hours = __duration.asHours();
+
+                                                        if (__hours <= -2) {
+                                                            el.dom.className = "fa fa-check-square tx-20 tx-warning ";
+                                                        } else {
+                                                            el.dom.className = "fa fa-check-square tx-20 tx-teal ";
+                                                        }
+
+
                                                     } else {
                                                         el.dom.className = "pd-20 tx-20 tx-white";
                                                         el.dom.innerHTML = " ";
