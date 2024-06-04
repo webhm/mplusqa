@@ -510,8 +510,7 @@ class PrescripcionesUci {
                                                     '<b>Médico:</b> ' + oData.medico + ' <br/>' +
                                                     '<b>Hora Inicio:</b> ' + oData.hora + '<br/>' +
                                                     '<b>Frecuencia:</b> ' + oData.label + '<br/>' +
-                                                    '<b>Historial de Infusiones:</b>' +
-                                                    '<div>' + PrescripcionesUci.extraerInfusiones(oData) + '</div>' +
+
                                                     '<b>Revisiones o Reaplazamientos::</b>' +
                                                     '<div>' + PrescripcionesUci.extraerRevisiones(oData) + '</div>' +
                                                     '<br/>',
@@ -542,6 +541,7 @@ class PrescripcionesUci {
                                                     '<b>Médico:</b> ' + oData.medico + ' <br/>' +
                                                     '<b>Hora Inicio:</b> ' + oData.hora + '<br/>' +
                                                     '<b>Frecuencia:</b> ' + oData.label + '<br/>' +
+
                                                     '<b>Historial de Modificaciones:</b>' +
                                                     '<div>' + PrescripcionesUci.extraerAdministraciones(oData) + '</div>' +
                                                     '<br/>',
