@@ -19,6 +19,7 @@ import MedidasUci from "./medidiasUci";
 import GasesMedUci from "./gasesMedUci";
 import ComburTestUci from "./comburTestUci";
 import UlcerasUciPed from "./ulcerasUciPed";
+import PrescripcionesUci from "./prescripcionesUci";
 
 
 // Pacientes UCI
@@ -106,8 +107,8 @@ class PacientesUCIHistorial extends App {
         // PacientesUCIHistorial.setTurnoSeccionGasesMed(Array.from(document.getElementById('sec_GasesMed').options));
         GasesMedUci.registros = PacientesUCIHistorial.parseSeccionGasesMed_v2(Array.from(document.getElementById('sec_GasesMed').options));
 
-
-
+        PrescripcionesUci.allRegistros = PacientesUCIHistorial.parseSeccionPrescripcionesUci_AllRegistros(Array.from(document.getElementById('sec_PrescripcionesUci').options));
+        PrescripcionesUci.registros = PacientesUCIHistorial.parseSeccionPrescripcionesUci_v2(Array.from(document.getElementById('sec_PrescripcionesUci').options));
 
         PacientesUCIHistorial.showSecciones();
     }
@@ -137,6 +138,9 @@ class PacientesUCIHistorial extends App {
 
         VentilatoriosUci.show = false;
         VentilatoriosUci.destroyTable();
+
+        PrescripcionesUci.show = false;
+        PrescripcionesUci.destroyTable();
 
         m.redraw();
 
@@ -180,6 +184,8 @@ class PacientesUCIHistorial extends App {
         // Pediatrica y Neo
         //  UlcerasUciPed.show = true;
         UlcerasUciPed.registros = PacientesUCIHistorial.parseAllSeccion('UlcerasPed');
+
+
 
 
 
@@ -326,6 +332,8 @@ class PacientesUCIHistorial extends App {
                         m(GasesMedUci),
                         // UlcerasUciPed
                         m(UlcerasUciPed),
+                        // Prescripciones Uci
+                        m(PrescripcionesUci),
 
                     ])
                 ])
@@ -501,6 +509,75 @@ class PacientesUCIHistorial extends App {
 
 
         result = res.sort((a, b) => b.nro - a.nro);
+
+        resultNro = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+
+        return resultNro;
+
+    }
+
+    static parseSeccionPrescripcionesUci_v2(options) {
+
+
+        let res = [];
+        let result = [];
+        let resultId = [];
+        let resultNro = [];
+        let _arr = [];
+        let hash = {};
+
+
+        options.map((option) => {
+            FecthUci.dataHistorial.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id && _obj.seccion == 'PrescripcionesUci') {
+                    res.push(_obj);
+                }
+            });
+        });
+
+        if (res.length == 0) {
+            res = PrescripcionesUci.allRegistros;
+        }
+
+        result = res.sort((a, b) => b.nro - a.nro);
+
+        resultNro = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true).sort((a, b) => a.nro - b.nro);
+
+        // Quitar duplicados
+        //_arr = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
+        // Ordenar desc
+        // _arr = resultId.sort((a, b) => a.orden - b.orden);
+        _arr = resultNro.filter(o => o.status == 1);
+
+        // Extablecer columnas por horarios
+        PrescripcionesUci.filterRegistros();
+
+        return _arr;
+
+    }
+
+
+    static parseSeccionPrescripcionesUci_AllRegistros(options) {
+
+        let res = [];
+        let result = [];
+        let resultNro = [];
+        let hash = {};
+
+        options.map((option) => {
+            FecthUci.dataHistorial.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.id === option.id && _obj.seccion == 'PrescripcionesUci') {
+                    res.push(_obj);
+                }
+            });
+        });
+
+
+        result = res.sort((a, b) => b.nro - a.nro);
+
+        console.log(7777777777777, result)
 
         resultNro = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
 
