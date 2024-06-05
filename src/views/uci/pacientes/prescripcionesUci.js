@@ -951,7 +951,7 @@ class PrescripcionesUci {
 
 
                                                                 // Validacion de hora ingresada
-
+                                                                /*
 
                                                                 let _timestampIngresado = moment().format('DD-MM-YYYY ' + timestampGest);
                                                                 if (oData.frecuencia !== '0' && moment(_timestampIngresado, 'DD-MM-YYYY HH:mm').unix() < moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').unix()) {
@@ -963,6 +963,7 @@ class PrescripcionesUci {
                                                                     $.alert('La hora ingresada no puede ser mayor a la hora de verificación ' + horas[index].title + ' Hrs.');
                                                                     throw 'La hora ingresada no puede ser mayor a la hora de verificación.';
                                                                 }
+                                                                */
 
 
                                                                 if (tipoGest == 6 && velocidadGest) {
