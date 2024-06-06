@@ -895,7 +895,7 @@ class PrescripcionesUci {
                                                         '</div></div></div>' +
                                                         '<div class="form-group pd-b-5">' +
                                                         '<label>Hora:</label>' +
-                                                        '<input type="text" id="timestampGest" class="form-control timestampGest" value="' + moment().format('HH:mm') + '">' +
+                                                        '<input type="text" id="timestampGest" class="form-control timestampGest" value="' + horas[index].title + '">' +
                                                         '</div>' +
                                                         '<div class="form-group pd-b-5">' +
                                                         '<label>Velocidad de Infusión:</label>' +
@@ -1223,7 +1223,7 @@ class PrescripcionesUci {
                                                     let fechaHorario = moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').unix();
                                                     let fechaPres = moment(moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + oData.horaPres, 'DD-MM-YYYY HH:mm').unix();
 
-                                                    if (fechaHorario == fechaPres && oData.label == 'En este momento') {
+                                                    if (fechaHorario == fechaPres && oData.label == 'EN ESTE MOMENTO') {
 
 
                                                         let __startTime = moment().format('YYYY-MM-DDTHH:mm');
@@ -1488,7 +1488,14 @@ class PrescripcionesUci {
                                                 PrescripcionesUci.nuevoRegistro.horaPres = e.target.value;
                                                 PrescripcionesUci.nuevoRegistro.hora = e.target.value;
                                             } else {
-                                                PrescripcionesUci.nuevoRegistro.hora = e.target.value;
+                                                if (PrescripcionesUci.nuevoRegistro.frecuencia == '0') {
+                                                    PrescripcionesUci.nuevoRegistro.horaPres = e.target.value;
+                                                    PrescripcionesUci.nuevoRegistro.hora = e.target.value;
+                                                } else {
+                                                    PrescripcionesUci.nuevoRegistro.hora = e.target.value;
+                                                }
+
+
                                             }
                                         }, 50);
                                     },
@@ -1541,17 +1548,17 @@ class PrescripcionesUci {
                                     {
                                         id: 8,
                                         value: 0,
-                                        label: "Por razones necesarias"
+                                        label: "POR RAZONES NECESARIAS"
                                     },
                                     {
                                         id: 9,
                                         value: 0,
-                                        label: "Continuo"
+                                        label: "CONTINUO"
                                     },
                                     {
                                         id: 10,
                                         value: 0,
-                                        label: "En este momento"
+                                        label: "EN ESTE MOMENTO"
                                     },
                                 ].map(x =>
                                     m('option[id="' + x.id + '"][value="' + x.value + '"][label="' + x.label + '"]', x.label)
