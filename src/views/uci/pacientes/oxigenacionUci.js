@@ -593,6 +593,10 @@ class OxigenacionUci {
                                 id: "TuboenT",
                                 label: "TUBO EN T"
                             },
+                            {
+                                id: "AltoFlujo",
+                                label: "ALTO FLUJO"
+                            },
 
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)

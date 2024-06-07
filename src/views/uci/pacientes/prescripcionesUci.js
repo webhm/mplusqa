@@ -895,7 +895,7 @@ class PrescripcionesUci {
                                                         '</div></div></div>' +
                                                         '<div class="form-group pd-b-5">' +
                                                         '<label>Hora:</label>' +
-                                                        '<input type="text" id="timestampGest" class="form-control timestampGest" value="' + horas[index].title + '">' +
+                                                        '<input type="text" id="timestampGest" class="form-control timestampGest" value="' + moment(horas[index].title, 'HH:mm').format('HH') + ':' + (moment().format('mm') == '00' ? '01' : moment().format('mm')) + '">' +
                                                         '</div>' +
                                                         '<div class="form-group pd-b-5">' +
                                                         '<label>Velocidad de Infusión:</label>' +
