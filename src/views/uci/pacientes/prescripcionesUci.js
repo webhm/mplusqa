@@ -18,7 +18,7 @@ class Prescripcion {
     hora = null; // Feha y hora del registro Médico
     medico = null;
     timestamp = null; // Fecha y hora del registro de enfermeria
-    status = null; // 1: Registrado 2: Administrado 3: No Administrado 4: Reaplazar 5: Suspender Administracion
+    status = null; // 1: Registrado 2: Administrado 3: No Administrado 4: Reaplazar 5: Suspender Administracion 6:Eliminado
     velocidadInfusion = null;
     unidadMedida = null;
     comentario = null;
@@ -328,6 +328,8 @@ class PrescripcionesUci {
                     text: 'Si',
                     action: function() {
 
+
+
                         console.log('pppp', _obj)
                         PrescripcionesUci.eliminarRegistro(_obj);
                         FecthUci.eliminarSeccion(_obj);
@@ -477,8 +479,16 @@ class PrescripcionesUci {
 
 
                                                         console.log('pppp', oData)
-                                                        PrescripcionesUci.eliminarRegistro(oData);
-                                                        FecthUci.eliminarSeccion(oData);
+                                                            //  PrescripcionesUci.eliminarRegistro(oData);
+                                                            //  FecthUci.eliminarSeccion(oData);
+
+
+                                                        console.log('pppp', oData)
+                                                        PrescripcionesUci.nuevoRegistro = oData;
+                                                        PrescripcionesUci.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY HH:mm');
+                                                        PrescripcionesUci.nuevoRegistro.status = 6;
+                                                        PrescripcionesUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(PrescripcionesUci.nuevoRegistro);
                                                         PrescripcionesUci.nuevoRegistro = null;
                                                         PrescripcionesUci.destroyTable();
                                                         PrescripcionesUci.filterRegistros();
@@ -1494,8 +1504,6 @@ class PrescripcionesUci {
                                                 } else {
                                                     PrescripcionesUci.nuevoRegistro.hora = e.target.value;
                                                 }
-
-
                                             }
                                         }, 50);
                                     },

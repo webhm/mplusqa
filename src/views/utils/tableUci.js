@@ -26,7 +26,7 @@ class TableUCI {
     view() {
         if (this.dataTable.length !== null) {
             return [
-                m("table.table.table-sm.table-bordered[width='100%']", {
+                m("table.table.table-sm.table-bordered.table-hover[width='100%']", {
                     id: this.idTable
                 })
             ]
