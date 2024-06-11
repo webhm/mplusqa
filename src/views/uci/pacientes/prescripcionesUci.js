@@ -920,7 +920,7 @@ class PrescripcionesUci {
                                                         '<div id="historialInfusiones"></div>' +
                                                         '</div>' +
                                                         '<div class="form-group pd-b-5">' +
-                                                        '<label>Comentario:</label>' +
+                                                        '<label>Comentario / Justificación:</label>' +
                                                         '<textarea type="text" id="commentGest"  rows="4" class="commentGest form-control "></textarea>' +
                                                         '</div>' +
                                                         '</form>',
@@ -1124,7 +1124,7 @@ class PrescripcionesUci {
                                                         };
 
                                                         document.getElementById('tipoGest6').onclick = function() {
-                                                            document.getElementById('commentGest').parentElement.style = 'display:none;';
+                                                            document.getElementById('commentGest').parentElement.style = '';
                                                             document.getElementById('velocidadGest').parentElement.style = '';
                                                             document.getElementById('unidadMedida').parentElement.style = '';
                                                             document.getElementById('historialInfusiones').parentElement.style = '';
