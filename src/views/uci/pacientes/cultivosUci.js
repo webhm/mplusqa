@@ -287,6 +287,26 @@ class CultivosUci {
                                                 },
                                             },
                                             'Eliminar',
+
+                                        ),
+                                        m("button.btn.btn-xs.btn-dark[type='button']", {
+                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                                onclick: () => {
+                                                    CultivosUci.iniciarRegistro();
+                                                    CultivosUci.nuevoRegistro.id = oData.id;
+                                                    CultivosUci.nuevoRegistro.muestra = oData.muestra;
+                                                    CultivosUci.nuevoRegistro.envio = oData.envio;
+                                                    CultivosUci.nuevoRegistro.envio_fecha = oData.envio_fecha;
+                                                    CultivosUci.nuevoRegistro.envio_hora = oData.envio_hora;
+                                                    CultivosUci.nuevoRegistro.resultado_fecha = oData.resultado_fecha;
+                                                    CultivosUci.nuevoRegistro.resultado = oData.resultado;
+                                                    CultivosUci.nuevoRegistro.observacion = oData.observacion;
+                                                    CultivosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    CultivosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+
+                                                },
+                                            },
+                                            'Copiar',
                                         ),
                                     ])
 
