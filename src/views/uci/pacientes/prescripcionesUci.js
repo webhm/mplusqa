@@ -2,8 +2,7 @@ import m from "mithril";
 import PacientesUCI from "./pacientesUci";
 import FecthUci from "./fecthUci";
 import TurnosUci from "./turnosUci";
-import { UNDERLINE } from "construct-ui/lib/esm/components/icon/generated/IconNames";
-import { format } from "crypto-js";
+
 
 
 class Prescripcion {
@@ -1014,7 +1013,9 @@ class PrescripcionesUci {
                                                                             PrescripcionesUci.addEventoEliminarInfusion(oData);
                                                                         }, 50);
                                                                     }, 100);
+
                                                                     return false;
+
                                                                 } else {
 
                                                                     setTimeout(() => {
@@ -1061,6 +1062,8 @@ class PrescripcionesUci {
 
 
                                                                     }, 100);
+
+                                                                    return false;
 
                                                                 }
 
