@@ -177,16 +177,25 @@ class PrescripcionesUci {
     static comprobarFrecuencia(data, horario, fechaHora) {
 
 
+        let _h = moment.duration(horario).asHours();
+        let _ho = moment.duration(data.hora).asHours();
+        let fechaHorarioUnix = moment(fechaHora, 'DD-MM-YYYY HH:mm').unix();
+        let fechaPresUnix = moment(moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + data.horaPres, 'DD-MM-YYYY HH:mm').unix();
+        let fechaPresUnixPasado = moment(moment().format('DD-MM-YYYY') + ' ' + '10:00', 'DD-MM-YYYY HH:mm').unix();
+        let fechaPres = moment(moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + data.horaPres, 'DD-MM-YYYY HH:mm');
 
+        // Es de hoy
+        if (data.frecuencia !== '0' && moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY')) {
 
-        if (data.frecuencia !== '0') {
+            if (fechaHorarioUnix >= fechaPresUnix && (_h - _ho) % data.frecuencia == 0) {
+                return true;
+            } else {
+                return false;
+            }
 
-            let _h = moment.duration(horario).asHours();
-            let _ho = moment.duration(data.hora).asHours();
-            let fechaHorario = moment(fechaHora, 'DD-MM-YYYY HH:mm').unix();
-            let fechaPres = moment(moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + data.horaPres, 'DD-MM-YYYY HH:mm').unix();
+        } else if (data.frecuencia !== '0' && moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY')) {
 
-            if (fechaHorario >= fechaPres && (_h - _ho) % data.frecuencia == 0) {
+            if (fechaHorarioUnix <= fechaPresUnixPasado && (_h - _ho) % data.frecuencia == 0) {
                 return true;
             } else {
                 return false;
@@ -1063,7 +1072,7 @@ class PrescripcionesUci {
 
                                                                     }, 100);
 
-                                                                    return false;
+                                                                    // return false;
 
                                                                 }
 
@@ -1328,7 +1337,11 @@ class PrescripcionesUci {
             retrieve: true,
             cache: false,
             destroy: true,
-            order: false,
+            order: [
+                [3, 'asc'],
+                [4, 'asc'],
+
+            ],
             pageLength: 100,
             columns: PrescripcionesUci.sColumns,
             aoColumnDefs: PrescripcionesUci.sRows,

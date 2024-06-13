@@ -510,10 +510,18 @@ class FecthUci {
         }).then(function(res) {
 
             FecthUci.loaderSecciones = true;
-            // Filter Turnos de Hoy
+            // Filter Secciones de Hoy
+            // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY') && v.SECCION != 'PrescripcionesUci')
             let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+
+            console.log('seccionesHoy', seccionesHoy)
+
+            // Filter prescripciones 
+            // let prescripcionesUci = res.data.filter(v => v.SECCION == 'PrescripcionesUci')
+            // console.log('prescripcionesUci', prescripcionesUci)
+
+            // FecthUci.dataSecciones = seccionesHoy.concat(prescripcionesUci);
             FecthUci.dataSecciones = seccionesHoy;
-            console.log(seccionesHoy)
 
         }).catch(function(e) {
 
