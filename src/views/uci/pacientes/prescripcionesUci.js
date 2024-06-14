@@ -451,6 +451,8 @@ class PrescripcionesUci {
 
                                             el.dom.parentElement.className = 'tx-12 tx-semibold bg-light op-5';
                                         }
+
+
                                     },
                                 }, [oData.tipo]),
 
@@ -595,6 +597,10 @@ class PrescripcionesUci {
                                         if (_det !== undefined && _det.status == 5) {
 
                                             el.dom.parentElement.className = 'tx-12 tx-semibold bg-light op-5';
+                                        }
+                                        // validar si son de hoy
+                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY')) {
+                                            el.dom.parentElement.className = 'tx-12 tx-semibold bg-warning op-8';
                                         }
                                     },
                                 }, [oData.prescripcion + ' (' + oData.label + ')']),
@@ -1104,6 +1110,7 @@ class PrescripcionesUci {
 
 
                                                         document.getElementById('tipoGest2').onclick = function() {
+                                                            document.getElementById('commentGest').value = '';
                                                             document.getElementById('commentGest').parentElement.style = 'display:none;';
                                                             document.getElementById('velocidadGest').parentElement.style = 'display:none;';
                                                             document.getElementById('unidadMedida').parentElement.style = 'display:none;';
@@ -1112,6 +1119,7 @@ class PrescripcionesUci {
                                                         };
 
                                                         document.getElementById('tipoGest3').onclick = function() {
+                                                            document.getElementById('commentGest').value = '';
                                                             document.getElementById('commentGest').parentElement.style = '';
                                                             document.getElementById('velocidadGest').parentElement.style = 'display:none;';
                                                             document.getElementById('unidadMedida').parentElement.style = 'display:none;';
@@ -1120,14 +1128,15 @@ class PrescripcionesUci {
                                                         };
 
                                                         document.getElementById('tipoGest4').onclick = function() {
+                                                            document.getElementById('commentGest').value = '';
                                                             document.getElementById('commentGest').parentElement.style = '';
                                                             document.getElementById('velocidadGest').parentElement.style = 'display:none;';
                                                             document.getElementById('unidadMedida').parentElement.style = 'display:none;';
                                                             document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
-
                                                         };
 
                                                         document.getElementById('tipoGest5').onclick = function() {
+                                                            document.getElementById('commentGest').value = '';
                                                             document.getElementById('commentGest').parentElement.style = '';
                                                             document.getElementById('velocidadGest').parentElement.style = 'display:none;';
                                                             document.getElementById('unidadMedida').parentElement.style = 'display:none;';
@@ -1140,6 +1149,8 @@ class PrescripcionesUci {
                                                             document.getElementById('velocidadGest').parentElement.style = '';
                                                             document.getElementById('unidadMedida').parentElement.style = '';
                                                             document.getElementById('historialInfusiones').parentElement.style = '';
+                                                            document.getElementById('commentGest').value = 'MODIFICACION SEGUN PRESCRIPCION MEDICA';
+
 
                                                         };
 
