@@ -1084,7 +1084,23 @@ const TomaMuestras = {
                                                     _val.NM_EXA_LAB
                                                 ),
 
-                                                (_val.CD_EXA_LAB == '393' ||
+                                                (_val.CD_EXA_LAB == '249' ||
+                                                    _val.CD_EXA_LAB == '245' ||
+                                                    _val.CD_EXA_LAB == '232' ||
+                                                    _val.CD_EXA_LAB == '233' ||
+                                                    _val.CD_EXA_LAB == '234' ||
+                                                    _val.CD_EXA_LAB == '236' ||
+                                                    _val.CD_EXA_LAB == '237' ||
+                                                    _val.CD_EXA_LAB == '238' ||
+                                                    _val.CD_EXA_LAB == '246' ||
+                                                    _val.CD_EXA_LAB == '259' ||
+                                                    _val.CD_EXA_LAB == '268' ||
+                                                    _val.CD_EXA_LAB == '270' ||
+                                                    _val.CD_EXA_LAB == '271' ||
+                                                    _val.CD_EXA_LAB == '272' ||
+                                                    _val.CD_EXA_LAB == '273' ||
+                                                    _val.CD_EXA_LAB == '275' ||
+                                                    _val.CD_EXA_LAB == '393' ||
                                                     _val.CD_EXA_LAB == '383' ||
                                                     _val.CD_EXA_LAB == '382' ||
                                                     _val.CD_EXA_LAB == '376' ||
