@@ -515,6 +515,8 @@ class FecthUci {
             let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
             console.log('seccionesHoy', seccionesHoy)
 
+            /*
+
             if (moment(moment(), 'DD-MM-YYYY HH:mm').unix() > moment(moment(), 'DD-MM-YYYY 12:00').unix()) {
                 // Filter prescripciones 
                 let prescripcionesUci = res.data.filter(v => v.SECCION == 'PrescripcionesUci')
@@ -524,6 +526,12 @@ class FecthUci {
             } else {
                 FecthUci.dataSecciones = seccionesHoy
             }
+
+            */
+
+            let prescripcionesUci = res.data.filter(v => v.SECCION == 'PrescripcionesUci')
+            console.log('prescripcionesUci', prescripcionesUci)
+            FecthUci.dataSecciones = seccionesHoy.concat(prescripcionesUci);
 
 
 
