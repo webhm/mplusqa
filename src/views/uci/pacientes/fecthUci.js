@@ -510,28 +510,37 @@ class FecthUci {
         }).then(function(res) {
 
             FecthUci.loaderSecciones = true;
-            // Filter Secciones de Hoy
-            // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY') && v.SECCION != 'PrescripcionesUci')
-            let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
-            console.log('seccionesHoy', seccionesHoy)
 
-            /*
 
-            if (moment(moment(), 'DD-MM-YYYY HH:mm').unix() > moment(moment(), 'DD-MM-YYYY 12:00').unix()) {
+
+            if (moment(moment(), 'DD-MM-YYYY HH:mm').unix() <= moment(moment().format('DD-MM-YYYY') + ' 10:00', 'DD-MM-YYYY HH:mm').unix()) {
+                // Filter Secciones de Hoy
+                let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY') && v.SECCION != 'PrescripcionesUci')
+                    // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+                console.log('seccionesHoy', seccionesHoy)
+
                 // Filter prescripciones 
                 let prescripcionesUci = res.data.filter(v => v.SECCION == 'PrescripcionesUci')
                 console.log('prescripcionesUci', prescripcionesUci)
                 FecthUci.dataSecciones = seccionesHoy.concat(prescripcionesUci);
                 // FecthUci.dataSecciones = seccionesHoy;
             } else {
+
+                // Filter Secciones de Hoy
+                let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+                    // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+                console.log('seccionesHoy', seccionesHoy)
+
                 FecthUci.dataSecciones = seccionesHoy
             }
 
-            */
+            /*
 
             let prescripcionesUci = res.data.filter(v => v.SECCION == 'PrescripcionesUci')
             console.log('prescripcionesUci', prescripcionesUci)
             FecthUci.dataSecciones = seccionesHoy.concat(prescripcionesUci);
+
+            */
 
 
 
