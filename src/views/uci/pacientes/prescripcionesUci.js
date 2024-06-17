@@ -116,14 +116,13 @@ class PrescripcionesUci {
         let horariosOrdenados = [];
         let registros = PrescripcionesUci.allRegistros;
 
-        console.log(2222, registros)
 
         if (registros.length > 0) {
             for (let index = 0; index < registros.length; index++) {
                 if (registros[index].status == 1) {
                     horarios.push({
-                        'fechaHora': moment(registros[index].timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + registros[index].horaPres,
-                        'hora': registros[index].horaPres,
+                        'fechaHora': moment(registros[index].timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + registros[index].hora,
+                        'hora': registros[index].hora,
                     });
                 }
 
@@ -131,13 +130,15 @@ class PrescripcionesUci {
 
             horariosOrdenados = horarios.sort((a, b) => moment(a.fechaHora, 'DD-MM-YYYY HH:mm').unix() - moment(b.fechaHora, 'DD-MM-YYYY HH:mm').unix());
 
-            console.log(84848484, horariosOrdenados)
+            console.log(2222, horariosOrdenados)
+
+
 
             let _hoy = moment().format('DD-MM-YYYY');
             let _mana = moment(_hoy, 'DD-MM-YYYY').add(1, 'days').format('DD-MM-YYYY');
 
-            let __startTime = moment(_hoy + " " + (horariosOrdenados.length > 0 && horariosOrdenados[0].hora != undefined ? horariosOrdenados[0].hora : '08:00'), 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm');
-            let __endTime = moment(_mana + " 11:00", 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm');
+            let __startTime = moment(_hoy + " 07:00", 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm');
+            let __endTime = moment(_mana + " 08:00", 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm');
 
             let __duration = moment.duration(moment(__endTime).diff(__startTime));
             let __hours = __duration.asHours();
@@ -154,7 +155,6 @@ class PrescripcionesUci {
 
 
     }
-
     static validarStatus(data, timestamp) {
 
 
@@ -164,7 +164,6 @@ class PrescripcionesUci {
         return _p[0];
 
     }
-
     static validarDeshacer(data, timestamp = '') {
 
         let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.status == 5);
@@ -475,6 +474,7 @@ class PrescripcionesUci {
                             return [
                                 m('div.tx-12.tx-semibold', {
                                     id: 'PrescripcionUci_' + oData.id,
+                                    /*
                                     oncontextmenu: (e) => {
                                         e.preventDefault();
 
@@ -523,6 +523,7 @@ class PrescripcionesUci {
 
 
                                     },
+                                    */
                                     ondblclick: () => {
 
                                         if (oData.frecuencia !== '0') {

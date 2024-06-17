@@ -511,19 +511,17 @@ class FecthUci {
 
             FecthUci.loaderSecciones = true;
 
-
-
-            if (moment(moment(), 'DD-MM-YYYY HH:mm').unix() <= moment(moment().format('DD-MM-YYYY') + ' 10:00', 'DD-MM-YYYY HH:mm').unix()) {
+            if (moment(moment(), 'DD-MM-YYYY HH:mm').unix() <= moment(moment().format('DD-MM-YYYY') + ' 17:00', 'DD-MM-YYYY HH:mm').unix()) {
                 // Filter Secciones de Hoy
-                let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY') && v.SECCION != 'PrescripcionesUci')
+                let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
                     // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
                 console.log('seccionesHoy', seccionesHoy)
-
-                // Filter prescripciones 
+                    // Filter prescripciones 
                 let prescripcionesUci = res.data.filter(v => v.SECCION == 'PrescripcionesUci')
                 console.log('prescripcionesUci', prescripcionesUci)
                 FecthUci.dataSecciones = seccionesHoy.concat(prescripcionesUci);
                 // FecthUci.dataSecciones = seccionesHoy;
+
             } else {
 
                 // Filter Secciones de Hoy
