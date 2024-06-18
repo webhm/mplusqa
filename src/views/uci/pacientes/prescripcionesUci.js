@@ -156,19 +156,23 @@ class PrescripcionesUci {
 
     }
     static validarStatus(data, timestamp) {
-
-
-
-
         let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.velocidadInfusion == '' && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() >= moment(timestamp, 'DD-MM-YYYY HH:mm').unix() && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() < moment(timestamp, 'DD-MM-YYYY HH:mm').add(1, 'hours').unix());
         return _p[0];
-
     }
-    static validarDeshacer(data, timestamp = '') {
 
+
+    static validarDeshacer(data, timestamp = '') {
         let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.status == 5);
         return _p[0];
+    }
 
+    static validarAdministracion(data) {
+        let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.status > 1);
+        if (_p[0] != undefined && _p[0].length != 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -536,7 +540,6 @@ class PrescripcionesUci {
                                                     '<b>Médico:</b> ' + oData.medico + ' <br/>' +
                                                     '<b>Hora Inicio:</b> ' + oData.hora + '<br/>' +
                                                     '<b>Frecuencia:</b> ' + oData.label + '<br/>' +
-
                                                     '<b>Revisiones o Reaplazamientos::</b>' +
                                                     '<div>' + PrescripcionesUci.extraerRevisiones(oData) + '</div>' +
                                                     '<br/>',
@@ -545,9 +548,17 @@ class PrescripcionesUci {
                                                         btnClass: "btn-danger op-8",
                                                         text: 'Editar',
                                                         action: function() {
-                                                            PrescripcionesUci.nuevoRegistro = oData;
-                                                            PrescripcionesUci.nuevoRegistro.editar = true;
-                                                            m.redraw();
+
+                                                            if (PrescripcionesUci.validarAdministracion(oData) == false) {
+                                                                PrescripcionesUci.nuevoRegistro = oData;
+                                                                PrescripcionesUci.nuevoRegistro.editar = true;
+                                                                m.redraw();
+                                                            } else {
+                                                                $.alert('No es posible editar. Ya existen administraciones.');
+
+                                                            }
+
+
                                                         }
                                                     },
                                                     Ok: {
