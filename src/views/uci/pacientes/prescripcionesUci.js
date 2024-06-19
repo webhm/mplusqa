@@ -159,13 +159,10 @@ class PrescripcionesUci {
         let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.velocidadInfusion == '' && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() >= moment(timestamp, 'DD-MM-YYYY HH:mm').unix() && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() < moment(timestamp, 'DD-MM-YYYY HH:mm').add(1, 'hours').unix());
         return _p[0];
     }
-
-
     static validarDeshacer(data, timestamp = '') {
         let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.status == 5);
         return _p[0];
     }
-
     static validarAdministracion(data) {
         let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.status > 1);
         if (_p[0] != undefined && _p[0].length != 0) {
@@ -174,9 +171,6 @@ class PrescripcionesUci {
             return false;
         }
     }
-
-
-
     static comprobarFrecuencia(data, horario, fechaHora) {
 
 
@@ -211,8 +205,6 @@ class PrescripcionesUci {
 
 
     }
-
-
     static filterRegistros() {
 
         let result = [];
@@ -233,16 +225,13 @@ class PrescripcionesUci {
         // Quitar duplicados
         // resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Solo obtener prescripciones
-        resultId = resultNro.filter(o => o.status == 1);
+        resultId = resultNro.filter(o => o.status === 1);
 
-        console.log(777, resultId)
-
-        PrescripcionesUci.registros = resultId;
+        console.log(123456, PrescripcionesUci.registros)
 
         PrescripcionesUci.setTableRegistros();
 
     }
-
     static extraerInfusiones(data) {
         let iText = '';
         let infusiones = [];
@@ -261,7 +250,6 @@ class PrescripcionesUci {
         return iText;
 
     }
-
     static addEventoEliminarInfusion(data) {
 
         let infusiones = [];
@@ -274,7 +262,6 @@ class PrescripcionesUci {
         }
 
     }
-
     static extraerAdministraciones(data) {
         let iText = '';
         let infusiones = [];
@@ -311,7 +298,6 @@ class PrescripcionesUci {
         return iText;
 
     }
-
     static extraerRevisiones(data) {
         let iText = '';
         let infusiones = [];
@@ -373,9 +359,6 @@ class PrescripcionesUci {
 
 
     }
-
-
-
     static setTableRegistros() {
 
         // Extraer prescripciones 
@@ -1369,7 +1352,10 @@ class PrescripcionesUci {
             columns: PrescripcionesUci.sColumns,
             aoColumnDefs: PrescripcionesUci.sRows,
             fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-
+                let _det = PrescripcionesUci.validarDeshacer(aData);
+                if (moment().format('DD-MM-YYYY') !== moment(aData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') && _det !== undefined && _det.status == 5) {
+                    $(nRow).css("display", "none")
+                }
             },
         };
     }

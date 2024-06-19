@@ -2,6 +2,7 @@ import m from "mithril";
 import PacientesUCI from "./pacientesUci";
 import FecthUci from "./fecthUci";
 import TurnosUci from "./turnosUci";
+import PacientesUCIHistorial from "./pacientesUci";
 
 
 
@@ -132,9 +133,7 @@ class PrescripcionesUci {
 
             console.log(2222, horariosOrdenados)
 
-
-
-            let _hoy = moment().format('DD-MM-YYYY');
+            let _hoy = moment(PacientesUCIHistorial.fechaBusqueda, 'DD/MM/YYYY').format('DD-MM-YYYY');
             let _mana = moment(_hoy, 'DD-MM-YYYY').add(1, 'days').format('DD-MM-YYYY');
 
             let __startTime = moment(_hoy + " 07:00", 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm');
@@ -577,7 +576,180 @@ class PrescripcionesUci {
                         view: () => {
                             return [
                                 m('div.text-center', {
+                                    ondblclick: (el) => {
 
+                                        let _status = 1;
+                                        let _obj = null;
+                                        let _det = undefined;
+
+                                        try {
+
+                                            //  console.log(450, oData)
+
+
+                                            _det = PrescripcionesUci.validarStatus(oData, horas[index].fechaHora)
+                                            console.log(888, _det)
+
+
+                                            if (_det !== undefined && _det.status == 1) {
+                                                _status = 1;
+                                                _obj = _det;
+                                                console.log(54, _obj)
+                                                throw _obj.timestamp;
+                                            }
+
+
+                                            if (_det !== undefined && _det.status == 2) {
+                                                _status = 2;
+                                                _obj = _det;
+                                                console.log(54, _obj)
+                                                throw _obj.timestamp;
+                                            }
+
+                                            if (_det !== undefined && _det.status == 3) {
+                                                _status = 3;
+                                                _obj = _det;
+                                                console.log(54, _obj)
+                                                throw _obj.timestamp;
+                                            }
+
+                                            if (_det !== undefined && _det.status == 5) {
+                                                _status = 5;
+                                                _obj = _det;
+                                                console.log(55, _obj)
+                                                throw _obj.timestamp;
+                                            }
+
+                                            if (_det !== undefined && _det.status == 5) {
+                                                _status = 5;
+                                                _obj = _det;
+                                                console.log(54, _obj)
+                                                throw _obj.timestamp;
+                                            }
+
+                                            if (_det !== undefined && _det.status == 4) {
+                                                _status = 1;
+                                                _obj = _det;
+                                                console.log(54, _obj)
+                                                throw _obj.timestamp;
+                                            }
+
+
+
+                                            if (_det == undefined) {
+
+                                                _det = PrescripcionesUci.validarDeshacer(oData, horas[index].fechaHora);
+                                                if (_det !== undefined && _det.status == 5) {
+                                                    return false;
+                                                } else {
+                                                    _status = 1;
+                                                    throw '';
+                                                }
+
+                                            }
+
+
+
+
+
+
+
+                                        } catch (error) {
+                                            if (_status == 2) {
+
+                                                if (oData.frecuencia == '0') {
+                                                    $.confirm({
+                                                        title: 'Registro de Administración',
+                                                        content: '<b>Historial de Modificaciones:</b><br/>' +
+                                                            '<div>' + PrescripcionesUci.extraerAdministraciones(oData) + '</div>',
+                                                        buttons: {
+
+                                                            Ok: {
+                                                                btnClass: "btn-light op-8",
+                                                                text: 'Ok',
+                                                            }
+
+                                                        }
+
+                                                    });
+                                                } else {
+                                                    $.confirm({
+                                                        title: 'Registro de Administración',
+                                                        content: 'Status: Administrado </br>Fecha: ' + _obj.timestamp + '<br/>' + 'Usuario: ' + _obj.usuarioTurno,
+                                                        buttons: {
+
+                                                            Ok: {
+                                                                btnClass: "btn-light op-8",
+                                                                text: 'Ok',
+                                                            }
+
+                                                        }
+
+                                                    });
+                                                }
+
+                                            } else if (_status == 3) {
+
+                                                if (oData.frecuencia == '0') {
+                                                    $.confirm({
+                                                        title: 'Registro de Administración',
+                                                        content: '<b>Historial de Modificaciones:</b><br/>' +
+                                                            '<div>' + PrescripcionesUci.extraerAdministraciones(oData) + '</div>',
+                                                        buttons: {
+
+                                                            Ok: {
+                                                                btnClass: "btn-light op-8",
+                                                                text: 'Ok',
+                                                            }
+
+                                                        }
+
+
+                                                    });
+                                                } else {
+                                                    $.confirm({
+                                                        title: 'Registro de Administración',
+                                                        content: 'Status: No Administrado </br> Fecha:' + _obj.timestamp + '<br/>' + 'Usuario: ' + _obj.usuarioTurno,
+                                                        buttons: {
+
+                                                            Ok: {
+                                                                btnClass: "btn-light op-8",
+                                                                text: 'Ok',
+                                                            }
+
+                                                        }
+
+
+                                                    });
+                                                }
+
+
+                                            } else if (_status == 5) {
+                                                $.confirm({
+                                                    title: 'Registro de Administración',
+                                                    content: 'Status: Cancelado </br>Fecha:' + _obj.timestamp + '<br/>' + 'Usuario: ' + _obj.usuarioTurno,
+                                                    buttons: {
+
+                                                        Ok: {
+                                                            btnClass: "btn-light op-8",
+                                                            text: 'Ok',
+                                                        }
+
+                                                    }
+
+                                                });
+                                            } else if (_status == 1) {
+                                                return false;
+                                            } else {
+                                                // horas[index].fechaHora
+                                                return false;
+                                            }
+
+
+
+                                        }
+
+                                    },
                                 }, [
 
                                     (PrescripcionesUci.validarStatus(oData, horas[index].fechaHora) != false ? [
