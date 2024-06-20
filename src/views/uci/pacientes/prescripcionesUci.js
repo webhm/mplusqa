@@ -594,9 +594,16 @@ class PrescripcionesUci {
                                             el.dom.parentElement.className = 'tx-12 tx-semibold bg-light op-5';
                                         }
                                         // validar si son de hoy
-                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY')) {
+                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && oData.frecuencia !== '0') {
                                             el.dom.parentElement.className = 'tx-12 tx-semibold bg-warning op-8';
                                         }
+
+                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && oData.frecuencia == '0') {
+                                            el.dom.parentElement.parentElement.className = 'd-none';
+                                        }
+
+
+
                                     },
                                 }, [oData.prescripcion + ' (' + oData.label + ')']),
 
