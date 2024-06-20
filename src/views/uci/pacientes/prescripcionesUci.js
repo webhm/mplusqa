@@ -818,7 +818,7 @@ class PrescripcionesUci {
                                                 } else {
                                                     $.confirm({
                                                         title: 'Registro de Administración',
-                                                        content: 'Status: No Administrado </br> Fecha:' + _obj.timestamp + '<br/>' + 'Usuario: ' + _obj.usuarioTurno,
+                                                        content: 'Status: No Administrado </br> Fecha:' + _obj.timestamp + '<br/>' + 'Usuario: ' + _obj.usuarioTurno + '<br/>' + 'Comentario / Justificación: ' + _obj.comentario,
                                                         buttons: {
                                                             deshacer: {
                                                                 btnClass: "btn-light op-8",
@@ -854,7 +854,7 @@ class PrescripcionesUci {
                                             } else if (_status == 5) {
                                                 $.confirm({
                                                     title: 'Registro de Administración',
-                                                    content: 'Status: Cancelado </br>Fecha:' + _obj.timestamp + '<br/>' + 'Usuario: ' + _obj.usuarioTurno,
+                                                    content: 'Status: Cancelado </br>Fecha:' + _obj.timestamp + '<br/>' + 'Usuario: ' + _obj.usuarioTurno + '<br/>' + 'Comentario / Justificación: ' + _obj.comentario,
                                                     buttons: {
                                                         deshacer: {
                                                             btnClass: "btn-light op-8",
@@ -1581,7 +1581,7 @@ class PrescripcionesUci {
                                     {
                                         id: 8,
                                         value: 0,
-                                        label: "POR RAZONES NECESARIAS"
+                                        label: "CRITERIO MEDICO"
                                     },
                                     {
                                         id: 9,
