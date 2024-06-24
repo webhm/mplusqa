@@ -297,7 +297,7 @@ class PrescripcionesUci {
                 }
 
                 if (element.status == '2' || element.status == '3' || element.status == '5') {
-                    iText += 'Status: ' + element.statusLabel + ' Fecha: ' + element.timestamp + ' Usuario: ' + element.usuarioTurno + (element.status == '3' || element.status == '5' ? 'Comentario / Justificación: ' + element.comentario + '</br>' : '</br>');
+                    iText += 'Status: ' + element.statusLabel + ' Fecha: ' + element.timestamp + ' Usuario: ' + element.usuarioTurno + (element.status == '3' || element.status == '5' ? '</br>Comentario / Justificación: ' + element.comentario + '</br>' : '</br>');
 
                 }
 
