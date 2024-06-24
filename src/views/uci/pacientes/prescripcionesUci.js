@@ -116,7 +116,7 @@ class PrescripcionesUci {
         let horariosOrdenados = [];
         let registros = PrescripcionesUci.allRegistros;
 
-
+        /*
         if (registros.length > 0) {
             for (let index = 0; index < registros.length; index++) {
                 if (registros[index].status == 1) {
@@ -133,24 +133,27 @@ class PrescripcionesUci {
             console.log(2222, horariosOrdenados)
 
 
+        }
+            */
 
-            let _hoy = moment().format('DD-MM-YYYY');
-            let _mana = moment(_hoy, 'DD-MM-YYYY').add(1, 'days').format('DD-MM-YYYY');
 
-            let __startTime = moment(_hoy + " 07:00", 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm');
-            let __endTime = moment(_mana + " 08:00", 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm');
 
-            let __duration = moment.duration(moment(__endTime).diff(__startTime));
-            let __hours = __duration.asHours();
+        let _hoy = moment().format('DD-MM-YYYY');
+        let _mana = moment(_hoy, 'DD-MM-YYYY').add(1, 'days').format('DD-MM-YYYY');
 
-            for (let i = 0; __hours > i; i++) {
-                let fechaHora = moment(__startTime).add(i, 'hours').format('DD-MM-YYYY HH:mm');
-                let hora = moment(__startTime).add(i, 'hours').format('HH:mm');
-                PrescripcionesUci.sColumns.push({
-                    fechaHora: fechaHora,
-                    title: hora,
-                });
-            }
+        let __startTime = moment(_hoy + " 07:00", 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm');
+        let __endTime = moment(_mana + " 08:00", 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm');
+
+        let __duration = moment.duration(moment(__endTime).diff(__startTime));
+        let __hours = __duration.asHours();
+
+        for (let i = 0; __hours > i; i++) {
+            let fechaHora = moment(__startTime).add(i, 'hours').format('DD-MM-YYYY HH:mm');
+            let hora = moment(__startTime).add(i, 'hours').format('HH:mm');
+            PrescripcionesUci.sColumns.push({
+                fechaHora: fechaHora,
+                title: hora,
+            });
         }
 
 
@@ -225,9 +228,9 @@ class PrescripcionesUci {
         // Quitar duplicados
         // resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Solo obtener prescripciones
-        resultId = resultNro.filter(o => o.status === 1);
+        resultId = resultNro.filter(o => o.status == 1);
 
-        console.log(123456, PrescripcionesUci.registros)
+        PrescripcionesUci.registros = resultId;
 
         PrescripcionesUci.setTableRegistros();
 
@@ -382,6 +385,7 @@ class PrescripcionesUci {
             },
 
         ];
+
         PrescripcionesUci.filterHorarios();
 
         // Generar Filas por valores
@@ -598,7 +602,7 @@ class PrescripcionesUci {
                                             el.dom.parentElement.className = 'tx-12 tx-semibold bg-warning op-8';
                                         }
 
-                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && oData.frecuencia == '0') {
+                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && (oData.frecuencia == '0' || oData.label == 'CADA DÍA')) {
                                             el.dom.parentElement.parentElement.className = 'd-none';
                                         }
 
@@ -1628,6 +1632,7 @@ class PrescripcionesUci {
                                             PrescripcionesUci.nuevoRegistro.usuarioTurno = PacientesUCI.usuarioTurno;
                                             if (PrescripcionesUci.nuevoRegistro.editar == null) {
                                                 console.log(8787, PrescripcionesUci.nuevoRegistro)
+
                                                 setTimeout(() => {
                                                     PrescripcionesUci.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY HH:mm');
                                                     PrescripcionesUci.nuevoRegistro.status = 1;
