@@ -709,7 +709,7 @@ class PrescripcionesUci {
                                                 } else {
                                                     $.confirm({
                                                         title: 'Registro de Administración',
-                                                        content: 'Status: No Administrado </br> Fecha:' + _obj.timestamp + '<br/>' + 'Usuario: ' + _obj.usuarioTurno,
+                                                        content: 'Status: No Administrado </br> Fecha:' + _obj.timestamp + '<br/>' + 'Usuario: ' + _obj.usuarioTurno + '<br/>' + 'Comentario / Justificación: ' + _obj.comentario,
                                                         buttons: {
 
                                                             Ok: {
@@ -727,7 +727,7 @@ class PrescripcionesUci {
                                             } else if (_status == 5) {
                                                 $.confirm({
                                                     title: 'Registro de Administración',
-                                                    content: 'Status: Cancelado </br>Fecha:' + _obj.timestamp + '<br/>' + 'Usuario: ' + _obj.usuarioTurno,
+                                                    content: 'Status: Cancelado </br>Fecha:' + _obj.timestamp + '<br/>' + 'Usuario: ' + _obj.usuarioTurno + '<br/>' + 'Comentario / Justificación: ' + _obj.comentario,
                                                     buttons: {
 
                                                         Ok: {

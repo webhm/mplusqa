@@ -515,6 +515,292 @@ class PrescripcionesUci {
 
                                     },
                                     */
+                                    oncontextmenu: (el) => {
+
+                                        el.preventDefault();
+
+                                        $.confirm({
+                                            columnClass: 'col-md-12',
+                                            title: '¿Registrar Administración?',
+                                            content: '' +
+                                                '<form action="" class="formName">' +
+                                                '<div class="form-group pd-b-5">' +
+                                                '<label>Tipo de Gestión:</label>' +
+                                                '<div class="input-group">' +
+                                                '<div class="custom-control custom-radio">' +
+                                                '<input type="radio" id="tipoGest2" name="tipoGest" class="custom-control-input" value="2" >' +
+                                                '<label for="tipoGest2" class="custom-control-label">Administrado</label>' +
+                                                '</div>' +
+                                                '<div class="custom-control custom-radio mg-l-20">' +
+                                                '<input type="radio" id="tipoGest3" name="tipoGest" class="custom-control-input" value="3">' +
+                                                '<label for="tipoGest3" class="custom-control-label">No Administrado</label>' +
+                                                '</div>' +
+                                                '<div class="custom-control custom-radio mg-l-20">' +
+                                                '<input type="radio" id="tipoGest4" name="tipoGest" class="custom-control-input" value="4">' +
+                                                '<label for="tipoGest4" class="custom-control-label">Reaplazar</label>' +
+                                                '</div>' +
+                                                '<div class="custom-control custom-radio mg-l-20">' +
+                                                '<input type="radio" id="tipoGest5" name="tipoGest" class="custom-control-input" value="5"> ' +
+                                                '<label for="tipoGest5" class="custom-control-label">Cancelar prescripción</label>' +
+                                                '</div>' +
+                                                '<div class="custom-control custom-radio mg-l-20">' +
+                                                '<input type="radio" id="tipoGest6" name="tipoGest" class="custom-control-input" value="6">' +
+                                                '<label for="tipoGest6" class="custom-control-label">Velocidad de Infusión</label>' +
+                                                '</div></div></div>' +
+                                                '<div class="form-group pd-b-5">' +
+                                                '<label>Hora:</label>' +
+                                                '<input type="text" id="timestampGest" class="form-control timestampGest" value="' + moment(moment(), 'HH:mm').format('HH') + ':' + (moment().format('mm') == '00' ? '01' : moment().format('mm')) + '">' +
+                                                '</div>' +
+                                                '<div class="form-group pd-b-5">' +
+                                                '<label>Velocidad de Infusión:</label>' +
+                                                '<input type="number" id="velocidadGest" class="form-control wd-20p velocidadGest">' +
+                                                '</div>' +
+                                                '<div class="form-group pd-b-5">' +
+                                                '<label>Unidad de Medida:</label>' +
+                                                '<input type="text" id="unidadMedida" class="form-control wd-20p unidadMedida">' +
+                                                '</div>' +
+                                                '<div class="form-group pd-b-5">' +
+                                                '<label>Historial de Infusiones:</label>' +
+                                                '<div id="historialInfusiones"></div>' +
+                                                '</div>' +
+                                                '<div class="form-group pd-b-5">' +
+                                                '<label>Comentario / Justificación:</label>' +
+                                                '<textarea type="text" id="commentGest"  rows="4" class="commentGest form-control "></textarea>' +
+                                                '</div>' +
+                                                '</form>',
+                                            buttons: {
+                                                confirm: {
+                                                    text: 'Confirmar',
+                                                    btnClass: 'btn-success op-8',
+                                                    action: function() {
+
+                                                        let tipoGest = null;
+                                                        let ele = document.getElementsByName('tipoGest');
+                                                        let commentGest = this.$content.find('.commentGest').val();
+                                                        let velocidadGest = this.$content.find('.velocidadGest').val();
+                                                        let timestampGest = this.$content.find('.timestampGest').val();
+                                                        let unidadMedida = this.$content.find('.unidadMedida').val();
+
+
+                                                        for (let i = 0; i < ele.length; i++) {
+                                                            if (ele[i].checked) {
+                                                                tipoGest = ele[i].value;
+                                                            }
+                                                        }
+
+                                                        if (tipoGest == null) {
+                                                            $.alert('No existe ningún estado para gestionar.');
+                                                            throw 'No existe ningún estado para gestionar.';
+                                                        }
+
+                                                        if ((tipoGest == 3 || tipoGest == 4 || tipoGest == 5) && !commentGest) {
+                                                            $.alert('No existe ningún comentario.');
+                                                            throw 'No existe ningún comentario.';
+                                                        }
+
+                                                        if (tipoGest == 6 && !velocidadGest && !unidadMedida) {
+                                                            $.alert('No existe ningún valor en velocidad de infusión y/o unidad de medida.');
+                                                            throw 'No existe ningún valor en velocidad de infusión.';
+                                                        }
+
+
+                                                        // Validacion de hora ingresada
+                                                        /*
+
+                                                        let _timestampIngresado = moment().format('DD-MM-YYYY ' + timestampGest);
+                                                        if (oData.frecuencia !== '0' && moment(_timestampIngresado, 'DD-MM-YYYY HH:mm').unix() < moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').unix()) {
+                                                            $.alert('La hora ingresada no puede ser menor a la hora de verificación ' + horas[index].title + ' Hrs.');
+                                                            throw 'La hora ingresada no puede ser menor a la hora de verificación.';
+                                                        }
+
+                                                        if (oData.frecuencia !== '0' && moment(_timestampIngresado, 'DD-MM-YYYY HH:mm').unix() > moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').add(1, 'hours').unix()) {
+                                                            $.alert('La hora ingresada no puede ser mayor a la hora de verificación ' + horas[index].title + ' Hrs.');
+                                                            throw 'La hora ingresada no puede ser mayor a la hora de verificación.';
+                                                        }
+                                                        */
+
+
+                                                        if (tipoGest == 6 && velocidadGest) {
+                                                            this.$content.find('.velocidadGest').val('');
+                                                            PrescripcionesUci.iniciarRegistro();
+                                                            PrescripcionesUci.nuevoRegistro.id = oData.id;
+                                                            PrescripcionesUci.nuevoRegistro.fechaHoraTurno = oData.fechaHoraTurno;
+                                                            PrescripcionesUci.nuevoRegistro.tipo = oData.tipo;
+                                                            PrescripcionesUci.nuevoRegistro.prescripcion = oData.prescripcion;
+                                                            PrescripcionesUci.nuevoRegistro.frecuencia = oData.frecuencia;
+                                                            PrescripcionesUci.nuevoRegistro.hora = oData.hora;
+                                                            PrescripcionesUci.nuevoRegistro.medico = oData.medico;
+                                                            PrescripcionesUci.nuevoRegistro.timestamp = (tipoGest == 4 ? moment().format('DD-MM-YYYY HH:mm') : moment().format('DD-MM-YYYY') + ' ' + timestampGest);
+                                                            PrescripcionesUci.nuevoRegistro.status = (tipoGest == 6 ? 2 : tipoGest);
+                                                            PrescripcionesUci.nuevoRegistro.velocidadInfusion = velocidadGest;
+                                                            PrescripcionesUci.nuevoRegistro.unidadMedida = unidadMedida;
+
+                                                            PrescripcionesUci.nuevoRegistro.comentario = commentGest;
+                                                            PrescripcionesUci.nuevoRegistro.label = oData.label;
+                                                            PrescripcionesUci.nuevoRegistro.seccion = oData.seccion;
+                                                            PrescripcionesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                            PrescripcionesUci.nuevoRegistro.usuarioTurno = PacientesUCI.usuarioTurno;
+                                                            PrescripcionesUci.agregarRegistro();
+                                                            FecthUci.registrarSeccion(PrescripcionesUci.nuevoRegistro);
+                                                            PrescripcionesUci.nuevoRegistro = null;
+                                                            PrescripcionesUci.destroyTable();
+                                                            PrescripcionesUci.filterRegistros();
+                                                            PrescripcionesUci.show = false;
+                                                            m.redraw();
+
+
+                                                            setTimeout(() => {
+                                                                PrescripcionesUci.show = true;
+                                                                m.redraw();
+
+                                                                document.getElementById('historialInfusiones').innerHTML = PrescripcionesUci.extraerInfusiones(oData);
+                                                                setTimeout(() => {
+                                                                    PrescripcionesUci.addEventoEliminarInfusion(oData);
+                                                                }, 50);
+                                                            }, 100);
+
+                                                            return false;
+
+                                                        } else {
+
+                                                            setTimeout(() => {
+                                                                PrescripcionesUci.iniciarRegistro();
+                                                                PrescripcionesUci.nuevoRegistro.id = oData.id;
+                                                                PrescripcionesUci.nuevoRegistro.fechaHoraTurno = oData.fechaHoraTurno;
+                                                                PrescripcionesUci.nuevoRegistro.tipo = oData.tipo;
+                                                                PrescripcionesUci.nuevoRegistro.prescripcion = oData.prescripcion;
+                                                                PrescripcionesUci.nuevoRegistro.frecuencia = oData.frecuencia;
+                                                                PrescripcionesUci.nuevoRegistro.hora = oData.hora;
+                                                                PrescripcionesUci.nuevoRegistro.medico = oData.medico;
+                                                                PrescripcionesUci.nuevoRegistro.timestamp = (tipoGest == 4 ? moment().format('DD-MM-YYYY HH:mm') : moment().format('DD-MM-YYYY') + ' ' + timestampGest);
+                                                                PrescripcionesUci.nuevoRegistro.status = (tipoGest == 6 ? 2 : tipoGest);
+                                                                PrescripcionesUci.nuevoRegistro.velocidadInfusion = velocidadGest;
+                                                                PrescripcionesUci.nuevoRegistro.unidadMedida = unidadMedida;
+                                                                PrescripcionesUci.nuevoRegistro.comentario = commentGest;
+                                                                PrescripcionesUci.nuevoRegistro.label = oData.label;
+                                                                PrescripcionesUci.nuevoRegistro.seccion = oData.seccion;
+                                                                PrescripcionesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                                PrescripcionesUci.nuevoRegistro.usuarioTurno = PacientesUCI.usuarioTurno;
+                                                                PrescripcionesUci.agregarRegistro();
+                                                                FecthUci.registrarSeccion(PrescripcionesUci.nuevoRegistro);
+
+
+
+
+
+                                                                // Para reaplazar distinto
+                                                                if (tipoGest == 4) {
+                                                                    PrescripcionesUci.nuevoRegistro = oData;
+                                                                    PrescripcionesUci.nuevoRegistro.editar = true;
+                                                                    m.redraw();
+                                                                } else {
+                                                                    PrescripcionesUci.nuevoRegistro = null;
+                                                                    PrescripcionesUci.destroyTable();
+                                                                    PrescripcionesUci.filterRegistros();
+                                                                    PrescripcionesUci.show = false;
+                                                                    m.redraw();
+                                                                    setTimeout(() => {
+                                                                        PrescripcionesUci.show = true;
+                                                                        m.redraw();
+                                                                    }, 100);
+                                                                }
+
+
+                                                            }, 100);
+
+                                                            // return false;
+
+                                                        }
+
+
+
+
+
+
+
+                                                    }
+                                                },
+                                                cancel: {
+                                                    btnClass: "btn-danger op-8",
+                                                    text: 'Cerrar',
+                                                }
+
+                                            },
+                                            onContentReady: function() {
+
+
+
+                                                document.getElementById('historialInfusiones').innerHTML = PrescripcionesUci.extraerInfusiones(oData);
+
+
+                                                document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
+                                                document.getElementById('commentGest').parentElement.style = 'display:none;';
+                                                document.getElementById('velocidadGest').parentElement.style = 'display:none;';
+                                                document.getElementById('unidadMedida').parentElement.style = 'display:none;';
+
+
+                                                document.getElementById('tipoGest2').onclick = function() {
+                                                    document.getElementById('commentGest').value = '';
+                                                    document.getElementById('commentGest').parentElement.style = 'display:none;';
+                                                    document.getElementById('velocidadGest').parentElement.style = 'display:none;';
+                                                    document.getElementById('unidadMedida').parentElement.style = 'display:none;';
+                                                    document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
+
+                                                };
+
+                                                document.getElementById('tipoGest3').onclick = function() {
+                                                    document.getElementById('commentGest').value = '';
+                                                    document.getElementById('commentGest').parentElement.style = '';
+                                                    document.getElementById('velocidadGest').parentElement.style = 'display:none;';
+                                                    document.getElementById('unidadMedida').parentElement.style = 'display:none;';
+                                                    document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
+
+                                                };
+
+                                                document.getElementById('tipoGest4').onclick = function() {
+                                                    document.getElementById('commentGest').value = '';
+                                                    document.getElementById('commentGest').parentElement.style = '';
+                                                    document.getElementById('velocidadGest').parentElement.style = 'display:none;';
+                                                    document.getElementById('unidadMedida').parentElement.style = 'display:none;';
+                                                    document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
+                                                };
+
+                                                document.getElementById('tipoGest5').onclick = function() {
+                                                    document.getElementById('commentGest').value = '';
+                                                    document.getElementById('commentGest').parentElement.style = '';
+                                                    document.getElementById('velocidadGest').parentElement.style = 'display:none;';
+                                                    document.getElementById('unidadMedida').parentElement.style = 'display:none;';
+                                                    document.getElementById('historialInfusiones').parentElement.style = 'display:none;';
+
+                                                };
+
+                                                document.getElementById('tipoGest6').onclick = function() {
+                                                    document.getElementById('commentGest').parentElement.style = '';
+                                                    document.getElementById('velocidadGest').parentElement.style = '';
+                                                    document.getElementById('unidadMedida').parentElement.style = '';
+                                                    document.getElementById('historialInfusiones').parentElement.style = '';
+                                                    document.getElementById('commentGest').value = 'MODIFICACION SEGUN PRESCRIPCION MEDICA';
+
+
+                                                };
+
+                                                setTimeout(() => {
+
+                                                    new Cleave("#timestampGest", {
+                                                        time: true,
+                                                        timePattern: ['h', 'm']
+                                                    });
+
+                                                    PrescripcionesUci.addEventoEliminarInfusion(oData);
+
+
+                                                }, 50);
+
+                                            },
+
+                                        });
+
+                                    },
                                     ondblclick: () => {
 
                                         if (oData.frecuencia !== '0') {
@@ -1190,6 +1476,7 @@ class PrescripcionesUci {
                                         }
 
                                     },
+
                                 }, [
 
                                     (PrescripcionesUci.validarStatus(oData, horas[index].fechaHora) != false ? [
