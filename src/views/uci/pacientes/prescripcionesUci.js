@@ -524,6 +524,11 @@ class PrescripcionesUci {
                                             title: '¿Registrar Administración?',
                                             content: '' +
                                                 '<form action="" class="formName">' +
+                                                '<div class="form-group">' +
+                                                '<label>Prescripción:</label>' +
+                                                '<p class="col-12 pd-0 mg-0">' + oData.prescripcion.substring(50, -1) + '</p>' +
+                                                '<p class="col-12 pd-0 mg-0">' + oData.label + '</p>' +
+                                                '</div>' +
                                                 '<div class="form-group pd-b-5">' +
                                                 '<label>Tipo de Gestión:</label>' +
                                                 '<div class="input-group">' +
@@ -883,13 +888,22 @@ class PrescripcionesUci {
 
                                             el.dom.parentElement.className = 'tx-12 tx-semibold bg-light op-5';
                                         }
+
+
                                         // validar si son de hoy
+                                        let fechaHorario = moment(moment().format('DD-MM-YYYY') + '  10:00', 'DD-MM-YYYY HH:mm').unix();
+                                        let fechaPres = moment(moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + oData.hora, 'DD-MM-YYYY HH:mm').unix();
+
                                         if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && oData.frecuencia !== '0') {
-                                            el.dom.parentElement.className = 'tx-12 tx-semibold bg-warning op-8';
+                                            el.dom.parentElement.className = 'tx-12 tx-semibold bg-warning op-8 ';
                                         }
 
                                         if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && (oData.frecuencia == '0' || oData.label == 'CADA DÍA')) {
                                             el.dom.parentElement.parentElement.className = 'd-none';
+                                        }
+
+                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && fechaPres <= fechaHorario) {
+                                            el.dom.parentElement.parentElement.className = 'd-none ';
                                         }
 
 
@@ -1186,6 +1200,11 @@ class PrescripcionesUci {
                                                     title: '¿Registrar Administración?',
                                                     content: '' +
                                                         '<form action="" class="formName">' +
+                                                        '<div class="form-group">' +
+                                                        '<label>Prescripción:</label>' +
+                                                        '<p class="col-12 pd-0 mg-0">' + oData.prescripcion.substring(50, -1) + '</p>' +
+                                                        '<p class="col-12 pd-0 mg-0">' + oData.label + '</p>' +
+                                                        '</div>' +
                                                         '<div class="form-group pd-b-5">' +
                                                         '<label>Tipo de Gestión:</label>' +
                                                         '<div class="input-group">' +
