@@ -83,7 +83,7 @@ class PacientesUCI extends App {
         // ViasUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Vias').options));
 
         // AccesosUci.show = true;
-        AccesosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Accesos').options));
+        // AccesosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Accesos').options));
 
 
         //  CateterUci.show = true;
@@ -203,7 +203,7 @@ class PacientesUCI extends App {
                         m(CuidadosUci2),
 
                         // Accesos
-                        m(AccesosUci),
+                        //  m(AccesosUci),
 
                         // Marcapasos
                         m(MarcapasosUci),
