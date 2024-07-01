@@ -152,7 +152,8 @@ class PrescripcionesUci {
             let hora = moment(__startTime).add(i, 'hours').format('HH:mm');
             PrescripcionesUci.sColumns.push({
                 fechaHora: fechaHora,
-                title: hora,
+                labelTitle: hora,
+                title: hora.substring(0, hora.length - 3),
             });
         }
 
@@ -1230,7 +1231,7 @@ class PrescripcionesUci {
                                                         '</div></div></div>' +
                                                         '<div class="form-group pd-b-5">' +
                                                         '<label>Hora:</label>' +
-                                                        '<input type="text" id="timestampGest" class="form-control timestampGest" value="' + moment(horas[index].title, 'HH:mm').format('HH') + ':' + (moment().format('mm') == '00' ? '01' : moment().format('mm')) + '">' +
+                                                        '<input type="text" id="timestampGest" class="form-control timestampGest" value="' + moment(horas[index].labelTitle, 'HH:mm').format('HH') + ':' + (moment().format('mm') == '00' ? '01' : moment().format('mm')) + '">' +
                                                         '</div>' +
                                                         '<div class="form-group pd-b-5">' +
                                                         '<label>Velocidad de Infusión:</label>' +
@@ -1531,7 +1532,7 @@ class PrescripcionesUci {
                                                         let _det = undefined;
                                                         _det = PrescripcionesUci.validarDeshacer(oData, horas[index].fechaHora);
                                                         if (_det !== undefined && _det.status == 5) {
-                                                            if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false) {
+                                                            if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].labelTitle, horas[index].fechaHora) != false) {
 
                                                                 el.dom.className = "fa fa-check-square tx-20 tx-dark op-2";
                                                             } else {
@@ -1539,7 +1540,7 @@ class PrescripcionesUci {
                                                             }
                                                         } else {
 
-                                                            if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].title, horas[index].fechaHora) != false) {
+                                                            if (PrescripcionesUci.comprobarFrecuencia(oData, horas[index].labelTitle, horas[index].fechaHora) != false) {
 
 
 
@@ -1603,7 +1604,7 @@ class PrescripcionesUci {
                 },
                 visible: true,
                 aTargets: null,
-                orderable: true,
+                orderable: false,
 
             });
 
