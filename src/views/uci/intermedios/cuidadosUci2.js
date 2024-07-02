@@ -558,7 +558,7 @@ class CuidadosUci2 {
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "CUIDADOS GENERALES"
+                        "PROCEDIMIENTOS DE ENFERMERIA"
                     ),
 
 
@@ -630,96 +630,80 @@ class CuidadosUci2 {
                             class: "custom-select",
                             value: (CuidadosUci2.nuevoRegistro !== null ? CuidadosUci2.nuevoRegistro.cuidado : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                id: "Posicion",
-                                label: "POSICIÓN"
+                                id: "Bano",
+                                label: "BAÑO"
                             },
                             {
-                                id: "ReposoRelativo",
-                                label: "REPOSO RELATIVO"
+                                id: "ValorarionFisicaRN",
+                                label: "VALORACIÓN FÍSICA DE RECIEN NACIDO"
                             },
                             {
-                                id: "Levantar",
-                                label: "LEVANTAR"
+                                id: "AseoGenitales",
+                                label: "ASEO DE GENITALES CON CADA CAMBIO DE PAÑAL"
                             },
                             {
-                                id: "CuidadoOjos",
-                                label: "CUIDADO DE OJOS"
+                                id: "AseoCavidadOral",
+                                label: "ASEO DE CAVIDAD ORAL"
+                            },
+                            {
+                                id: "CuidadoCordonUmbilical",
+                                label: "CUIDADO CORDON UMBILICAL"
+                            },
+                            {
+                                id: "AspiracionSecreciones",
+                                label: "ASPIRACIÓN DE SECRECIONES"
+                            },
+                            {
+                                id: "AseoOcular",
+                                label: "ASEO OCULAR"
+                            },
+                            {
+                                id: "CambioAntifaz",
+                                label: "CAMBIO DE ANTIFAZ"
+                            },
+                            {
+                                id: "ApoyoProcedimientosEspeciales",
+                                label: "APOYO PROCEDIMIENTOS ESPECIALES"
+                            },
+                            {
+                                id: "HigieneParcial",
+                                label: "HIGIENE PARCIAL"
+                            },
+                            {
+                                id: "EducacionAyudaManejo",
+                                label: "EDUCACIÓN Y AYUDA DEL MANEJO"
                             },
                             {
                                 id: "Aislamiento",
                                 label: "AISLAMIENTO"
                             },
                             {
+                                id: "DilatacionPupilas",
+                                label: "DILATACIÓN DE PUPILAS"
+                            },
+                            {
+                                id: "FisioterapiaRespiratoria",
+                                label: "FISIOTERAPIA RESPIRATORIA"
+                            },
+                            {
                                 id: "CambiosPosicion",
                                 label: "CAMBIOS DE POSICIÓN"
                             },
                             {
-                                id: "Bano",
-                                label: "BAÑO"
+                                id: "RotacionSensores",
+                                label: "ROTACIÓN DE SENSORES"
                             },
                             {
-                                id: "CuidadosPiel",
-                                label: "CUIDADOS DE PIEL"
+                                id: "AplicacionMedioFisico",
+                                label: "APLICACIÓN DE MEDIO FISICO"
                             },
                             {
-                                id: "AseoPerianal",
-                                label: "ASEO PERIANAL"
+                                id: "LimpiezaDiariaUnidad",
+                                label: "LIMPIEZA DIARIA DE LA UNIDAD"
                             },
                             {
-                                id: "HigieneOral",
-                                label: "HIGIENE ORAL"
-                            },
-                            {
-                                id: "TerapiaRespiratoria",
-                                label: "TERAPIA RESPIRATORIA"
-                            },
-                            {
-                                id: "CuidadosTuboTraqueal",
-                                label: "CUIDADOS DE TUBO TRAQUEAL"
-                            },
-                            {
-                                id: "ControlTemperaturaMediosFisicos",
-                                label: "CONTROL FIEBRE MEDIOS FISICOS"
-                            },
-                            {
-                                id: "ControlMarcapasos",
-                                label: "CONTROL DE MARCAPASOS"
-                            },
-                            {
-                                id: "ControlDrenajes",
-                                label: "CONTROL DE DRENAJES"
-                            },
-                            {
-                                id: "ControlSangrado",
-                                label: "CONTROL DE SANGRADO"
-                            },
-                            {
-                                id: "ControlNeurologico",
-                                label: "CONTROL NEUROLÓGICO"
-                            },
-                            {
-                                id: "ControlPresionVenosaCentral",
-                                label: "CONTROL DE PRESION VENOSA CENTRAL"
-                            },
-                            {
-                                id: "EsquemaInsulima",
-                                label: "ESQUEMA DE INSULINA"
-                            },
-                            {
-                                id: "RehabilitacionMotora",
-                                label: "REHABILITACIÓN MOTORA"
-                            },
-                            {
-                                id: "EnemaEvacuante",
-                                label: "ENEMA EVACUANTE"
-                            },
-                            {
-                                id: "RiesgoTromboembolismo",
-                                label: "RIESGO DE TROMBOEMBOLISMO"
-                            },
-                            {
-                                id: "VisitaFamiliar",
-                                label: "VISITA FAMILIAR"
+                                id: "MedidasContencion",
+                                label: "MEDIDAS DE CONTENCIÓN"
                             }
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)

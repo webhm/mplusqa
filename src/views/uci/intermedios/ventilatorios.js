@@ -1545,7 +1545,7 @@ class VentilatoriosUci {
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "MODOS VENTILATORIOS / VARIABLES"
+                        "OXIGENOTERAPIA Y VENTILACIÓN MECÁNICA"
                     ),
 
                 ])
@@ -1734,6 +1734,34 @@ class VentilatoriosUci {
                                 id: "VolumenAltaFrecuencia",
                                 label: "VOLUMEN ALTA FRECUENCIA"
                             },
+                            {
+                                orden: 29,
+                                id: "AireComprimido",
+                                label: "AIRE COMPRIMIDO (PORCENTAJE)"
+                            }, {
+                                orden: 30,
+                                id: "Heliox",
+                                label: "HELIOX (LITROS)"
+                            }, {
+                                orden: 31,
+                                id: "OxidoNitrico",
+                                label: "OXIDO NITRICO (PARTES POR MILLON)"
+                            },
+                            {
+                                orden: 32,
+                                id: "PresionInspiratoriaMaxima",
+                                label: "PRESION INSPIRATORIA MAXIMA / PIP"
+                            },
+                            {
+                                orden: 33,
+                                id: "OxigenoLitrosMinuto",
+                                label: "OXÍGENO LITROS POR MINUTO"
+                            },
+                            {
+                                orden: 34,
+                                id: "Co2",
+                                label: "CO2"
+                            }
                         ].map(x =>
                             m('option[id="' + x.id + '"][orden="' + x.orden + '"]', x.label)
                         ))

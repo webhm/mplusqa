@@ -418,7 +418,7 @@ class AccesosUci {
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "ACCESOS"
+                        "INGESTA"
                     ),
 
                 ])
@@ -434,13 +434,13 @@ class AccesosUci {
 
                 }, [
                     m("th[scope='col'][colspan='4']",
-                        "ACCESO: "
+                        "INGESTA: "
                     ),
                     m("th[scope='col'][colspan='4']",
-                        "UBICACIÓN: "
+                        "CANTIDAD: "
                     ),
                     m("th[scope='col'][colspan='4']",
-                        "TIPO: "
+                        "MEDIDA: "
                     )
 
                 ]),
@@ -449,7 +449,7 @@ class AccesosUci {
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
                 }, [
-                    m("td.tx-14.tx-normal.wd-40p[colspan='2']",
+                    m("td.tx-14.tx-normal.wd-40p[colspan='4']",
                         m('select.tx-semibold', {
                             id: 'sec_Accesos',
                             onchange: (e) => {
@@ -479,84 +479,15 @@ class AccesosUci {
                             class: "custom-select",
                             value: (AccesosUci.nuevoRegistro !== null ? AccesosUci.nuevoRegistro.acceso : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                id: "CateterIntracraneal",
-                                label: "CATETER INTRACRANEAL"
-                            }, {
-                                id: "AccesoIntraOseo",
-                                label: "ACCESO INTRA-OSEO"
-                            }, {
-                                id: "TuboTraqueal",
-                                label: "TUBO TRAQUEAL"
-                            }, {
-                                id: "TuboToracico",
-                                label: "TUBO TORACICO"
-                            }, {
-                                id: "Traqueotomo",
-                                label: "TRAQUEOTOMO"
-                            }, {
-                                id: "SondaNasogastrica",
-                                label: "SONDA NASOGASTRICA"
-                            }, {
-                                id: "SondaOrogastrica",
-                                label: "SONDA OROGASTRICA"
-                            }, {
-                                id: "SondaVesical",
-                                label: "SONDA VESICAL"
-                            },
-                            {
-                                id: "Gastrotomia",
-                                label: "GASTROSTOMIA"
-                            },
-                            {
-                                id: "Yeyuyostomia",
-                                label: "YEYUYOSTOMIA"
-                            },
-                            {
-                                id: "ManguerasVentilador",
-                                label: "MANGUERAS DE VENTILADOR"
-                            },
-                            {
-                                id: "EquiposNutricionEnteral",
-                                label: "EQUIPOS DE NUTRICION ENTERAL"
-                            },
-                            {
-                                id: "EquiposNutricionParenteral",
-                                label: "EQUIPOS DE NUTRICION PARENTERAL"
-                            },
-                            {
-                                id: "Microgoteros",
-                                label: "MICROGOTEROS"
-                            },
-                            {
-                                id: "EquipoVenoclisis",
-                                label: "EQUIPO DE VENOCLISIS"
-                            },
-                            {
-                                id: "Otros",
-                                label: "OTROS"
-                            }
-                        ].map(x =>
+                            id: "Oral",
+                            label: "ORAL"
+                        }, {
+                            id: "Intravenoso",
+                            label: "INTRAVENOSO"
+                        }, ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
                         ))
                     ),
-                    m("td.tx-14.tx-normal[colspan='2']", {
-                        class: (AccesosUci.showOtros == false ? 'd-none' : '')
-                    }, [
-                        m('div.d-flex', [
-                            (AccesosUci.nuevoRegistro !== null ? [
-                                m("input", {
-                                    id: "otrosAcceso" + AccesosUci.nuevoRegistro.id,
-                                    class: "form-control tx-semibold tx-14",
-                                    type: "text",
-                                    placeholder: "Otros",
-                                    value: AccesosUci.nuevoRegistro.otros,
-                                    oninput: (e) => {
-                                        AccesosUci.nuevoRegistro.otros = (e.target.value.length !== 0 ? e.target.value : null);
-                                    },
-                                })
-                            ] : [])
-                        ]),
-                    ]),
                     m("td.tx-10.tx-normal.wd-40p[colspan='4']",
                         (AccesosUci.nuevoRegistro !== null ? [
                             m('select.tx-semibold', {
@@ -571,9 +502,7 @@ class AccesosUci {
                                     AccesosUci.nuevoRegistro.ubicacion = _value;
                                 },
                                 class: "custom-select"
-                            }, m('option', 'Seleccione...'), ['SUBDURAL', 'INTRAPARENQUIMATOSO', 'TIBIAL', 'NASO-TRAQUEAL', 'ORO-TRAQUEAL', 'SUBMAXILAR',
-                                'TORAX DERECHO', 'TORAX IZQUIERDO', 'PLEURAL', 'MEDIASTINAL', 'TRAQUEA', 'FOSA NASAL DERECHA', 'FOSA NASAL IZQUIERDA', 'OROGASTRICA', 'EPIGASTRIO', 'YEYUNO', 'NO APLICA'
-                            ].map(x =>
+                            }, m('option', 'Seleccione...'), ['LECHA MATERNA', 'FORMULA', 'SONDA NASOGASTRICA', 'RESIDUO'].map(x =>
                                 m('option', x)
                             ))
                         ] : [])
@@ -596,187 +525,22 @@ class AccesosUci {
                     ),
 
                 ]),
+
                 m("tr.bd.bd-2.tx-uppercase", {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
                 }, [
-
-                    m("th[scope='col'][colspan='3']",
-                        "INICIO: "
+                    m("th[scope='col'][colspan='12']",
+                        "OBSERVACIÓN: "
                     ),
-                    m("th[scope='col'][colspan='3']",
-                        "RETIRO: "
-                    ),
-                    m("th[scope='col'][colspan='3']",
-                        "CAMBIO: "
-                    ),
-                    m("th[scope='col'][colspan='3']",
-                        "CURACIÓN: "
-                    ),
-
-
-                ]),
-                m("tr.bd.bd-2", {
-                    style: { "border-color": "#5173a1" },
-                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
-                }, [
-
-
-                    m("td.tx-14.tx-normal.wd-30p[colspan='3']",
-                        (AccesosUci.nuevoRegistro !== null ? [
-                            m('div.d-flex', [
-                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
-                                    id: "ifecha" + AccesosUci.nuevoRegistro.id,
-                                    oncreate: (el) => {
-                                        if (AccesosUci.nuevoRegistro.inicio != undefined) {
-                                            el.dom.value = AccesosUci.nuevoRegistro.inicio;
-                                        }
-                                        setTimeout(() => {
-                                            new Cleave("#ifecha" + AccesosUci.nuevoRegistro.id, {
-                                                date: true,
-                                                datePattern: ["d", "m", "Y"]
-                                            });
-                                        }, 50);
-                                    },
-                                    oninput: (e) => {
-                                        setTimeout(() => {
-                                            AccesosUci.nuevoRegistro.inicio = e.target.value;
-                                        }, 50);
-                                    },
-                                })
-                            ]),
-                        ] : [])
-                    ),
-                    m("td.tx-14.tx-normal.wd-30p[colspan='3']",
-                        (AccesosUci.nuevoRegistro !== null ? [
-                            m('div.d-flex', [
-                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
-                                    id: "rfecha" + AccesosUci.nuevoRegistro.id,
-                                    oncreate: (el) => {
-                                        if (AccesosUci.nuevoRegistro.retiro != undefined) {
-                                            el.dom.value = AccesosUci.nuevoRegistro.retiro;
-                                        }
-                                        setTimeout(() => {
-                                            new Cleave("#rfecha" + AccesosUci.nuevoRegistro.id, {
-                                                date: true,
-                                                datePattern: ["d", "m", "Y"]
-                                            });
-                                        }, 50);
-                                    },
-                                    oninput: (e) => {
-                                        setTimeout(() => {
-                                            AccesosUci.nuevoRegistro.retiro = e.target.value;
-                                        }, 50);
-                                    },
-                                })
-
-                            ])
-
-
-                        ] : [])
-
-
-                    ),
-                    m("td.tx-14.tx-normal.wd-30p[colspan='3']",
-
-                        (AccesosUci.nuevoRegistro !== null ? [
-                            m('div.d-flex', [
-                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
-                                    id: "cfecha" + AccesosUci.nuevoRegistro.id,
-                                    oncreate: (el) => {
-                                        if (AccesosUci.nuevoRegistro.cambio != undefined) {
-                                            el.dom.value = AccesosUci.nuevoRegistro.cambio;
-                                        }
-                                        setTimeout(() => {
-                                            new Cleave("#cfecha" + AccesosUci.nuevoRegistro.id, {
-                                                date: true,
-                                                datePattern: ["d", "m", "Y"]
-                                            });
-                                        }, 50);
-                                    },
-                                    oninput: (e) => {
-                                        setTimeout(() => {
-                                            AccesosUci.nuevoRegistro.cambio = e.target.value;
-                                        }, 50);
-                                    },
-                                })
-
-                            ])
-                        ] : [
-
-                        ])
-
-
-
-                    ),
-                    m("td.tx-14.tx-normal.wd-30p[colspan='3']",
-
-                        (AccesosUci.nuevoRegistro !== null ? [
-                            m('div.d-flex', [
-                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
-                                    id: "cufecha" + AccesosUci.nuevoRegistro.id,
-                                    oncreate: (el) => {
-                                        if (AccesosUci.nuevoRegistro.curacion != undefined) {
-                                            el.dom.value = AccesosUci.nuevoRegistro.curacion;
-                                        }
-                                        setTimeout(() => {
-                                            new Cleave("#cufecha" + AccesosUci.nuevoRegistro.id, {
-                                                date: true,
-                                                datePattern: ["d", "m", "Y"]
-                                            });
-                                        }, 50);
-                                    },
-                                    oninput: (e) => {
-                                        setTimeout(() => {
-                                            AccesosUci.nuevoRegistro.curacion = e.target.value;
-                                        }, 50);
-                                    },
-                                }),
-                            ])
-                        ] : [])
-
-
-                    ),
-
-                ]),
-                m("tr.bd.bd-2.tx-uppercase", {
-                    style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
-                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
-
-                }, [
-
-
-                    m("th[scope='col'][colspan='6']",
-                        "CONDICIÓN: "
-                    ),
-                    m("th[scope='col'][colspan='6']",
-                        "OBSERVACIÓN / TRAE: "
-                    ),
-
                 ]),
                 m('tr.bd.bd-2', {
                     style: { "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
-                    m("td.tx-14.tx-normal.wd-60p[colspan='6']",
-                        (AccesosUci.nuevoRegistro !== null ? [
 
-                            m("input", {
-                                id: "condicion" + AccesosUci.nuevoRegistro.id,
-                                class: "form-control tx-semibold tx-14",
-                                type: "text",
-                                placeholder: "...",
-                                value: AccesosUci.nuevoRegistro.condicion,
-                                oninput: (e) => {
-                                    AccesosUci.nuevoRegistro.condicion = (e.target.value.length !== 0 ? e.target.value : null);
-                                },
-                            })
-                        ] : [])
-
-
-                    ),
-                    m("td.tx-14.tx-normal.wd-60p[colspan='6']",
+                    m("td.tx-14.tx-normal.wd-100p[colspan='12']",
                         (AccesosUci.nuevoRegistro !== null ? [
                             m("input", {
                                 id: "observacion" + AccesosUci.nuevoRegistro.id,

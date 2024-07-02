@@ -80,10 +80,10 @@ class PacientesUCI extends App {
         // CuidadosUci2.show = true;
 
         // ViasUci.show = true;
-        ViasUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Vias').options));
+        // ViasUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Vias').options));
 
         // AccesosUci.show = true;
-        AccesosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Accesos').options));
+        // AccesosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Accesos').options));
 
 
         //  CateterUci.show = true;
@@ -93,7 +93,7 @@ class PacientesUCI extends App {
         //  HemodialisisUci.show = true;
 
         //  CultivosUci.show = true;
-        CultivosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Cultivos').options));
+        // CultivosUci.registros = PacientesUCI.parseSeccion(Array.from(document.getElementById('sec_Cultivos').options));
 
         //   MarcapasosUci.show = true;
 
@@ -179,7 +179,7 @@ class PacientesUCI extends App {
                                     }, "Registrar Nuevo Turno"),
                                     m("button.btn.btn-xs.btn-secondary.tx-semibold.tx-14[type='button']", {
                                         onclick: () => {
-                                            m.route.set('/uci/pacientes/historial/', {
+                                            m.route.set('/uci/pacientes/neo/historial/', {
                                                 numeroHistoriaClinica: PacientesUCI.numeroHistoriaClinica,
                                                 numeroAtencion: PacientesUCI.numeroAtencion,
                                                 usuario: PacientesUCI.usuarioTurno
@@ -201,38 +201,23 @@ class PacientesUCI extends App {
 
                         // Cuidados Generales
                         m(CuidadosUci2),
-                        // Vias
-                        m(ViasUci),
+
                         // Accesos
-                        m(AccesosUci),
-                        // Cateter
-                        m(CateterUci),
-                        // Manejo de Ventilzacion
-                        m(VentilacionUci),
-                        // Hemodialisis
-                        m(HemodialisisUci),
-                        // Cultivos
-                        m(CultivosUci),
+                        //  m(AccesosUci),
+
                         // Marcapasos
                         m(MarcapasosUci),
                         // Ventilatorios
                         m(VentilatoriosUci),
-                        // Gasometrias / Horas
-                        m(GasesUci),
-                        // Oxigenación
+                        // Ventilatorios
                         m(OxigenacionUci),
-                        // MedidasUci
-                        m(MedidasUci),
                         // ComburTest
                         m(ComburTestUci),
-                        // GasesMedUci
-                        m(GasesMedUci),
                         // UlcerasUciPed
                         m(UlcerasUciPed),
                         // ValoracionUciNeo
                         m(ValoracionUciNeo),
-                        // Prescripciones Uci
-                        m(PrescripcionesUci),
+
                     ]),
                     m('div.ht-100'),
                 ])
@@ -241,7 +226,7 @@ class PacientesUCI extends App {
     }
 
     static vMenu() {
-        return m(Sidebar, { page: 'uci/pacientes' });
+        return m(Sidebar, { page: 'uci/pacientes/neo' });
     }
 
     static parseSeccionCateter(options) {
@@ -5450,14 +5435,14 @@ class PacientesUCI extends App {
                                                     CuidadosUci2.registros = PacientesUCI.parseSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options));
                                                     PacientesUCI.setTurnoSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options))
 
-                                                    CateterUci.registros = PacientesUCI.parseSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
-                                                    PacientesUCI.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
+                                                    //    CateterUci.registros = PacientesUCI.parseSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
+                                                    //   PacientesUCI.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
 
-                                                    VentilacionUci.registros = PacientesUCI.parseSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
-                                                    PacientesUCI.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
+                                                    //   VentilacionUci.registros = PacientesUCI.parseSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
+                                                    //   PacientesUCI.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
 
-                                                    HemodialisisUci.registros = PacientesUCI.parseSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
-                                                    PacientesUCI.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
+                                                    // HemodialisisUci.registros = PacientesUCI.parseSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
+                                                    //  PacientesUCI.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
 
                                                     MarcapasosUci.registros = PacientesUCI.parseSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
                                                     PacientesUCI.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
@@ -5466,27 +5451,27 @@ class PacientesUCI extends App {
                                                     PacientesUCI.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
                                                     VentilatoriosUci.registros = PacientesUCI.parseSeccionVentilatorios_v2(Array.from(document.getElementById('sec_Ventilatorios').options));
 
-                                                    GasesUci.allRegistros = PacientesUCI.parseSeccionGases_AllRegistros(Array.from(document.getElementById('sec_Gases').options));
-                                                    PacientesUCI.setTurnoSeccionGases(Array.from(document.getElementById('sec_Gases').options));
-                                                    GasesUci.registros = PacientesUCI.parseSeccionGases_v2(Array.from(document.getElementById('sec_Gases').options));
+                                                    //  GasesUci.allRegistros = PacientesUCI.parseSeccionGases_AllRegistros(Array.from(document.getElementById('sec_Gases').options));
+                                                    //  PacientesUCI.setTurnoSeccionGases(Array.from(document.getElementById('sec_Gases').options));
+                                                    //   GasesUci.registros = PacientesUCI.parseSeccionGases_v2(Array.from(document.getElementById('sec_Gases').options));
 
                                                     OxigenacionUci.registros = PacientesUCI.parseSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
                                                     PacientesUCI.setTurnoSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
 
-                                                    MedidasUci.allRegistros = PacientesUCI.parseSeccionMedidas_AllRegistros(Array.from(document.getElementById('sec_Medidas').options));
-                                                    PacientesUCI.setTurnoSeccionMedidas(Array.from(document.getElementById('sec_Medidas').options));
-                                                    MedidasUci.registros = PacientesUCI.parseSeccionMedidas_v2(Array.from(document.getElementById('sec_Medidas').options));
+                                                    // MedidasUci.allRegistros = PacientesUCI.parseSeccionMedidas_AllRegistros(Array.from(document.getElementById('sec_Medidas').options));
+                                                    // PacientesUCI.setTurnoSeccionMedidas(Array.from(document.getElementById('sec_Medidas').options));
+                                                    //  MedidasUci.registros = PacientesUCI.parseSeccionMedidas_v2(Array.from(document.getElementById('sec_Medidas').options));
 
                                                     ComburTestUci.allRegistros = PacientesUCI.parseSeccionComburTest_AllRegistros(Array.from(document.getElementById('sec_ComburTest').options));
                                                     PacientesUCI.setTurnoSeccionComburTest(Array.from(document.getElementById('sec_ComburTest').options));
                                                     ComburTestUci.registros = PacientesUCI.parseSeccionComburTest_v2(Array.from(document.getElementById('sec_ComburTest').options));
 
-                                                    GasesMedUci.allRegistros = PacientesUCI.parseSeccionGasesMed_AllRegistros(Array.from(document.getElementById('sec_GasesMed').options));
-                                                    PacientesUCI.setTurnoSeccionGasesMed(Array.from(document.getElementById('sec_GasesMed').options));
-                                                    GasesMedUci.registros = PacientesUCI.parseSeccionGasesMed_v2(Array.from(document.getElementById('sec_GasesMed').options));
+                                                    //  GasesMedUci.allRegistros = PacientesUCI.parseSeccionGasesMed_AllRegistros(Array.from(document.getElementById('sec_GasesMed').options));
+                                                    //  PacientesUCI.setTurnoSeccionGasesMed(Array.from(document.getElementById('sec_GasesMed').options));
+                                                    //  GasesMedUci.registros = PacientesUCI.parseSeccionGasesMed_v2(Array.from(document.getElementById('sec_GasesMed').options));
 
-                                                    PrescripcionesUci.allRegistros = PacientesUCI.parseSeccionPrescripcionesUci_AllRegistros(Array.from(document.getElementById('sec_PrescripcionesUci').options));
-                                                    PrescripcionesUci.registros = PacientesUCI.parseSeccionPrescripcionesUci_v2(Array.from(document.getElementById('sec_PrescripcionesUci').options));
+                                                    //  PrescripcionesUci.allRegistros = PacientesUCI.parseSeccionPrescripcionesUci_AllRegistros(Array.from(document.getElementById('sec_PrescripcionesUci').options));
+                                                    //  PrescripcionesUci.registros = PacientesUCI.parseSeccionPrescripcionesUci_v2(Array.from(document.getElementById('sec_PrescripcionesUci').options));
 
 
                                                     PacientesUCI.showSecciones();
