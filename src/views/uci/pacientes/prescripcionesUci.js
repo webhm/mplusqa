@@ -911,7 +911,7 @@ class PrescripcionesUci {
 
 
                                     },
-                                }, [oData.prescripcion + ' (' + oData.label + ')']),
+                                }, [oData.prescripcion.substring(0, 60) + '... (' + oData.label + ')']),
 
                             ]
                         }
