@@ -150,6 +150,7 @@ class PrescripcionesUci {
         for (let i = 0; __hours > i; i++) {
             let fechaHora = moment(__startTime).add(i, 'hours').format('DD-MM-YYYY HH:mm');
             let hora = moment(__startTime).add(i, 'hours').format('HH:mm');
+            // Comentario para ajuste de horas
             PrescripcionesUci.sColumns.push({
                 fechaHora: fechaHora,
                 labelTitle: hora,
