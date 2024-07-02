@@ -466,7 +466,7 @@ class PrescripcionesUci {
                         view: () => {
                             return [
                                 m('div.tx-12.tx-semibold', {
-                                    id: 'PrescripcionUci_' + oData.id,
+                                    id: 'PrescripcionUci_' + oData.nro,
                                     /*
                                     oncontextmenu: (e) => {
                                         e.preventDefault();
@@ -713,11 +713,26 @@ class PrescripcionesUci {
                                                                 }
 
 
+
+
                                                             }, 100);
 
                                                             // return false;
 
                                                         }
+
+
+                                                        let tt = $('#PrescripcionUci_' + oData.nro).offset().top;
+                                                        setTimeout(() => {
+                                                            let isAnimating = true;
+                                                            $('html,body').animate({
+                                                                    scrollTop: tt
+                                                                },
+                                                                700, "easeInOutSine",
+                                                                function() {
+                                                                    isAnimating = false;
+                                                                })
+                                                        }, 300);
 
 
 
@@ -1389,7 +1404,12 @@ class PrescripcionesUci {
                                                                         }
 
 
+
+
+
                                                                     }, 100);
+
+
 
                                                                     // return false;
 
@@ -1397,8 +1417,17 @@ class PrescripcionesUci {
 
 
 
-
-
+                                                                let tt = $('#PrescripcionUci_' + oData.nro).offset().top;
+                                                                setTimeout(() => {
+                                                                    let isAnimating = true;
+                                                                    $('html,body').animate({
+                                                                            scrollTop: tt
+                                                                        },
+                                                                        700, "easeInOutSine",
+                                                                        function() {
+                                                                            isAnimating = false;
+                                                                        })
+                                                                }, 300);
 
 
                                                             }
