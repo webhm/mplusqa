@@ -4,7 +4,6 @@ import FecthUci from "./fecthUci";
 import TurnosUci from "./turnosUci";
 
 
-
 class Prescripcion {
     id = null;
     nro = null;
@@ -908,7 +907,8 @@ class PrescripcionesUci {
 
                                         // validar si son de hoy
                                         let fechaHorario = moment(moment().format('DD-MM-YYYY') + '  10:00', 'DD-MM-YYYY HH:mm').unix();
-                                        let fechaPres = moment(moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + oData.hora, 'DD-MM-YYYY HH:mm').unix();
+                                        let fechaPres = moment(moment().format('DD-MM-YYYY') + ' ' + oData.hora, 'DD-MM-YYYY HH:mm').unix();
+
 
                                         if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && oData.frecuencia !== '0') {
                                             el.dom.parentElement.className = 'tx-12 tx-semibold bg-warning op-8 ';
@@ -918,9 +918,10 @@ class PrescripcionesUci {
                                             el.dom.parentElement.parentElement.className = 'd-none';
                                         }
 
-                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && oData.frecuencia >= 6) {
-                                            el.dom.parentElement.parentElement.className = 'd-none ';
+                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && fechaPres > fechaHorario && oData.frecuencia >= 6) {
+                                            el.dom.parentElement.parentElement.className = 'd-none';
                                         }
+
 
 
 
