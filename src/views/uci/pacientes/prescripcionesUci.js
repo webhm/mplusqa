@@ -167,7 +167,7 @@ class PrescripcionesUci {
         return _p[0];
     }
     static validarAdministracion(data) {
-        let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.status > 1);
+        let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && (v.status == 2 || v.status == 3 || v.status == 5));
         if (_p[0] != undefined && _p[0].length != 0) {
             return true;
         } else {
@@ -1875,6 +1875,7 @@ class PrescripcionesUci {
                                                     PrescripcionesUci.nuevoRegistro.horaPres = e.target.value;
                                                     PrescripcionesUci.nuevoRegistro.hora = e.target.value;
                                                 } else {
+                                                    PrescripcionesUci.nuevoRegistro.horaPres = e.target.value;
                                                     PrescripcionesUci.nuevoRegistro.hora = e.target.value;
                                                 }
                                             }
