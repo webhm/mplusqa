@@ -408,7 +408,7 @@ class FecthUci {
                 PacientesUCI.numeroAtencion = res.data.numeroAtencion;
                 PacientesUCI.numeroTurno = res.data.numeroTurno;
 
-                m.route.set("/uci/pacientes/neo/", {
+                m.route.set("/uci/pacientes/intermedios/", {
                     numeroHistoriaClinica: res.data.numeroHistoriaClinica,
                     numeroAtencion: res.data.numeroAtencion,
                     usuario: PacientesUCI.usuarioTurno,

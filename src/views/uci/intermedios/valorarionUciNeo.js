@@ -309,7 +309,7 @@ class ValoracionUciNeo {
                 },
 
                 m("tr.tx-uppercase", {
-                    class: (PacientesUCI.tipoAtencion !== null && PacientesUCI.tipoAtencion == 'NEO' ? '' : 'd-none'),
+                    // class: (PacientesUCI.tipoAtencion !== null && PacientesUCI.tipoAtencion == 'NEO' ? '' : 'd-none'),
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
                         if (ValoracionUciNeo.show) {

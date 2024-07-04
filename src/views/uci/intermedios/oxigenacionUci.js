@@ -16,7 +16,7 @@ class Oxi {
     hs = null;
     observacion = null;
     editar = null;
-    seccion = 'Oxigenacion';
+    seccion = 'ModoVentilatorioNoImvasivo';
     constructor() {
         this.id = this.id;
         this.nro = this.nro;
@@ -520,7 +520,7 @@ class OxigenacionUci {
 
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "OXIGENACIÓN"
+                        "MODO VENTILATORIO NO IMVASIVO"
                     ),
 
                 ])
@@ -579,25 +579,20 @@ class OxigenacionUci {
                             class: "custom-select",
                             value: (OxigenacionUci.nuevoRegistro !== null ? OxigenacionUci.nuevoRegistro.oxi : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                id: "AireAmbiente",
-                                label: "AIRE AMBIENTE"
+                                id: "Oxihood",
+                                label: "OXIHOOD"
                             }, {
                                 id: "CateterNasal",
                                 label: "CATETER NASAL"
                             },
                             {
-                                id: "Mascarilla",
-                                label: "MASCARILLA"
-                            },
-                            {
-                                id: "TuboenT",
-                                label: "TUBO EN T"
+                                id: "FlujoLibre",
+                                label: "FLUJO LIBRE"
                             },
                             {
                                 id: "AltoFlujo",
-                                label: "ALTO FLUJO"
+                                label: "ALTO FLUJO / FiO2 Y LitrosO2"
                             },
-
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
                         ))
