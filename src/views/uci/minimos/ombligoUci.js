@@ -1,0 +1,463 @@
+import m from "mithril";
+import FecthUci from "./fecthUci";
+import PacientesUCI from "./pacientesUci";
+import TurnosUci from "./turnosUci";
+
+class Valoracion {
+    id = null;
+    nro = null;
+    fechaHoraTurno = null;
+    tipo = null;
+    valor = null;
+    editar = null;
+    seccion = 'OmbligoUci';
+    constructor() {
+        this.id = this.id;
+        this.nro = this.nro;
+        this.fechaHoraTurno = this.fechaHoraTurno;
+        this.tipo = this.tipo;
+        this.valor = this.valor;
+        this.editar = this.editar;
+        this.seccion = this.seccion;
+    }
+}
+
+class OmbligoUci {
+
+    static registros = [];
+    static nuevoRegistro = null;
+    static show = false;
+    static showOtros = false;
+
+    static validarRegistro() {
+
+    }
+
+    static iniciarRegistro() {
+        OmbligoUci.nuevoRegistro = new Valoracion();
+    }
+
+    static agregarRegistro() {
+        if (OmbligoUci.registros.length == 0) {
+            OmbligoUci.nuevoRegistro.nro = 1;
+            OmbligoUci.registros.push(OmbligoUci.nuevoRegistro);
+        } else {
+            OmbligoUci.nuevoRegistro.nro = (OmbligoUci.registros[OmbligoUci.registros.length - 1].nro + 1);
+            OmbligoUci.registros.push(OmbligoUci.nuevoRegistro);
+        }
+    }
+
+    static verRegistro(registro) {
+        registro.editar = true;
+        OmbligoUci.nuevoRegistro = registro;
+    }
+
+    static editarRegistro() {
+        OmbligoUci.nuevoRegistro.editar = null;
+        OmbligoUci.registros.map((_v, _i) => {
+            if (_v.nro == OmbligoUci.nuevoRegistro.nro) {
+                OmbligoUci.registros[_i] = OmbligoUci.nuevoRegistro;
+            }
+        });
+
+    }
+
+    static eliminarRegistro(obj) {
+
+        let res = [];
+        OmbligoUci.registros.map((_v, _i) => {
+            if (_v.nro !== obj.nro) {
+                res.push(_v);
+            }
+        });
+
+        OmbligoUci.registros = res;
+
+    }
+
+    static getRegistros() {
+        return OmbligoUci.registros;
+    }
+
+    static arqTable() {
+        return {
+            data: null,
+            dom: 'ltp',
+            language: {
+                searchPlaceholder: "Buscar...",
+                sSearch: "",
+                lengthMenu: "Mostrar _MENU_ registros por página",
+                sProcessing: "Procesando...",
+                sZeroRecords: "Todavía no tienes resultados disponibles.",
+                sEmptyTable: "Ningún dato disponible en esta tabla",
+                sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+                sInfoPostFix: "",
+                sUrl: "",
+                sInfoThousands: ",",
+                sLoadingRecords: "Cargando...",
+                oPaginate: {
+                    sFirst: "Primero",
+                    sLast: "Último",
+                    sNext: "Siguiente",
+                    sPrevious: "Anterior",
+                },
+                oAria: {
+                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+                    sSortDescending: ": Activar para ordenar la columna de manera descendente",
+                },
+            },
+            cache: false,
+            destroy: true,
+            order: [
+                [0, 'desc'],
+                [1, 'desc']
+            ],
+            columns: [{
+                    title: "order Turno:",
+                },
+                {
+                    title: "order N°:",
+                },
+                {
+                    title: "Turno:",
+                },
+                {
+                    title: "N°:",
+                },
+                {
+                    title: "Tipo:",
+                },
+                {
+                    title: "Valor:",
+                },
+                {
+                    title: "Opciones:",
+                }
+            ],
+            aoColumnDefs: [{
+                    mRender: function(data, type, full) {
+                        return full.fechaHoraTurno;
+                    },
+                    visible: false,
+                    aTargets: [0],
+                    orderable: true,
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.nro;
+                    },
+                    visible: false,
+                    aTargets: [1],
+                    orderable: true,
+
+                },
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center.pd-5', [
+                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                            },
+                                            (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                            (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                            (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        ),
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    width: '15%',
+                    visible: true,
+                    aTargets: [2],
+                    orderable: false,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.nro;
+                    },
+
+                    visible: false,
+                    aTargets: [3],
+                    orderable: false,
+
+                },
+
+                {
+                    mRender: function(data, type, full) {
+                        return full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                    },
+
+                    visible: true,
+                    aTargets: [4],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    },
+                    visible: true,
+                    aTargets: [5],
+                    orderable: true,
+
+                },
+
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
+                                        m("button.btn.btn-xs.btn-success[type='button']", {
+                                                class: (oData.editar ? 'd-none' : ''),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                                onclick: () => {
+                                                    OmbligoUci.nuevoRegistro = null
+                                                    OmbligoUci.verRegistro(oData);
+                                                },
+                                            },
+                                            'Editar',
+                                        ),
+                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
+                                                class: (oData.editar ? '' : 'd-none'),
+                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
+
+                                                onclick: () => {
+                                                    oData.editar = null;
+                                                    OmbligoUci.nuevoRegistro = null;
+                                                },
+                                            },
+                                            'Cancelar Edición',
+                                        ),
+                                        m("button.btn.btn-xs.btn-danger[type='button']", {
+                                                class: (oData.editar ? 'd-none' : ''),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                                onclick: () => {
+                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                                        OmbligoUci.eliminarRegistro(oData);
+                                                        FecthUci.eliminarSeccion(oData);
+                                                        OmbligoUci.nuevoRegistro = null;
+                                                        PacientesUCI.vReloadTable('table-ombligo', OmbligoUci.getRegistros());
+                                                    }
+                                                },
+                                            },
+                                            'Eliminar',
+                                        ),
+                                        m("button.btn.btn-xs.btn-dark[type='button']", {
+                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                                onclick: () => {
+                                                    OmbligoUci.iniciarRegistro();
+                                                    OmbligoUci.nuevoRegistro.id = oData.id;
+                                                    OmbligoUci.nuevoRegistro.tipo = oData.tipo;
+                                                    OmbligoUci.nuevoRegistro.valor = oData.valor;
+                                                    OmbligoUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    OmbligoUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+
+                                                },
+                                            },
+                                            'Copiar',
+                                        ),
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    width: '10%',
+                    visible: true,
+                    aTargets: [6],
+                    orderable: true,
+
+                }
+
+
+            ],
+            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+
+            },
+        };
+    }
+
+    static destroyTable() {
+        let table = document.getElementById('table-ombligo');
+        // clear first
+        if (table != null) {
+            $('#table-ombligo').DataTable().clear().destroy();
+
+        }
+    }
+
+    view() {
+        return [
+            m("thead.bd.bd-2", {
+                    style: { "border-color": "#5173a1" },
+                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+
+                },
+
+                m("tr.tx-uppercase", {
+                    // class: (PacientesUCI.tipoAtencion !== null && PacientesUCI.tipoAtencion == 'NEO' ? '' : 'd-none'),
+                    style: { "background-color": "#CCCCFF" },
+                    onclick: () => {
+                        if (OmbligoUci.show) {
+                            OmbligoUci.destroyTable();
+                        }
+                        OmbligoUci.show = !OmbligoUci.show;
+                    }
+                }, [
+                    m("th.tx-semibold[scope='col'][colspan='12']",
+                        "OMBLIGO:"
+                    ),
+
+                ])
+            ),
+            m("tbody.bd.bd-2", {
+                style: { "border-color": "#5173a1" },
+                class: (OmbligoUci.show ? '' : 'd-none')
+            }, [
+
+                m("tr.bd.bd-2.tx-uppercase", {
+                    style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
+                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+                }, [
+                    m("th[scope='col'][colspan='6']",
+                        "TIPO: "
+                    ),
+                    m("th[scope='col'][colspan='6']",
+                        "VALOR: "
+                    )
+                ]),
+                m("tr.bd.bd-2", {
+                    style: { "border-color": "#5173a1" },
+                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+
+                }, [
+
+                    m("td.tx-normal[colspan='6']",
+                        m("div.input-group", [
+                            m("div.input-group-append",
+                                m("button.btn.btn-xs.btn-light[type='button']", {
+                                        title: "Nuevo",
+                                        onclick: () => {
+                                            if (OmbligoUci.nuevoRegistro == null) {
+                                                OmbligoUci.iniciarRegistro();
+                                            } else {
+                                                OmbligoUci.nuevoRegistro = null;
+                                            }
+                                        }
+                                    },
+                                    m("i.fas.fa-plus")
+                                )
+                            ),
+                            (OmbligoUci.nuevoRegistro !== null ? [
+
+                                m('select.tx-semibold', {
+                                    id: 'sec_TipoOmbligo',
+                                    onchange: (e) => {
+                                        let _id = e.target.options[e.target.selectedIndex].id;
+                                        let _value = e.target.options[e.target.selectedIndex].value;
+                                        if (OmbligoUci.nuevoRegistro == null) {
+                                            OmbligoUci.nuevoRegistro.id = _id;
+                                            OmbligoUci.nuevoRegistro.tipo = _value;
+                                        } else {
+                                            OmbligoUci.nuevoRegistro.id = _id;
+                                            OmbligoUci.nuevoRegistro.tipo = _value;
+                                        }
+
+
+                                    },
+                                    class: "custom-select",
+                                    value: (OmbligoUci.nuevoRegistro !== null ? OmbligoUci.nuevoRegistro.tipo : 0),
+                                }, m("option[value='0']", 'Seleccione...'), [{
+                                        id: "Normal",
+                                        label: "Normal"
+                                    },
+                                    {
+                                        id: "Enrojecimiento",
+                                        label: "Enrojecimiento"
+                                    },
+                                    {
+                                        id: "Secreciones",
+                                        label: "Secreciones"
+                                    },
+                                    {
+                                        id: "Clampeado",
+                                        label: "Clampeado"
+                                    }
+                                ].map(x =>
+                                    m('option[id="' + x.id + '"]', x.label)
+                                ))
+                            ] : [])
+                        ])
+                    ),
+                    m("td.tx-normal[colspan='6']",
+                        (OmbligoUci.nuevoRegistro !== null ? [
+                            m('select.tx-semibold', {
+                                id: 'valorOmbligo',
+                                onchange: (e) => {
+                                    let _id = e.target.options[e.target.selectedIndex].id;
+                                    let _value = e.target.options[e.target.selectedIndex].value;
+                                    OmbligoUci.nuevoRegistro.valor = _value;
+                                },
+                                onkeypress: (e) => {
+                                    if (e.keyCode == 13) {
+                                        OmbligoUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                        OmbligoUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        if (OmbligoUci.nuevoRegistro.editar == null) {
+                                            OmbligoUci.agregarRegistro();
+                                            OmbligoUci.nuevoRegistro.id = OmbligoUci.nuevoRegistro.nro + 'Ombligo';
+                                            FecthUci.registrarSeccion(OmbligoUci.nuevoRegistro);
+                                            OmbligoUci.nuevoRegistro = null;
+                                            PacientesUCI.vReloadTable('table-ombligo', OmbligoUci.getRegistros());
+                                        } else {
+                                            OmbligoUci.editarRegistro();
+                                            FecthUci.actualizarSeccion(OmbligoUci.nuevoRegistro);
+                                            OmbligoUci.nuevoRegistro = null;
+                                            PacientesUCI.vReloadTable('table-ombligo', OmbligoUci.getRegistros());
+                                        }
+                                    }
+                                },
+                                class: "custom-select",
+                                value: (OmbligoUci.nuevoRegistro !== null ? OmbligoUci.nuevoRegistro.valor : 0),
+                            }, m("option[value='0']", 'Seleccione...'), [{
+                                    id: "X",
+                                    label: "Sí (X)"
+                                },
+                                {
+                                    id: "-",
+                                    label: "No (-)"
+                                },
+                            ].map(x =>
+                                m('option[id="' + x.id + '"]', x.label)
+                            ))
+                        ] : [])
+                    ),
+                ]),
+                m("tr.tx-uppercase", {
+                    style: { "background-color": "#eaeff5" }
+                }, [
+                    m("th[scope='col'][colspan='12']",
+                        "Registros: "
+                    ),
+                ]),
+                m("tr.tx-uppercase.mg-t-20", [
+                    m("td[colspan='12']",
+                        (OmbligoUci.show != false ? [PacientesUCI.vTable('table-ombligo', OmbligoUci.getRegistros(), OmbligoUci.arqTable())] : [])
+                    ),
+                ]),
+                m('br')
+            ]),
+        ];
+    }
+
+
+}
+
+export default OmbligoUci;
