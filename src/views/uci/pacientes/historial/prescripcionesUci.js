@@ -137,7 +137,7 @@ class PrescripcionesUci {
             let _mana = moment(_hoy, 'DD-MM-YYYY').add(1, 'days').format('DD-MM-YYYY');
 
             let __startTime = moment(_hoy + " 07:00", 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm');
-            let __endTime = moment(_mana + " 08:00", 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm');
+            let __endTime = moment(_mana + " 11:00", 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm');
 
             let __duration = moment.duration(moment(__endTime).diff(__startTime));
             let __hours = __duration.asHours();

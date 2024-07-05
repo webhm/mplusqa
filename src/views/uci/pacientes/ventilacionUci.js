@@ -247,6 +247,32 @@ class VentilacionUci {
                                                 oData.editar = null;
                                                 VentilacionUci.nuevoRegistro = null
                                             },
+                                            onkeypress: (e) => {
+                                                if (e.keyCode == 13) {
+
+                                                    VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    console.log(99, VentilacionUci.nuevoRegistro)
+
+                                                    // throw 'AA';
+                                                    if (VentilacionUci.nuevoRegistro.editar == null) {
+                                                        VentilacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
+                                                        VentilacionUci.nuevoRegistro = null;
+                                                        VentilacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
+                                                    } else {
+                                                        VentilacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(VentilacionUci.nuevoRegistro);
+                                                        VentilacionUci.nuevoRegistro = null;
+                                                        VentilacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
+
+                                                    }
+
+
+                                                }
+                                            },
                                             oninput: (e) => {
                                                 if (PacientesUCI.numeroTurno == 1) {
                                                     VentilacionUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
@@ -289,6 +315,32 @@ class VentilacionUci {
                                                 oData.editar = null;
                                                 VentilacionUci.nuevoRegistro = null
                                             },
+                                            onkeypress: (e) => {
+                                                if (e.keyCode == 13) {
+
+                                                    VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    console.log(99, VentilacionUci.nuevoRegistro)
+
+                                                    // throw 'AA';
+                                                    if (VentilacionUci.nuevoRegistro.editar == null) {
+                                                        VentilacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
+                                                        VentilacionUci.nuevoRegistro = null;
+                                                        VentilacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
+                                                    } else {
+                                                        VentilacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(VentilacionUci.nuevoRegistro);
+                                                        VentilacionUci.nuevoRegistro = null;
+                                                        VentilacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
+
+                                                    }
+
+
+                                                }
+                                            },
                                             oninput: (e) => {
                                                 if (PacientesUCI.numeroTurno == 2) {
                                                     VentilacionUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
@@ -329,6 +381,32 @@ class VentilacionUci {
                                             ondblclick: (e) => {
                                                 oData.editar = null;
                                                 VentilacionUci.nuevoRegistro = null
+                                            },
+                                            onkeypress: (e) => {
+                                                if (e.keyCode == 13) {
+
+                                                    VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    console.log(99, VentilacionUci.nuevoRegistro)
+
+                                                    // throw 'AA';
+                                                    if (VentilacionUci.nuevoRegistro.editar == null) {
+                                                        VentilacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
+                                                        VentilacionUci.nuevoRegistro = null;
+                                                        VentilacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
+                                                    } else {
+                                                        VentilacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(VentilacionUci.nuevoRegistro);
+                                                        VentilacionUci.nuevoRegistro = null;
+                                                        VentilacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
+
+                                                    }
+
+
+                                                }
                                             },
                                             oninput: (e) => {
                                                 if (PacientesUCI.numeroTurno == 3) {
