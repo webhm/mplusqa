@@ -1,7 +1,4 @@
 import m from "mithril";
-import App from "../../../models/App";
-import Loader from "../../utils/loader";
-import Errors from "../../utils/errors";
 import PacientesUCI from "./pacientesUci";
 import FecthUci from "./fecthUci";
 import TurnosUci from "./turnosUci";
@@ -257,6 +254,32 @@ class MarcapasosUci {
                                                     e.preventDefault();
                                                 }
                                             },
+                                            onkeypress: (e) => {
+                                                if (e.keyCode == 13) {
+
+                                                    MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    console.log(99, MarcapasosUci.nuevoRegistro)
+
+                                                    // throw 'AA';
+                                                    if (MarcapasosUci.nuevoRegistro.editar == null) {
+                                                        MarcapasosUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
+                                                        MarcapasosUci.nuevoRegistro = null;
+                                                        MarcapasosUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+                                                    } else {
+                                                        MarcapasosUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(MarcapasosUci.nuevoRegistro);
+                                                        MarcapasosUci.nuevoRegistro = null;
+                                                        MarcapasosUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+
+                                                    }
+
+
+                                                }
+                                            },
                                             value: (MarcapasosUci.nuevoRegistro.am !== null ? MarcapasosUci.nuevoRegistro.am : '')
                                         })
                                     ] : [])
@@ -299,6 +322,32 @@ class MarcapasosUci {
                                                     e.preventDefault();
                                                 }
                                             },
+                                            onkeypress: (e) => {
+                                                if (e.keyCode == 13) {
+
+                                                    MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    console.log(99, MarcapasosUci.nuevoRegistro)
+
+                                                    // throw 'AA';
+                                                    if (MarcapasosUci.nuevoRegistro.editar == null) {
+                                                        MarcapasosUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
+                                                        MarcapasosUci.nuevoRegistro = null;
+                                                        MarcapasosUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+                                                    } else {
+                                                        MarcapasosUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(MarcapasosUci.nuevoRegistro);
+                                                        MarcapasosUci.nuevoRegistro = null;
+                                                        MarcapasosUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+
+                                                    }
+
+
+                                                }
+                                            },
                                             value: (MarcapasosUci.nuevoRegistro.pm !== null ? MarcapasosUci.nuevoRegistro.pm : '')
                                         })
                                     ] : [])
@@ -338,6 +387,32 @@ class MarcapasosUci {
                                                     MarcapasosUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
                                                 } else {
                                                     e.preventDefault();
+                                                }
+                                            },
+                                            onkeypress: (e) => {
+                                                if (e.keyCode == 13) {
+
+                                                    MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    console.log(99, MarcapasosUci.nuevoRegistro)
+
+                                                    // throw 'AA';
+                                                    if (MarcapasosUci.nuevoRegistro.editar == null) {
+                                                        MarcapasosUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
+                                                        MarcapasosUci.nuevoRegistro = null;
+                                                        MarcapasosUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+                                                    } else {
+                                                        MarcapasosUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(MarcapasosUci.nuevoRegistro);
+                                                        MarcapasosUci.nuevoRegistro = null;
+                                                        MarcapasosUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+
+                                                    }
+
+
                                                 }
                                             },
                                             value: (MarcapasosUci.nuevoRegistro.hs !== null ? MarcapasosUci.nuevoRegistro.hs : '')
