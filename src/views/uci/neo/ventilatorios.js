@@ -1116,9 +1116,14 @@ class VentilatoriosUci {
 
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
-
-                                                console.log(88, _i)
                                                 VentilatoriosUci.verRegistro(resultNro[_i]);
+                                                if (VentilatoriosUci.nuevoRegistro !== null && VentilatoriosUci.nuevoRegistro.hora == null) {
+                                                    if (VentilatoriosUci.setHora != undefined) {
+                                                        VentilatoriosUci.nuevoRegistro.hora = VentilatoriosUci.setHora;
+                                                        console.log(7777, VentilatoriosUci.setHora)
+                                                        document.getElementById('horaVentilatorio' + resultNro[_i].nro).value = VentilatoriosUci.setHora;
+                                                    }
+                                                }
                                                 document.getElementById('condicion' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
                                                 document.getElementById('txtCondicion' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
                                                 document.getElementById('horaVentilatorio' + resultNro[_i].nro).className = "form-control";
@@ -1301,6 +1306,7 @@ class VentilatoriosUci {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 VentilatoriosUci.verRegistro(resultNro[_i]);
+
                                                 document.getElementById('condicion' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
                                                 document.getElementById('txtCondicion' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
                                                 document.getElementById('horaVentilatorio' + resultNro[_i].nro).className = "form-control";
@@ -1401,12 +1407,7 @@ class VentilatoriosUci {
                                             })
 
 
-                                            if (VentilatoriosUci.nuevoRegistro !== null && VentilatoriosUci.nuevoRegistro.hora == null) {
-                                                if (VentilatoriosUci.setHora != undefined) {
-                                                    VentilatoriosUci.nuevoRegistro.hora = VentilatoriosUci.setHora;
-                                                    el.dom.value = VentilatoriosUci.setHora;
-                                                }
-                                            }
+
 
 
 
