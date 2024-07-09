@@ -631,7 +631,7 @@ class PrescripcionesUci {
                                                             PrescripcionesUci.nuevoRegistro.id = oData.id;
                                                             PrescripcionesUci.nuevoRegistro.fechaHoraTurno = oData.fechaHoraTurno;
                                                             PrescripcionesUci.nuevoRegistro.tipo = oData.tipo;
-                                                            PrescripcionesUci.nuevoRegistro.prescripcion = oData.prescripcion;
+                                                            PrescripcionesUci.nuevoRegistro.prescripcion = oData.prescripcion.toUpperCase();
                                                             PrescripcionesUci.nuevoRegistro.frecuencia = oData.frecuencia;
                                                             PrescripcionesUci.nuevoRegistro.hora = oData.hora;
                                                             PrescripcionesUci.nuevoRegistro.medico = oData.medico;
@@ -673,7 +673,7 @@ class PrescripcionesUci {
                                                                 PrescripcionesUci.nuevoRegistro.id = oData.id;
                                                                 PrescripcionesUci.nuevoRegistro.fechaHoraTurno = oData.fechaHoraTurno;
                                                                 PrescripcionesUci.nuevoRegistro.tipo = oData.tipo;
-                                                                PrescripcionesUci.nuevoRegistro.prescripcion = oData.prescripcion;
+                                                                PrescripcionesUci.nuevoRegistro.prescripcion = oData.prescripcion.toUpperCase();
                                                                 PrescripcionesUci.nuevoRegistro.frecuencia = oData.frecuencia;
                                                                 PrescripcionesUci.nuevoRegistro.hora = oData.hora;
                                                                 PrescripcionesUci.nuevoRegistro.medico = oData.medico;
@@ -1324,7 +1324,7 @@ class PrescripcionesUci {
                                                                     PrescripcionesUci.nuevoRegistro.id = oData.id;
                                                                     PrescripcionesUci.nuevoRegistro.fechaHoraTurno = oData.fechaHoraTurno;
                                                                     PrescripcionesUci.nuevoRegistro.tipo = oData.tipo;
-                                                                    PrescripcionesUci.nuevoRegistro.prescripcion = oData.prescripcion;
+                                                                    PrescripcionesUci.nuevoRegistro.prescripcion = oData.prescripcion.toUpperCase();
                                                                     PrescripcionesUci.nuevoRegistro.frecuencia = oData.frecuencia;
                                                                     PrescripcionesUci.nuevoRegistro.hora = oData.hora;
                                                                     PrescripcionesUci.nuevoRegistro.medico = oData.medico;
@@ -1366,7 +1366,7 @@ class PrescripcionesUci {
                                                                         PrescripcionesUci.nuevoRegistro.id = oData.id;
                                                                         PrescripcionesUci.nuevoRegistro.fechaHoraTurno = oData.fechaHoraTurno;
                                                                         PrescripcionesUci.nuevoRegistro.tipo = oData.tipo;
-                                                                        PrescripcionesUci.nuevoRegistro.prescripcion = oData.prescripcion;
+                                                                        PrescripcionesUci.nuevoRegistro.prescripcion = oData.prescripcion.toUpperCase();
                                                                         PrescripcionesUci.nuevoRegistro.frecuencia = oData.frecuencia;
                                                                         PrescripcionesUci.nuevoRegistro.hora = oData.hora;
                                                                         PrescripcionesUci.nuevoRegistro.medico = oData.medico;
@@ -1813,7 +1813,7 @@ class PrescripcionesUci {
                                     },
 
                                     oninput: (e) => {
-                                        PrescripcionesUci.nuevoRegistro.prescripcion = (e.target.value.length !== 0 ? e.target.value : null);
+                                        PrescripcionesUci.nuevoRegistro.prescripcion = (e.target.value.length !== 0 ? e.target.value.toUpperCase() : null);
                                     },
                                     value: PrescripcionesUci.nuevoRegistro.prescripcion
                                 })

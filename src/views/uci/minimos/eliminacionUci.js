@@ -380,6 +380,10 @@ class EliminacionUciNeo {
                                         label: "Deposición"
                                     },
                                     {
+                                        id: "Orina",
+                                        label: "Orina"
+                                    },
+                                    {
                                         id: "Vomito",
                                         label: "Vómito"
                                     },

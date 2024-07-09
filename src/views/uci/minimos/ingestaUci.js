@@ -442,6 +442,66 @@ class IngestaUciNeo {
                                     id: "++++",
                                     label: "Mucho (++++)"
                                 },
+                                {
+                                    id: "FORMULA LIQUIDA LECHE (ENFAMIL PREMIUM E1) 20 KILOCALORIAS",
+                                    label: "FORMULA LIQUIDA LECHE (ENFAMIL PREMIUM E1) 20 KILOCALORIAS"
+                                },
+                                {
+                                    id: "FORMULA LIQUIDA LECHE (SIMILAC TOTAL CONFORT ETAPA 1)",
+                                    label: "FORMULA LIQUIDA LECHE (SIMILAC TOTAL CONFORT ETAPA 1)"
+                                },
+                                {
+                                    id: "FORMULA LIQUIDA LECHE S26 GOLD RFT (ALULA) 70 MILILITROS",
+                                    label: "FORMULA LIQUIDA LECHE S26 GOLD RFT (ALULA) 70 MILILITROS"
+                                },
+                                {
+                                    id: "FORMULA LIQUIDA LECHE(NAN PREMATURO DSHL 024-1)70 MILILITROS",
+                                    label: "FORMULA LIQUIDA LECHE(NAN PREMATURO DSHL 024-1)70 MILILITROS"
+                                },
+                                {
+                                    id: "FORMULA LIQUIDA LECHE(NUTRILON)20 KILOCALORIAS/90 MILILITROS",
+                                    label: "FORMULA LIQUIDA LECHE(NUTRILON)20 KILOCALORIAS/90 MILILITROS"
+                                },
+                                {
+                                    id: "FORMULA POLVO LECHE (ENFAMIL CONFORT PREMIUM) 400 GRAMOS",
+                                    label: "FORMULA POLVO LECHE (ENFAMIL CONFORT PREMIUM) 400 GRAMOS"
+                                },
+                                {
+                                    id: "FORMULA POLVO LECHE (ISOMIL ETAPA 1) 400 GRAMOS",
+                                    label: "FORMULA POLVO LECHE (ISOMIL ETAPA 1) 400 GRAMOS"
+                                },
+                                {
+                                    id: "FORMULA POLVO LECHE (NAN PREMATURO) 400 GRAMOS",
+                                    label: "FORMULA POLVO LECHE (NAN PREMATURO) 400 GRAMOS"
+                                },
+                                {
+                                    id: "FORMULA POLVO LECHE (NEOCATE)",
+                                    label: "FORMULA POLVO LECHE (NEOCATE)"
+                                },
+                                {
+                                    id: "FORMULA POLVO LECHE (NESSUCAR) 550 GRAMOS",
+                                    label: "FORMULA POLVO LECHE (NESSUCAR) 550 GRAMOS"
+                                },
+                                {
+                                    id: "FORMULA POLVO LECHE (NUTRAMIGEN PREMIUM LGG) 357 GRAMOS",
+                                    label: "FORMULA POLVO LECHE (NUTRAMIGEN PREMIUM LGG) 357 GRAMOS"
+                                },
+                                {
+                                    id: "FORMULA POLVO LECHE (NUTRILON PEPTI JUNIOR) 400 GRAMOS",
+                                    label: "FORMULA POLVO LECHE (NUTRILON PEPTI JUNIOR) 400 GRAMOS"
+                                },
+                                {
+                                    id: "FORMULA POLVO LECHE (S26 GOLD CONFORT E1) 400 GRAMOS",
+                                    label: "FORMULA POLVO LECHE (S26 GOLD CONFORT E1) 400 GRAMOS"
+                                },
+                                {
+                                    id: "FORMULA POLVO LECHE (SIMILAC NEOSURE) 370 GRAMOS",
+                                    label: "FORMULA POLVO LECHE (SIMILAC NEOSURE) 370 GRAMOS"
+                                },
+                                {
+                                    id: "FORMULA POLVO LECHE(SIMILAC SENSITIVE SIN LACTOSA) 375 GRAMOS",
+                                    label: "FORMULA POLVO LECHE(SIMILAC SENSITIVE SIN LACTOSA) 375 GRAMOS"
+                                },
                             ].map(x =>
                                 m('option[id="' + x.id + '"]', x.label)
                             ))
