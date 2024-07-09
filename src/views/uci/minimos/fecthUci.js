@@ -1,7 +1,4 @@
 import m from "mithril";
-import App from "../../../models/App";
-import Loader from "../../utils/loader";
-import Errors from "../../utils/errors";
 import TurnosUci from "./turnosUci";
 import PacientesUCI from "./pacientesUci";
 
@@ -79,6 +76,7 @@ class FecthUci {
                 numeroTurno: TurnosUci.nuevoTurno.numeroTurno,
                 usuarioTurno: TurnosUci.nuevoTurno.usuarioTurno,
                 fechaHoraTurno: TurnosUci.nuevoTurno.fechaHoraTurno,
+                tipoTurno: 'UCIMINIMOS',
                 status: 1
             },
             headers: {
@@ -201,6 +199,7 @@ class FecthUci {
                 numeroTurno: PacientesUCI.numeroTurno,
                 fechaHoraTurno: PacientesUCI.fechaHoraTurno,
                 nuevaFechaHoraTurno: TurnosUci.nuevoTurno.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno,
+                tipoTurno: 'UCIMINIMOS',
 
             },
             headers: {
@@ -262,6 +261,7 @@ class FecthUci {
                 numeroAtencion: oData.numeroAtencion,
                 numeroTurno: oData.numeroTurno,
                 fechaHoraTurno: oData.fechaHoraTurno,
+                tipoTurno: 'UCIMINIMOS',
                 status: 2
             },
             headers: {
@@ -295,6 +295,7 @@ class FecthUci {
                 numeroAtencion: oData.numeroAtencion,
                 numeroTurno: oData.numeroTurno,
                 fechaHoraTurno: oData.fechaHoraTurno,
+                tipoTurno: 'UCIMINIMOS',
                 status: 1
             },
             headers: {
@@ -329,6 +330,7 @@ class FecthUci {
                 numeroTurno: oData.numeroTurno,
                 fechaHoraTurno: oData.fechaHoraTurno,
                 usuarioTurno: usuarioTurno,
+                tipoTurno: 'UCIMINIMOS',
                 status: 1,
                 comentario: comentario
             },
@@ -364,6 +366,7 @@ class FecthUci {
                 numeroTurno: oData.numeroTurno,
                 fechaHoraTurno: oData.fechaHoraTurno,
                 usuarioTurno: usuarioTurno,
+                tipoTurno: 'UCIMINIMOS',
                 status: 1,
                 comentario: comentario
             },
@@ -408,7 +411,7 @@ class FecthUci {
                 PacientesUCI.numeroAtencion = res.data.numeroAtencion;
                 PacientesUCI.numeroTurno = res.data.numeroTurno;
 
-                m.route.set("/uci/pacientes/intermedios/", {
+                m.route.set("/uci/pacientes/minimos/", {
                     numeroHistoriaClinica: res.data.numeroHistoriaClinica,
                     numeroAtencion: res.data.numeroAtencion,
                     usuario: PacientesUCI.usuarioTurno,
@@ -418,9 +421,10 @@ class FecthUci {
 
 
                 // Existe turnos abiertos
-                let turnosAbiertos = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') && v.STATUS == 1)
+                let turnosAbiertos = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') && v.STATUS == 1 && v.TIPO_BIT == 'UCIMINIMOS')
 
                 if (turnosAbiertos.length > 0) {
+
                     FecthUci.loaderSecciones = true;
                     TurnosUci.turnos = FecthUci.setTurnosAbiertos(turnosAbiertos);
                     PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
@@ -433,7 +437,7 @@ class FecthUci {
                 } else {
 
                     // Filter Turnos de Hoy
-                    let turnosHoy = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+                    let turnosHoy = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY') && v.TIPO_BIT == 'UCIMINIMOS')
 
                     if (turnosHoy.length > 0) {
                         TurnosUci.turnos = FecthUci.setTurnos(turnosHoy);

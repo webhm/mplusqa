@@ -30,6 +30,7 @@ import EliminacionUciNeo from "./eliminacionUci";
 import SistemaNervioso from "./sistemaNervioso";
 import OmbligoUci from "./ombligoUci";
 import HigieneUci from "./higieneUci";
+import IngestaUciNeo from "./ingestaUci";
 
 
 // Pacientes UCI
@@ -198,7 +199,7 @@ class PacientesUCI extends App {
                                     }, "Registrar Nuevo Turno"),
                                     m("button.btn.btn-xs.btn-secondary.tx-semibold.tx-14[type='button']", {
                                         onclick: () => {
-                                            m.route.set('/uci/pacientes/intermedios/historial/', {
+                                            m.route.set('/uci/pacientes/minimos/historial/', {
                                                 numeroHistoriaClinica: PacientesUCI.numeroHistoriaClinica,
                                                 numeroAtencion: PacientesUCI.numeroAtencion,
                                                 usuario: PacientesUCI.usuarioTurno
@@ -240,6 +241,8 @@ class PacientesUCI extends App {
                         m(TestScoreUciNeo),
                         // Mucusas Uci Neo
                         m(MucosasUciNeo),
+                        // IngestaUciNeo Neo
+                        m(IngestaUciNeo),
                         // EliminacionUci Neo
                         m(EliminacionUciNeo),
                         // Sistema Nervisos

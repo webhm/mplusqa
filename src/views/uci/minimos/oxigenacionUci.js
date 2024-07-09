@@ -579,23 +579,17 @@ class OxigenacionUci {
                             class: "custom-select",
                             value: (OxigenacionUci.nuevoRegistro !== null ? OxigenacionUci.nuevoRegistro.oxi : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                id: "Oxihood",
-                                label: "OXIHOOD"
-                            }, {
-                                id: "CateterNasal",
-                                label: "CATETER NASAL"
-                            },
-                            {
-                                id: "FlujoLibre",
-                                label: "FLUJO LIBRE"
-                            },
-                            {
-                                id: "AltoFlujo",
-                                label: "ALTO FLUJO / FiO2 Y LitrosO2"
-                            },
-                        ].map(x =>
+                            id: "Oxihood",
+                            label: "OXIHOOD"
+                        }, {
+                            id: "CateterNasal",
+                            label: "CATETER NASAL"
+                        }].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
                         ))
+
+
+
                     ),
                     m("td.tx-14.tx-normal.d-none[colspan='3']",
                         (OxigenacionUci.nuevoRegistro !== null ? [

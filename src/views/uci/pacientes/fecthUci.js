@@ -79,6 +79,7 @@ class FecthUci {
                 numeroTurno: TurnosUci.nuevoTurno.numeroTurno,
                 usuarioTurno: TurnosUci.nuevoTurno.usuarioTurno,
                 fechaHoraTurno: TurnosUci.nuevoTurno.fechaHoraTurno,
+                tipoTurno: 'UCIADULTO',
                 status: 1
             },
             headers: {
@@ -201,7 +202,7 @@ class FecthUci {
                 numeroTurno: PacientesUCI.numeroTurno,
                 fechaHoraTurno: PacientesUCI.fechaHoraTurno,
                 nuevaFechaHoraTurno: TurnosUci.nuevoTurno.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno,
-
+                tipoTurno: 'UCIADULTO',
             },
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
@@ -262,6 +263,7 @@ class FecthUci {
                 numeroAtencion: oData.numeroAtencion,
                 numeroTurno: oData.numeroTurno,
                 fechaHoraTurno: oData.fechaHoraTurno,
+                tipoTurno: 'UCIADULTO',
                 status: 2
             },
             headers: {
@@ -295,6 +297,7 @@ class FecthUci {
                 numeroAtencion: oData.numeroAtencion,
                 numeroTurno: oData.numeroTurno,
                 fechaHoraTurno: oData.fechaHoraTurno,
+                tipoTurno: 'UCIADULTO',
                 status: 1
             },
             headers: {
@@ -329,6 +332,7 @@ class FecthUci {
                 numeroTurno: oData.numeroTurno,
                 fechaHoraTurno: oData.fechaHoraTurno,
                 usuarioTurno: usuarioTurno,
+                tipoTurno: 'UCIADULTO',
                 status: 1,
                 comentario: comentario
             },
@@ -364,6 +368,7 @@ class FecthUci {
                 numeroTurno: oData.numeroTurno,
                 fechaHoraTurno: oData.fechaHoraTurno,
                 usuarioTurno: usuarioTurno,
+                tipoTurno: 'UCIADULTO',
                 status: 1,
                 comentario: comentario
             },
@@ -418,7 +423,7 @@ class FecthUci {
 
 
                 // Existe turnos abiertos
-                let turnosAbiertos = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') && v.STATUS == 1)
+                let turnosAbiertos = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') && v.STATUS == 1 && v.TIPO_BIT == 'UCIADULTO')
 
                 if (turnosAbiertos.length > 0) {
                     FecthUci.loaderSecciones = true;
@@ -433,7 +438,7 @@ class FecthUci {
                 } else {
 
                     // Filter Turnos de Hoy
-                    let turnosHoy = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+                    let turnosHoy = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY') && v.TIPO_BIT == 'UCIADULTO')
 
                     if (turnosHoy.length > 0) {
                         TurnosUci.turnos = FecthUci.setTurnos(turnosHoy);

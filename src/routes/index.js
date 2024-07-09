@@ -25,6 +25,7 @@ import Uci from "../views/uci/uci";
 import PacientesUCI from "../views/uci/pacientes/pacientesUci";
 import PacientesUCINEO from "../views/uci/neo/pacientesUci";
 import PacientesUCIINTERMEDIOS from "../views/uci/intermedios/pacientesUci";
+import PacientesUCIMINIMOS from "../views/uci/minimos/pacientesUci";
 import Contratos from "../views/admisiones/contratos/contratos";
 import NuevoContrato from "../views/admisiones/contratos/nuevoContrato";
 import VerContrato from "../views/admisiones/contratos/verContrato";
@@ -47,6 +48,7 @@ const Routes = {
     "/uci/pacientes": PacientesUCI,
     "/uci/pacientes/neo": PacientesUCINEO,
     "/uci/pacientes/intermedios": PacientesUCIINTERMEDIOS,
+    "/uci/pacientes/minimos": PacientesUCIMINIMOS,
     "/uci/pacientes/historial": PacientesUCIHistorial,
     "/hospitalizacion": Hospital,
     "/hospitalizacion/pasaportes": Pasaportes,
