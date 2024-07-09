@@ -509,6 +509,27 @@ class CultivosUci {
                                             CultivosUci.nuevoRegistro.envio_fecha = e.target.value;
                                         }, 50);
                                     },
+                                    onkeypress: (e) => {
+                                        if (e.keyCode == 13) {
+                                            CultivosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            CultivosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            if (CultivosUci.nuevoRegistro.editar == null) {
+                                                CultivosUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(CultivosUci.nuevoRegistro);
+                                                PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
+                                                CultivosUci.nuevoRegistro = null;
+
+                                            } else {
+                                                CultivosUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(CultivosUci.nuevoRegistro);
+                                                PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
+                                                CultivosUci.nuevoRegistro = null;
+
+                                            }
+
+
+                                        }
+                                    },
                                 }),
                                 m("input.form-control[type='text'][placeholder='HH:mm']", {
                                     id: "cultivoEnvioHora" + CultivosUci.nuevoRegistro.id,
@@ -528,6 +549,27 @@ class CultivosUci {
                                             CultivosUci.nuevoRegistro.envio_hora = e.target.value;
                                             CultivosUci.nuevoRegistro.envio = CultivosUci.nuevoRegistro.envio_fecha + ' ' + CultivosUci.nuevoRegistro.envio_hora;
                                         }, 50);
+                                    },
+                                    onkeypress: (e) => {
+                                        if (e.keyCode == 13) {
+                                            CultivosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            CultivosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            if (CultivosUci.nuevoRegistro.editar == null) {
+                                                CultivosUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(CultivosUci.nuevoRegistro);
+                                                PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
+                                                CultivosUci.nuevoRegistro = null;
+
+                                            } else {
+                                                CultivosUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(CultivosUci.nuevoRegistro);
+                                                PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
+                                                CultivosUci.nuevoRegistro = null;
+
+                                            }
+
+
+                                        }
                                     },
                                 }),
                             ]),
@@ -555,6 +597,27 @@ class CultivosUci {
                                             CultivosUci.nuevoRegistro.fecha_resultado = (e.target.value.length !== 0 ? e.target.value : null);
                                         }, 50);
                                     },
+                                    onkeypress: (e) => {
+                                        if (e.keyCode == 13) {
+                                            CultivosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            CultivosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            if (CultivosUci.nuevoRegistro.editar == null) {
+                                                CultivosUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(CultivosUci.nuevoRegistro);
+                                                PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
+                                                CultivosUci.nuevoRegistro = null;
+
+                                            } else {
+                                                CultivosUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(CultivosUci.nuevoRegistro);
+                                                PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
+                                                CultivosUci.nuevoRegistro = null;
+
+                                            }
+
+
+                                        }
+                                    },
                                 }),
                                 m("input.form-control[type='text'][placeholder='HH:mm']", {
                                     id: "cultivoResultadoHora" + CultivosUci.nuevoRegistro.id,
@@ -568,6 +631,27 @@ class CultivosUci {
                                                 timePattern: ['h', 'm']
                                             });
                                         }, 50);
+                                    },
+                                    onkeypress: (e) => {
+                                        if (e.keyCode == 13) {
+                                            CultivosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            CultivosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            if (CultivosUci.nuevoRegistro.editar == null) {
+                                                CultivosUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(CultivosUci.nuevoRegistro);
+                                                PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
+                                                CultivosUci.nuevoRegistro = null;
+
+                                            } else {
+                                                CultivosUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(CultivosUci.nuevoRegistro);
+                                                PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
+                                                CultivosUci.nuevoRegistro = null;
+
+                                            }
+
+
+                                        }
                                     },
                                     oninput: (e) => {
                                         setTimeout(() => {
@@ -590,6 +674,27 @@ class CultivosUci {
                                     placeholder: "...",
                                     oninput: (e) => {
                                         CultivosUci.nuevoRegistro.resultado = (e.target.value.length !== 0 ? e.target.value : null);
+                                    },
+                                    onkeypress: (e) => {
+                                        if (e.keyCode == 13) {
+                                            CultivosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            CultivosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            if (CultivosUci.nuevoRegistro.editar == null) {
+                                                CultivosUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(CultivosUci.nuevoRegistro);
+                                                PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
+                                                CultivosUci.nuevoRegistro = null;
+
+                                            } else {
+                                                CultivosUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(CultivosUci.nuevoRegistro);
+                                                PacientesUCI.vReloadTable('table-cultivos', CultivosUci.getRegistros());
+                                                CultivosUci.nuevoRegistro = null;
+
+                                            }
+
+
+                                        }
                                     },
                                     value: CultivosUci.nuevoRegistro.resultado
                                 })

@@ -548,6 +548,23 @@ class ViasUci {
                                 oninput: (e) => {
                                     ViasUci.nuevoRegistro.ubicacion = (e.target.value.length !== 0 ? e.target.value : null);
                                 },
+                                onkeypress: (e) => {
+                                    if (e.keyCode == 13) {
+                                        ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                        ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        if (ViasUci.nuevoRegistro.editar == null) {
+                                            ViasUci.agregarRegistro();
+                                            FecthUci.registrarSeccion(ViasUci.nuevoRegistro);
+                                            ViasUci.nuevoRegistro = null;
+                                            PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                        } else {
+                                            ViasUci.editarRegistro();
+                                            FecthUci.actualizarSeccion(ViasUci.nuevoRegistro);
+                                            ViasUci.nuevoRegistro = null;
+                                            PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                        }
+                                    }
+                                },
                                 value: ViasUci.nuevoRegistro.ubicacion
                             })
                         ] : [])
@@ -563,6 +580,23 @@ class ViasUci {
                                 placeholder: "...",
                                 oninput: (e) => {
                                     ViasUci.nuevoRegistro.tipo = (e.target.value.length !== 0 ? e.target.value : null);
+                                },
+                                onkeypress: (e) => {
+                                    if (e.keyCode == 13) {
+                                        ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                        ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        if (ViasUci.nuevoRegistro.editar == null) {
+                                            ViasUci.agregarRegistro();
+                                            FecthUci.registrarSeccion(ViasUci.nuevoRegistro);
+                                            ViasUci.nuevoRegistro = null;
+                                            PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                        } else {
+                                            ViasUci.editarRegistro();
+                                            FecthUci.actualizarSeccion(ViasUci.nuevoRegistro);
+                                            ViasUci.nuevoRegistro = null;
+                                            PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                        }
+                                    }
                                 },
                                 value: ViasUci.nuevoRegistro.tipo
                             })
@@ -616,6 +650,23 @@ class ViasUci {
                                             ViasUci.nuevoRegistro.inicio = e.target.value;
                                         }, 50);
                                     },
+                                    onkeypress: (e) => {
+                                        if (e.keyCode == 13) {
+                                            ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            if (ViasUci.nuevoRegistro.editar == null) {
+                                                ViasUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(ViasUci.nuevoRegistro);
+                                                ViasUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                            } else {
+                                                ViasUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(ViasUci.nuevoRegistro);
+                                                ViasUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                            }
+                                        }
+                                    },
                                 }),
                             ]),
                         ] : [])
@@ -641,6 +692,23 @@ class ViasUci {
                                         setTimeout(() => {
                                             ViasUci.nuevoRegistro.retiro = e.target.value;
                                         }, 50);
+                                    },
+                                    onkeypress: (e) => {
+                                        if (e.keyCode == 13) {
+                                            ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            if (ViasUci.nuevoRegistro.editar == null) {
+                                                ViasUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(ViasUci.nuevoRegistro);
+                                                ViasUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                            } else {
+                                                ViasUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(ViasUci.nuevoRegistro);
+                                                ViasUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                            }
+                                        }
                                     },
                                 }),
                             ])
@@ -671,6 +739,23 @@ class ViasUci {
                                         setTimeout(() => {
                                             ViasUci.nuevoRegistro.cambio = e.target.value;
                                         }, 50);
+                                    },
+                                    onkeypress: (e) => {
+                                        if (e.keyCode == 13) {
+                                            ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            if (ViasUci.nuevoRegistro.editar == null) {
+                                                ViasUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(ViasUci.nuevoRegistro);
+                                                ViasUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                            } else {
+                                                ViasUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(ViasUci.nuevoRegistro);
+                                                ViasUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                            }
+                                        }
                                     },
                                 }),
 
@@ -703,6 +788,23 @@ class ViasUci {
                                         setTimeout(() => {
                                             ViasUci.nuevoRegistro.curacion = e.target.value;
                                         }, 50);
+                                    },
+                                    onkeypress: (e) => {
+                                        if (e.keyCode == 13) {
+                                            ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            if (ViasUci.nuevoRegistro.editar == null) {
+                                                ViasUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(ViasUci.nuevoRegistro);
+                                                ViasUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                            } else {
+                                                ViasUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(ViasUci.nuevoRegistro);
+                                                ViasUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                            }
+                                        }
                                     },
                                 }),
 

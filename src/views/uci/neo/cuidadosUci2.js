@@ -274,6 +274,32 @@ class CuidadosUci2 {
                                             oninput: (e) => {
                                                 CuidadosUci2.nuevoRegistro.frecuencia = (e.target.value.length !== 0 ? e.target.value : null);
                                             },
+                                            onkeypress: (e) => {
+                                                if (e.keyCode == 13) {
+
+                                                    CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    console.log(99, CuidadosUci2.nuevoRegistro)
+
+                                                    // throw 'AA';
+                                                    if (CuidadosUci2.nuevoRegistro.editar == null) {
+                                                        CuidadosUci2.agregarRegistro();
+                                                        FecthUci.registrarSeccion(CuidadosUci2.nuevoRegistro);
+                                                        CuidadosUci2.nuevoRegistro = null;
+                                                        CuidadosUci2.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
+                                                    } else {
+                                                        CuidadosUci2.editarRegistro();
+                                                        FecthUci.actualizarSeccion(CuidadosUci2.nuevoRegistro);
+                                                        CuidadosUci2.nuevoRegistro = null;
+                                                        CuidadosUci2.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
+
+                                                    }
+
+
+                                                }
+                                            },
                                             value: CuidadosUci2.nuevoRegistro.frecuencia
                                         })
                                     ] : [])
@@ -318,6 +344,32 @@ class CuidadosUci2 {
                                                     e.preventDefault();
                                                 }
                                             },
+                                            onkeypress: (e) => {
+                                                if (e.keyCode == 13) {
+
+                                                    CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    console.log(99, CuidadosUci2.nuevoRegistro)
+
+                                                    // throw 'AA';
+                                                    if (CuidadosUci2.nuevoRegistro.editar == null) {
+                                                        CuidadosUci2.agregarRegistro();
+                                                        FecthUci.registrarSeccion(CuidadosUci2.nuevoRegistro);
+                                                        CuidadosUci2.nuevoRegistro = null;
+                                                        CuidadosUci2.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
+                                                    } else {
+                                                        CuidadosUci2.editarRegistro();
+                                                        FecthUci.actualizarSeccion(CuidadosUci2.nuevoRegistro);
+                                                        CuidadosUci2.nuevoRegistro = null;
+                                                        CuidadosUci2.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
+
+                                                    }
+
+
+                                                }
+                                            },
                                             value: (CuidadosUci2.nuevoRegistro.am !== null ? CuidadosUci2.nuevoRegistro.am : '')
                                         })
                                     ] : [])
@@ -359,6 +411,32 @@ class CuidadosUci2 {
                                                     CuidadosUci2.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
                                                 } else {
                                                     e.preventDefault();
+                                                }
+                                            },
+                                            onkeypress: (e) => {
+                                                if (e.keyCode == 13) {
+
+                                                    CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    console.log(99, CuidadosUci2.nuevoRegistro)
+
+                                                    // throw 'AA';
+                                                    if (CuidadosUci2.nuevoRegistro.editar == null) {
+                                                        CuidadosUci2.agregarRegistro();
+                                                        FecthUci.registrarSeccion(CuidadosUci2.nuevoRegistro);
+                                                        CuidadosUci2.nuevoRegistro = null;
+                                                        CuidadosUci2.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
+                                                    } else {
+                                                        CuidadosUci2.editarRegistro();
+                                                        FecthUci.actualizarSeccion(CuidadosUci2.nuevoRegistro);
+                                                        CuidadosUci2.nuevoRegistro = null;
+                                                        CuidadosUci2.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
+
+                                                    }
+
+
                                                 }
                                             },
                                             value: (CuidadosUci2.nuevoRegistro.pm !== null ? CuidadosUci2.nuevoRegistro.pm : '')
