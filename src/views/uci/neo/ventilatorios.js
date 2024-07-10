@@ -1,5 +1,4 @@
 import m from "mithril";
-
 import PacientesUCI from "./pacientesUci";
 import TurnosUci from "./turnosUci";
 import FecthUci from "./fecthUci";
@@ -13,6 +12,7 @@ class Ventilatorio {
     condicion = null;
     hora = null;
     editar = null;
+    tipoBit = 'UCINEO';
     seccion = 'Ventilatorios';
     constructor() {
         this.id = this.id;
@@ -23,6 +23,7 @@ class Ventilatorio {
         this.condicion = this.condicion;
         this.hora = this.hora;
         this.editar = this.editar;
+        this.tipoBit = this.tipoBit;
         this.seccion = this.seccion;
     }
 }

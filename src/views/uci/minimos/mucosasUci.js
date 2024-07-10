@@ -9,8 +9,8 @@ class Valoracion {
     fechaHoraTurno = null;
     tipo = null;
     valor = null;
-    tipoTurno = 'UCIINTER';
     editar = null;
+    tipoBit = 'UCIMINIMOS';
     seccion = 'PielMucosasUci';
     constructor() {
         this.id = this.id;
@@ -20,6 +20,7 @@ class Valoracion {
         this.valor = this.valor;
         this.tipoTurno = this.tipoTurno;
         this.editar = this.editar;
+        this.tipoBit = this.tipoBit;
         this.seccion = this.seccion;
     }
 }

@@ -14,6 +14,7 @@ class Cuidado {
     pm = null;
     hs = null;
     editar = null;
+    tipoBit = 'UCINEO';
     seccion = 'CuidadosGenerales';
     constructor() {
         this.id = this.id;
@@ -26,6 +27,7 @@ class Cuidado {
         this.pm = this.pm;
         this.hs = this.hs;
         this.editar = this.editar;
+        this.tipoBit = this.tipoBit;
         this.seccion = this.seccion;
     }
 }

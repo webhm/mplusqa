@@ -12,6 +12,7 @@ class Ulcera {
     inicio = null;
     grado = null;
     editar = null;
+    tipoBit = 'UCINEO';
     seccion = 'UlcerasPed';
     constructor() {
         this.id = this.id;
@@ -22,6 +23,7 @@ class Ulcera {
         this.inicio = this.inicio;
         this.grado = this.grado;
         this.editar = this.editar;
+        this.tipoBit = this.tipoBit;
         this.seccion = this.seccion;
     }
 }

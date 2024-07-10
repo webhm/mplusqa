@@ -16,6 +16,7 @@ class Oxi {
     hs = null;
     observacion = null;
     editar = null;
+    tipoBit = 'UCIMINIMOS';
     seccion = 'ModoVentilatorioNoImvasivo';
     constructor() {
         this.id = this.id;
@@ -27,6 +28,7 @@ class Oxi {
         this.hs = this.hs;
         this.observacion = this.observacion;
         this.editar = this.editar;
+        this.tipoBit = this.tipoBit;
         this.seccion = this.seccion;
     }
 }

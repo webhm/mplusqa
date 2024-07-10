@@ -517,7 +517,7 @@ class FecthUci {
             FecthUci.loaderSecciones = true;
             // Filter Secciones de Hoy
             // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY') && v.SECCION != 'PrescripcionesUci')
-            let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+            let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY') && v.tipoBit == 'UCIINTER')
             console.log('seccionesHoy', seccionesHoy)
 
             /*

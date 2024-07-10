@@ -10,6 +10,7 @@ class Valoracion {
     tipo = null;
     valor = null;
     editar = null;
+    tipoBit = 'UCIINTER';
     seccion = 'TestScoreUci';
     constructor() {
         this.id = this.id;
@@ -18,6 +19,7 @@ class Valoracion {
         this.tipo = this.tipo;
         this.valoracion = this.valoracion;
         this.editar = this.editar;
+        this.tipoBit = this.tipoBit;
         this.seccion = this.seccion;
     }
 }
