@@ -4613,16 +4613,16 @@ class PacientesUCI extends App {
 
         FecthUci.dataSecciones.map((obj) => {
             let _obj = JSON.parse(obj.DATASECCION);
-            if (_obj.seccion === idSeccion) {
+            if (_obj.seccion === idSeccion && _obj.tipoBit == 'UCIINTER') {
                 res.push(_obj);
             }
         });
 
         // Quitar duplicados
-        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+        // result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
 
         // Ordenar desc
-        _arr = result.sort((a, b) => a.nro - b.nro);
+        _arr = res.sort((a, b) => a.nro - b.nro);
         return _arr;
     }
 
