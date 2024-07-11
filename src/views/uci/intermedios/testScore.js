@@ -134,6 +134,9 @@ class TestScoreUciNeo {
                     title: "Tipo:",
                 },
                 {
+                    title: "Hora:",
+                },
+                {
                     title: "Valor:",
                 },
                 {
@@ -205,10 +208,19 @@ class TestScoreUciNeo {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return (full.valor != null ? full.hora + ' / ' + full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                        return (full.hora != null ? full.hora : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                     },
                     visible: true,
                     aTargets: [5],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    },
+                    visible: true,
+                    aTargets: [6],
                     orderable: true,
 
                 },
@@ -276,7 +288,7 @@ class TestScoreUciNeo {
                     },
                     width: '10%',
                     visible: true,
-                    aTargets: [6],
+                    aTargets: [7],
                     orderable: true,
 
                 }
