@@ -9,6 +9,7 @@ class Valoracion {
     fechaHoraTurno = null;
     tipo = null;
     valor = null;
+    hora = null;
     editar = null;
     tipoBit = 'UCIINTER';
     seccion = 'OmbligoUci';
@@ -18,6 +19,7 @@ class Valoracion {
         this.fechaHoraTurno = this.fechaHoraTurno;
         this.tipo = this.tipo;
         this.valor = this.valor;
+        this.hora = this.hora;
         this.editar = this.editar;
         this.tipoBit = this.tipoBit;
         this.seccion = this.seccion;
@@ -132,6 +134,9 @@ class OmbligoUci {
                     title: "Tipo:",
                 },
                 {
+                    title: "Hora:",
+                },
+                {
                     title: "Valor:",
                 },
                 {
@@ -203,10 +208,19 @@ class OmbligoUci {
                 },
                 {
                     mRender: function(data, type, full) {
-                        return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                        return (full.hora != null ? full.hora : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                     },
                     visible: true,
                     aTargets: [5],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    },
+                    visible: true,
+                    aTargets: [6],
                     orderable: true,
 
                 },
@@ -274,7 +288,7 @@ class OmbligoUci {
                     },
                     width: '10%',
                     visible: true,
-                    aTargets: [6],
+                    aTargets: [7],
                     orderable: true,
 
                 }
@@ -399,7 +413,34 @@ class OmbligoUci {
                             ] : [])
                         ])
                     ),
-                    m("td.tx-normal[colspan='6']",
+                    m("td.tx-normal[colspan='3']",
+                        (OmbligoUci.nuevoRegistro !== null ? [
+                            m("input[type='text'][placeholder='HH:mm']", {
+                                id: 'horaValor',
+                                class: 'form-control',
+                                oncreate: (el) => {
+
+                                    setTimeout(() => {
+                                        new Cleave("#" + el.dom.id, {
+                                            time: true,
+                                            timePattern: ['h', 'm']
+                                        });
+                                    }, 90);
+
+                                },
+                                oninput: (e) => {
+                                    setTimeout(() => {
+                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                        OmbligoUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                        OmbligoUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+
+                                    }, 50);
+                                },
+
+                            }),
+                        ] : [])
+                    ),
+                    m("td.tx-normal[colspan='3']",
                         (OmbligoUci.nuevoRegistro !== null ? [
                             m('select.tx-semibold', {
                                 id: 'valorOmbligo',
