@@ -124,6 +124,9 @@ class PacientesUCI extends App {
 
         MucosasUciNeo.registros = PacientesUCI.parseAllSeccion('PielMucosasUci');
 
+        IngestaUciNeo.registros = PacientesUCI.parseAllSeccion('IngestaUci');
+
+
         EliminacionUciNeo.registros = PacientesUCI.parseAllSeccion('EliminacionUci');
 
         SistemaNervioso.registros = PacientesUCI.parseAllSeccion('SistemaNerviosoUci');
