@@ -12,7 +12,7 @@ class Valoracion {
     cantidad = null;
     editar = null;
     tipoBit = 'UCIINTER';
-    seccion = 'VentilatorioNoImvasivo';
+    seccion = 'VentilatorioNoInvasivo';
     constructor() {
         this.id = this.id;
         this.nro = this.nro;
@@ -26,7 +26,7 @@ class Valoracion {
     }
 }
 
-class VentilatorioNoImvasivo {
+class VentilatorioNoInvasivo {
 
     static registros = [];
     static nuevoRegistro = null;
@@ -38,29 +38,29 @@ class VentilatorioNoImvasivo {
     }
 
     static iniciarRegistro() {
-        VentilatorioNoImvasivo.nuevoRegistro = new Valoracion();
+        VentilatorioNoInvasivo.nuevoRegistro = new Valoracion();
     }
 
     static agregarRegistro() {
-        if (VentilatorioNoImvasivo.registros.length == 0) {
-            VentilatorioNoImvasivo.nuevoRegistro.nro = 1;
-            VentilatorioNoImvasivo.registros.push(VentilatorioNoImvasivo.nuevoRegistro);
+        if (VentilatorioNoInvasivo.registros.length == 0) {
+            VentilatorioNoInvasivo.nuevoRegistro.nro = 1;
+            VentilatorioNoInvasivo.registros.push(VentilatorioNoInvasivo.nuevoRegistro);
         } else {
-            VentilatorioNoImvasivo.nuevoRegistro.nro = (VentilatorioNoImvasivo.registros[VentilatorioNoImvasivo.registros.length - 1].nro + 1);
-            VentilatorioNoImvasivo.registros.push(VentilatorioNoImvasivo.nuevoRegistro);
+            VentilatorioNoInvasivo.nuevoRegistro.nro = (VentilatorioNoInvasivo.registros[VentilatorioNoInvasivo.registros.length - 1].nro + 1);
+            VentilatorioNoInvasivo.registros.push(VentilatorioNoInvasivo.nuevoRegistro);
         }
     }
 
     static verRegistro(registro) {
         registro.editar = true;
-        VentilatorioNoImvasivo.nuevoRegistro = registro;
+        VentilatorioNoInvasivo.nuevoRegistro = registro;
     }
 
     static editarRegistro() {
-        VentilatorioNoImvasivo.nuevoRegistro.editar = null;
-        VentilatorioNoImvasivo.registros.map((_v, _i) => {
-            if (_v.nro == VentilatorioNoImvasivo.nuevoRegistro.nro) {
-                VentilatorioNoImvasivo.registros[_i] = VentilatorioNoImvasivo.nuevoRegistro;
+        VentilatorioNoInvasivo.nuevoRegistro.editar = null;
+        VentilatorioNoInvasivo.registros.map((_v, _i) => {
+            if (_v.nro == VentilatorioNoInvasivo.nuevoRegistro.nro) {
+                VentilatorioNoInvasivo.registros[_i] = VentilatorioNoInvasivo.nuevoRegistro;
             }
         });
 
@@ -69,18 +69,18 @@ class VentilatorioNoImvasivo {
     static eliminarRegistro(obj) {
 
         let res = [];
-        VentilatorioNoImvasivo.registros.map((_v, _i) => {
+        VentilatorioNoInvasivo.registros.map((_v, _i) => {
             if (_v.nro !== obj.nro) {
                 res.push(_v);
             }
         });
 
-        VentilatorioNoImvasivo.registros = res;
+        VentilatorioNoInvasivo.registros = res;
 
     }
 
     static getRegistros() {
-        return VentilatorioNoImvasivo.registros;
+        return VentilatorioNoInvasivo.registros;
     }
 
     static arqTable() {
@@ -249,8 +249,8 @@ class VentilatorioNoImvasivo {
                                                 class: (oData.editar ? 'd-none' : ''),
                                                 disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
-                                                    VentilatorioNoImvasivo.nuevoRegistro = null
-                                                    VentilatorioNoImvasivo.verRegistro(oData);
+                                                    VentilatorioNoInvasivo.nuevoRegistro = null
+                                                    VentilatorioNoInvasivo.verRegistro(oData);
                                                 },
                                             },
                                             'Editar',
@@ -261,7 +261,7 @@ class VentilatorioNoImvasivo {
 
                                                 onclick: () => {
                                                     oData.editar = null;
-                                                    VentilatorioNoImvasivo.nuevoRegistro = null;
+                                                    VentilatorioNoInvasivo.nuevoRegistro = null;
                                                 },
                                             },
                                             'Cancelar Edición',
@@ -271,10 +271,10 @@ class VentilatorioNoImvasivo {
                                                 disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
                                                     if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                                        VentilatorioNoImvasivo.eliminarRegistro(oData);
+                                                        VentilatorioNoInvasivo.eliminarRegistro(oData);
                                                         FecthUci.eliminarSeccion(oData);
-                                                        VentilatorioNoImvasivo.nuevoRegistro = null;
-                                                        PacientesUCI.vReloadTable('table-ventilatorioNoImvasivo', VentilatorioNoImvasivo.getRegistros());
+                                                        VentilatorioNoInvasivo.nuevoRegistro = null;
+                                                        PacientesUCI.vReloadTable('table-VentilatorioNoInvasivo', VentilatorioNoInvasivo.getRegistros());
                                                     }
                                                 },
                                             },
@@ -283,12 +283,12 @@ class VentilatorioNoImvasivo {
                                         m("button.btn.btn-xs.btn-dark[type='button']", {
                                                 class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                                 onclick: () => {
-                                                    VentilatorioNoImvasivo.iniciarRegistro();
-                                                    VentilatorioNoImvasivo.nuevoRegistro.id = oData.id;
-                                                    VentilatorioNoImvasivo.nuevoRegistro.tipo = oData.tipo;
-                                                    VentilatorioNoImvasivo.nuevoRegistro.valor = oData.valor;
-                                                    VentilatorioNoImvasivo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    VentilatorioNoImvasivo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    VentilatorioNoInvasivo.iniciarRegistro();
+                                                    VentilatorioNoInvasivo.nuevoRegistro.id = oData.id;
+                                                    VentilatorioNoInvasivo.nuevoRegistro.tipo = oData.tipo;
+                                                    VentilatorioNoInvasivo.nuevoRegistro.valor = oData.valor;
+                                                    VentilatorioNoInvasivo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    VentilatorioNoInvasivo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
                                                 },
                                             },
@@ -314,10 +314,10 @@ class VentilatorioNoImvasivo {
     }
 
     static destroyTable() {
-        let table = document.getElementById('table-ventilatorioNoImvasivo');
+        let table = document.getElementById('table-VentilatorioNoInvasivo');
         // clear first
         if (table != null) {
-            $('#table-ventilatorioNoImvasivo').DataTable().clear().destroy();
+            $('#table-VentilatorioNoInvasivo').DataTable().clear().destroy();
 
         }
     }
@@ -334,21 +334,21 @@ class VentilatorioNoImvasivo {
                     // class: (PacientesUCI.tipoAtencion !== null && PacientesUCI.tipoAtencion == 'NEO' ? '' : 'd-none'),
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
-                        if (VentilatorioNoImvasivo.show) {
-                            VentilatorioNoImvasivo.destroyTable();
+                        if (VentilatorioNoInvasivo.show) {
+                            VentilatorioNoInvasivo.destroyTable();
                         }
-                        VentilatorioNoImvasivo.show = !VentilatorioNoImvasivo.show;
+                        VentilatorioNoInvasivo.show = !VentilatorioNoInvasivo.show;
                     }
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "MODO VENTILATORIO NO IMVASIVO:"
+                        "MODO VENTILATORIO NO INVASIVO:"
                     ),
 
                 ])
             ),
             m("tbody.bd.bd-2", {
                 style: { "border-color": "#5173a1" },
-                class: (VentilatorioNoImvasivo.show ? '' : 'd-none')
+                class: (VentilatorioNoInvasivo.show ? '' : 'd-none')
             }, [
 
                 m("tr.bd.bd-2.tx-uppercase", {
@@ -373,33 +373,33 @@ class VentilatorioNoImvasivo {
                                 m("button.btn.btn-xs.btn-light[type='button']", {
                                         title: "Nuevo",
                                         onclick: () => {
-                                            if (VentilatorioNoImvasivo.nuevoRegistro == null) {
-                                                VentilatorioNoImvasivo.iniciarRegistro();
+                                            if (VentilatorioNoInvasivo.nuevoRegistro == null) {
+                                                VentilatorioNoInvasivo.iniciarRegistro();
                                             } else {
-                                                VentilatorioNoImvasivo.nuevoRegistro = null;
+                                                VentilatorioNoInvasivo.nuevoRegistro = null;
                                             }
                                         }
                                     },
                                     m("i.fas.fa-plus")
                                 )
                             ),
-                            (VentilatorioNoImvasivo.nuevoRegistro !== null ? [
+                            (VentilatorioNoInvasivo.nuevoRegistro !== null ? [
 
                                 m('select.tx-semibold', {
-                                    id: 'sec_VentilatorioNoImvasivo',
+                                    id: 'sec_VentilatorioNoInvasivo',
                                     onchange: (e) => {
                                         let _id = e.target.options[e.target.selectedIndex].id;
                                         let _value = e.target.options[e.target.selectedIndex].value;
-                                        if (VentilatorioNoImvasivo.nuevoRegistro == null) {
-                                            VentilatorioNoImvasivo.nuevoRegistro.id = _id;
-                                            VentilatorioNoImvasivo.nuevoRegistro.tipo = _value;
+                                        if (VentilatorioNoInvasivo.nuevoRegistro == null) {
+                                            VentilatorioNoInvasivo.nuevoRegistro.id = _id;
+                                            VentilatorioNoInvasivo.nuevoRegistro.tipo = _value;
                                         } else {
-                                            VentilatorioNoImvasivo.nuevoRegistro.id = _id;
-                                            VentilatorioNoImvasivo.nuevoRegistro.tipo = _value;
+                                            VentilatorioNoInvasivo.nuevoRegistro.id = _id;
+                                            VentilatorioNoInvasivo.nuevoRegistro.tipo = _value;
                                         }
                                     },
                                     class: "custom-select",
-                                    value: (VentilatorioNoImvasivo.nuevoRegistro !== null ? VentilatorioNoImvasivo.nuevoRegistro.tipo : 0),
+                                    value: (VentilatorioNoInvasivo.nuevoRegistro !== null ? VentilatorioNoInvasivo.nuevoRegistro.tipo : 0),
                                 }, m("option[value='0']", 'Seleccione...'), [{
                                         id: "Oxihood",
                                         label: "OXIHOOD"
@@ -422,14 +422,14 @@ class VentilatorioNoImvasivo {
                         ])
                     ),
                     m("td.tx-normal[colspan='3']",
-                        (VentilatorioNoImvasivo.nuevoRegistro !== null ? [
+                        (VentilatorioNoInvasivo.nuevoRegistro !== null ? [
                             m("input[type='text'][placeholder='Cantidad']", {
                                 id: 'cantidadValor',
                                 class: 'form-control',
                                 oninput: (e) => {
                                     setTimeout(() => {
                                         //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                        VentilatorioNoImvasivo.nuevoRegistro.cantidad = (e.target.value.length !== 0 ? e.target.value : null);
+                                        VentilatorioNoInvasivo.nuevoRegistro.cantidad = (e.target.value.length !== 0 ? e.target.value : null);
 
                                     }, 50);
                                 },
@@ -438,7 +438,7 @@ class VentilatorioNoImvasivo {
                         ] : [])
                     ),
                     m("td.tx-normal[colspan='3']",
-                        (VentilatorioNoImvasivo.nuevoRegistro !== null ? [
+                        (VentilatorioNoInvasivo.nuevoRegistro !== null ? [
                             m("input[type='text'][placeholder='HH:mm']", {
                                 id: 'horaValor',
                                 class: 'form-control',
@@ -455,8 +455,8 @@ class VentilatorioNoImvasivo {
                                 oninput: (e) => {
                                     setTimeout(() => {
                                         //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                        VentilatorioNoImvasivo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                        VentilatorioNoImvasivo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                        VentilatorioNoInvasivo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                        VentilatorioNoInvasivo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
 
                                     }, 50);
                                 },
@@ -465,34 +465,34 @@ class VentilatorioNoImvasivo {
                         ] : [])
                     ),
                     m("td.tx-normal[colspan='3']",
-                        (VentilatorioNoImvasivo.nuevoRegistro !== null ? [
+                        (VentilatorioNoInvasivo.nuevoRegistro !== null ? [
                             m('select.tx-semibold', {
                                 id: 'valorHigiene',
                                 onchange: (e) => {
                                     let _id = e.target.options[e.target.selectedIndex].id;
                                     let _value = e.target.options[e.target.selectedIndex].value;
-                                    VentilatorioNoImvasivo.nuevoRegistro.valor = _value;
+                                    VentilatorioNoInvasivo.nuevoRegistro.valor = _value;
                                 },
                                 onkeypress: (e) => {
                                     if (e.keyCode == 13) {
-                                        VentilatorioNoImvasivo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                        VentilatorioNoImvasivo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                        if (VentilatorioNoImvasivo.nuevoRegistro.editar == null) {
-                                            VentilatorioNoImvasivo.agregarRegistro();
-                                            VentilatorioNoImvasivo.nuevoRegistro.id = VentilatorioNoImvasivo.nuevoRegistro.nro + 'Higiene';
-                                            FecthUci.registrarSeccion(VentilatorioNoImvasivo.nuevoRegistro);
-                                            VentilatorioNoImvasivo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-ventilatorioNoImvasivo', VentilatorioNoImvasivo.getRegistros());
+                                        VentilatorioNoInvasivo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                        VentilatorioNoInvasivo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        if (VentilatorioNoInvasivo.nuevoRegistro.editar == null) {
+                                            VentilatorioNoInvasivo.agregarRegistro();
+                                            VentilatorioNoInvasivo.nuevoRegistro.id = VentilatorioNoInvasivo.nuevoRegistro.nro + 'Higiene';
+                                            FecthUci.registrarSeccion(VentilatorioNoInvasivo.nuevoRegistro);
+                                            VentilatorioNoInvasivo.nuevoRegistro = null;
+                                            PacientesUCI.vReloadTable('table-VentilatorioNoInvasivo', VentilatorioNoInvasivo.getRegistros());
                                         } else {
-                                            VentilatorioNoImvasivo.editarRegistro();
-                                            FecthUci.actualizarSeccion(VentilatorioNoImvasivo.nuevoRegistro);
-                                            VentilatorioNoImvasivo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-ventilatorioNoImvasivo', VentilatorioNoImvasivo.getRegistros());
+                                            VentilatorioNoInvasivo.editarRegistro();
+                                            FecthUci.actualizarSeccion(VentilatorioNoInvasivo.nuevoRegistro);
+                                            VentilatorioNoInvasivo.nuevoRegistro = null;
+                                            PacientesUCI.vReloadTable('table-VentilatorioNoInvasivo', VentilatorioNoInvasivo.getRegistros());
                                         }
                                     }
                                 },
                                 class: "custom-select",
-                                value: (VentilatorioNoImvasivo.nuevoRegistro !== null ? VentilatorioNoImvasivo.nuevoRegistro.valor : 0),
+                                value: (VentilatorioNoInvasivo.nuevoRegistro !== null ? VentilatorioNoInvasivo.nuevoRegistro.valor : 0),
                             }, m("option[value='0']", 'Seleccione...'), [{
                                     id: "X",
                                     label: "Sí (X)"
@@ -516,7 +516,7 @@ class VentilatorioNoImvasivo {
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12']",
-                        (VentilatorioNoImvasivo.show != false ? [PacientesUCI.vTable('table-ventilatorioNoImvasivo', VentilatorioNoImvasivo.getRegistros(), VentilatorioNoImvasivo.arqTable())] : [])
+                        (VentilatorioNoInvasivo.show != false ? [PacientesUCI.vTable('table-VentilatorioNoInvasivo', VentilatorioNoInvasivo.getRegistros(), VentilatorioNoInvasivo.arqTable())] : [])
                     ),
                 ]),
                 m('br')
@@ -527,4 +527,4 @@ class VentilatorioNoImvasivo {
 
 }
 
-export default VentilatorioNoImvasivo;
+export default VentilatorioNoInvasivo;

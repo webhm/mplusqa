@@ -31,7 +31,7 @@ import SistemaNervioso from "./sistemaNervioso";
 import OmbligoUci from "./ombligoUci";
 import HigieneUci from "./higieneUci";
 import IngestaUciNeo from "./ingestaUci";
-import VentilatorioNoImvasivo from "./ventilatorioNoImvasivo";
+import VentilatorioNoInvasivo from "./ventilatorioNoImvasivo";
 
 
 // Pacientes UCI
@@ -132,7 +132,7 @@ class PacientesUCI extends App {
 
         HigieneUci.registros = PacientesUCI.parseAllSeccion('HigieneUci');
 
-        VentilatorioNoImvasivo.registros = PacientesUCI.parseAllSeccion('VentilatorioNoImvasivo');
+        VentilatorioNoInvasivo.registros = PacientesUCI.parseAllSeccion('VentilatorioNoInvasivo');
 
 
 
@@ -256,7 +256,7 @@ class PacientesUCI extends App {
                         // Higiene Uci
                         m(HigieneUci),
                         // Osigenacion
-                        m(VentilatorioNoImvasivo),
+                        m(VentilatorioNoInvasivo),
 
                     ]),
                     m('div.ht-100'),
