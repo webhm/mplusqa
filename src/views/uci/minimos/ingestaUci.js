@@ -9,6 +9,8 @@ class Valoracion {
     fechaHoraTurno = null;
     tipo = null;
     valor = null;
+    hora = null;
+    medida = null;
     editar = null;
     tipoBit = 'UCIMINIMOS';
     seccion = 'IngestaUci';
@@ -18,6 +20,8 @@ class Valoracion {
         this.fechaHoraTurno = this.fechaHoraTurno;
         this.tipo = this.tipo;
         this.valor = this.valor;
+        this.hora = this.hora;
+        this.medida = this.medida;
         this.editar = this.editar;
         this.tipoBit = this.tipoBit;
         this.seccion = this.seccion;
@@ -138,6 +142,9 @@ class IngestaUciNeo {
                     title: "Valor:",
                 },
                 {
+                    title: "Medida:",
+                },
+                {
                     title: "Opciones:",
                 }
             ],
@@ -224,6 +231,15 @@ class IngestaUciNeo {
 
                 },
                 {
+                    mRender: function(data, type, full) {
+                        return (full.medida != null ? full.medida : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    },
+                    visible: true,
+                    aTargets: [7],
+                    orderable: true,
+
+                },
+                {
                     fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                         return m.mount(nTd, {
                             view: () => {
@@ -271,6 +287,8 @@ class IngestaUciNeo {
                                                     IngestaUciNeo.nuevoRegistro.id = oData.id;
                                                     IngestaUciNeo.nuevoRegistro.tipo = oData.tipo;
                                                     IngestaUciNeo.nuevoRegistro.valor = oData.valor;
+                                                    IngestaUciNeo.nuevoRegistro.hora = oData.hora;
+                                                    IngestaUciNeo.nuevoRegistro.medida = oData.medida;
                                                     IngestaUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     IngestaUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
@@ -286,7 +304,7 @@ class IngestaUciNeo {
                     },
                     width: '10%',
                     visible: true,
-                    aTargets: [7],
+                    aTargets: [8],
                     orderable: true,
 
                 }
@@ -354,7 +372,7 @@ class IngestaUciNeo {
 
                 }, [
 
-                    m("td.tx-normal[colspan='6']",
+                    m("td.tx-normal[colspan='3']",
                         m("div.input-group", [
                             m("div.input-group-append",
                                 m("button.btn.btn-xs.btn-light[type='button']", {
@@ -405,6 +423,23 @@ class IngestaUciNeo {
                     ),
                     m("td.tx-normal[colspan='3']",
                         (IngestaUciNeo.nuevoRegistro !== null ? [
+                            m("input[type='text'][placeholder='Medida']", {
+                                id: 'medidaValor',
+                                class: 'form-control',
+
+                                oninput: (e) => {
+                                    setTimeout(() => {
+                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                        IngestaUciNeo.nuevoRegistro.medida = (e.target.value.length !== 0 ? e.target.value : null);
+
+                                    }, 50);
+                                },
+
+                            }),
+                        ] : [])
+                    ),
+                    m("td.tx-normal[colspan='3']",
+                        (IngestaUciNeo.nuevoRegistro !== null ? [
                             m("input[type='text'][placeholder='HH:mm']", {
                                 id: 'horaValor',
                                 class: 'form-control',
@@ -433,7 +468,7 @@ class IngestaUciNeo {
                     m("td.tx-normal[colspan='3']",
                         (IngestaUciNeo.nuevoRegistro !== null ? [
                             m('select.tx-semibold', {
-                                id: 'valorEliminacion',
+                                id: 'valorIngesta',
                                 onchange: (e) => {
                                     let _id = e.target.options[e.target.selectedIndex].id;
                                     let _value = e.target.options[e.target.selectedIndex].value;
