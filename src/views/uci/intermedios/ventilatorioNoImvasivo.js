@@ -9,6 +9,7 @@ class Valoracion {
     fechaHoraTurno = null;
     tipo = null;
     valor = null;
+    cantidad = null;
     editar = null;
     tipoBit = 'UCIINTER';
     seccion = 'VentilatorioNoImvasivo';
@@ -18,6 +19,7 @@ class Valoracion {
         this.fechaHoraTurno = this.fechaHoraTurno;
         this.tipo = this.tipo;
         this.valor = this.valor;
+        this.cantidad = this.cantidad;
         this.editar = this.editar;
         this.tipoBit = this.tipoBit;
         this.seccion = this.seccion;
@@ -138,6 +140,9 @@ class VentilatorioNoImvasivo {
                     title: "Valor:",
                 },
                 {
+                    title: "Cantidad:",
+                },
+                {
                     title: "Opciones:",
                 }
             ],
@@ -225,6 +230,16 @@ class VentilatorioNoImvasivo {
                 },
 
                 {
+                    mRender: function(data, type, full) {
+                        return (full.cantidad != null ? full.cantidad : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    },
+                    visible: true,
+                    aTargets: [7],
+                    orderable: true,
+
+                },
+
+                {
                     fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                         return m.mount(nTd, {
                             view: () => {
@@ -287,7 +302,7 @@ class VentilatorioNoImvasivo {
                     },
                     width: '10%',
                     visible: true,
-                    aTargets: [7],
+                    aTargets: [8],
                     orderable: true,
 
                 }
@@ -302,7 +317,7 @@ class VentilatorioNoImvasivo {
         let table = document.getElementById('table-ventilatorioNoImvasivo');
         // clear first
         if (table != null) {
-            $('#table-higiene').DataTable().clear().destroy();
+            $('#table-ventilatorioNoImvasivo').DataTable().clear().destroy();
 
         }
     }
@@ -352,8 +367,7 @@ class VentilatorioNoImvasivo {
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
                 }, [
-
-                    m("td.tx-normal[colspan='6']",
+                    m("td.tx-normal[colspan='3']",
                         m("div.input-group", [
                             m("div.input-group-append",
                                 m("button.btn.btn-xs.btn-light[type='button']", {
@@ -406,6 +420,22 @@ class VentilatorioNoImvasivo {
                                 ))
                             ] : [])
                         ])
+                    ),
+                    m("td.tx-normal[colspan='3']",
+                        (VentilatorioNoImvasivo.nuevoRegistro !== null ? [
+                            m("input[type='text'][placeholder='Cantidad']", {
+                                id: 'cantidadValor',
+                                class: 'form-control',
+                                oninput: (e) => {
+                                    setTimeout(() => {
+                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                        VentilatorioNoImvasivo.nuevoRegistro.cantidad = (e.target.value.length !== 0 ? e.target.value : null);
+
+                                    }, 50);
+                                },
+
+                            }),
+                        ] : [])
                     ),
                     m("td.tx-normal[colspan='3']",
                         (VentilatorioNoImvasivo.nuevoRegistro !== null ? [
