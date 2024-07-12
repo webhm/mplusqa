@@ -415,7 +415,7 @@ class EliminacionUciNeo {
                     m("td.tx-normal[colspan='3']",
                         (EliminacionUciNeo.nuevoRegistro !== null ? [
                             m("input[type='text'][placeholder='HH:mm']", {
-                                id: 'horaValor',
+                                id: 'horaValorEliminacionUciNeo',
                                 class: 'form-control',
                                 oncreate: (el) => {
 

@@ -415,7 +415,7 @@ class OmbligoUci {
                     m("td.tx-normal[colspan='3']",
                         (OmbligoUci.nuevoRegistro !== null ? [
                             m("input[type='text'][placeholder='HH:mm']", {
-                                id: 'horaValor',
+                                id: 'horaValorOmbligoUci',
                                 class: 'form-control',
                                 oncreate: (el) => {
 

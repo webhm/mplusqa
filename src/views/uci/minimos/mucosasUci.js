@@ -419,7 +419,7 @@ class MucosasUciNeo {
                     m("td.tx-normal[colspan='3']",
                         (MucosasUciNeo.nuevoRegistro !== null ? [
                             m("input[type='text'][placeholder='HH:mm']", {
-                                id: 'horaValor',
+                                id: 'horaValorMucosasUciNeo',
                                 class: 'form-control',
                                 oncreate: (el) => {
 

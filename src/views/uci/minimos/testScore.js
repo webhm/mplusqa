@@ -414,7 +414,7 @@ class TestScoreUciNeo {
                     m("td.tx-normal[colspan='3']",
                         (TestScoreUciNeo.nuevoRegistro !== null ? [
                             m("input[type='text'][placeholder='HH:mm']", {
-                                id: 'horaValor',
+                                id: 'horaValorTestScoreUciNeo',
                                 class: 'form-control',
                                 oncreate: (el) => {
 

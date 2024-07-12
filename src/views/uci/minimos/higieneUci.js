@@ -409,7 +409,7 @@ class HigieneUci {
                     m("td.tx-normal[colspan='3']",
                         (HigieneUci.nuevoRegistro !== null ? [
                             m("input[type='text'][placeholder='HH:mm']", {
-                                id: 'horaValor',
+                                id: 'horaValorHigieneUci',
                                 class: 'form-control',
                                 oncreate: (el) => {
 
