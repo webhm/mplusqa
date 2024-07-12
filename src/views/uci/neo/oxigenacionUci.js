@@ -258,6 +258,32 @@ class OxigenacionUci {
                                                     e.preventDefault();
                                                 }
                                             },
+                                            onkeypress: (e) => {
+                                                if (e.keyCode == 13) {
+
+                                                    OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    console.log(99, OxigenacionUci.nuevoRegistro)
+
+                                                    // throw 'AA';
+                                                    if (OxigenacionUci.nuevoRegistro.editar == null) {
+                                                        OxigenacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+                                                    } else {
+                                                        OxigenacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+
+                                                    }
+
+
+                                                }
+                                            },
                                             value: (OxigenacionUci.nuevoRegistro.am !== null ? OxigenacionUci.nuevoRegistro.am : '')
                                         })
                                     ] : [])
@@ -300,6 +326,32 @@ class OxigenacionUci {
                                                     e.preventDefault();
                                                 }
                                             },
+                                            onkeypress: (e) => {
+                                                if (e.keyCode == 13) {
+
+                                                    OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    console.log(99, OxigenacionUci.nuevoRegistro)
+
+                                                    // throw 'AA';
+                                                    if (OxigenacionUci.nuevoRegistro.editar == null) {
+                                                        OxigenacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+                                                    } else {
+                                                        OxigenacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+
+                                                    }
+
+
+                                                }
+                                            },
                                             value: (OxigenacionUci.nuevoRegistro.pm !== null ? OxigenacionUci.nuevoRegistro.pm : '')
                                         })
                                     ] : [])
@@ -339,6 +391,32 @@ class OxigenacionUci {
                                                     OxigenacionUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
                                                 } else {
                                                     e.preventDefault();
+                                                }
+                                            },
+                                            onkeypress: (e) => {
+                                                if (e.keyCode == 13) {
+
+                                                    OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    console.log(99, OxigenacionUci.nuevoRegistro)
+
+                                                    // throw 'AA';
+                                                    if (OxigenacionUci.nuevoRegistro.editar == null) {
+                                                        OxigenacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+                                                    } else {
+                                                        OxigenacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+
+                                                    }
+
+
                                                 }
                                             },
                                             value: (OxigenacionUci.nuevoRegistro.hs !== null ? OxigenacionUci.nuevoRegistro.hs : '')

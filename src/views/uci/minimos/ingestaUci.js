@@ -503,22 +503,6 @@ class IngestaUciNeo {
                                     label: "No (-)"
                                 },
                                 {
-                                    id: "+",
-                                    label: "Poco (+)"
-                                },
-                                {
-                                    id: "++",
-                                    label: "Mucho (++)"
-                                },
-                                {
-                                    id: "+++",
-                                    label: "Poco (+++)"
-                                },
-                                {
-                                    id: "++++",
-                                    label: "Mucho (++++)"
-                                },
-                                {
                                     id: "FORMULA LIQUIDA LECHE (ENFAMIL PREMIUM E1) 20 KILOCALORIAS",
                                     label: "FORMULA LIQUIDA LECHE (ENFAMIL PREMIUM E1) 20 KILOCALORIAS"
                                 },
