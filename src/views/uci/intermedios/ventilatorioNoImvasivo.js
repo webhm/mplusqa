@@ -10,8 +10,8 @@ class Valoracion {
     tipo = null;
     valor = null;
     editar = null;
-    tipoBit = 'UCIMINIMOS';
-    seccion = 'HigieneUci';
+    tipoBit = 'UCIINTER';
+    seccion = 'VentilatorioNoImvasivo';
     constructor() {
         this.id = this.id;
         this.nro = this.nro;
@@ -24,7 +24,7 @@ class Valoracion {
     }
 }
 
-class HigieneUci {
+class VentilatorioNoImvasivo {
 
     static registros = [];
     static nuevoRegistro = null;
@@ -36,29 +36,29 @@ class HigieneUci {
     }
 
     static iniciarRegistro() {
-        HigieneUci.nuevoRegistro = new Valoracion();
+        VentilatorioNoImvasivo.nuevoRegistro = new Valoracion();
     }
 
     static agregarRegistro() {
-        if (HigieneUci.registros.length == 0) {
-            HigieneUci.nuevoRegistro.nro = 1;
-            HigieneUci.registros.push(HigieneUci.nuevoRegistro);
+        if (VentilatorioNoImvasivo.registros.length == 0) {
+            VentilatorioNoImvasivo.nuevoRegistro.nro = 1;
+            VentilatorioNoImvasivo.registros.push(VentilatorioNoImvasivo.nuevoRegistro);
         } else {
-            HigieneUci.nuevoRegistro.nro = (HigieneUci.registros[HigieneUci.registros.length - 1].nro + 1);
-            HigieneUci.registros.push(HigieneUci.nuevoRegistro);
+            VentilatorioNoImvasivo.nuevoRegistro.nro = (VentilatorioNoImvasivo.registros[VentilatorioNoImvasivo.registros.length - 1].nro + 1);
+            VentilatorioNoImvasivo.registros.push(VentilatorioNoImvasivo.nuevoRegistro);
         }
     }
 
     static verRegistro(registro) {
         registro.editar = true;
-        HigieneUci.nuevoRegistro = registro;
+        VentilatorioNoImvasivo.nuevoRegistro = registro;
     }
 
     static editarRegistro() {
-        HigieneUci.nuevoRegistro.editar = null;
-        HigieneUci.registros.map((_v, _i) => {
-            if (_v.nro == HigieneUci.nuevoRegistro.nro) {
-                HigieneUci.registros[_i] = HigieneUci.nuevoRegistro;
+        VentilatorioNoImvasivo.nuevoRegistro.editar = null;
+        VentilatorioNoImvasivo.registros.map((_v, _i) => {
+            if (_v.nro == VentilatorioNoImvasivo.nuevoRegistro.nro) {
+                VentilatorioNoImvasivo.registros[_i] = VentilatorioNoImvasivo.nuevoRegistro;
             }
         });
 
@@ -67,18 +67,18 @@ class HigieneUci {
     static eliminarRegistro(obj) {
 
         let res = [];
-        HigieneUci.registros.map((_v, _i) => {
+        VentilatorioNoImvasivo.registros.map((_v, _i) => {
             if (_v.nro !== obj.nro) {
                 res.push(_v);
             }
         });
 
-        HigieneUci.registros = res;
+        VentilatorioNoImvasivo.registros = res;
 
     }
 
     static getRegistros() {
-        return HigieneUci.registros;
+        return VentilatorioNoImvasivo.registros;
     }
 
     static arqTable() {
@@ -234,8 +234,8 @@ class HigieneUci {
                                                 class: (oData.editar ? 'd-none' : ''),
                                                 disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
-                                                    HigieneUci.nuevoRegistro = null
-                                                    HigieneUci.verRegistro(oData);
+                                                    VentilatorioNoImvasivo.nuevoRegistro = null
+                                                    VentilatorioNoImvasivo.verRegistro(oData);
                                                 },
                                             },
                                             'Editar',
@@ -246,7 +246,7 @@ class HigieneUci {
 
                                                 onclick: () => {
                                                     oData.editar = null;
-                                                    HigieneUci.nuevoRegistro = null;
+                                                    VentilatorioNoImvasivo.nuevoRegistro = null;
                                                 },
                                             },
                                             'Cancelar Edición',
@@ -256,10 +256,10 @@ class HigieneUci {
                                                 disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
                                                 onclick: () => {
                                                     if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                                        HigieneUci.eliminarRegistro(oData);
+                                                        VentilatorioNoImvasivo.eliminarRegistro(oData);
                                                         FecthUci.eliminarSeccion(oData);
-                                                        HigieneUci.nuevoRegistro = null;
-                                                        PacientesUCI.vReloadTable('table-higiene', HigieneUci.getRegistros());
+                                                        VentilatorioNoImvasivo.nuevoRegistro = null;
+                                                        PacientesUCI.vReloadTable('table-ventilatorioNoImvasivo', VentilatorioNoImvasivo.getRegistros());
                                                     }
                                                 },
                                             },
@@ -268,12 +268,12 @@ class HigieneUci {
                                         m("button.btn.btn-xs.btn-dark[type='button']", {
                                                 class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                                 onclick: () => {
-                                                    HigieneUci.iniciarRegistro();
-                                                    HigieneUci.nuevoRegistro.id = oData.id;
-                                                    HigieneUci.nuevoRegistro.tipo = oData.tipo;
-                                                    HigieneUci.nuevoRegistro.valor = oData.valor;
-                                                    HigieneUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    HigieneUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    VentilatorioNoImvasivo.iniciarRegistro();
+                                                    VentilatorioNoImvasivo.nuevoRegistro.id = oData.id;
+                                                    VentilatorioNoImvasivo.nuevoRegistro.tipo = oData.tipo;
+                                                    VentilatorioNoImvasivo.nuevoRegistro.valor = oData.valor;
+                                                    VentilatorioNoImvasivo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    VentilatorioNoImvasivo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
                                                 },
                                             },
@@ -291,8 +291,6 @@ class HigieneUci {
                     orderable: true,
 
                 }
-
-
             ],
             fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
@@ -301,7 +299,7 @@ class HigieneUci {
     }
 
     static destroyTable() {
-        let table = document.getElementById('table-higiene');
+        let table = document.getElementById('table-ventilatorioNoImvasivo');
         // clear first
         if (table != null) {
             $('#table-higiene').DataTable().clear().destroy();
@@ -321,21 +319,21 @@ class HigieneUci {
                     // class: (PacientesUCI.tipoAtencion !== null && PacientesUCI.tipoAtencion == 'NEO' ? '' : 'd-none'),
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
-                        if (HigieneUci.show) {
-                            HigieneUci.destroyTable();
+                        if (VentilatorioNoImvasivo.show) {
+                            VentilatorioNoImvasivo.destroyTable();
                         }
-                        HigieneUci.show = !HigieneUci.show;
+                        VentilatorioNoImvasivo.show = !VentilatorioNoImvasivo.show;
                     }
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "HIGIENE:"
+                        "MODO VENTILATORIO NO IMVASIVO:"
                     ),
 
                 ])
             ),
             m("tbody.bd.bd-2", {
                 style: { "border-color": "#5173a1" },
-                class: (HigieneUci.show ? '' : 'd-none')
+                class: (VentilatorioNoImvasivo.show ? '' : 'd-none')
             }, [
 
                 m("tr.bd.bd-2.tx-uppercase", {
@@ -361,45 +359,48 @@ class HigieneUci {
                                 m("button.btn.btn-xs.btn-light[type='button']", {
                                         title: "Nuevo",
                                         onclick: () => {
-                                            if (HigieneUci.nuevoRegistro == null) {
-                                                HigieneUci.iniciarRegistro();
+                                            if (VentilatorioNoImvasivo.nuevoRegistro == null) {
+                                                VentilatorioNoImvasivo.iniciarRegistro();
                                             } else {
-                                                HigieneUci.nuevoRegistro = null;
+                                                VentilatorioNoImvasivo.nuevoRegistro = null;
                                             }
                                         }
                                     },
                                     m("i.fas.fa-plus")
                                 )
                             ),
-                            (HigieneUci.nuevoRegistro !== null ? [
+                            (VentilatorioNoImvasivo.nuevoRegistro !== null ? [
 
                                 m('select.tx-semibold', {
-                                    id: 'sec_TipoHigiene',
+                                    id: 'sec_VentilatorioNoImvasivo',
                                     onchange: (e) => {
                                         let _id = e.target.options[e.target.selectedIndex].id;
                                         let _value = e.target.options[e.target.selectedIndex].value;
-                                        if (HigieneUci.nuevoRegistro == null) {
-                                            HigieneUci.nuevoRegistro.id = _id;
-                                            HigieneUci.nuevoRegistro.tipo = _value;
+                                        if (VentilatorioNoImvasivo.nuevoRegistro == null) {
+                                            VentilatorioNoImvasivo.nuevoRegistro.id = _id;
+                                            VentilatorioNoImvasivo.nuevoRegistro.tipo = _value;
                                         } else {
-                                            HigieneUci.nuevoRegistro.id = _id;
-                                            HigieneUci.nuevoRegistro.tipo = _value;
+                                            VentilatorioNoImvasivo.nuevoRegistro.id = _id;
+                                            VentilatorioNoImvasivo.nuevoRegistro.tipo = _value;
                                         }
                                     },
                                     class: "custom-select",
-                                    value: (HigieneUci.nuevoRegistro !== null ? HigieneUci.nuevoRegistro.tipo : 0),
+                                    value: (VentilatorioNoImvasivo.nuevoRegistro !== null ? VentilatorioNoImvasivo.nuevoRegistro.tipo : 0),
                                 }, m("option[value='0']", 'Seleccione...'), [{
-                                        id: "General",
-                                        label: "General"
+                                        id: "Oxihood",
+                                        label: "OXIHOOD"
+                                    }, {
+                                        id: "CateterNasal",
+                                        label: "CATETER NASAL"
                                     },
                                     {
-                                        id: "Parcial",
-                                        label: "Parcial"
+                                        id: "FlujoLibre",
+                                        label: "FLUJO LIBRE"
                                     },
                                     {
-                                        id: "Ombligo",
-                                        label: "Ombligo"
-                                    }
+                                        id: "AltoFlujo",
+                                        label: "ALTO FLUJO / FiO2 Y LitrosO2"
+                                    },
                                 ].map(x =>
                                     m('option[id="' + x.id + '"]', x.label)
                                 ))
@@ -407,7 +408,7 @@ class HigieneUci {
                         ])
                     ),
                     m("td.tx-normal[colspan='3']",
-                        (HigieneUci.nuevoRegistro !== null ? [
+                        (VentilatorioNoImvasivo.nuevoRegistro !== null ? [
                             m("input[type='text'][placeholder='HH:mm']", {
                                 id: 'horaValor',
                                 class: 'form-control',
@@ -424,8 +425,8 @@ class HigieneUci {
                                 oninput: (e) => {
                                     setTimeout(() => {
                                         //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                        HigieneUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                        HigieneUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                        VentilatorioNoImvasivo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                        VentilatorioNoImvasivo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
 
                                     }, 50);
                                 },
@@ -434,34 +435,34 @@ class HigieneUci {
                         ] : [])
                     ),
                     m("td.tx-normal[colspan='3']",
-                        (HigieneUci.nuevoRegistro !== null ? [
+                        (VentilatorioNoImvasivo.nuevoRegistro !== null ? [
                             m('select.tx-semibold', {
                                 id: 'valorHigiene',
                                 onchange: (e) => {
                                     let _id = e.target.options[e.target.selectedIndex].id;
                                     let _value = e.target.options[e.target.selectedIndex].value;
-                                    HigieneUci.nuevoRegistro.valor = _value;
+                                    VentilatorioNoImvasivo.nuevoRegistro.valor = _value;
                                 },
                                 onkeypress: (e) => {
                                     if (e.keyCode == 13) {
-                                        HigieneUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                        HigieneUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                        if (HigieneUci.nuevoRegistro.editar == null) {
-                                            HigieneUci.agregarRegistro();
-                                            HigieneUci.nuevoRegistro.id = HigieneUci.nuevoRegistro.nro + 'Higiene';
-                                            FecthUci.registrarSeccion(HigieneUci.nuevoRegistro);
-                                            HigieneUci.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-higiene', HigieneUci.getRegistros());
+                                        VentilatorioNoImvasivo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                        VentilatorioNoImvasivo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        if (VentilatorioNoImvasivo.nuevoRegistro.editar == null) {
+                                            VentilatorioNoImvasivo.agregarRegistro();
+                                            VentilatorioNoImvasivo.nuevoRegistro.id = VentilatorioNoImvasivo.nuevoRegistro.nro + 'Higiene';
+                                            FecthUci.registrarSeccion(VentilatorioNoImvasivo.nuevoRegistro);
+                                            VentilatorioNoImvasivo.nuevoRegistro = null;
+                                            PacientesUCI.vReloadTable('table-ventilatorioNoImvasivo', VentilatorioNoImvasivo.getRegistros());
                                         } else {
-                                            HigieneUci.editarRegistro();
-                                            FecthUci.actualizarSeccion(HigieneUci.nuevoRegistro);
-                                            HigieneUci.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-higiene', HigieneUci.getRegistros());
+                                            VentilatorioNoImvasivo.editarRegistro();
+                                            FecthUci.actualizarSeccion(VentilatorioNoImvasivo.nuevoRegistro);
+                                            VentilatorioNoImvasivo.nuevoRegistro = null;
+                                            PacientesUCI.vReloadTable('table-ventilatorioNoImvasivo', VentilatorioNoImvasivo.getRegistros());
                                         }
                                     }
                                 },
                                 class: "custom-select",
-                                value: (HigieneUci.nuevoRegistro !== null ? HigieneUci.nuevoRegistro.valor : 0),
+                                value: (VentilatorioNoImvasivo.nuevoRegistro !== null ? VentilatorioNoImvasivo.nuevoRegistro.valor : 0),
                             }, m("option[value='0']", 'Seleccione...'), [{
                                     id: "X",
                                     label: "Sí (X)"
@@ -485,7 +486,7 @@ class HigieneUci {
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12']",
-                        (HigieneUci.show != false ? [PacientesUCI.vTable('table-higiene', HigieneUci.getRegistros(), HigieneUci.arqTable())] : [])
+                        (VentilatorioNoImvasivo.show != false ? [PacientesUCI.vTable('table-ventilatorioNoImvasivo', VentilatorioNoImvasivo.getRegistros(), VentilatorioNoImvasivo.arqTable())] : [])
                     ),
                 ]),
                 m('br')
@@ -496,4 +497,4 @@ class HigieneUci {
 
 }
 
-export default HigieneUci;
+export default VentilatorioNoImvasivo;

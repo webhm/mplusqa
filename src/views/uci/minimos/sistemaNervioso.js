@@ -132,6 +132,9 @@ class SistemaNervioso {
                     title: "Tipo:",
                 },
                 {
+                    title: "Hora:",
+                },
+                {
                     title: "Valor:",
                 },
                 {
@@ -203,10 +206,20 @@ class SistemaNervioso {
                 },
                 {
                     mRender: function(data, type, full) {
+                        return full.hora != null ? full.hora : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                    },
+
+                    visible: true,
+                    aTargets: [5],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
                         return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                     },
                     visible: true,
-                    aTargets: [5],
+                    aTargets: [6],
                     orderable: true,
 
                 },
@@ -274,7 +287,7 @@ class SistemaNervioso {
                     },
                     width: '10%',
                     visible: true,
-                    aTargets: [6],
+                    aTargets: [7],
                     orderable: true,
 
                 }
@@ -399,7 +412,34 @@ class SistemaNervioso {
                             ] : [])
                         ])
                     ),
-                    m("td.tx-normal[colspan='6']",
+                    m("td.tx-normal[colspan='3']",
+                        (SistemaNervioso.nuevoRegistro !== null ? [
+                            m("input[type='text'][placeholder='HH:mm']", {
+                                id: 'horaValor',
+                                class: 'form-control',
+                                oncreate: (el) => {
+
+                                    setTimeout(() => {
+                                        new Cleave("#" + el.dom.id, {
+                                            time: true,
+                                            timePattern: ['h', 'm']
+                                        });
+                                    }, 90);
+
+                                },
+                                oninput: (e) => {
+                                    setTimeout(() => {
+                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                        SistemaNervioso.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                        SistemaNervioso.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+
+                                    }, 50);
+                                },
+
+                            }),
+                        ] : [])
+                    ),
+                    m("td.tx-normal[colspan='3']",
                         (SistemaNervioso.nuevoRegistro !== null ? [
                             m('select.tx-semibold', {
                                 id: 'valorSistemaNervioso',

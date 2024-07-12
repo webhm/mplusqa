@@ -30,6 +30,7 @@ import EliminacionUciNeo from "./eliminacionUci";
 import SistemaNervioso from "./sistemaNervioso";
 import OmbligoUci from "./ombligoUci";
 import HigieneUci from "./higieneUci";
+import VentilatorioNoImvasivo from "./ventilatorioNoImvasivo";
 
 
 // Pacientes UCI
@@ -129,6 +130,8 @@ class PacientesUCI extends App {
         OmbligoUci.registros = PacientesUCI.parseAllSeccion('OmbligoUci');
 
         HigieneUci.registros = PacientesUCI.parseAllSeccion('HigieneUci');
+
+        VentilatorioNoImvasivo.registros = PacientesUCI.parseAllSeccion('VentilatorioNoImvasivo');
 
 
 
@@ -248,8 +251,8 @@ class PacientesUCI extends App {
                         m(OmbligoUci),
                         // Higiene Uci
                         m(HigieneUci),
-                        // Osigenacion
-                        m(OxigenacionUci),
+                        // VentilatorioNoImvasivo
+                        m(VentilatorioNoImvasivo),
 
                     ]),
                     m('div.ht-100'),
@@ -5488,8 +5491,8 @@ class PacientesUCI extends App {
                                                     //  PacientesUCI.setTurnoSeccionGases(Array.from(document.getElementById('sec_Gases').options));
                                                     //  GasesUci.registros = PacientesUCI.parseSeccionGases_v2(Array.from(document.getElementById('sec_Gases').options));
 
-                                                    OxigenacionUci.registros = PacientesUCI.parseSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
-                                                    PacientesUCI.setTurnoSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
+                                                    // OxigenacionUci.registros = PacientesUCI.parseSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
+                                                    //  PacientesUCI.setTurnoSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
 
                                                     // MedidasUci.allRegistros = PacientesUCI.parseSeccionMedidas_AllRegistros(Array.from(document.getElementById('sec_Medidas').options));
                                                     // PacientesUCI.setTurnoSeccionMedidas(Array.from(document.getElementById('sec_Medidas').options));
