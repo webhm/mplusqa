@@ -132,6 +132,9 @@ class IngestaUciNeo {
                     title: "Tipo:",
                 },
                 {
+                    title: "Hora:",
+                },
+                {
                     title: "Valor:",
                 },
                 {
