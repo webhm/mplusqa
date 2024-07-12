@@ -223,7 +223,7 @@ class VentilatorioNoInvasivo {
                     mRender: function(data, type, full) {
                         return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                     },
-                    visible: true,
+                    visible: false,
                     aTargets: [6],
                     orderable: true,
 
