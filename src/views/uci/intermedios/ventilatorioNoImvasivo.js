@@ -367,7 +367,7 @@ class VentilatorioNoInvasivo {
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
                 }, [
-                    m("td.tx-normal[colspan='3']",
+                    m("td.tx-normal[colspan='4']",
                         m("div.input-group", [
                             m("div.input-group-append",
                                 m("button.btn.btn-xs.btn-light[type='button']", {
@@ -421,7 +421,7 @@ class VentilatorioNoInvasivo {
                             ] : [])
                         ])
                     ),
-                    m("td.tx-normal[colspan='3']",
+                    m("td.tx-normal[colspan='4']",
                         (VentilatorioNoInvasivo.nuevoRegistro !== null ? [
                             m("input[type='text'][placeholder='Cantidad']", {
                                 id: 'cantidadValor',
@@ -437,10 +437,10 @@ class VentilatorioNoInvasivo {
                             }),
                         ] : [])
                     ),
-                    m("td.tx-normal[colspan='3']",
+                    m("td.tx-normal[colspan='4']",
                         (VentilatorioNoInvasivo.nuevoRegistro !== null ? [
                             m("input[type='text'][placeholder='HH:mm']", {
-                                id: 'horaValor',
+                                id: 'horaValorVentilatorioNoInvasivo',
                                 class: 'form-control',
                                 oncreate: (el) => {
 
@@ -460,19 +460,6 @@ class VentilatorioNoInvasivo {
 
                                     }, 50);
                                 },
-
-                            }),
-                        ] : [])
-                    ),
-                    m("td.tx-normal[colspan='3']",
-                        (VentilatorioNoInvasivo.nuevoRegistro !== null ? [
-                            m('select.tx-semibold', {
-                                id: 'valorHigiene',
-                                onchange: (e) => {
-                                    let _id = e.target.options[e.target.selectedIndex].id;
-                                    let _value = e.target.options[e.target.selectedIndex].value;
-                                    VentilatorioNoInvasivo.nuevoRegistro.valor = _value;
-                                },
                                 onkeypress: (e) => {
                                     if (e.keyCode == 13) {
                                         VentilatorioNoInvasivo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
@@ -491,21 +478,11 @@ class VentilatorioNoInvasivo {
                                         }
                                     }
                                 },
-                                class: "custom-select",
-                                value: (VentilatorioNoInvasivo.nuevoRegistro !== null ? VentilatorioNoInvasivo.nuevoRegistro.valor : 0),
-                            }, m("option[value='0']", 'Seleccione...'), [{
-                                    id: "X",
-                                    label: "Sí (X)"
-                                },
-                                {
-                                    id: "-",
-                                    label: "No (-)"
-                                },
-                            ].map(x =>
-                                m('option[id="' + x.id + '"]', x.label)
-                            ))
+
+                            }),
                         ] : [])
                     ),
+
                 ]),
                 m("tr.tx-uppercase", {
                     style: { "background-color": "#eaeff5" }

@@ -415,7 +415,7 @@ class SistemaNervioso {
                     m("td.tx-normal[colspan='3']",
                         (SistemaNervioso.nuevoRegistro !== null ? [
                             m("input[type='text'][placeholder='HH:mm']", {
-                                id: 'horaValor',
+                                id: 'horaValorSistemaNervioso',
                                 class: 'form-control',
                                 oncreate: (el) => {
 
