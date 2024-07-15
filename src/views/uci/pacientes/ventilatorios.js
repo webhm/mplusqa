@@ -870,10 +870,10 @@ class VentilatoriosUci {
 
         for (let index = 0; index < orderCol[0]; index++) {
             VentilatoriosUci.sColumns.push({
-                title: "Condición:",
+                title: "Hora:",
             });
             VentilatoriosUci.sColumns.push({
-                title: "Hora:",
+                title: "Valor:",
             });
         }
 
@@ -949,6 +949,149 @@ class VentilatoriosUci {
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
+            VentilatoriosUci.sRows.push({
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+                                    ondblclick: (e) => {
+                                        VentilatoriosUci.nuevoRegistro = null
+                                        valores.filter((v, i) => {
+
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                VentilatoriosUci.verRegistro(resultNro[_i]);
+                                                document.getElementById('condicion' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
+                                                document.getElementById('txtCondicion' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                document.getElementById('horaVentilatorio' + resultNro[_i].nro).className = "form-control";
+                                                document.getElementById('txtHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                if (document.getElementById('btn' + resultNro[_i].nro) != null) {
+                                                    document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
+                                                    setTimeout(() => {
+                                                        new Cleave("#horaVentilatorio" + resultNro[_i].nro, {
+                                                            time: true,
+                                                            timePattern: ['h', 'm']
+                                                        });
+                                                    }, 90);
+                                                }
+
+
+                                                let tt = $('#Ventilatorios_' + oData.id).offset().top;
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosVentilatorios').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
+
+                                            }
+                                        });
+
+
+
+                                    },
+                                    oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
+                                        valores.filter((v, i) => {
+
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+
+                                                if (resultNro[_i] !== undefined) {
+                                                    if (resultNro[_i].hora !== null) {
+                                                        el.dom.id = "txtHora" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = resultNro[_i].hora;
+                                                    } else {
+                                                        el.dom.id = "txtHora" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = '';
+                                                    }
+                                                } else {
+                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                }
+                                            }
+                                        })
+                                    }
+                                }, []),
+                                m('div.d-flex', [
+                                    m("input[type='text'][placeholder='HH:mm']", {
+                                        oncreate: (el) => {
+                                            valores.filter((v, i) => {
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+                                                    if (resultNro[_i] !== undefined) {
+                                                        if (resultNro[_i].hora !== null) {
+                                                            el.dom.value = resultNro[_i].hora;
+                                                            el.dom.id = "horaVentilatorio" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control d-none";
+
+
+                                                            setTimeout(() => {
+                                                                new Cleave("#" + el.dom.id, {
+                                                                    time: true,
+                                                                    timePattern: ['h', 'm']
+                                                                });
+                                                            }, 90);
+
+                                                        } else {
+                                                            el.dom.id = "horaVentilatorio" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control d-none";
+                                                        }
+                                                    } else {
+                                                        el.dom.className = "form-control d-none";
+
+                                                    }
+                                                }
+                                            })
+
+
+                                            if (VentilatoriosUci.nuevoRegistro !== null && VentilatoriosUci.nuevoRegistro.hora == null) {
+                                                if (VentilatoriosUci.setHora != undefined) {
+                                                    VentilatoriosUci.nuevoRegistro.hora = VentilatoriosUci.setHora;
+                                                    el.dom.value = VentilatoriosUci.setHora;
+                                                }
+                                            }
+
+
+
+
+                                        },
+                                        oninput: (e) => {
+                                            setTimeout(() => {
+                                                //VentilatoriosUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                                VentilatoriosUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                                VentilatoriosUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+
+                                            }, 50);
+                                        },
+
+                                    }),
+                                ]),
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: null,
+                orderable: true,
+            });
             VentilatoriosUci.sRows.push({
                 fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
@@ -1120,151 +1263,6 @@ class VentilatoriosUci {
                                             VentilatoriosUci.setCondicion = (e.target.value.length !== 0 ? e.target.value : null);
                                             VentilatoriosUci.nuevoRegistro.condicion = (e.target.value.length !== 0 ? e.target.value : null);
                                         },
-
-                                    })
-
-                                ]),
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: null,
-                orderable: true,
-
-            });
-            VentilatoriosUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-                                    ondblclick: (e) => {
-                                        VentilatoriosUci.nuevoRegistro = null
-                                        valores.filter((v, i) => {
-
-                                            if (v.id == oData.id) {
-                                                let _i = v.idObj[index];
-                                                VentilatoriosUci.verRegistro(resultNro[_i]);
-                                                document.getElementById('condicion' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
-                                                document.getElementById('txtCondicion' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
-                                                document.getElementById('horaVentilatorio' + resultNro[_i].nro).className = "form-control";
-                                                document.getElementById('txtHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
-                                                if (document.getElementById('btn' + resultNro[_i].nro) != null) {
-                                                    document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
-                                                    setTimeout(() => {
-                                                        new Cleave("#horaVentilatorio" + resultNro[_i].nro, {
-                                                            time: true,
-                                                            timePattern: ['h', 'm']
-                                                        });
-                                                    }, 90);
-                                                }
-
-
-                                                let tt = $('#Ventilatorios_' + oData.id).offset().top;
-                                                setTimeout(() => {
-                                                    let isAnimating = true;
-                                                    $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
-                                                        700, "easeInOutSine",
-                                                        function() {
-                                                            isAnimating = false;
-                                                        })
-                                                }, 250);
-
-                                                setTimeout(() => {
-                                                    let isAnimating = true;
-                                                    $('#registrosVentilatorios').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
-                                                        700, "easeInOutSine",
-                                                        function() {
-                                                            isAnimating = false;
-                                                        })
-                                                }, 250);
-
-
-                                            }
-                                        });
-
-
-
-                                    },
-                                    oncreate: (el) => {
-                                        el.dom.className = "text-center pd-l-0 pd-r-0";
-
-                                        valores.filter((v, i) => {
-
-                                            if (v.id == oData.id) {
-                                                let _i = v.idObj[index];
-
-                                                if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].hora !== null) {
-                                                        el.dom.id = "txtHora" + resultNro[_i].nro;
-                                                        el.dom.innerHTML = resultNro[_i].hora;
-                                                    } else {
-                                                        el.dom.id = "txtHora" + resultNro[_i].nro;
-                                                        el.dom.innerHTML = '';
-                                                    }
-                                                } else {
-                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                                                }
-                                            }
-                                        })
-                                    }
-                                }, []),
-                                m('div.d-flex', [
-                                    m("input[type='text'][placeholder='HH:mm']", {
-                                        oncreate: (el) => {
-                                            valores.filter((v, i) => {
-                                                if (v.id == oData.id) {
-                                                    let _i = v.idObj[index];
-                                                    if (resultNro[_i] !== undefined) {
-                                                        if (resultNro[_i].hora !== null) {
-                                                            el.dom.value = resultNro[_i].hora;
-                                                            el.dom.id = "horaVentilatorio" + resultNro[_i].nro;
-                                                            el.dom.className = "form-control d-none";
-
-
-                                                            setTimeout(() => {
-                                                                new Cleave("#" + el.dom.id, {
-                                                                    time: true,
-                                                                    timePattern: ['h', 'm']
-                                                                });
-                                                            }, 90);
-
-                                                        } else {
-                                                            el.dom.id = "horaVentilatorio" + resultNro[_i].nro;
-                                                            el.dom.className = "form-control d-none";
-                                                        }
-                                                    } else {
-                                                        el.dom.className = "form-control d-none";
-
-                                                    }
-                                                }
-                                            })
-
-
-                                            if (VentilatoriosUci.nuevoRegistro !== null && VentilatoriosUci.nuevoRegistro.hora == null) {
-                                                if (VentilatoriosUci.setHora != undefined) {
-                                                    VentilatoriosUci.nuevoRegistro.hora = VentilatoriosUci.setHora;
-                                                    el.dom.value = VentilatoriosUci.setHora;
-                                                }
-                                            }
-
-
-
-
-                                        },
-                                        oninput: (e) => {
-                                            setTimeout(() => {
-                                                //VentilatoriosUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                                VentilatoriosUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                                VentilatoriosUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
-
-                                            }, 50);
-                                        },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
                                                 VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
@@ -1327,7 +1325,9 @@ class VentilatoriosUci {
 
                                             }
                                         },
-                                    }),
+
+                                    })
+
                                 ]),
                             ]
                         }
@@ -1336,7 +1336,9 @@ class VentilatoriosUci {
                 visible: true,
                 aTargets: null,
                 orderable: true,
+
             });
+
         }
 
         VentilatoriosUci.sRows.push({
