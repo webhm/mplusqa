@@ -914,9 +914,13 @@ class PrescripcionesUci {
                                             el.dom.parentElement.className = 'tx-12 tx-semibold bg-warning op-8 ';
                                         }
 
+                                        /*
+
                                         if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && (oData.frecuencia == '0' || oData.label == 'CADA DÍA') && oData.label != 'EN ESTE MOMENTO') {
                                             el.dom.parentElement.parentElement.className = 'd-none';
                                         }
+
+                                        */
 
                                         if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && fechaPres > fechaHorario && oData.frecuencia >= 6) {
                                             el.dom.parentElement.parentElement.className = 'd-none';
@@ -1904,41 +1908,46 @@ class PrescripcionesUci {
                                     },
                                     {
                                         id: 3,
+                                        value: 3,
+                                        label: "CADA 3 HORAS"
+                                    },
+                                    {
+                                        id: 4,
                                         value: 4,
                                         label: "CADA 4 HORAS"
                                     },
                                     {
-                                        id: 4,
+                                        id: 5,
                                         value: 6,
                                         label: "CADA 6 HORAS"
                                     },
                                     {
-                                        id: 5,
+                                        id: 6,
                                         value: 8,
                                         label: "CADA 8 HORAS"
                                     },
                                     {
-                                        id: 6,
+                                        id: 7,
                                         value: 12,
                                         label: "CADA 12 HORAS"
                                     },
                                     {
-                                        id: 7,
+                                        id: 8,
                                         value: 23,
                                         label: "CADA DÍA"
                                     },
                                     {
-                                        id: 8,
+                                        id: 9,
                                         value: 0,
                                         label: "CRITERIO MEDICO"
                                     },
                                     {
-                                        id: 9,
+                                        id: 10,
                                         value: 0,
                                         label: "CONTINUO"
                                     },
                                     {
-                                        id: 10,
+                                        id: 11,
                                         value: 0,
                                         label: "EN ESTE MOMENTO"
                                     },

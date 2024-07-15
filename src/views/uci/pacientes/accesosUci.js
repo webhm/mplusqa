@@ -833,10 +833,10 @@ class AccesosUci {
 
 
                     m("th[scope='col'][colspan='6']",
-                        "CONDICIÓN: "
+                        "CONDICIÓN / OBSERVACIÓN: "
                     ),
                     m("th[scope='col'][colspan='6']",
-                        "OBSERVACIÓN / TRAE: "
+                        "TRAE: "
                     ),
 
                 ]),
