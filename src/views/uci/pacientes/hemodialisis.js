@@ -659,22 +659,22 @@ class HemodialisisUci {
                             value: (HemodialisisUci.nuevoRegistro !== null ? HemodialisisUci.nuevoRegistro.hemo : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
                                 id: "ParcheLimpioSeco",
-                                label: "PARCHE LIMPIO Y SECO"
+                                label: "Parche limpio y seco"
                             }, {
                                 id: "FechaCuracionParche",
-                                label: "FECHA DE CURACION SOBRE PARCHE"
+                                label: "Fecha de curación sobre parche"
                             },
                             {
                                 id: "TodosAccesosTapados",
-                                label: "TODOS LOS ACCESOS TAPADOS"
+                                label: "Todos los accesos tapados"
                             },
                             {
                                 id: "RegistroNumerosDias",
-                                label: "REGISTRO DE NUMEROS DE DIAS"
+                                label: "Registro de números de días"
                             },
                             {
                                 id: "RegistroCambioEquipo",
-                                label: "REGISTRO DE CAMBIO DE EQUIPO"
+                                label: "Registro de cambio de equipo"
                             }
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)

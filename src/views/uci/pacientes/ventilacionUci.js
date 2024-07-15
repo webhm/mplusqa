@@ -657,34 +657,34 @@ class VentilacionUci {
                             value: (VentilacionUci.nuevoRegistro !== null ? VentilacionUci.nuevoRegistro.cateter : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
                                 id: "PosicionSemifowler",
-                                label: "POSICION SEMIFOWLER"
+                                label: "Posición semifowler"
                             }, {
                                 id: "BolsaReanimacion",
-                                label: "BOLSA DE REANIMACION"
+                                label: "Bolsa de reanimación"
                             },
                             {
                                 id: "CorrugadoSinVaporCondesado",
-                                label: "CORRUGADO SIN VAPOR CONDENSADO"
+                                label: "Corrugado sin vapor condensado"
                             },
                             {
                                 id: "FiltroFinalRespiratorio",
-                                label: "USO DE FILTRO FINAL RESPIRATORIO"
+                                label: "Uso de filtro final respiratorio"
                             },
                             {
                                 id: "RegistroRotacionTetHoras",
-                                label: "REGISTRO DE ROTACION DE TET CADA 12 HORAS"
+                                label: "Registro de rotación de tet cada 12 horas"
                             },
                             {
                                 id: "RegistroCambioCircuito",
-                                label: "REGISTRO DE CAMBIO DE CIRCUITO"
+                                label: "Registro de cambio de circuito"
                             },
                             {
                                 id: "CambioFiltroHoras",
-                                label: "CAMBIO DE FILTRO CADA 12 HORAS"
+                                label: "Cambio de filtro cada 12 horas"
                             },
                             {
                                 id: "RegistroDiasEnfermeria",
-                                label: "REGISTRO DIAS VM HOJA DE ENFERMERIA"
+                                label: "Registro dias vm hoja de enfermeria"
                             },
 
                         ].map(x =>

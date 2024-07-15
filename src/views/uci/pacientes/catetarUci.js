@@ -655,25 +655,25 @@ class CateterUci {
                             value: (CateterUci.nuevoRegistro !== null ? CateterUci.nuevoRegistro.cateter : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
                                 id: "RecoletcorVejiga",
-                                label: "RECOLECTOR MAS ABAJO QUE VEJIGA"
+                                label: "Recolector más abajo que vejiga"
                             }, {
                                 id: "RecolectorNoTocaPiso",
-                                label: "RECOLECTOR NO TOCA PISO"
+                                label: "Recolector no toca piso"
                             }, {
                                 id: "OrinaRecolector",
-                                label: "ORINA HASTA 50% EN RECOLECTOR"
+                                label: "Orina hasta 50% en recolector"
                             },
                             {
                                 id: "SondaFijadaMuslo",
-                                label: "SONDA FIJADA EN MUSLO"
+                                label: "Sonda fijada en muslo"
                             },
                             {
                                 id: "RegistroAseoGenital",
-                                label: "REGISTRO DE ASEO GENITAL"
+                                label: "Registro de aseo genital"
                             },
                             {
                                 id: "RegistroDiasCateter",
-                                label: "REGISTRO N° DE DIAS DE CATETER"
+                                label: "Registro n° de días de cateter"
                             }
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
