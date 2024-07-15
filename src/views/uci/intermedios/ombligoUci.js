@@ -345,10 +345,13 @@ class OmbligoUci {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
-                    m("th[scope='col'][colspan='6']",
+                    m("th[scope='col'][colspan='4']",
                         "TIPO: "
                     ),
-                    m("th[scope='col'][colspan='6']",
+                    m("th[scope='col'][colspan='4']",
+                        "HORA: "
+                    ),
+                    m("th[scope='col'][colspan='4']",
                         "VALOR: "
                     )
                 ]),
@@ -358,7 +361,7 @@ class OmbligoUci {
 
                 }, [
 
-                    m("td.tx-normal[colspan='6']",
+                    m("td.tx-normal[colspan='4']",
                         m("div.input-group", [
                             m("div.input-group-append",
                                 m("button.btn.btn-xs.btn-light[type='button']", {
@@ -415,10 +418,10 @@ class OmbligoUci {
                             ] : [])
                         ])
                     ),
-                    m("td.tx-normal[colspan='3']",
+                    m("td.tx-normal[colspan='4']",
                         (OmbligoUci.nuevoRegistro !== null ? [
                             m("input[type='text'][placeholder='HH:mm']", {
-                                id: 'horaValor',
+                                id: 'horaValorOmbligoUci',
                                 class: 'form-control',
                                 oncreate: (el) => {
 
@@ -442,7 +445,7 @@ class OmbligoUci {
                             }),
                         ] : [])
                     ),
-                    m("td.tx-normal[colspan='3']",
+                    m("td.tx-normal[colspan='4']",
                         (OmbligoUci.nuevoRegistro !== null ? [
                             m('select.tx-semibold', {
                                 id: 'valorOmbligo',

@@ -345,10 +345,13 @@ class MucosasUciNeo {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
-                    m("th[scope='col'][colspan='6']",
+                    m("th[scope='col'][colspan='4']",
                         "TIPO: "
                     ),
-                    m("th[scope='col'][colspan='6']",
+                    m("th[scope='col'][colspan='4']",
+                        "HORA: "
+                    ),
+                    m("th[scope='col'][colspan='4']",
                         "VALOR: "
                     )
                 ]),
@@ -358,7 +361,7 @@ class MucosasUciNeo {
 
                 }, [
 
-                    m("td.tx-normal[colspan='6']",
+                    m("td.tx-normal[colspan='4']",
                         m("div.input-group", [
                             m("div.input-group-append",
                                 m("button.btn.btn-xs.btn-light[type='button']", {
@@ -419,10 +422,10 @@ class MucosasUciNeo {
                             ] : [])
                         ])
                     ),
-                    m("td.tx-normal[colspan='3']",
+                    m("td.tx-normal[colspan='4']",
                         (MucosasUciNeo.nuevoRegistro !== null ? [
                             m("input[type='text'][placeholder='HH:mm']", {
-                                id: 'horaValor',
+                                id: 'horaValorMucosasUciNeo',
                                 class: 'form-control',
                                 oncreate: (el) => {
 
@@ -446,7 +449,7 @@ class MucosasUciNeo {
                             }),
                         ] : [])
                     ),
-                    m("td.tx-normal[colspan='3']",
+                    m("td.tx-normal[colspan='4']",
                         (MucosasUciNeo.nuevoRegistro !== null ? [
                             m('select.tx-semibold', {
                                 id: 'valorPielMucosa',

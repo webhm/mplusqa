@@ -357,11 +357,14 @@ class VentilatorioNoInvasivo {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
-                    m("th[scope='col'][colspan='6']",
+                    m("th[scope='col'][colspan='4']",
                         "TIPO: "
                     ),
-                    m("th[scope='col'][colspan='6']",
-                        "VALOR: "
+                    m("th[scope='col'][colspan='4']",
+                        "HORA: "
+                    ),
+                    m("th[scope='col'][colspan='4']",
+                        "CANTIDAD: "
                     )
                 ]),
                 m("tr.bd.bd-2", {

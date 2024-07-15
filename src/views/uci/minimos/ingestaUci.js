@@ -361,10 +361,17 @@ class IngestaUciNeo {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
-                    m("th[scope='col'][colspan='6']",
+                    m("th[scope='col'][colspan='3']",
                         "TIPO: "
                     ),
-                    m("th[scope='col'][colspan='6']",
+                    m("th[scope='col'][colspan='3']",
+                        "CANTIDAD: "
+
+                    ),
+                    m("th[scope='col'][colspan='3']",
+                        "HORA: "
+                    ),
+                    m("th[scope='col'][colspan='3']",
                         "VALOR: "
                     )
                 ]),
@@ -425,7 +432,7 @@ class IngestaUciNeo {
                     ),
                     m("td.tx-normal[colspan='3']",
                         (IngestaUciNeo.nuevoRegistro !== null ? [
-                            m("input[type='text'][placeholder='Medida']", {
+                            m("input[type='text'][placeholder='Cantidad']", {
                                 id: 'medidaValor',
                                 class: 'form-control',
 

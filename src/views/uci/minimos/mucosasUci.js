@@ -345,10 +345,13 @@ class MucosasUciNeo {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
-                    m("th[scope='col'][colspan='6']",
+                    m("th[scope='col'][colspan='4']",
                         "TIPO: "
                     ),
-                    m("th[scope='col'][colspan='6']",
+                    m("th[scope='col'][colspan='4']",
+                        "HORA: "
+                    ),
+                    m("th[scope='col'][colspan='4']",
                         "VALOR: "
                     )
                 ]),
@@ -358,7 +361,7 @@ class MucosasUciNeo {
 
                 }, [
 
-                    m("td.tx-normal[colspan='6']",
+                    m("td.tx-normal[colspan='4']",
                         m("div.input-group", [
                             m("div.input-group-append",
                                 m("button.btn.btn-xs.btn-light[type='button']", {
@@ -419,7 +422,7 @@ class MucosasUciNeo {
                             ] : [])
                         ])
                     ),
-                    m("td.tx-normal[colspan='3']",
+                    m("td.tx-normal[colspan='4']",
                         (MucosasUciNeo.nuevoRegistro !== null ? [
                             m("input[type='text'][placeholder='HH:mm']", {
                                 id: 'horaValorMucosasUciNeo',
@@ -439,14 +442,13 @@ class MucosasUciNeo {
                                         //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
                                         MucosasUciNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
                                         MucosasUciNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
-
                                     }, 50);
                                 },
 
                             }),
                         ] : [])
                     ),
-                    m("td.tx-normal[colspan='3']",
+                    m("td.tx-normal[colspan='4']",
                         (MucosasUciNeo.nuevoRegistro !== null ? [
                             m('select.tx-semibold', {
                                 id: 'valorPielMucosa',
@@ -460,7 +462,6 @@ class MucosasUciNeo {
                                         MucosasUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         MucosasUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                         MucosasUciNeo.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + MucosasUciNeo.nuevoRegistro.hora;
-
                                         if (MucosasUciNeo.nuevoRegistro.editar == null) {
                                             MucosasUciNeo.agregarRegistro();
                                             MucosasUciNeo.nuevoRegistro.id = MucosasUciNeo.nuevoRegistro.nro + 'PielMucosas';
