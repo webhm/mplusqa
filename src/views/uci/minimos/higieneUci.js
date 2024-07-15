@@ -9,6 +9,7 @@ class Valoracion {
     fechaHoraTurno = null;
     tipo = null;
     valor = null;
+    timestamp = null;
     editar = null;
     tipoBit = 'UCIMINIMOS';
     seccion = 'HigieneUci';
@@ -18,6 +19,7 @@ class Valoracion {
         this.fechaHoraTurno = this.fechaHoraTurno;
         this.tipo = this.tipo;
         this.valor = this.valor;
+        this.timestamp = this.timestamp;
         this.editar = this.editar;
         this.tipoBit = this.tipoBit;
         this.seccion = this.seccion;
@@ -446,6 +448,8 @@ class HigieneUci {
                                     if (e.keyCode == 13) {
                                         HigieneUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         HigieneUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        HigieneUci.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + HigieneUci.nuevoRegistro.hora;
+
                                         if (HigieneUci.nuevoRegistro.editar == null) {
                                             HigieneUci.agregarRegistro();
                                             HigieneUci.nuevoRegistro.id = HigieneUci.nuevoRegistro.nro + 'Higiene';

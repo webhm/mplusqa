@@ -9,6 +9,7 @@ class Valoracion {
     fechaHoraTurno = null;
     tipo = null;
     valor = null;
+    timestamp = null;
     cantidad = null;
     editar = null;
     tipoBit = 'UCIINTER';
@@ -19,6 +20,7 @@ class Valoracion {
         this.fechaHoraTurno = this.fechaHoraTurno;
         this.tipo = this.tipo;
         this.valor = this.valor;
+        this.timestamp = this.timestamp;
         this.cantidad = this.cantidad;
         this.editar = this.editar;
         this.tipoBit = this.tipoBit;
@@ -464,6 +466,8 @@ class VentilatorioNoInvasivo {
                                     if (e.keyCode == 13) {
                                         VentilatorioNoInvasivo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         VentilatorioNoInvasivo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        VentilatorioNoInvasivo.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + VentilatorioNoInvasivo.nuevoRegistro.hora;
+
                                         if (VentilatorioNoInvasivo.nuevoRegistro.editar == null) {
                                             VentilatorioNoInvasivo.agregarRegistro();
                                             VentilatorioNoInvasivo.nuevoRegistro.id = VentilatorioNoInvasivo.nuevoRegistro.nro + 'Higiene';

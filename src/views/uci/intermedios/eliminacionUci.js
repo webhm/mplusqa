@@ -9,6 +9,7 @@ class Valoracion {
     fechaHoraTurno = null;
     tipo = null;
     valor = null;
+    timestamp = null;
     hora = null;
     editar = null;
     tipoBit = 'UCIINTER';
@@ -19,6 +20,7 @@ class Valoracion {
         this.fechaHoraTurno = this.fechaHoraTurno;
         this.tipo = this.tipo;
         this.valor = this.valor;
+        this.timestamp = this.timestamp;
         this.hora = this.hora;
         this.editar = this.editar;
         this.tipoBit = this.tipoBit;
@@ -449,6 +451,8 @@ class EliminacionUciNeo {
                                     if (e.keyCode == 13) {
                                         EliminacionUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         EliminacionUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        EliminacionUciNeo.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + EliminacionUciNeo.nuevoRegistro.hora;
+
                                         if (EliminacionUciNeo.nuevoRegistro.editar == null) {
                                             EliminacionUciNeo.agregarRegistro();
                                             EliminacionUciNeo.nuevoRegistro.id = EliminacionUciNeo.nuevoRegistro.nro + 'Eliminacion';

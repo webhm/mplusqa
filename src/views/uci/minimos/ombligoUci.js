@@ -9,6 +9,7 @@ class Valoracion {
     fechaHoraTurno = null;
     tipo = null;
     valor = null;
+    timestamp = null;
     editar = null;
     tipoBit = 'UCIMINIMOS';
     seccion = 'OmbligoUci';
@@ -18,6 +19,7 @@ class Valoracion {
         this.fechaHoraTurno = this.fechaHoraTurno;
         this.tipo = this.tipo;
         this.valor = this.valor;
+        this.timestamp = this.timestamp;
         this.editar = this.editar;
         this.tipoBit = this.tipoBit;
         this.seccion = this.seccion;
@@ -452,6 +454,8 @@ class OmbligoUci {
                                     if (e.keyCode == 13) {
                                         OmbligoUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         OmbligoUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        OmbligoUci.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + OmbligoUci.nuevoRegistro.hora;
+
                                         if (OmbligoUci.nuevoRegistro.editar == null) {
                                             OmbligoUci.agregarRegistro();
                                             OmbligoUci.nuevoRegistro.id = OmbligoUci.nuevoRegistro.nro + 'Ombligo';

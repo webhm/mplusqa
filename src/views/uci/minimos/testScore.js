@@ -9,6 +9,7 @@ class Valoracion {
     fechaHoraTurno = null;
     tipo = null;
     valor = null;
+    timestamp = null;
     editar = null;
     tipoBit = 'UCIMINIMOS';
     seccion = 'TestScoreUci';
@@ -17,7 +18,8 @@ class Valoracion {
         this.nro = this.nro;
         this.fechaHoraTurno = this.fechaHoraTurno;
         this.tipo = this.tipo;
-        this.valoracion = this.valoracion;
+        this.valor = this.valor;
+        this.timestamp = this.timestamp;
         this.editar = this.editar;
         this.tipoBit = this.tipoBit;
         this.seccion = this.seccion;
@@ -451,7 +453,9 @@ class TestScoreUciNeo {
                                     if (e.keyCode == 13) {
                                         TestScoreUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         TestScoreUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        TestScoreUciNeo.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + TestScoreUciNeo.nuevoRegistro.hora;
                                         if (TestScoreUciNeo.nuevoRegistro.editar == null) {
+
                                             TestScoreUciNeo.agregarRegistro();
                                             TestScoreUciNeo.nuevoRegistro.id = TestScoreUciNeo.nuevoRegistro.nro + 'TestScoreUci';
                                             FecthUci.registrarSeccion(TestScoreUciNeo.nuevoRegistro);

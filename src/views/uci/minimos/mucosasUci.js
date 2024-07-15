@@ -9,6 +9,8 @@ class Valoracion {
     fechaHoraTurno = null;
     tipo = null;
     valor = null;
+    timestamp = null;
+
     editar = null;
     tipoBit = 'UCIMINIMOS';
     seccion = 'PielMucosasUci';
@@ -18,6 +20,7 @@ class Valoracion {
         this.fechaHoraTurno = this.fechaHoraTurno;
         this.tipo = this.tipo;
         this.valor = this.valor;
+        this.timestamp = this.timestamp;
         this.tipoTurno = this.tipoTurno;
         this.editar = this.editar;
         this.tipoBit = this.tipoBit;
@@ -456,6 +459,8 @@ class MucosasUciNeo {
                                     if (e.keyCode == 13) {
                                         MucosasUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         MucosasUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        MucosasUciNeo.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + MucosasUciNeo.nuevoRegistro.hora;
+
                                         if (MucosasUciNeo.nuevoRegistro.editar == null) {
                                             MucosasUciNeo.agregarRegistro();
                                             MucosasUciNeo.nuevoRegistro.id = MucosasUciNeo.nuevoRegistro.nro + 'PielMucosas';

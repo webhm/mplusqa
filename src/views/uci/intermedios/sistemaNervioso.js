@@ -9,6 +9,7 @@ class Valoracion {
     fechaHoraTurno = null;
     tipo = null;
     valor = null;
+    timestamp = null;
     hora = null;
     editar = null;
     tipoBit = 'UCIINTER';
@@ -19,6 +20,7 @@ class Valoracion {
         this.fechaHoraTurno = this.fechaHoraTurno;
         this.tipo = this.tipo;
         this.valor = this.valor;
+        this.timestamp = this.timestamp;
         this.hora = this.hora;
         this.editar = this.editar;
         this.tipoBit = this.tipoBit;
@@ -453,6 +455,8 @@ class SistemaNervioso {
                                     if (e.keyCode == 13) {
                                         SistemaNervioso.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         SistemaNervioso.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        SistemaNervioso.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + SistemaNervioso.nuevoRegistro.hora;
+
                                         if (SistemaNervioso.nuevoRegistro.editar == null) {
                                             SistemaNervioso.agregarRegistro();
                                             SistemaNervioso.nuevoRegistro.id = SistemaNervioso.nuevoRegistro.nro + 'SistemaNervioso';
