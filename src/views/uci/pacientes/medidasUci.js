@@ -733,10 +733,10 @@ class MedidasUci {
 
         for (let index = 0; index < orderCol[0]; index++) {
             MedidasUci.sColumns.push({
-                title: "Valor:",
+                title: "Hora:",
             });
             MedidasUci.sColumns.push({
-                title: "Hora:",
+                title: "Valor:",
             });
         }
 
@@ -812,202 +812,7 @@ class MedidasUci {
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
-            MedidasUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-                                    ondblclick: (e) => {
-                                        MedidasUci.nuevoRegistro = null;
-                                        valores.filter((v, i) => {
 
-                                            if (v.id == oData.id) {
-                                                let _i = v.idObj[index];
-
-                                                MedidasUci.verRegistro(resultNro[_i]);
-
-                                                if (MedidasUci.nuevoRegistro !== null && MedidasUci.nuevoRegistro.hora == null) {
-                                                    if (MedidasUci.setHora != undefined) {
-                                                        MedidasUci.nuevoRegistro.hora = MedidasUci.setHora;
-                                                        document.getElementById('medidasHora' + resultNro[_i].nro).value = MedidasUci.setHora;
-                                                    }
-                                                }
-
-                                                document.getElementById('medidasHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
-                                                document.getElementById('txtMedidasHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
-                                                document.getElementById('medidasValor' + resultNro[_i].nro).className = "form-control";
-                                                document.getElementById('txtMedidasValor' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
-                                                if (document.getElementById('btn' + resultNro[_i].nro) != null) {
-                                                    document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
-                                                    setTimeout(() => {
-                                                        new Cleave("#medidasHora" + resultNro[_i].nro, {
-                                                            time: true,
-                                                            timePattern: ['h', 'm']
-                                                        });
-                                                    }, 90);
-                                                }
-
-                                                let tt = $('#MedidasUci_' + oData.id).offset().top;
-                                                setTimeout(() => {
-                                                    let isAnimating = true;
-                                                    $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
-                                                        700, "easeInOutSine",
-                                                        function() {
-                                                            isAnimating = false;
-                                                        })
-                                                }, 250);
-
-                                                setTimeout(() => {
-                                                    let isAnimating = true;
-                                                    $('#registrosMedidasUci').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
-                                                        700, "easeInOutSine",
-                                                        function() {
-                                                            isAnimating = false;
-                                                        })
-                                                }, 250);
-
-                                            }
-                                        })
-                                    },
-                                    onclick: (e) => {
-                                        e.preventDefault();
-                                    },
-
-                                    oncontextmenu: (e) => {
-                                        e.preventDefault();
-                                        if (index == 0) {
-                                            alert('No se puede eliminar el registro predeterminado.');
-                                            throw 'No se puede eliminar el registro predeterminado.';
-                                        }
-
-                                        if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                            valores.filter((v, i) => {
-
-                                                if (v.id == oData.id) {
-                                                    let _i = v.idObj[index];
-
-                                                    setTimeout(() => {
-                                                        MedidasUci.eliminarRegistro(resultNro[_i]);
-                                                        FecthUci.eliminarSeccion(resultNro[_i]);
-                                                        MedidasUci.nuevoRegistro = null;
-                                                        MedidasUci.destroyTable();
-                                                        MedidasUci.filterRegistros();
-                                                        MedidasUci.show = false;
-                                                        m.redraw();
-                                                        setTimeout(() => {
-                                                            MedidasUci.show = true;
-                                                            m.redraw();
-                                                        }, 100);
-                                                    }, 100);
-
-
-                                                    let tt = $('#MedidasUci_' + oData.id).offset().top;
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({
-                                                                scrollTop: tt
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
-
-
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosMedidasUci').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
-
-
-                                                }
-                                            })
-
-
-                                        }
-                                    },
-                                    oncreate: (el) => {
-                                        el.dom.className = "text-center pd-l-0 pd-r-0";
-
-                                        valores.filter((v, i) => {
-                                            if (v.id == oData.id) {
-                                                let _i = v.idObj[index];
-                                                if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].valor !== null) {
-                                                        let _v = MedidasUci.valorarRango(resultNro[_i].valor, oData.id);
-                                                        if (_v.toString().indexOf('Fuera') != -1) {
-                                                            el.dom.classList.add("tx-danger");
-                                                            el.dom.classList.add("tx-semibold");
-                                                            el.dom.title = _v;
-                                                        }
-                                                        el.dom.innerHTML = resultNro[_i].valor;
-                                                        el.dom.id = "txtMedidasValor" + resultNro[_i].nro;
-                                                    } else {
-                                                        el.dom.id = "txtMedidasValor" + resultNro[_i].nro;
-                                                        el.dom.innerHTML = '<button type="button" id="btn' + resultNro[_i].nro + '" class="btn btn-xs btn-success btn-block tx-12">Registrar</button>';
-                                                    }
-                                                } else {
-                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                                                }
-                                            }
-                                        })
-                                    }
-
-                                }, []),
-                                m('div.d-flex', [
-                                    m("input", {
-                                        type: "text",
-                                        placeholder: "...",
-                                        oncreate: (el) => {
-                                            valores.filter((v, i) => {
-                                                if (v.id == oData.id) {
-                                                    let _i = v.idObj[index];
-                                                    if (resultNro[_i] !== undefined) {
-                                                        if (resultNro[_i].valor !== null) {
-                                                            el.dom.value = resultNro[_i].valor;
-                                                            el.dom.id = "medidasValor" + resultNro[_i].nro;
-                                                            el.dom.className = "form-control tx-semibold tx-14 d-none";
-
-                                                        } else {
-                                                            el.dom.id = "medidasValor" + resultNro[_i].nro;
-                                                            el.dom.className = "form-control tx-semibold tx-14 d-none";
-                                                        }
-                                                    } else {
-                                                        el.dom.className = "form-control tx-semibold tx-14 d-none";
-
-                                                    }
-                                                }
-                                            })
-                                        },
-                                        oninput: (e) => {
-                                            MedidasUci.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
-                                        },
-
-
-                                    })
-
-                                ]),
-
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: null,
-                orderable: true,
-
-            });
             MedidasUci.sRows.push({
                 fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
@@ -1194,13 +999,205 @@ class MedidasUci {
                                                 MedidasUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
                                             }, 50);
                                         },
+
+
+                                    }),
+                                ]),
+
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: null,
+                orderable: true,
+            });
+            MedidasUci.sRows.push({
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+                                    ondblclick: (e) => {
+                                        MedidasUci.nuevoRegistro = null;
+                                        valores.filter((v, i) => {
+
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+
+                                                MedidasUci.verRegistro(resultNro[_i]);
+
+                                                if (MedidasUci.nuevoRegistro !== null && MedidasUci.nuevoRegistro.hora == null) {
+                                                    if (MedidasUci.setHora != undefined) {
+                                                        MedidasUci.nuevoRegistro.hora = MedidasUci.setHora;
+                                                        document.getElementById('medidasHora' + resultNro[_i].nro).value = MedidasUci.setHora;
+                                                    }
+                                                }
+
+                                                document.getElementById('medidasHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
+                                                document.getElementById('txtMedidasHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                document.getElementById('medidasValor' + resultNro[_i].nro).className = "form-control";
+                                                document.getElementById('txtMedidasValor' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                if (document.getElementById('btn' + resultNro[_i].nro) != null) {
+                                                    document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
+                                                    setTimeout(() => {
+                                                        new Cleave("#medidasHora" + resultNro[_i].nro, {
+                                                            time: true,
+                                                            timePattern: ['h', 'm']
+                                                        });
+                                                    }, 90);
+                                                }
+
+                                                let tt = $('#MedidasUci_' + oData.id).offset().top;
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosMedidasUci').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
+                                            }
+                                        })
+                                    },
+                                    onclick: (e) => {
+                                        e.preventDefault();
+                                    },
+
+                                    oncontextmenu: (e) => {
+                                        e.preventDefault();
+                                        if (index == 0) {
+                                            alert('No se puede eliminar el registro predeterminado.');
+                                            throw 'No se puede eliminar el registro predeterminado.';
+                                        }
+
+                                        if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                            valores.filter((v, i) => {
+
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+
+                                                    setTimeout(() => {
+                                                        MedidasUci.eliminarRegistro(resultNro[_i]);
+                                                        FecthUci.eliminarSeccion(resultNro[_i]);
+                                                        MedidasUci.nuevoRegistro = null;
+                                                        MedidasUci.destroyTable();
+                                                        MedidasUci.filterRegistros();
+                                                        MedidasUci.show = false;
+                                                        m.redraw();
+                                                        setTimeout(() => {
+                                                            MedidasUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
+                                                    }, 100);
+
+
+                                                    let tt = $('#MedidasUci_' + oData.id).offset().top;
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
+                                                    }, 250);
+
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosMedidasUci').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
+                                                    }, 250);
+
+
+                                                }
+                                            })
+
+
+                                        }
+                                    },
+                                    oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
+                                        valores.filter((v, i) => {
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                if (resultNro[_i] !== undefined) {
+                                                    if (resultNro[_i].valor !== null) {
+                                                        let _v = MedidasUci.valorarRango(resultNro[_i].valor, oData.id);
+                                                        if (_v.toString().indexOf('Fuera') != -1) {
+                                                            el.dom.classList.add("tx-danger");
+                                                            el.dom.classList.add("tx-semibold");
+                                                            el.dom.title = _v;
+                                                        }
+                                                        el.dom.innerHTML = resultNro[_i].valor;
+                                                        el.dom.id = "txtMedidasValor" + resultNro[_i].nro;
+                                                    } else {
+                                                        el.dom.id = "txtMedidasValor" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = '<button type="button" id="btn' + resultNro[_i].nro + '" class="btn btn-xs btn-success btn-block tx-12">Registrar</button>';
+                                                    }
+                                                } else {
+                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                }
+                                            }
+                                        })
+                                    }
+
+                                }, []),
+                                m('div.d-flex', [
+                                    m("input", {
+                                        type: "text",
+                                        placeholder: "...",
+                                        oncreate: (el) => {
+                                            valores.filter((v, i) => {
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+                                                    if (resultNro[_i] !== undefined) {
+                                                        if (resultNro[_i].valor !== null) {
+                                                            el.dom.value = resultNro[_i].valor;
+                                                            el.dom.id = "medidasValor" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control tx-semibold tx-14 d-none";
+
+                                                        } else {
+                                                            el.dom.id = "medidasValor" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control tx-semibold tx-14 d-none";
+                                                        }
+                                                    } else {
+                                                        el.dom.className = "form-control tx-semibold tx-14 d-none";
+
+                                                    }
+                                                }
+                                            })
+                                        },
+                                        oninput: (e) => {
+                                            MedidasUci.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
+                                        },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
                                                 MedidasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                 MedidasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                 if (MedidasUci.nuevoRegistro.editar == null) {
-
-
                                                     setTimeout(() => {
                                                         MedidasUci.agregarRegistro();
                                                         FecthUci.registrarSeccion(MedidasUci.nuevoRegistro);
@@ -1214,9 +1211,7 @@ class MedidasUci {
                                                             m.redraw();
                                                         }, 100);
                                                     }, 100);
-
                                                 } else {
-
                                                     setTimeout(() => {
                                                         MedidasUci.editarRegistro();
                                                         FecthUci.actualizarSeccion(MedidasUci.nuevoRegistro);
@@ -1230,7 +1225,6 @@ class MedidasUci {
                                                             m.redraw();
                                                         }, 100);
                                                     }, 100);
-
                                                 }
 
                                                 let tt = $('#MedidasUci_' + oData.id).offset().top;
@@ -1258,7 +1252,8 @@ class MedidasUci {
                                             }
                                         },
 
-                                    }),
+                                    })
+
                                 ]),
 
                             ]
@@ -1268,6 +1263,7 @@ class MedidasUci {
                 visible: true,
                 aTargets: null,
                 orderable: true,
+
             });
         }
 

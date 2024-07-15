@@ -509,10 +509,10 @@ class ComburTestUci {
 
         for (let index = 0; index < orderCol[0]; index++) {
             ComburTestUci.sColumns.push({
-                title: "Valor:",
+                title: "Hora:",
             });
             ComburTestUci.sColumns.push({
-                title: "Hora:",
+                title: "Valor:",
             });
         }
 
@@ -588,196 +588,7 @@ class ComburTestUci {
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
-            ComburTestUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-                                    ondblclick: (e) => {
-                                        ComburTestUci.nuevoRegistro = null;
-                                        valores.filter((v, i) => {
 
-                                            if (v.id == oData.id) {
-                                                let _i = v.idObj[index];
-
-                                                ComburTestUci.verRegistro(resultNro[_i]);
-
-                                                if (ComburTestUci.nuevoRegistro !== null && ComburTestUci.nuevoRegistro.hora == null) {
-                                                    if (ComburTestUci.setHora != undefined) {
-                                                        ComburTestUci.nuevoRegistro.hora = ComburTestUci.setHora;
-                                                        document.getElementById('comburHora' + resultNro[_i].nro).value = ComburTestUci.setHora;
-                                                    }
-                                                }
-
-                                                document.getElementById('comburHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
-                                                document.getElementById('txtComburHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
-                                                document.getElementById('comburValor' + resultNro[_i].nro).className = "form-control";
-                                                document.getElementById('txtComburValor' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
-                                                if (document.getElementById('btn' + resultNro[_i].nro) != null) {
-                                                    document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
-                                                    setTimeout(() => {
-                                                        new Cleave("#comburHora" + resultNro[_i].nro, {
-                                                            time: true,
-                                                            timePattern: ['h', 'm']
-                                                        });
-                                                    }, 90);
-                                                }
-
-                                                let tt = $('#ComburTest_' + oData.id).offset().top;
-                                                setTimeout(() => {
-                                                    let isAnimating = true;
-                                                    $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
-                                                        700, "easeInOutSine",
-                                                        function() {
-                                                            isAnimating = false;
-                                                        })
-                                                }, 250);
-
-
-                                                setTimeout(() => {
-                                                    let isAnimating = true;
-                                                    $('#registrosComburTest').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
-                                                        700, "easeInOutSine",
-                                                        function() {
-                                                            isAnimating = false;
-                                                        })
-                                                }, 250);
-
-                                            }
-                                        })
-                                    },
-                                    onclick: (e) => {
-                                        e.preventDefault();
-                                    },
-
-                                    oncontextmenu: (e) => {
-                                        e.preventDefault();
-                                        if (index == 0) {
-                                            alert('No se puede eliminar el registro predeterminado.');
-                                            throw 'No se puede eliminar el registro predeterminado.';
-                                        }
-
-                                        if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                            valores.filter((v, i) => {
-
-                                                if (v.id == oData.id) {
-                                                    let _i = v.idObj[index];
-
-                                                    setTimeout(() => {
-                                                        ComburTestUci.eliminarRegistro(resultNro[_i]);
-                                                        FecthUci.eliminarSeccion(resultNro[_i]);
-                                                        ComburTestUci.nuevoRegistro = null;
-                                                        ComburTestUci.destroyTable();
-                                                        ComburTestUci.filterRegistros();
-                                                        ComburTestUci.show = false;
-                                                        m.redraw();
-                                                        setTimeout(() => {
-                                                            ComburTestUci.show = true;
-                                                            m.redraw();
-                                                        }, 100);
-                                                    }, 100);
-
-                                                    let tt = $('#ComburTest_' + oData.id).offset().top;
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('html,body').animate({
-                                                                scrollTop: tt
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
-
-
-                                                    setTimeout(() => {
-                                                        let isAnimating = true;
-                                                        $('#registrosComburTest').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
-                                                            700, "easeInOutSine",
-                                                            function() {
-                                                                isAnimating = false;
-                                                            })
-                                                    }, 250);
-
-
-                                                }
-                                            })
-
-
-                                        }
-                                    },
-                                    oncreate: (el) => {
-                                        el.dom.className = "text-center pd-l-0 pd-r-0";
-
-                                        valores.filter((v, i) => {
-                                            if (v.id == oData.id) {
-                                                let _i = v.idObj[index];
-                                                if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].valor !== null) {
-
-                                                        el.dom.innerHTML = resultNro[_i].valor;
-                                                        el.dom.id = "txtComburValor" + resultNro[_i].nro;
-                                                    } else {
-                                                        el.dom.id = "txtComburValor" + resultNro[_i].nro;
-                                                        el.dom.innerHTML = '<button type="button" id="btn' + resultNro[_i].nro + '" class="btn btn-xs btn-success btn-block tx-12">Registrar</button>';
-                                                    }
-                                                } else {
-                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                                                }
-                                            }
-                                        })
-                                    }
-
-                                }, []),
-                                m('div.d-flex', [
-                                    m("input", {
-                                        type: "text",
-                                        placeholder: "...",
-                                        oncreate: (el) => {
-                                            valores.filter((v, i) => {
-                                                if (v.id == oData.id) {
-                                                    let _i = v.idObj[index];
-                                                    if (resultNro[_i] !== undefined) {
-                                                        if (resultNro[_i].valor !== null) {
-                                                            el.dom.value = resultNro[_i].valor;
-                                                            el.dom.id = "comburValor" + resultNro[_i].nro;
-                                                            el.dom.className = "form-control tx-semibold tx-14 d-none";
-
-                                                        } else {
-                                                            el.dom.id = "comburValor" + resultNro[_i].nro;
-                                                            el.dom.className = "form-control tx-semibold tx-14 d-none";
-                                                        }
-                                                    } else {
-                                                        el.dom.className = "form-control tx-semibold tx-14 d-none";
-
-                                                    }
-                                                }
-                                            })
-                                        },
-                                        oninput: (e) => {
-                                            ComburTestUci.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
-                                        },
-
-
-                                    })
-
-                                ]),
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: null,
-                orderable: true,
-
-            });
             ComburTestUci.sRows.push({
                 fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
@@ -960,6 +771,194 @@ class ComburTestUci {
                                                 ComburTestUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
                                             }, 50);
                                         },
+
+
+                                    }),
+                                ]),
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: null,
+                orderable: true,
+            });
+            ComburTestUci.sRows.push({
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+                                    ondblclick: (e) => {
+                                        ComburTestUci.nuevoRegistro = null;
+                                        valores.filter((v, i) => {
+
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+
+                                                ComburTestUci.verRegistro(resultNro[_i]);
+
+                                                if (ComburTestUci.nuevoRegistro !== null && ComburTestUci.nuevoRegistro.hora == null) {
+                                                    if (ComburTestUci.setHora != undefined) {
+                                                        ComburTestUci.nuevoRegistro.hora = ComburTestUci.setHora;
+                                                        document.getElementById('comburHora' + resultNro[_i].nro).value = ComburTestUci.setHora;
+                                                    }
+                                                }
+
+                                                document.getElementById('comburHora' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
+                                                document.getElementById('txtComburHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                document.getElementById('comburValor' + resultNro[_i].nro).className = "form-control";
+                                                document.getElementById('txtComburValor' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
+                                                if (document.getElementById('btn' + resultNro[_i].nro) != null) {
+                                                    document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
+                                                    setTimeout(() => {
+                                                        new Cleave("#comburHora" + resultNro[_i].nro, {
+                                                            time: true,
+                                                            timePattern: ['h', 'm']
+                                                        });
+                                                    }, 90);
+                                                }
+
+                                                let tt = $('#ComburTest_' + oData.id).offset().top;
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('html,body').animate({
+                                                            scrollTop: tt
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
+
+                                                setTimeout(() => {
+                                                    let isAnimating = true;
+                                                    $('#registrosComburTest').animate({
+                                                            scrollLeft: '+=460'
+                                                        },
+                                                        700, "easeInOutSine",
+                                                        function() {
+                                                            isAnimating = false;
+                                                        })
+                                                }, 250);
+
+                                            }
+                                        })
+                                    },
+                                    onclick: (e) => {
+                                        e.preventDefault();
+                                    },
+
+                                    oncontextmenu: (e) => {
+                                        e.preventDefault();
+                                        if (index == 0) {
+                                            alert('No se puede eliminar el registro predeterminado.');
+                                            throw 'No se puede eliminar el registro predeterminado.';
+                                        }
+
+                                        if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                            valores.filter((v, i) => {
+
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+
+                                                    setTimeout(() => {
+                                                        ComburTestUci.eliminarRegistro(resultNro[_i]);
+                                                        FecthUci.eliminarSeccion(resultNro[_i]);
+                                                        ComburTestUci.nuevoRegistro = null;
+                                                        ComburTestUci.destroyTable();
+                                                        ComburTestUci.filterRegistros();
+                                                        ComburTestUci.show = false;
+                                                        m.redraw();
+                                                        setTimeout(() => {
+                                                            ComburTestUci.show = true;
+                                                            m.redraw();
+                                                        }, 100);
+                                                    }, 100);
+
+                                                    let tt = $('#ComburTest_' + oData.id).offset().top;
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('html,body').animate({
+                                                                scrollTop: tt
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
+                                                    }, 250);
+
+
+                                                    setTimeout(() => {
+                                                        let isAnimating = true;
+                                                        $('#registrosComburTest').animate({
+                                                                scrollLeft: '+=460'
+                                                            },
+                                                            700, "easeInOutSine",
+                                                            function() {
+                                                                isAnimating = false;
+                                                            })
+                                                    }, 250);
+
+
+                                                }
+                                            })
+
+
+                                        }
+                                    },
+                                    oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
+                                        valores.filter((v, i) => {
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                if (resultNro[_i] !== undefined) {
+                                                    if (resultNro[_i].valor !== null) {
+
+                                                        el.dom.innerHTML = resultNro[_i].valor;
+                                                        el.dom.id = "txtComburValor" + resultNro[_i].nro;
+                                                    } else {
+                                                        el.dom.id = "txtComburValor" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = '<button type="button" id="btn' + resultNro[_i].nro + '" class="btn btn-xs btn-success btn-block tx-12">Registrar</button>';
+                                                    }
+                                                } else {
+                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                }
+                                            }
+                                        })
+                                    }
+
+                                }, []),
+                                m('div.d-flex', [
+                                    m("input", {
+                                        type: "text",
+                                        placeholder: "...",
+                                        oncreate: (el) => {
+                                            valores.filter((v, i) => {
+                                                if (v.id == oData.id) {
+                                                    let _i = v.idObj[index];
+                                                    if (resultNro[_i] !== undefined) {
+                                                        if (resultNro[_i].valor !== null) {
+                                                            el.dom.value = resultNro[_i].valor;
+                                                            el.dom.id = "comburValor" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control tx-semibold tx-14 d-none";
+
+                                                        } else {
+                                                            el.dom.id = "comburValor" + resultNro[_i].nro;
+                                                            el.dom.className = "form-control tx-semibold tx-14 d-none";
+                                                        }
+                                                    } else {
+                                                        el.dom.className = "form-control tx-semibold tx-14 d-none";
+
+                                                    }
+                                                }
+                                            })
+                                        },
+                                        oninput: (e) => {
+                                            ComburTestUci.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
+                                        },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
                                                 ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
@@ -1026,7 +1025,9 @@ class ComburTestUci {
                                             }
                                         },
 
-                                    }),
+
+                                    })
+
                                 ]),
                             ]
                         }
@@ -1035,6 +1036,7 @@ class ComburTestUci {
                 visible: true,
                 aTargets: null,
                 orderable: true,
+
             });
         }
 
