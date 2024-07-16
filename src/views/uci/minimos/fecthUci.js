@@ -399,6 +399,7 @@ class FecthUci {
             params: {
                 numeroHistoriaClinica: PacientesUCI.numeroHistoriaClinica,
                 numeroAtencion: PacientesUCI.numeroAtencion,
+                tipoBit: 'UCIMINIMOS'
             },
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
