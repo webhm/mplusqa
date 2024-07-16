@@ -189,6 +189,7 @@ class PacientesUCI extends App {
                                                         text: 'Confirmar',
                                                         btnClass: "btn-success op-8",
                                                         action: function() {
+
                                                             TurnosUci.iniciarTurno();
                                                             PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
                                                         }

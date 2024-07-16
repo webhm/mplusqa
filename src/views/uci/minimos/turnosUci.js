@@ -75,6 +75,7 @@ class TurnosUci {
     }
 
     static iniciarTurno() {
+
         TurnosUci.validarInicioTurno();
         TurnosUci.nuevoTurno = new Turno();
         TurnosUci.nuevoTurno.numeroHistoriaClinica = PacientesUCI.numeroHistoriaClinica;
@@ -88,9 +89,17 @@ class TurnosUci {
         FecthUci.registrarTurno();
         TurnosUci.nuevoTurno.abrirTurno();
         TurnosUci.turnos.push(TurnosUci.nuevoTurno);
+
+
+
     }
 
     static validarInicioTurno() {
+
+
+
+
+
         for (let index = 0; index < TurnosUci.turnos.length; index++) {
             let element = TurnosUci.turnos[index];
             if (element.status == 1) {

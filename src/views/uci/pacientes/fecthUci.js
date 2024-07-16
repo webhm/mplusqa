@@ -87,6 +87,22 @@ class FecthUci {
             }
         }).then(function(res) {
 
+            if (res.status == false) {
+                PacientesUCI.vReloadTable('table-turnos', []);
+                $.alert({
+                    title: 'Error',
+                    content: res.message,
+                    buttons: {
+                        Ok: {
+                            action: function() {
+                                window.location.reload();
+                            }
+                        },
+                    }
+                });
+
+            }
+
         }).catch(function(e) {
 
         });
