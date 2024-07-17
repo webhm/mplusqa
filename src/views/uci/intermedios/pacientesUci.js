@@ -245,6 +245,8 @@ class PacientesUCI extends App {
                         m(MucosasUciNeo),
                         // EliminacionUci Neo
                         m(EliminacionUciNeo),
+                        // ComburTest
+                        m(ComburTestUci),
                         // Sistema Nervisos
                         m(SistemaNervioso),
                         // Ombligo

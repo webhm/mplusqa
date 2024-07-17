@@ -12,6 +12,7 @@ class Medida {
     valor = null;
     hora = null;
     editar = null;
+    tipoBit = 'UCIINTER';
     seccion = 'ComburTest';
     constructor() {
         this.id = this.id;
@@ -22,6 +23,7 @@ class Medida {
         this.valor = this.valor;
         this.hora = this.hora;
         this.editar = this.editar;
+        this.tipoBit = this.tipoBit;
         this.seccion = this.seccion;
     }
 }

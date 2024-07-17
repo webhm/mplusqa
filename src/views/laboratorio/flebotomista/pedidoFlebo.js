@@ -1133,6 +1133,7 @@ const TomaMuestras = {
                                                     _val.CD_EXA_LAB == '338' ||
                                                     _val.CD_EXA_LAB == '348' ||
                                                     _val.CD_EXA_LAB == '349' ||
+                                                    _val.CD_EXA_LAB == '351' ||
                                                     _val.CD_EXA_LAB == '355' ||
                                                     _val.CD_EXA_LAB == '356' ||
                                                     _val.CD_EXA_LAB == '357' ||

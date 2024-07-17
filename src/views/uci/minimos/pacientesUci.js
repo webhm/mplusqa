@@ -253,6 +253,8 @@ class PacientesUCI extends App {
                         m(IngestaUciNeo),
                         // EliminacionUci Neo
                         m(EliminacionUciNeo),
+                        // ComburTest
+                        m(ComburTestUci),
                         // Sistema Nervisos
                         m(SistemaNervioso),
                         // Ombligo

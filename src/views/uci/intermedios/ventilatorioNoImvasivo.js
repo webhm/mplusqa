@@ -361,11 +361,11 @@ class VentilatorioNoInvasivo {
                         "TIPO: "
                     ),
                     m("th[scope='col'][colspan='4']",
-                        "HORA: "
+                        "CANTIDAD: "
                     ),
                     m("th[scope='col'][colspan='4']",
-                        "CANTIDAD: "
-                    )
+                        "HORA: "
+                    ),
                 ]),
                 m("tr.bd.bd-2", {
                     style: { "border-color": "#5173a1" },
@@ -406,9 +406,6 @@ class VentilatorioNoInvasivo {
                                     class: "custom-select",
                                     value: (VentilatorioNoInvasivo.nuevoRegistro !== null ? VentilatorioNoInvasivo.nuevoRegistro.tipo : 0),
                                 }, m("option[value='0']", 'Seleccione...'), [{
-                                        id: "Oxihood",
-                                        label: "OXIHOOD"
-                                    }, {
                                         id: "CateterNasal",
                                         label: "CATETER NASAL"
                                     },
