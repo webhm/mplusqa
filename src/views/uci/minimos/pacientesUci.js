@@ -2717,7 +2717,7 @@ class PacientesUCI extends App {
         options.map((option) => {
             FecthUci.dataSecciones.filter((obj) => {
                 let _obj = JSON.parse(obj.DATASECCION);
-                if (_obj.id === option.id) {
+                if (_obj.id === option.id && _obj.tipoBit == 'UCIMINIMOS') {
                     res.push(_obj);
                 }
             });
