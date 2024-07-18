@@ -914,13 +914,11 @@ class PrescripcionesUci {
                                             el.dom.parentElement.className = 'tx-12 tx-semibold bg-warning op-8 ';
                                         }
 
-                                        /*
 
-                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && (oData.frecuencia == '0' || oData.label == 'CADA DÍA') && oData.label != 'EN ESTE MOMENTO') {
+                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && (oData.frecuencia == '0') && oData.label != 'EN ESTE MOMENTO') {
                                             el.dom.parentElement.parentElement.className = 'd-none';
                                         }
 
-                                        */
 
                                         if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && fechaPres > fechaHorario && oData.frecuencia >= 6) {
                                             el.dom.parentElement.parentElement.className = 'd-none';
