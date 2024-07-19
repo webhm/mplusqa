@@ -223,10 +223,13 @@ class PrescripcionesUci {
         result = PrescripcionesUci.allRegistros;
 
         r = result.sort((a, b) => b.nro - a.nro);
+
         // Quitar duplicados
         resultNro = r.filter(o => hash[o.nro] ? false : hash[o.nro] = true).sort((a, b) => a.nro - b.nro);
+
         // Quitar duplicados
         // resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
+
         // Solo obtener prescripciones
         resultId = resultNro.filter(o => o.status == 1);
 
@@ -916,6 +919,10 @@ class PrescripcionesUci {
 
 
                                         if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && (oData.frecuencia == '0') && oData.label != 'EN ESTE MOMENTO') {
+                                            el.dom.parentElement.parentElement.className = 'd-none';
+                                        }
+
+                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && oData.frecuencia == '0' && oData.label == 'EN ESTE MOMENTO') {
                                             el.dom.parentElement.parentElement.className = 'd-none';
                                         }
 
