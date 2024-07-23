@@ -396,7 +396,7 @@ class MucosasUciNeo {
                                     },
                                     class: "custom-select",
                                     value: (MucosasUciNeo.nuevoRegistro !== null ? MucosasUciNeo.nuevoRegistro.tipo : 0),
-                                }, m("option[value='0']", 'Seleccione...'), [{
+                                }, [{
                                         id: "Rosado",
                                         label: "Rosado"
                                     },

@@ -5463,56 +5463,62 @@ class PacientesUCI extends App {
                                                 disabled: (oData.status == 1 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
                                                 onclick: () => {
 
-                                                    oData.statusHora = 2;
-                                                    TurnosUci.nuevoTurno = oData;
-
-                                                    oData.iniciarGestion();
-
-                                                    PacientesUCI.fechaHoraTurno = oData.fechaTurno + ' ' + oData.horaTurno;
-
-                                                    // CuidadosUci2.registros = PacientesUCI.parseSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options));
-                                                    // PacientesUCI.setTurnoSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options))
-
-                                                    //    CateterUci.registros = PacientesUCI.parseSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
-                                                    //   PacientesUCI.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
-
-                                                    //   VentilacionUci.registros = PacientesUCI.parseSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
-                                                    //   PacientesUCI.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
-
-                                                    // HemodialisisUci.registros = PacientesUCI.parseSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
-                                                    //  PacientesUCI.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
-
-                                                    //  MarcapasosUci.registros = PacientesUCI.parseSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
-                                                    //  PacientesUCI.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
-
-                                                    //   VentilatoriosUci.allRegistros = PacientesUCI.parseSeccionVentilatorios_AllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
-                                                    //    PacientesUCI.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
-                                                    //    VentilatoriosUci.registros = PacientesUCI.parseSeccionVentilatorios_v2(Array.from(document.getElementById('sec_Ventilatorios').options));
-
-                                                    //  GasesUci.allRegistros = PacientesUCI.parseSeccionGases_AllRegistros(Array.from(document.getElementById('sec_Gases').options));
-                                                    //  PacientesUCI.setTurnoSeccionGases(Array.from(document.getElementById('sec_Gases').options));
-                                                    //  GasesUci.registros = PacientesUCI.parseSeccionGases_v2(Array.from(document.getElementById('sec_Gases').options));
-
-                                                    // OxigenacionUci.registros = PacientesUCI.parseSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
-                                                    //  PacientesUCI.setTurnoSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
-
-                                                    // MedidasUci.allRegistros = PacientesUCI.parseSeccionMedidas_AllRegistros(Array.from(document.getElementById('sec_Medidas').options));
-                                                    // PacientesUCI.setTurnoSeccionMedidas(Array.from(document.getElementById('sec_Medidas').options));
-                                                    // MedidasUci.registros = PacientesUCI.parseSeccionMedidas_v2(Array.from(document.getElementById('sec_Medidas').options));
-
-                                                    ComburTestUci.allRegistros = PacientesUCI.parseSeccionComburTest_AllRegistros(Array.from(document.getElementById('sec_ComburTest').options));
-                                                    PacientesUCI.setTurnoSeccionComburTest(Array.from(document.getElementById('sec_ComburTest').options));
-                                                    ComburTestUci.registros = PacientesUCI.parseSeccionComburTest_v2(Array.from(document.getElementById('sec_ComburTest').options));
-
-                                                    //  GasesMedUci.allRegistros = PacientesUCI.parseSeccionGasesMed_AllRegistros(Array.from(document.getElementById('sec_GasesMed').options));
-                                                    //  PacientesUCI.setTurnoSeccionGasesMed(Array.from(document.getElementById('sec_GasesMed').options));
-                                                    //  GasesMedUci.registros = PacientesUCI.parseSeccionGasesMed_v2(Array.from(document.getElementById('sec_GasesMed').options));
-
-                                                    //  PrescripcionesUci.allRegistros = PacientesUCI.parseSeccionPrescripcionesUci_AllRegistros(Array.from(document.getElementById('sec_PrescripcionesUci').options));
-                                                    //  PrescripcionesUci.registros = PacientesUCI.parseSeccionPrescripcionesUci_v2(Array.from(document.getElementById('sec_PrescripcionesUci').options));
+                                                    if (oData.usuarioTurno != PacientesUCI.usuarioTurno) {
+                                                        $.alert('Es necesario ausmir antes de continuar.');
+                                                    } else {
 
 
-                                                    PacientesUCI.showSecciones();
+                                                        oData.statusHora = 2;
+                                                        TurnosUci.nuevoTurno = oData;
+                                                        oData.iniciarGestion();
+                                                        PacientesUCI.fechaHoraTurno = oData.fechaTurno + ' ' + oData.horaTurno;
+
+                                                        // CuidadosUci2.registros = PacientesUCI.parseSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options));
+                                                        // PacientesUCI.setTurnoSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options))
+
+                                                        //    CateterUci.registros = PacientesUCI.parseSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
+                                                        //   PacientesUCI.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
+
+                                                        //   VentilacionUci.registros = PacientesUCI.parseSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
+                                                        //   PacientesUCI.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
+
+                                                        // HemodialisisUci.registros = PacientesUCI.parseSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
+                                                        //  PacientesUCI.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
+
+                                                        //  MarcapasosUci.registros = PacientesUCI.parseSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
+                                                        //  PacientesUCI.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
+
+                                                        //   VentilatoriosUci.allRegistros = PacientesUCI.parseSeccionVentilatorios_AllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
+                                                        //    PacientesUCI.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
+                                                        //    VentilatoriosUci.registros = PacientesUCI.parseSeccionVentilatorios_v2(Array.from(document.getElementById('sec_Ventilatorios').options));
+
+                                                        //  GasesUci.allRegistros = PacientesUCI.parseSeccionGases_AllRegistros(Array.from(document.getElementById('sec_Gases').options));
+                                                        //  PacientesUCI.setTurnoSeccionGases(Array.from(document.getElementById('sec_Gases').options));
+                                                        //  GasesUci.registros = PacientesUCI.parseSeccionGases_v2(Array.from(document.getElementById('sec_Gases').options));
+
+                                                        // OxigenacionUci.registros = PacientesUCI.parseSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
+                                                        //  PacientesUCI.setTurnoSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
+
+                                                        // MedidasUci.allRegistros = PacientesUCI.parseSeccionMedidas_AllRegistros(Array.from(document.getElementById('sec_Medidas').options));
+                                                        // PacientesUCI.setTurnoSeccionMedidas(Array.from(document.getElementById('sec_Medidas').options));
+                                                        // MedidasUci.registros = PacientesUCI.parseSeccionMedidas_v2(Array.from(document.getElementById('sec_Medidas').options));
+
+                                                        ComburTestUci.allRegistros = PacientesUCI.parseSeccionComburTest_AllRegistros(Array.from(document.getElementById('sec_ComburTest').options));
+                                                        PacientesUCI.setTurnoSeccionComburTest(Array.from(document.getElementById('sec_ComburTest').options));
+                                                        ComburTestUci.registros = PacientesUCI.parseSeccionComburTest_v2(Array.from(document.getElementById('sec_ComburTest').options));
+
+                                                        //  GasesMedUci.allRegistros = PacientesUCI.parseSeccionGasesMed_AllRegistros(Array.from(document.getElementById('sec_GasesMed').options));
+                                                        //  PacientesUCI.setTurnoSeccionGasesMed(Array.from(document.getElementById('sec_GasesMed').options));
+                                                        //  GasesMedUci.registros = PacientesUCI.parseSeccionGasesMed_v2(Array.from(document.getElementById('sec_GasesMed').options));
+
+                                                        //  PrescripcionesUci.allRegistros = PacientesUCI.parseSeccionPrescripcionesUci_AllRegistros(Array.from(document.getElementById('sec_PrescripcionesUci').options));
+                                                        //  PrescripcionesUci.registros = PacientesUCI.parseSeccionPrescripcionesUci_v2(Array.from(document.getElementById('sec_PrescripcionesUci').options));
+
+
+                                                        PacientesUCI.showSecciones();
+
+                                                    }
+
                                                 },
                                             },
                                             'Gestionar',
@@ -5552,9 +5558,14 @@ class PacientesUCI extends App {
                                         m("button.btn.btn-xs.btn-block.btn-danger.tx-13.tx-semibold[type='button']", {
                                                 disabled: ((oData.status == 1 || oData.status == 4) && FecthUci.loaderSecciones == true ? '' : 'disabled'),
                                                 onclick: () => {
-                                                    FecthUci.loaderSecciones = false;
-                                                    oData.cerrarTurno();
-                                                    FecthUci.cerrarTurno(oData);
+                                                    if (oData.usuarioTurno != PacientesUCI.usuarioTurno) {
+                                                        $.alert('Es necesario ausmir antes de continuar.');
+                                                    } else {
+                                                        FecthUci.loaderSecciones = false;
+                                                        oData.cerrarTurno();
+                                                        FecthUci.cerrarTurno(oData);
+                                                    }
+
                                                 },
                                             },
                                             'Cerrar',
@@ -5568,9 +5579,14 @@ class PacientesUCI extends App {
                                         m("button.btn.btn-xs.btn-block.btn-success.tx-13.tx-semibold[type='button']", {
                                                 disabled: (oData.status == 2 && oData.numeroTurno == PacientesUCI.numeroTurno && FecthUci.loaderSecciones == true ? '' : 'disabled'),
                                                 onclick: () => {
-                                                    FecthUci.loaderSecciones = false;
-                                                    oData.reAbrirTurno();
-                                                    FecthUci.reAbrirTurno(oData);
+                                                    if (oData.usuarioTurno != PacientesUCI.usuarioTurno) {
+                                                        $.alert('Es necesario ausmir antes de continuar.');
+                                                    } else {
+                                                        FecthUci.loaderSecciones = false;
+                                                        oData.reAbrirTurno();
+                                                        FecthUci.reAbrirTurno(oData);
+                                                    }
+
                                                 },
                                             },
                                             'Abrir',
@@ -5661,38 +5677,44 @@ class PacientesUCI extends App {
 
                                                 onclick: () => {
 
-                                                    $.confirm({
-                                                        title: '¿Cancelar?',
-                                                        content: '' +
-                                                            '<form action="" class="formName">' +
-                                                            '<div class="form-group ">' +
-                                                            '<label>Comentario:</label>' +
-                                                            '<textarea placeholder="Comentario" class="comment form-control wd-100p" rows="3" required></textarea>' +
-                                                            '</div>' +
-                                                            '</form>',
-                                                        buttons: {
-                                                            formSubmit: {
-                                                                text: 'Confirmar',
-                                                                btnClass: 'btn-success op-8',
-                                                                action: function() {
-                                                                    let comment = this.$content.find('.comment').val();
-                                                                    if (!comment) {
-                                                                        $.alert('Un comentario es obligatorio.');
-                                                                        return false;
+                                                    if (oData.usuarioTurno != PacientesUCI.usuarioTurno) {
+                                                        $.alert('Es necesario ausmir antes de continuar.');
+                                                    } else {
+                                                        $.confirm({
+                                                            title: '¿Cancelar?',
+                                                            content: '' +
+                                                                '<form action="" class="formName">' +
+                                                                '<div class="form-group ">' +
+                                                                '<label>Comentario:</label>' +
+                                                                '<textarea placeholder="Comentario" class="comment form-control wd-100p" rows="3" required></textarea>' +
+                                                                '</div>' +
+                                                                '</form>',
+                                                            buttons: {
+                                                                formSubmit: {
+                                                                    text: 'Confirmar',
+                                                                    btnClass: 'btn-success op-8',
+                                                                    action: function() {
+                                                                        let comment = this.$content.find('.comment').val();
+                                                                        if (!comment) {
+                                                                            $.alert('Un comentario es obligatorio.');
+                                                                            return false;
+                                                                        }
+                                                                        // $.alert('Ud asumira todos los registros de esta turno.');
+                                                                        FecthUci.loaderSecciones = false;
+                                                                        FecthUci.cancelarTurno(oData, PacientesUCI.usuarioTurno, comment);
                                                                     }
-                                                                    // $.alert('Ud asumira todos los registros de esta turno.');
-                                                                    FecthUci.loaderSecciones = false;
-                                                                    FecthUci.cancelarTurno(oData, PacientesUCI.usuarioTurno, comment);
+                                                                },
+                                                                cancel: {
+                                                                    btnClass: "btn-danger op-8",
+                                                                    text: 'Cancelar',
                                                                 }
-                                                            },
-                                                            cancel: {
-                                                                btnClass: "btn-danger op-8",
-                                                                text: 'Cancelar',
+
                                                             }
 
-                                                        }
+                                                        });
+                                                    }
 
-                                                    });
+
 
                                                 },
                                             },
