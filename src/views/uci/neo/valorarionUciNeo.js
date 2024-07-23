@@ -399,7 +399,7 @@ class ValoracionUciNeo {
                                     },
                                     class: "custom-select",
                                     value: (ValoracionUciNeo.nuevoRegistro !== null ? ValoracionUciNeo.nuevoRegistro.tipo : 0),
-                                }, m("option[value='0']", 'Seleccione...'), [{
+                                }, [{
                                         id: "Tono",
                                         label: "TONO"
                                     },
@@ -459,7 +459,7 @@ class ValoracionUciNeo {
                                 },
                                 class: "custom-select",
                                 value: (ValoracionUciNeo.nuevoRegistro !== null ? ValoracionUciNeo.nuevoRegistro.valor : 0),
-                            }, m("option[value='0']", 'Seleccione...'), [{
+                            }, [{
                                     id: "AdecuadoEdad",
                                     label: "ADECUADO PARA LA EDAD"
                                 },
@@ -513,7 +513,7 @@ class ValoracionUciNeo {
                                 },
                                 class: "custom-select",
                                 value: (ValoracionUciNeo.nuevoRegistro !== null ? ValoracionUciNeo.nuevoRegistro.valor : 0),
-                            }, m("option[value='0']", 'Seleccione...'), [{
+                            }, [{
                                     id: "FontanelaNormotensa",
                                     label: "FONTANELA NORMOTENSA"
                                 },
@@ -567,7 +567,7 @@ class ValoracionUciNeo {
                                 },
                                 class: "custom-select",
                                 value: (ValoracionUciNeo.nuevoRegistro !== null ? ValoracionUciNeo.nuevoRegistro.valor : 0),
-                            }, m("option[value='0']", 'Seleccione...'), [{
+                            }, [{
                                     id: "Blando",
                                     label: "BLANDO"
                                 },
@@ -621,7 +621,7 @@ class ValoracionUciNeo {
                                 },
                                 class: "custom-select",
                                 value: (ValoracionUciNeo.nuevoRegistro !== null ? ValoracionUciNeo.nuevoRegistro.valor : 0),
-                            }, m("option[value='0']", 'Seleccione...'), [{
+                            }, [{
                                     id: "Normal",
                                     label: "NORMAL"
                                 },
