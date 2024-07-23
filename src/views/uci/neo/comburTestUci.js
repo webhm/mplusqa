@@ -9,7 +9,9 @@ class Medida {
     nro = null;
     fechaHoraTurno = null;
     medida = null;
+    tipo = null;
     valor = null;
+    timestamp = null;
     hora = null;
     editar = null;
     tipoBit = 'UCINEO';
@@ -20,7 +22,9 @@ class Medida {
         this.nro = this.nro;
         this.fechaHoraTurno = this.fechaHoraTurno;
         this.medida = this.medida;
+        this.tipo = this.tipo;
         this.valor = this.valor;
+        this.timestamp = this.timestamp;
         this.hora = this.hora;
         this.editar = this.editar;
         this.tipoBit = this.tipoBit;
@@ -966,6 +970,10 @@ class ComburTestUci {
                                             if (e.keyCode == 13) {
                                                 ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                 ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                ComburTestUci.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + ComburTestUci.nuevoRegistro.hora;
+                                                ComburTestUci.nuevoRegistro.tipo = ComburTestUci.nuevoRegistro.medida;
+
+
                                                 if (ComburTestUci.nuevoRegistro.editar == null) {
 
                                                     setTimeout(() => {
@@ -1364,6 +1372,9 @@ class ComburTestUci {
                                         if (e.keyCode == 13) {
                                             ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            ComburTestUci.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + ComburTestUci.nuevoRegistro.hora;
+                                            ComburTestUci.nuevoRegistro.tipo = ComburTestUci.nuevoRegistro.medida;
+
                                             if (ComburTestUci.nuevoRegistro.editar == null) {
                                                 ComburTestUci.agregarRegistro();
                                                 FecthUci.registrarSeccion(ComburTestUci.nuevoRegistro);
