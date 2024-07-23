@@ -522,35 +522,43 @@ class Cita {
             }
         }
 
+        if (Cita.data.tipo == 1) {
 
-        m.request({
-            method: "POST",
-            url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/call-validate",
-            body: Cita.data,
-            headers: {
-                "Content-Type": "application/json; charset=utf-8"
-            }
-        }).then(function(res) {
-            Cita.loader = false;
-            if (res.status) {
-                console.log(22, 'estoy por aqui');
-                Cita.agendarCitaHttp(calendario);
-                Cita.agendarCita(calendario);
+            m.request({
+                method: "POST",
+                url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/call-validate",
+                body: Cita.data,
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8"
+                }
+            }).then(function(res) {
+                Cita.loader = false;
+                if (res.status) {
+                    console.log(22, 'estoy por aqui');
+                    Cita.agendarCitaHttp(calendario);
+                    Cita.agendarCita(calendario);
 
-            } else {
+                } else {
+                    $("#modalCreateEvent").animate({
+                        scrollTop: 0
+                    }, "slow");
+                    Cita.error = res.message;
+                    throw res.message;
+                }
+            }).catch(function(e) {
                 $("#modalCreateEvent").animate({
                     scrollTop: 0
                 }, "slow");
-                Cita.error = res.message;
-                throw res.message;
-            }
-        }).catch(function(e) {
-            $("#modalCreateEvent").animate({
-                scrollTop: 0
-            }, "slow");
-            Cita.error = e;
-            throw e;
-        });
+                Cita.error = e;
+                throw e;
+            });
+
+        } else {
+            Cita.agendarCita(calendario);
+        }
+
+
+
     }
 
     static agendarCitaHttp(calendario) {
