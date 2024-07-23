@@ -394,7 +394,7 @@ class TestScoreUciNeo {
                                     },
                                     class: "custom-select",
                                     value: (TestScoreUciNeo.nuevoRegistro !== null ? TestScoreUciNeo.nuevoRegistro.tipo : 0),
-                                }, m("option[value='0']", 'Seleccione...'), [{
+                                }, [{
                                         id: "QuejidoEspiratorio",
                                         label: "Quejido Espiratorio"
                                     },

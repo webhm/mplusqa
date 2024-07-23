@@ -416,7 +416,7 @@ class IngestaUciNeo {
                                     },
                                     class: "custom-select",
                                     value: (IngestaUciNeo.nuevoRegistro !== null ? IngestaUciNeo.nuevoRegistro.tipo : 0),
-                                }, m("option[value='0']", 'Seleccione...'), [{
+                                }, [{
                                         id: "SenoMaterno",
                                         label: "Seno Materno"
                                     },

@@ -395,7 +395,7 @@ class OmbligoUci {
                                     },
                                     class: "custom-select",
                                     value: (OmbligoUci.nuevoRegistro !== null ? OmbligoUci.nuevoRegistro.tipo : 0),
-                                }, m("option[value='0']", 'Seleccione...'), [{
+                                }, [{
                                         id: "Normal",
                                         label: "Normal"
                                     },

@@ -395,7 +395,7 @@ class EliminacionUciNeo {
                                     },
                                     class: "custom-select",
                                     value: (EliminacionUciNeo.nuevoRegistro !== null ? EliminacionUciNeo.nuevoRegistro.tipo : 0),
-                                }, m("option[value='0']", 'Seleccione...'), [{
+                                }, [{
                                         id: "Deposicion",
                                         label: "Deposición"
                                     },

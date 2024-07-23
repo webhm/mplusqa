@@ -408,7 +408,7 @@ class VentilatorioNoInvasivo {
                                     },
                                     class: "custom-select",
                                     value: (VentilatorioNoInvasivo.nuevoRegistro !== null ? VentilatorioNoInvasivo.nuevoRegistro.tipo : 0),
-                                }, m("option[value='0']", 'Seleccione...'), [{
+                                }, [{
                                         id: "FlujoLibre",
                                         label: "FLUJO LIBRE"
                                     }, {
