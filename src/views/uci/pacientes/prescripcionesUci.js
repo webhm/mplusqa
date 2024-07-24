@@ -176,13 +176,14 @@ class PrescripcionesUci {
     }
     static comprobarFrecuencia(data, horario, fechaHora) {
 
+        let _hora = (data.horaPres.substring(0, data.horaPres.length - 3) + ':00');
 
         let _h = moment.duration(horario).asHours();
-        let _ho = moment.duration(data.hora).asHours();
+        let _ho = moment.duration(_hora).asHours();
         let fechaHorarioUnix = moment(fechaHora, 'DD-MM-YYYY HH:mm').unix();
-        let fechaPresUnix = moment(moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + data.horaPres, 'DD-MM-YYYY HH:mm').unix();
+        let fechaPresUnix = moment(moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + _hora, 'DD-MM-YYYY HH:mm').unix();
         let fechaPresUnixPasado = moment(moment().format('DD-MM-YYYY') + ' ' + '10:00', 'DD-MM-YYYY HH:mm').unix();
-        let fechaPres = moment(moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + data.horaPres, 'DD-MM-YYYY HH:mm');
+        let fechaPres = moment(moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + _hora, 'DD-MM-YYYY HH:mm');
 
         // Es de hoy
         if (data.frecuencia !== '0' && moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY')) {
@@ -1606,7 +1607,9 @@ class PrescripcionesUci {
                                                 } else {
 
                                                     let fechaHorario = moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').unix();
-                                                    let fechaPres = moment(moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + oData.horaPres, 'DD-MM-YYYY HH:mm').unix();
+                                                    let _hora = (oData.horaPres.substring(0, oData.horaPres.length - 3) + ':00');
+
+                                                    let fechaPres = moment(moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + _hora, 'DD-MM-YYYY HH:mm').unix();
 
                                                     if (fechaHorario == fechaPres && oData.label == 'EN ESTE MOMENTO') {
 
