@@ -1611,7 +1611,7 @@ class PrescripcionesUci {
 
                                                     let fechaPres = moment(moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + _hora, 'DD-MM-YYYY HH:mm').unix();
 
-                                                    if (fechaHorario == fechaPres && oData.label == 'EN ESTE MOMENTO' || oData.label == '3 VECES AL DÍA') {
+                                                    if (fechaHorario == fechaPres && oData.label == 'EN ESTE MOMENTO') {
 
 
                                                         let __startTime = moment().format('YYYY-MM-DDTHH:mm');
