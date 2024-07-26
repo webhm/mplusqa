@@ -919,11 +919,11 @@ class PrescripcionesUci {
                                         }
 
 
-                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && (oData.frecuencia == '0') && oData.label != 'EN ESTE MOMENTO') {
+                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && (oData.frecuencia == '0') && (oData.label != 'EN ESTE MOMENTO' || oData.label != '3 VECES AL DÍA')) {
                                             el.dom.parentElement.parentElement.className = 'd-none';
                                         }
 
-                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && oData.frecuencia == '0' && oData.label == 'EN ESTE MOMENTO') {
+                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && oData.frecuencia == '0' && (oData.label == 'EN ESTE MOMENTO' || oData.label == '3 VECES AL DÍA')) {
                                             el.dom.parentElement.parentElement.className = 'd-none';
                                         }
 
@@ -1611,7 +1611,7 @@ class PrescripcionesUci {
 
                                                     let fechaPres = moment(moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + _hora, 'DD-MM-YYYY HH:mm').unix();
 
-                                                    if (fechaHorario == fechaPres && oData.label == 'EN ESTE MOMENTO') {
+                                                    if (fechaHorario == fechaPres && oData.label == 'EN ESTE MOMENTO' || oData.label == '3 VECES AL DÍA') {
 
 
                                                         let __startTime = moment().format('YYYY-MM-DDTHH:mm');
@@ -1958,6 +1958,11 @@ class PrescripcionesUci {
                                         id: 11,
                                         value: 0,
                                         label: "EN ESTE MOMENTO"
+                                    },
+                                    {
+                                        id: 12,
+                                        value: 0,
+                                        label: "3 VECES AL DÍA"
                                     },
                                 ].map(x =>
                                     m('option[id="' + x.id + '"][value="' + x.value + '"][label="' + x.label + '"]', x.label)
