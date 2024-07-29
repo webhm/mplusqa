@@ -2739,6 +2739,7 @@ class PacientesUCI extends App {
         let cbNitritos = 0;
         let cbUrobilinogeno = 0;
         let cbBilirubina = 0;
+        let cbHemoglobina = 0;
 
         resultNro.map((col, i) => {
             if (col.id == 'cbPH') {
@@ -2771,10 +2772,13 @@ class PacientesUCI extends App {
             if (col.id == 'cbBilirubina') {
                 cbBilirubina++;
             }
+            if (col.id == 'cbHemoglobina') {
+                cbHemoglobina++;
+            }
 
         });
 
-        columnas = [cbPH, cbProteinas, cbDensidad, cbGlucosa, cbSangre, cbCetonas, cbLeucocitos, cbNitritos, cbUrobilinogeno, cbBilirubina];
+        columnas = [cbPH, cbProteinas, cbDensidad, cbGlucosa, cbSangre, cbCetonas, cbLeucocitos, cbNitritos, cbUrobilinogeno, cbBilirubina, cbHemoglobina];
 
         resultNro.map((col, i) => {
             let fila = {};
@@ -2981,6 +2985,29 @@ class PacientesUCI extends App {
                 }
             }
             if (col.id == 'cbBilirubina') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+
+            if (col.id == 'cbHemoglobina') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);

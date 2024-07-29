@@ -224,6 +224,7 @@ class ComburTestUci {
         let cbNitritos = 0;
         let cbUrobilinogeno = 0;
         let cbBilirubina = 0;
+        let cbHemoglobina = 0;
 
         resultNro.map((col, i) => {
             if (col.id == 'cbPH') {
@@ -257,9 +258,13 @@ class ComburTestUci {
                 cbBilirubina++;
             }
 
+            if (col.id == 'cbHemoglobina') {
+                cbHemoglobina++;
+            }
+
         });
 
-        columnas = [cbPH, cbProteinas, cbDensidad, cbGlucosa, cbSangre, cbCetonas, cbLeucocitos, cbNitritos, cbUrobilinogeno, cbBilirubina];
+        columnas = [cbPH, cbProteinas, cbDensidad, cbGlucosa, cbSangre, cbCetonas, cbLeucocitos, cbNitritos, cbUrobilinogeno, cbBilirubina, cbHemoglobina];
 
         resultNro.map((col, i) => {
             let fila = {};
@@ -466,6 +471,29 @@ class ComburTestUci {
                 }
             }
             if (col.id == 'cbBilirubina') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+
+            if (col.id == 'cbHemoglobina') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -1278,46 +1306,52 @@ class ComburTestUci {
                             class: "custom-select",
                             value: (ComburTestUci.nuevoRegistro !== null ? ComburTestUci.nuevoRegistro.medida : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                            orden: 1,
-                            id: "cbPH",
-                            label: "PH"
-                        }, {
-                            orden: 2,
-                            id: "cbProteinas",
-                            label: "PROTEINAS"
-                        }, {
-                            orden: 3,
-                            id: "cbDensidad",
-                            label: "DENSIDAD"
-                        }, {
-                            orden: 4,
-                            id: "cbGlucosa",
-                            label: "GLUCOSA"
-                        }, {
-                            orden: 5,
-                            id: "cbSangre",
-                            label: "SANGRE"
-                        }, {
-                            orden: 6,
-                            id: "cbCetonas",
-                            label: "CETONAS"
-                        }, {
-                            orden: 7,
-                            id: "cbLeucocitos",
-                            label: "LEUCOCITOS"
-                        }, {
-                            orden: 8,
-                            id: "cbNitritos",
-                            label: "NITRITOS"
-                        }, {
-                            orden: 9,
-                            id: "cbUrobilinogeno",
-                            label: "UROBILINOGENO",
-                        }, {
-                            orden: 10,
-                            id: "cbBilirubina",
-                            label: "BILIRRUBINA"
-                        }].map(x =>
+                                orden: 1,
+                                id: "cbPH",
+                                label: "PH"
+                            }, {
+                                orden: 2,
+                                id: "cbProteinas",
+                                label: "PROTEINAS"
+                            }, {
+                                orden: 3,
+                                id: "cbDensidad",
+                                label: "DENSIDAD"
+                            }, {
+                                orden: 4,
+                                id: "cbGlucosa",
+                                label: "GLUCOSA"
+                            }, {
+                                orden: 5,
+                                id: "cbSangre",
+                                label: "SANGRE"
+                            }, {
+                                orden: 6,
+                                id: "cbCetonas",
+                                label: "CETONAS"
+                            }, {
+                                orden: 7,
+                                id: "cbLeucocitos",
+                                label: "LEUCOCITOS"
+                            }, {
+                                orden: 8,
+                                id: "cbNitritos",
+                                label: "NITRITOS"
+                            }, {
+                                orden: 9,
+                                id: "cbUrobilinogeno",
+                                label: "UROBILINOGENO",
+                            }, {
+                                orden: 10,
+                                id: "cbBilirubina",
+                                label: "BILIRRUBINA"
+                            },
+                            {
+                                orden: 11,
+                                id: "cbHemoglobina",
+                                label: "HEMOGLOBINA"
+                            }
+                        ].map(x =>
                             m('option[id="' + x.id + '"][orden="' + x.orden + '"]', x.label)
                         ))
                     ),

@@ -224,6 +224,7 @@ class ComburTestUci {
         let cbNitritos = 0;
         let cbUrobilinogeno = 0;
         let cbBilirubina = 0;
+        let cbHemoglobina = 0;
 
         resultNro.map((col, i) => {
             if (col.id == 'cbPH') {
@@ -257,9 +258,13 @@ class ComburTestUci {
                 cbBilirubina++;
             }
 
+            if (col.id == 'cbHemoglobina') {
+                cbHemoglobina++;
+            }
+
         });
 
-        columnas = [cbPH, cbProteinas, cbDensidad, cbGlucosa, cbSangre, cbCetonas, cbLeucocitos, cbNitritos, cbUrobilinogeno, cbBilirubina];
+        columnas = [cbPH, cbProteinas, cbDensidad, cbGlucosa, cbSangre, cbCetonas, cbLeucocitos, cbNitritos, cbUrobilinogeno, cbBilirubina, cbHemoglobina];
 
         resultNro.map((col, i) => {
             let fila = {};
@@ -466,6 +471,28 @@ class ComburTestUci {
                 }
             }
             if (col.id == 'cbBilirubina') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'cbHemoglobina') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -1317,6 +1344,14 @@ class ComburTestUci {
                             orden: 10,
                             id: "cbBilirubina",
                             label: "BILIRRUBINA"
+                        }, {
+                            orden: 10,
+                            id: "cbBilirubina",
+                            label: "BILIRRUBINA"
+                        }, {
+                            orden: 11,
+                            id: "cbHemoglobina",
+                            label: "HEMOGLOBINA"
                         }].map(x =>
                             m('option[id="' + x.id + '"][orden="' + x.orden + '"]', x.label)
                         ))
