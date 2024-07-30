@@ -3615,6 +3615,7 @@ class PacientesUCI extends App {
                                             ComburTestUci.nuevoRegistro.id = oData.id;
                                             ComburTestUci.nuevoRegistro.medida = oData.medida;
                                             ComburTestUci.nuevoRegistro.orden = oData.orden;
+                                            ComburTestUci.nuevoRegistro.tipo = ComburTestUci.nuevoRegistro.medida;
                                             ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
@@ -4403,6 +4404,7 @@ class PacientesUCI extends App {
                                             GasesMedUci.nuevoRegistro.id = oData.id;
                                             GasesMedUci.nuevoRegistro.medida = oData.medida;
                                             GasesMedUci.nuevoRegistro.orden = oData.orden;
+
                                             GasesMedUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             GasesMedUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
@@ -5058,6 +5060,7 @@ class PacientesUCI extends App {
                     ComburTestUci.nuevoRegistro.id = option.id;
                     ComburTestUci.nuevoRegistro.medida = option.value;
                     ComburTestUci.nuevoRegistro.orden = option.getAttribute('orden');
+                    ComburTestUci.nuevoRegistro.tipo = ComburTestUci.nuevoRegistro.medida;
                     ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                     ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                     res.push(ComburTestUci.nuevoRegistro);

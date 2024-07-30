@@ -1110,7 +1110,7 @@ class ComburTestUci {
                                             ComburTestUci.nuevoRegistro.orden = oData.orden;
                                             ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-
+                                            ComburTestUci.nuevoRegistro.tipo = ComburTestUci.nuevoRegistro.medida;
 
                                             setTimeout(() => {
                                                 ComburTestUci.agregarRegistro();
@@ -1125,6 +1125,9 @@ class ComburTestUci {
                                                     m.redraw();
                                                 }, 100);
                                             }, 100);
+
+
+
 
 
                                             let tt = $('#ComburTest_' + oData.id).offset().top;
@@ -1340,10 +1343,6 @@ class ComburTestUci {
                             orden: 9,
                             id: "cbUrobilinogeno",
                             label: "UROBILINOGENO",
-                        }, {
-                            orden: 10,
-                            id: "cbBilirubina",
-                            label: "BILIRRUBINA"
                         }, {
                             orden: 10,
                             id: "cbBilirubina",

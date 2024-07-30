@@ -5022,6 +5022,7 @@ class PacientesUCI extends App {
                     ComburTestUci.nuevoRegistro.id = option.id;
                     ComburTestUci.nuevoRegistro.medida = option.value;
                     ComburTestUci.nuevoRegistro.orden = option.getAttribute('orden');
+                    ComburTestUci.nuevoRegistro.tipo = ComburTestUci.nuevoRegistro.medida;
                     ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                     ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                     res.push(ComburTestUci.nuevoRegistro);
