@@ -3581,6 +3581,8 @@ class PacientesUCI extends App {
                                             ComburTestUci.nuevoRegistro.orden = oData.orden;
                                             ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            ComburTestUci.nuevoRegistro.tipo = ComburTestUci.nuevoRegistro.medida;
+
 
                                             setTimeout(() => {
                                                 ComburTestUci.agregarRegistro();

@@ -492,7 +492,6 @@ class ComburTestUci {
                     });
                 }
             }
-
             if (col.id == 'cbHemoglobina') {
                 fila.id = col.id;
                 fila.idObj = [];
@@ -1111,6 +1110,7 @@ class ComburTestUci {
                                             ComburTestUci.nuevoRegistro.orden = oData.orden;
                                             ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            ComburTestUci.nuevoRegistro.tipo = ComburTestUci.nuevoRegistro.medida;
 
 
                                             setTimeout(() => {
