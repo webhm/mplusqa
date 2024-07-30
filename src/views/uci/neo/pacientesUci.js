@@ -3474,6 +3474,10 @@ class PacientesUCI extends App {
                                             if (e.keyCode == 13) {
                                                 ComburTestUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                 ComburTestUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                ComburTestUci.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + ComburTestUci.nuevoRegistro.hora;
+                                                ComburTestUci.nuevoRegistro.tipo = ComburTestUci.nuevoRegistro.medida;
+
+
                                                 if (ComburTestUci.nuevoRegistro.editar == null) {
                                                     setTimeout(() => {
                                                         ComburTestUci.agregarRegistro();
