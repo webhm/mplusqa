@@ -25,6 +25,8 @@ import UlcerasUciPed from "./ulcerasUciPed";
 import ValoracionUciNeo from "./valorarionUciNeo";
 import PrescripcionesUci from "./prescripcionesUci";
 import VentilatorioNoInvasivo from "./ventilatorioNoInvasivo";
+import ComburTestNeo from "./comburTestUci";
+import VentilatoriosNeo from "./ventilatorios";
 
 
 // Pacientes UCI
@@ -116,6 +118,12 @@ class PacientesUCI extends App {
         ValoracionUciNeo.registros = PacientesUCI.parseAllSeccion('ValoracionFisicaNeo');
 
         VentilatorioNoInvasivo.registros = PacientesUCI.parseAllSeccion('Oxigenacion');
+
+        ComburTestNeo.registros = PacientesUCI.parseAllSeccion('ComburTest');
+
+        VentilatoriosNeo.registros = PacientesUCI.parseAllSeccion('Ventilatorios');
+
+
 
 
 
@@ -212,11 +220,11 @@ class PacientesUCI extends App {
                         // Marcapasos
                         m(MarcapasosUci),
                         // Ventilatorios
-                        m(VentilatoriosUci),
+                        m(VentilatoriosNeo),
                         // Ventilatorios
                         m(VentilatorioNoInvasivo),
                         // ComburTest
-                        m(ComburTestUci),
+                        m(ComburTestNeo),
                         // UlcerasUciPed
                         m(UlcerasUciPed),
                         // ValoracionUciNeo
@@ -5487,9 +5495,9 @@ class PacientesUCI extends App {
                                                         MarcapasosUci.registros = PacientesUCI.parseSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
                                                         PacientesUCI.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
 
-                                                        VentilatoriosUci.allRegistros = PacientesUCI.parseSeccionVentilatorios_AllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
-                                                        PacientesUCI.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
-                                                        VentilatoriosUci.registros = PacientesUCI.parseSeccionVentilatorios_v2(Array.from(document.getElementById('sec_Ventilatorios').options));
+                                                        //  VentilatoriosUci.allRegistros = PacientesUCI.parseSeccionVentilatorios_AllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
+                                                        //  PacientesUCI.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
+                                                        //  VentilatoriosUci.registros = PacientesUCI.parseSeccionVentilatorios_v2(Array.from(document.getElementById('sec_Ventilatorios').options));
 
                                                         //  GasesUci.allRegistros = PacientesUCI.parseSeccionGases_AllRegistros(Array.from(document.getElementById('sec_Gases').options));
                                                         //  PacientesUCI.setTurnoSeccionGases(Array.from(document.getElementById('sec_Gases').options));
@@ -5502,9 +5510,9 @@ class PacientesUCI extends App {
                                                         // PacientesUCI.setTurnoSeccionMedidas(Array.from(document.getElementById('sec_Medidas').options));
                                                         //  MedidasUci.registros = PacientesUCI.parseSeccionMedidas_v2(Array.from(document.getElementById('sec_Medidas').options));
 
-                                                        ComburTestUci.allRegistros = PacientesUCI.parseSeccionComburTest_AllRegistros(Array.from(document.getElementById('sec_ComburTest').options));
-                                                        PacientesUCI.setTurnoSeccionComburTest(Array.from(document.getElementById('sec_ComburTest').options));
-                                                        ComburTestUci.registros = PacientesUCI.parseSeccionComburTest_v2(Array.from(document.getElementById('sec_ComburTest').options));
+                                                        // ComburTestUci.allRegistros = PacientesUCI.parseSeccionComburTest_AllRegistros(Array.from(document.getElementById('sec_ComburTest').options));
+                                                        // PacientesUCI.setTurnoSeccionComburTest(Array.from(document.getElementById('sec_ComburTest').options));
+                                                        //  ComburTestUci.registros = PacientesUCI.parseSeccionComburTest_v2(Array.from(document.getElementById('sec_ComburTest').options));
 
                                                         //  GasesMedUci.allRegistros = PacientesUCI.parseSeccionGasesMed_AllRegistros(Array.from(document.getElementById('sec_GasesMed').options));
                                                         //  PacientesUCI.setTurnoSeccionGasesMed(Array.from(document.getElementById('sec_GasesMed').options));

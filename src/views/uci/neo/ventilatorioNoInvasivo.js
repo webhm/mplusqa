@@ -10,7 +10,6 @@ class Valoracion {
     tipo = null;
     valor = null;
     timestamp = null;
-    cantidad = null;
     editar = null;
     tipoBit = 'UCINEO';
     seccion = 'Oxigenacion';
@@ -21,7 +20,6 @@ class Valoracion {
         this.tipo = this.tipo;
         this.valor = this.valor;
         this.timestamp = this.timestamp;
-        this.cantidad = this.cantidad;
         this.editar = this.editar;
         this.tipoBit = this.tipoBit;
         this.seccion = this.seccion;
@@ -289,7 +287,6 @@ class VentilatorioNoInvasivo {
                                                     VentilatorioNoInvasivo.nuevoRegistro.tipo = oData.tipo;
                                                     VentilatorioNoInvasivo.nuevoRegistro.valor = oData.valor;
                                                     VentilatorioNoInvasivo.nuevoRegistro.hora = oData.hora;
-                                                    VentilatorioNoInvasivo.nuevoRegistro.cantidad = oData.cantidad;
                                                     VentilatorioNoInvasivo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     VentilatorioNoInvasivo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
@@ -469,7 +466,7 @@ class VentilatorioNoInvasivo {
                                 oninput: (e) => {
                                     setTimeout(() => {
                                         //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                        VentilatorioNoInvasivo.nuevoRegistro.cantidad = (e.target.value.length !== 0 ? e.target.value : null);
+                                        VentilatorioNoInvasivo.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
 
                                     }, 50);
                                 },
@@ -481,7 +478,6 @@ class VentilatorioNoInvasivo {
 
                                         if (VentilatorioNoInvasivo.nuevoRegistro.editar == null) {
                                             VentilatorioNoInvasivo.agregarRegistro();
-                                            VentilatorioNoInvasivo.nuevoRegistro.id = VentilatorioNoInvasivo.nuevoRegistro.nro + 'Higiene';
                                             FecthUci.registrarSeccion(VentilatorioNoInvasivo.nuevoRegistro);
                                             VentilatorioNoInvasivo.nuevoRegistro = null;
                                             PacientesUCI.vReloadTable('table-VentilatorioNoInvasivo', VentilatorioNoInvasivo.getRegistros());
