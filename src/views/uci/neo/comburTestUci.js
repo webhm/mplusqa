@@ -341,7 +341,7 @@ class ComburTestNeo {
                     }
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "TEST DE SCORE:"
+                        "TEST DE ORINA:"
                     ),
 
                 ])
