@@ -64,6 +64,17 @@ class ValoracionUciNeo {
 
     }
 
+    static validarRegistroUnicoPorTurno(tipo) {
+        ValoracionUciNeo.registros.map((_v, _i) => {
+            if (_v.tipo == tipo && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                throw 'error';
+            }
+        });
+
+
+
+    }
+
     static eliminarRegistro(obj) {
 
         let res = [];
@@ -369,33 +380,48 @@ class ValoracionUciNeo {
                                 m('select.tx-semibold', {
                                     id: 'sec_TipoValoracion',
                                     onchange: (e) => {
-                                        let _id = e.target.options[e.target.selectedIndex].id;
-                                        let _value = e.target.options[e.target.selectedIndex].value;
-                                        if (ValoracionUciNeo.nuevoRegistro == null) {
-                                            ValoracionUciNeo.nuevoRegistro.id = _id;
-                                            ValoracionUciNeo.nuevoRegistro.tipo = _value;
-                                        } else {
-                                            ValoracionUciNeo.nuevoRegistro.id = _id;
-                                            ValoracionUciNeo.nuevoRegistro.tipo = _value;
+
+                                        try {
+
+                                            let _id = e.target.options[e.target.selectedIndex].id;
+                                            let _value = e.target.options[e.target.selectedIndex].value;
+
+                                            ValoracionUciNeo.validarRegistroUnicoPorTurno(_value);
+
+                                            if (ValoracionUciNeo.nuevoRegistro == null) {
+                                                ValoracionUciNeo.nuevoRegistro.id = _id;
+                                                ValoracionUciNeo.nuevoRegistro.tipo = _value;
+                                            } else {
+                                                ValoracionUciNeo.nuevoRegistro.id = _id;
+                                                ValoracionUciNeo.nuevoRegistro.tipo = _value;
+                                            }
+
+                                            document.getElementById('valorValoracionTONO').hidden = true;
+                                            document.getElementById('valorValoracionCABEZA').hidden = true;
+                                            document.getElementById('valorValoracionABDOMEN').hidden = true;
+                                            document.getElementById('valorValoracionCORDONUMBILICAL').hidden = true;
+
+                                            if (ValoracionUciNeo.nuevoRegistro.tipo == 'TONO') {
+                                                document.getElementById('valorValoracionTONO').hidden = false;
+                                            }
+                                            if (ValoracionUciNeo.nuevoRegistro.tipo == 'CABEZA') {
+                                                document.getElementById('valorValoracionCABEZA').hidden = false;
+                                            }
+                                            if (ValoracionUciNeo.nuevoRegistro.tipo == 'ABDOMEN') {
+                                                document.getElementById('valorValoracionABDOMEN').hidden = false;
+                                            }
+                                            if (ValoracionUciNeo.nuevoRegistro.tipo == 'CORDON UMBILICAL') {
+                                                document.getElementById('valorValoracionCORDONUMBILICAL').hidden = false;
+                                            }
+
+                                        } catch (error) {
+
+                                            ValoracionUciNeo.nuevoRegistro = null;
+                                            $.alert('No es posible ingresar este valor. Solo se registran valores una vez por turno vigente.');
                                         }
 
-                                        document.getElementById('valorValoracionTONO').hidden = true;
-                                        document.getElementById('valorValoracionCABEZA').hidden = true;
-                                        document.getElementById('valorValoracionABDOMEN').hidden = true;
-                                        document.getElementById('valorValoracionCORDONUMBILICAL').hidden = true;
 
-                                        if (ValoracionUciNeo.nuevoRegistro.tipo == 'TONO') {
-                                            document.getElementById('valorValoracionTONO').hidden = false;
-                                        }
-                                        if (ValoracionUciNeo.nuevoRegistro.tipo == 'CABEZA') {
-                                            document.getElementById('valorValoracionCABEZA').hidden = false;
-                                        }
-                                        if (ValoracionUciNeo.nuevoRegistro.tipo == 'ABDOMEN') {
-                                            document.getElementById('valorValoracionABDOMEN').hidden = false;
-                                        }
-                                        if (ValoracionUciNeo.nuevoRegistro.tipo == 'CORDON UMBILICAL') {
-                                            document.getElementById('valorValoracionCORDONUMBILICAL').hidden = false;
-                                        }
+
                                     },
                                     class: "custom-select",
                                     value: (ValoracionUciNeo.nuevoRegistro !== null ? ValoracionUciNeo.nuevoRegistro.tipo : 0),
