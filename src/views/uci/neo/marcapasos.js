@@ -252,6 +252,33 @@ class MarcapasosUci {
                                                 oData.editar = null;
                                                 MarcapasosUci.nuevoRegistro = null
                                             },
+                                            onkeypress: (e) => {
+                                                // Es AM
+                                                if (e.keyCode == 13) {
+
+                                                    MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                    console.log(99, MarcapasosUci.nuevoRegistro)
+
+                                                    // throw 'AA';
+                                                    if (MarcapasosUci.nuevoRegistro.editar == null) {
+                                                        MarcapasosUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
+                                                        MarcapasosUci.nuevoRegistro = null;
+                                                        MarcapasosUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+                                                    } else {
+                                                        MarcapasosUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(MarcapasosUci.nuevoRegistro);
+                                                        MarcapasosUci.nuevoRegistro = null;
+                                                        MarcapasosUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+
+                                                    }
+
+
+                                                }
+                                            },
                                             oninput: (e) => {
                                                 if (PacientesUCI.numeroTurno == 1) {
                                                     MarcapasosUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
