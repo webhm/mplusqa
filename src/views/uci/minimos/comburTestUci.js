@@ -441,13 +441,8 @@ class ComburTestNeo {
                                         label: "UROBILINOGENO"
                                     },
                                     {
-                                        id: "Bilerrubina",
-                                        label: "BILERRUBINA"
-                                    },
-
-                                    {
-                                        id: "Bilerrubinas",
-                                        label: "BILERRUBINAS"
+                                        id: "Bilirrubinas",
+                                        label: "BILIRRUBINAS"
                                     },
                                     {
                                         id: "Hemoglobina",
@@ -476,10 +471,17 @@ class ComburTestNeo {
                                 },
                                 oninput: (e) => {
                                     setTimeout(() => {
-                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                        ComburTestNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                        ComburTestNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                        try {
+                                            //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                            ComburTestNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            ComburTestNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
 
+                                            ComburTestNeo.validarRegistroUnicoPorTurno(ComburTestNeo.nuevoRegistro.tipo);
+
+                                        } catch (error) {
+                                            ComburTestNeo.nuevoRegistro = null;
+                                            $.alert('No es posible ingresar este valor. Ya existe este registro.');
+                                        }
                                     }, 50);
                                 },
 

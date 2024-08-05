@@ -409,160 +409,92 @@ class VentilatoriosNeo {
                                         orden: 1,
                                         id: "ModoVentilatorio",
                                         label: "MODO VENTILATORIO"
-                                    }, {
+                                    },
+                                    {
                                         orden: 2,
-                                        id: "PresionInspiratoria",
-                                        label: "PRESIÓN INSPIRATORIA"
-                                    }, {
-                                        orden: 3,
-                                        id: "PresionPico",
-                                        label: "PRESIÓN PICO"
-                                    }, {
-                                        orden: 4,
-                                        id: "PresionMedia",
-                                        label: "PRESIÓN MEDIA"
-                                    }, {
-                                        orden: 5,
-                                        id: "PEEP",
-                                        label: "PEEP"
-                                    }, {
-                                        orden: 6,
-                                        id: "AutoPeep",
-                                        label: "AUTO PEEP"
-                                    }, {
-                                        orden: 7,
-                                        id: "PresionSoporte",
-                                        label: "PRESIÓN SOPORTE"
-                                    }, {
-                                        orden: 8,
-                                        id: "VolumenTidalEspiradoMaquina",
-                                        label: "VOLUMEN TIDAL ESPIRADO MÁQUINA"
-                                    }, {
-                                        orden: 9,
-                                        id: "VolumenTidalEspiradoPaciente",
-                                        label: "VOLUMEN TIDAL ESPIRADO PACIENTE"
-                                    }, {
-                                        orden: 10,
-                                        id: "VolumenMinutoEspiradoMaquina",
-                                        label: "VOLUMEN MINUTO ESPIRADO MÁQUINA"
-                                    }, {
-                                        orden: 11,
-                                        id: "VolumenMinutoEspiradoPaciente",
-                                        label: "VOLUMEN MINUTO ESPIRADO PACIENTE"
-                                    },
-                                    {
-                                        orden: 12,
-                                        id: "FRV",
-                                        label: "FRECUENCIA RESPIRATORIA MÁQUINA"
-                                    },
-                                    {
-                                        orden: 13,
-                                        id: "FRPT",
-                                        label: "FRECUENCIA RESPIRATORIA ESPONTÁNEA"
-                                    },
-                                    {
-                                        orden: 14,
-                                        id: "ComplianceEstatica",
-                                        label: "COMPLIANCE ESTÁTICA"
-                                    },
-                                    {
-                                        orden: 15,
-                                        id: "ResistenciaInspiratoria",
-                                        label: "RESISTENCIA INSPIRATORIA"
-                                    },
-                                    {
-                                        orden: 16,
-                                        id: "RelacionInspiracionEspiracion",
-                                        label: "RELACIÓN INSPIRACION - ESPIRACION"
-                                    },
-                                    {
-                                        orden: 17,
-                                        id: "TiempoInspiratorio",
-                                        label: "TIEMPO INSPIRATORIO"
-                                    },
-                                    {
-                                        orden: 18,
                                         id: "FIO2",
                                         label: "FIO2"
                                     },
                                     {
-                                        orden: 19,
-                                        id: "ETCO2",
-                                        label: "ETCO2"
-                                    },
-                                    {
-                                        orden: 20,
-                                        id: "VolumenFugas",
-                                        label: "VOLUMEN FUGAS"
-                                    },
-                                    {
-                                        orden: 21,
-                                        id: "NivelTuboOrotraqueal",
-                                        label: "NIVEL TUBO OROTRAQUEAL"
-                                    },
-                                    {
-                                        orden: 22,
-                                        id: "PresionBalonTuboOrotraqueal",
-                                        label: "PRESIÓN BALÓN TUBO OROTRAQUEAL"
-                                    },
-                                    {
-                                        orden: 23,
-                                        id: "Hercios",
-                                        label: "HERCIOS"
-                                    },
-                                    {
-                                        orden: 24,
-                                        id: "PresionMediaVia",
-                                        label: "PRESION MEDIA-VIA"
-                                    },
-                                    {
-                                        orden: 25,
+                                        orden: 3,
                                         id: "Flujo",
                                         label: "FLUJO"
                                     },
                                     {
-                                        orden: 26,
-                                        id: "AmplitudDO2",
-                                        label: "AMPLITUD / DO2"
+                                        orden: 4,
+                                        id: "VolumenMinutoEspiradoMaquina",
+                                        label: "VOLUMEN MINUTO ESPIRADO MÁQUINA"
                                     },
                                     {
-                                        orden: 27,
-                                        id: "DCO2",
-                                        label: "DCO2"
+                                        orden: 5,
+                                        id: "VolumenTidalEspiradoMaquina",
+                                        label: "VOLUMEN TIDAL ESPIRADO MÁQUINA"
                                     },
                                     {
-                                        orden: 28,
-                                        id: "VolumenAltaFrecuencia",
-                                        label: "VOLUMEN ALTA FRECUENCIA"
-                                    },
-                                    {
-                                        orden: 29,
-                                        id: "AireComprimido",
-                                        label: "AIRE COMPRIMIDO (PORCENTAJE)"
-                                    }, {
-                                        orden: 30,
-                                        id: "Heliox",
-                                        label: "HELIOX (LITROS)"
-                                    }, {
-                                        orden: 31,
-                                        id: "OxidoNitrico",
-                                        label: "OXIDO NITRICO (PARTES POR MILLON)"
-                                    },
-                                    {
-                                        orden: 32,
+                                        orden: 6,
                                         id: "PresionInspiratoriaMaxima",
                                         label: "PRESION INSPIRATORIA MAXIMA / PIP"
                                     },
                                     {
-                                        orden: 33,
-                                        id: "OxigenoLitrosMinuto",
-                                        label: "OXÍGENO LITROS POR MINUTO"
+                                        orden: 7,
+                                        id: "PEEP",
+                                        label: "PEEP"
                                     },
                                     {
-                                        orden: 34,
+                                        orden: 8,
+                                        id: "TiempoInspiracion",
+                                        label: "TIEMPO INSPIRACIÓN"
+                                    },
+                                    {
+                                        orden: 9,
+                                        id: "TiempoEspiracion",
+                                        label: "TIEMPO ESPIRACIÓN"
+                                    },
+                                    {
+                                        orden: 10,
+                                        id: "FRV",
+                                        label: "FRECUENCIA RESPIRATORIA MÁQUINA"
+                                    },
+                                    {
+                                        orden: 11,
+                                        id: "RelacionInspiracionEspiracion",
+                                        label: "RELACIÓN INSPIRACION - ESPIRACION"
+                                    },
+                                    {
+                                        orden: 12,
+                                        id: "Amplitud",
+                                        label: "AMPLITUD"
+                                    },
+                                    {
+                                        orden: 13,
+                                        id: "Hercios",
+                                        label: "HERCIOS"
+                                    }, {
+                                        orden: 14,
+                                        id: "PresionMediaViaArea",
+                                        label: "PRESION MEDIA VIA AÉREA"
+                                    }, {
+                                        orden: 15,
+                                        id: "OxigenoLitrosMinuto",
+                                        label: "OXÍGENO LITROS POR MINUTO"
+                                    }, {
+                                        orden: 16,
+                                        id: "ComplianceResistencia",
+                                        label: "COMPLIANCE / RESISTENCIA"
+                                    },
+                                    {
+                                        orden: 17,
                                         id: "Co2",
                                         label: "CO2"
-                                    }
+                                    }, {
+                                        orden: 18,
+                                        id: "AireComprimido",
+                                        label: "AIRE COMPRIMIDO (PORCENTAJE)"
+                                    }, {
+                                        orden: 19,
+                                        id: "OxidoNitrico",
+                                        label: "ÓXIDO NÍTRICO"
+                                    },
                                 ].map(x =>
                                     m('option[id="' + x.id + '"]', x.label)
                                 ))

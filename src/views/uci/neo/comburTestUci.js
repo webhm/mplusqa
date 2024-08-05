@@ -322,6 +322,17 @@ class ComburTestNeo {
         }
     }
 
+    static validarRegistroUnicoPorTurno(tipo) {
+        ComburTestNeo.registros.map((_v, _i) => {
+            if (_v.tipo == tipo && _v.hora == ComburTestNeo.nuevoRegistro.hora && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                throw 'error';
+            }
+        });
+
+
+
+    }
+
     view() {
         return [
             m("thead.bd.bd-2", {
@@ -395,6 +406,7 @@ class ComburTestNeo {
                                     onchange: (e) => {
                                         let _id = e.target.options[e.target.selectedIndex].id;
                                         let _value = e.target.options[e.target.selectedIndex].value;
+
                                         if (ComburTestNeo.nuevoRegistro == null) {
                                             ComburTestNeo.nuevoRegistro.id = _id;
                                             ComburTestNeo.nuevoRegistro.tipo = _value;
@@ -402,6 +414,7 @@ class ComburTestNeo {
                                             ComburTestNeo.nuevoRegistro.id = _id;
                                             ComburTestNeo.nuevoRegistro.tipo = _value;
                                         }
+
                                     },
                                     class: "custom-select",
                                     value: (ComburTestNeo.nuevoRegistro !== null ? ComburTestNeo.nuevoRegistro.tipo : 0),
@@ -441,8 +454,8 @@ class ComburTestNeo {
                                         label: "UROBILINOGENO"
                                     },
                                     {
-                                        id: "Bilirrubina",
-                                        label: "BILIRRUBINA"
+                                        id: "Bilirrubinas",
+                                        label: "BILIRRUBINAS"
                                     },
                                     {
                                         id: "Hemoglobina",
@@ -471,9 +484,17 @@ class ComburTestNeo {
                                 },
                                 oninput: (e) => {
                                     setTimeout(() => {
-                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                        ComburTestNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                        ComburTestNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                        try {
+                                            //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                            ComburTestNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            ComburTestNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+
+                                            ComburTestNeo.validarRegistroUnicoPorTurno(ComburTestNeo.nuevoRegistro.tipo);
+
+                                        } catch (error) {
+                                            ComburTestNeo.nuevoRegistro = null;
+                                            $.alert('No es posible ingresar este valor. Ya existe este registro.');
+                                        }
 
                                     }, 50);
                                 },
