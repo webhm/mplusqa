@@ -135,10 +135,17 @@ class PrescripcionesUci {
         }
             */
 
+        // Validacion de Horario para visualizacion
+        let _hoy = '';
+        let _mana = ''
 
-
-        let _hoy = moment().format('DD-MM-YYYY');
-        let _mana = moment(_hoy, 'DD-MM-YYYY').add(1, 'days').format('DD-MM-YYYY');
+        if (moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 00:00'), 'DD-MM-YYYY HH:mm').unix() && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix()) {
+            _hoy = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
+            _mana = moment().format('DD-MM-YYYY');
+        } else {
+            _hoy = moment().format('DD-MM-YYYY');
+            _mana = moment(_hoy, 'DD-MM-YYYY').add(1, 'days').format('DD-MM-YYYY');
+        }
 
         let __startTime = moment(_hoy + " 08:00", 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm');
         let __endTime = moment(_mana + " 08:00", 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm');
@@ -155,6 +162,8 @@ class PrescripcionesUci {
                 title: hora,
             });
         }
+
+        console.log(6666, PrescripcionesUci.sColumns)
 
 
     }
