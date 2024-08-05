@@ -441,13 +441,8 @@ class ComburTestNeo {
                                         label: "UROBILINOGENO"
                                     },
                                     {
-                                        id: "Bilerrubina",
-                                        label: "BILERRUBINA"
-                                    },
-
-                                    {
-                                        id: "Bilerrubinas",
-                                        label: "BILERRUBINAS"
+                                        id: "Bilirrubina",
+                                        label: "BILIRRUBINA"
                                     },
                                     {
                                         id: "Hemoglobina",

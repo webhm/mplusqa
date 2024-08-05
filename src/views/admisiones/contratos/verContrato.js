@@ -197,6 +197,10 @@ class VerContrato extends App {
     oncreate() {
         VerContrato.fetchContrato();
     }
+    onremove() {
+        VerContrato.loader = true;
+
+    }
     static vHeader() {
         return m(HeaderPrivate, { userName: App.userName });
     }
