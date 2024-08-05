@@ -1093,6 +1093,8 @@ const TomaMuestras = {
                                                     _val.CD_EXA_LAB == '237' ||
                                                     _val.CD_EXA_LAB == '238' ||
                                                     _val.CD_EXA_LAB == '246' ||
+                                                    _val.CD_EXA_LAB == '247' ||
+                                                    _val.CD_EXA_LAB == '248' ||
                                                     _val.CD_EXA_LAB == '259' ||
                                                     _val.CD_EXA_LAB == '268' ||
                                                     _val.CD_EXA_LAB == '270' ||
@@ -1100,6 +1102,7 @@ const TomaMuestras = {
                                                     _val.CD_EXA_LAB == '272' ||
                                                     _val.CD_EXA_LAB == '273' ||
                                                     _val.CD_EXA_LAB == '275' ||
+                                                    _val.CD_EXA_LAB == '392' ||
                                                     _val.CD_EXA_LAB == '393' ||
                                                     _val.CD_EXA_LAB == '383' ||
                                                     _val.CD_EXA_LAB == '382' ||
@@ -1134,6 +1137,8 @@ const TomaMuestras = {
                                                     _val.CD_EXA_LAB == '348' ||
                                                     _val.CD_EXA_LAB == '349' ||
                                                     _val.CD_EXA_LAB == '351' ||
+                                                    _val.CD_EXA_LAB == '352' ||
+                                                    _val.CD_EXA_LAB == '353' ||
                                                     _val.CD_EXA_LAB == '355' ||
                                                     _val.CD_EXA_LAB == '356' ||
                                                     _val.CD_EXA_LAB == '357' ||
@@ -1158,6 +1163,7 @@ const TomaMuestras = {
                                                     _val.CD_EXA_LAB == '397' ||
                                                     _val.CD_EXA_LAB == '398' ||
                                                     _val.CD_EXA_LAB == '400' ||
+                                                    _val.CD_EXA_LAB == '405' ||
                                                     _val.CD_EXA_LAB == '406' ||
                                                     _val.CD_EXA_LAB == '407' ||
                                                     _val.CD_EXA_LAB == '408' ||
@@ -1169,6 +1175,7 @@ const TomaMuestras = {
                                                     _val.CD_EXA_LAB == '472' ||
                                                     _val.CD_EXA_LAB == '548' ||
                                                     _val.CD_EXA_LAB == '581' ||
+                                                    _val.CD_EXA_LAB == '593' ||
                                                     _val.CD_EXA_LAB == '1046' ||
                                                     _val.CD_EXA_LAB == '602' ||
                                                     _val.CD_EXA_LAB == '603' ||
@@ -1189,6 +1196,9 @@ const TomaMuestras = {
                                                     _val.CD_EXA_LAB == '865' ||
                                                     _val.CD_EXA_LAB == '883' ||
                                                     _val.CD_EXA_LAB == '900' ||
+                                                    _val.CD_EXA_LAB == '957' ||
+                                                    _val.CD_EXA_LAB == '976' ||
+                                                    _val.CD_EXA_LAB == '1112' ||
                                                     _val.CD_EXA_LAB == '1125' ||
                                                     _val.CD_EXA_LAB == '1138' ||
                                                     _val.CD_EXA_LAB == '1183' ||
