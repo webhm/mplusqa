@@ -322,6 +322,14 @@ class ComburTestNeo {
         }
     }
 
+    static validarRegistroUnicoPorTurno(tipo) {
+        ComburTestNeo.registros.map((_v, _i) => {
+            if (_v.tipo == tipo && _v.hora == ComburTestNeo.nuevoRegistro.hora && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                throw 'error';
+            }
+        });
+    }
+
     view() {
         return [
             m("thead.bd.bd-2", {

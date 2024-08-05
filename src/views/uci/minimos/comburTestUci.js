@@ -313,6 +313,15 @@ class ComburTestNeo {
         };
     }
 
+
+    static validarRegistroUnicoPorTurno(tipo) {
+        ComburTestNeo.registros.map((_v, _i) => {
+            if (_v.tipo == tipo && _v.hora == ComburTestNeo.nuevoRegistro.hora && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                throw 'error';
+            }
+        });
+    }
+
     static destroyTable() {
         let table = document.getElementById('table-ComburTestNeo');
         // clear first
@@ -475,8 +484,8 @@ class ComburTestNeo {
                                             //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
                                             ComburTestNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
                                             ComburTestNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
-
                                             ComburTestNeo.validarRegistroUnicoPorTurno(ComburTestNeo.nuevoRegistro.tipo);
+
 
                                         } catch (error) {
                                             ComburTestNeo.nuevoRegistro = null;
