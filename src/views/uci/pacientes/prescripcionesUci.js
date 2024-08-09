@@ -923,23 +923,30 @@ class PrescripcionesUci {
                                         let fechaPres = moment(moment().format('DD-MM-YYYY') + ' ' + oData.hora, 'DD-MM-YYYY HH:mm').unix();
 
 
-                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && oData.frecuencia !== '0') {
-                                            el.dom.parentElement.className = 'tx-12 tx-semibold bg-warning op-8 ';
+                                        if (moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 00:00'), 'DD-MM-YYYY HH:mm').unix() && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix()) {
+
+                                        } else {
+
+                                            if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && oData.frecuencia !== '0') {
+                                                el.dom.parentElement.className = 'tx-12 tx-semibold bg-warning op-8 ';
+                                            }
+
+
+                                            if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && (oData.frecuencia == '0') && (oData.label != 'EN ESTE MOMENTO')) {
+                                                el.dom.parentElement.parentElement.className = 'd-none';
+                                            }
+
+                                            if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && oData.frecuencia == '0' && (oData.label == 'EN ESTE MOMENTO')) {
+                                                el.dom.parentElement.parentElement.className = 'd-none';
+                                            }
+
+
+                                            if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && fechaPres > fechaHorario && oData.frecuencia >= 6) {
+                                                el.dom.parentElement.parentElement.className = 'd-none';
+                                            }
+
                                         }
 
-
-                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && (oData.frecuencia == '0') && (oData.label != 'EN ESTE MOMENTO' || oData.label != '3 VECES AL DÍA')) {
-                                            el.dom.parentElement.parentElement.className = 'd-none';
-                                        }
-
-                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && oData.frecuencia == '0' && (oData.label == 'EN ESTE MOMENTO' || oData.label == '3 VECES AL DÍA')) {
-                                            el.dom.parentElement.parentElement.className = 'd-none';
-                                        }
-
-
-                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && fechaPres > fechaHorario && oData.frecuencia >= 6) {
-                                            el.dom.parentElement.parentElement.className = 'd-none';
-                                        }
 
 
 
