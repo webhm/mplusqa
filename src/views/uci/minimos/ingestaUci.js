@@ -412,6 +412,13 @@ class IngestaUciNeo {
                                             IngestaUciNeo.nuevoRegistro.tipo = _value;
                                         }
 
+                                        if (IngestaUciNeo.nuevoRegistro.id == 'SenoMaterno') {
+                                            document.getElementById('medidaValor').setAttribute('disabled', 'disabled');
+                                        } else {
+                                            document.getElementById('medidaValor').removeAttribute('disabled');
+
+                                        }
+
 
                                     },
                                     class: "custom-select",
@@ -484,28 +491,53 @@ class IngestaUciNeo {
                                     IngestaUciNeo.nuevoRegistro.valor = _value;
                                 },
                                 onkeypress: (e) => {
-                                    if (e.keyCode == 13) {
-                                        IngestaUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                        IngestaUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                        IngestaUciNeo.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + IngestaUciNeo.nuevoRegistro.hora;
 
-                                        if (IngestaUciNeo.nuevoRegistro.editar == null) {
-                                            IngestaUciNeo.agregarRegistro();
-                                            IngestaUciNeo.nuevoRegistro.id = IngestaUciNeo.nuevoRegistro.nro + 'Eliminacion';
-                                            FecthUci.registrarSeccion(IngestaUciNeo.nuevoRegistro);
-                                            IngestaUciNeo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-ingesta', IngestaUciNeo.getRegistros());
-                                        } else {
-                                            IngestaUciNeo.editarRegistro();
-                                            FecthUci.actualizarSeccion(IngestaUciNeo.nuevoRegistro);
-                                            IngestaUciNeo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-ingesta', IngestaUciNeo.getRegistros());
+                                    try {
+
+                                        if (e.keyCode == 13) {
+                                            IngestaUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            IngestaUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            IngestaUciNeo.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + IngestaUciNeo.nuevoRegistro.hora;
+
+                                            if (IngestaUciNeo.nuevoRegistro.tipo == 'Seno Materno' && (IngestaUciNeo.nuevoRegistro.valor !== 'Sí (X)' || IngestaUciNeo.nuevoRegistro.valor !== 'No (-)')) {
+                                                throw 1;
+                                            }
+
+                                            if (IngestaUciNeo.nuevoRegistro.tipo == 'Formula' && (IngestaUciNeo.nuevoRegistro.valor == 'Sí (X)' || IngestaUciNeo.nuevoRegistro.valor == 'No (-)')) {
+                                                throw 2;
+                                            }
+
+                                            if (IngestaUciNeo.nuevoRegistro.editar == null) {
+                                                IngestaUciNeo.agregarRegistro();
+                                                IngestaUciNeo.nuevoRegistro.id = IngestaUciNeo.nuevoRegistro.nro + 'Eliminacion';
+                                                FecthUci.registrarSeccion(IngestaUciNeo.nuevoRegistro);
+                                                IngestaUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-ingesta', IngestaUciNeo.getRegistros());
+                                            } else {
+                                                IngestaUciNeo.editarRegistro();
+                                                FecthUci.actualizarSeccion(IngestaUciNeo.nuevoRegistro);
+                                                IngestaUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-ingesta', IngestaUciNeo.getRegistros());
+                                            }
                                         }
+
+                                    } catch (error) {
+
+                                        if (error == 1) {
+                                            $.alert('Solo se puede seleccionar Sí o No');
+                                        }
+
+                                        if (error == 1) {
+                                            $.alert('Solo se puede seleccionar un tipo de Fórmula');
+                                        }
+
                                     }
+
+
                                 },
                                 class: "custom-select",
                                 value: (IngestaUciNeo.nuevoRegistro !== null ? IngestaUciNeo.nuevoRegistro.valor : 0),
-                            }, m("option[value='0']", 'Seleccione...'), [{
+                            }, [{
                                     id: "X",
                                     label: "Sí (X)"
                                 },

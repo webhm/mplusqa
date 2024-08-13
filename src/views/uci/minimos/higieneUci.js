@@ -469,7 +469,7 @@ class HigieneUci {
                                 },
                                 class: "custom-select",
                                 value: (HigieneUci.nuevoRegistro !== null ? HigieneUci.nuevoRegistro.valor : 0),
-                            }, m("option[value='0']", 'Seleccione...'), [{
+                            }, [{
                                     id: "X",
                                     label: "Sí (X)"
                                 },
