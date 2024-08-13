@@ -205,8 +205,12 @@ class PrescripcionesUci {
 
         } else if (data.frecuencia !== '0' && moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY')) {
 
-            if (fechaHorarioUnix <= fechaPresUnixPasado && (_h - _ho) % data.frecuencia == 0) {
-                return true;
+            if (fechaHorarioUnix >= fechaPresUnix) {
+                if (fechaHorarioUnix <= fechaPresUnixPasado && (_h - _ho) % data.frecuencia == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }
@@ -1550,6 +1554,11 @@ class PrescripcionesUci {
 
 
                                         }
+
+                                    },
+                                    oncreate: (el) => {
+                                        el.dom.parentElement.setAttribute('title', moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').format('dddd, DD-MM-YYYY HH:mm'));
+
 
                                     },
 
