@@ -1369,10 +1369,14 @@ class VentilatoriosUci {
                                         //class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                         onclick: () => {
 
+
+                                            /*
+
                                             if (oData.condicion == null) {
                                                 alert('No se permite copiar. Ya existe un registro disponible.');
                                                 throw 'No se permite copiar. Ya existe un registro disponible.'
                                             }
+                                                */
                                             VentilatoriosUci.iniciarRegistro();
                                             VentilatoriosUci.nuevoRegistro.id = oData.id;
                                             VentilatoriosUci.nuevoRegistro.ventilatorio = oData.ventilatorio;
