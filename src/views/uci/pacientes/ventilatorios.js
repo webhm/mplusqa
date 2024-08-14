@@ -1401,13 +1401,19 @@ class VentilatoriosUci {
                                 ),
                                 m("button.btn.btn-xs.btn-dark[type='button']", {
                                         class: (oData.id == 'ModoVentilatorio' ? '' : 'd-none'),
-                                        onclick: () => {
-
-                                            alert(88)
+                                        onclick: (el) => {
 
                                             VentilatoriosUci.copyAllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
-
-
+                                            setTimeout(() => {
+                                                VentilatoriosUci.destroyTable();
+                                                VentilatoriosUci.filterRegistrosCopy();
+                                                VentilatoriosUci.show = false;
+                                                m.redraw();
+                                                setTimeout(() => {
+                                                    VentilatoriosUci.show = true;
+                                                    m.redraw();
+                                                }, 100);
+                                            }, 100);
 
 
                                             /*
@@ -1491,6 +1497,36 @@ class VentilatoriosUci {
     }
 
     static filterRegistros() {
+
+        let result = [];
+        let resultId = [];
+        let resultNro = [];
+        let _arr = [];
+        let hash = {};
+        let columnas = [];
+        let filas = [];
+        let valores = [];
+        let r = [];
+
+        result = VentilatoriosUci.allRegistros;
+
+        r = result.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        resultNro = r.filter(o => hash[o.nro] ? false : hash[o.nro] = true).sort((a, b) => a.nro - b.nro);
+        // Quitar duplicados
+        resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
+        // 'data-orden'ar desc
+        _arr = resultId.sort((a, b) => a.orden - b.orden);
+
+        VentilatoriosUci.registros = _arr;
+
+        VentilatoriosUci.setTableRegistros(resultNro);
+
+
+
+    }
+
+    static filterRegistrosCopy() {
 
         let result = [];
         let resultId = [];
