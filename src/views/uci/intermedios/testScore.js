@@ -476,7 +476,7 @@ class TestScoreUciNeo {
                                 },
                                 class: "custom-select",
                                 value: (TestScoreUciNeo.nuevoRegistro !== null ? TestScoreUciNeo.nuevoRegistro.valor : 0),
-                            }, m("option[value='0']", 'Seleccione...'), [{
+                            }, [{
                                     id: "1",
                                     label: "Audible con Fonendoscopio (1)"
                                 },

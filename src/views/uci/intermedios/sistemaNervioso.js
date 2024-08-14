@@ -476,7 +476,7 @@ class SistemaNervioso {
                                 },
                                 class: "custom-select",
                                 value: (SistemaNervioso.nuevoRegistro !== null ? SistemaNervioso.nuevoRegistro.valor : 0),
-                            }, m("option[value='0']", 'Seleccione...'), [{
+                            }, [{
                                     id: "X",
                                     label: "Sí (X)"
                                 },

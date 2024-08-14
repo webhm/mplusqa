@@ -527,7 +527,7 @@ class IngestaUciNeo {
                                             $.alert('Solo se puede seleccionar Sí o No');
                                         }
 
-                                        if (error == 1) {
+                                        if (error == 2) {
                                             $.alert('Solo se puede seleccionar un tipo de Fórmula');
                                         }
 
