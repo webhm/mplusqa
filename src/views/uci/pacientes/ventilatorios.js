@@ -95,6 +95,40 @@ class VentilatoriosUci {
 
     }
 
+    static copyAllRegistros(_options) {
+
+        let res = [];
+        let hash = {};
+
+        _options.map((option) => {
+            if (option.value != 0) {
+                VentilatoriosUci.iniciarRegistro();
+                VentilatoriosUci.nuevoRegistro.id = option.id;
+                VentilatoriosUci.nuevoRegistro.orden = option.getAttribute('orden');
+                VentilatoriosUci.nuevoRegistro.ventilatorio = option.value;
+                VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                res.push(VentilatoriosUci.nuevoRegistro);
+                VentilatoriosUci.nuevoRegistro = null;
+            }
+        });
+
+        VentilatoriosUci.allRegistros.push.apply(VentilatoriosUci.allRegistros, res);
+        // Asignar Nro
+
+        VentilatoriosUci.allRegistros.map((_v, _i) => {
+            VentilatoriosUci.allRegistros[_i].nro = (_i + 1);
+        });
+
+        let result = VentilatoriosUci.allRegistros.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        let resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
+        console.log(77, resultId)
+
+        FecthUci.registrarAllSeccion(res);
+
+    }
+
     static setTableRegistros(resultNro = []) {
 
         // Establecer Columnas
@@ -1366,17 +1400,22 @@ class VentilatoriosUci {
                                     'Cancelar Edición',
                                 ),
                                 m("button.btn.btn-xs.btn-dark[type='button']", {
-                                        //class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                        class: (oData.id == 'ModoVentilatorio' ? '' : 'd-none'),
                                         onclick: () => {
+
+                                            alert(88)
+
+                                            VentilatoriosUci.copyAllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
+
+
 
 
                                             /*
-
                                             if (oData.condicion == null) {
                                                 alert('No se permite copiar. Ya existe un registro disponible.');
                                                 throw 'No se permite copiar. Ya existe un registro disponible.'
                                             }
-                                                */
+                                           
                                             VentilatoriosUci.iniciarRegistro();
                                             VentilatoriosUci.nuevoRegistro.id = oData.id;
                                             VentilatoriosUci.nuevoRegistro.ventilatorio = oData.ventilatorio;
@@ -1421,6 +1460,8 @@ class VentilatoriosUci {
                                                         isAnimating = false;
                                                     })
                                             }, 250);
+
+                                            */
 
 
                                         },
