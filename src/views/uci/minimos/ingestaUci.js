@@ -489,24 +489,22 @@ class IngestaUciNeo {
                                     let _id = e.target.options[e.target.selectedIndex].id;
                                     let _value = e.target.options[e.target.selectedIndex].value;
                                     IngestaUciNeo.nuevoRegistro.valor = _value;
+                                    console.log(3, IngestaUciNeo.nuevoRegistro.valor)
                                 },
                                 onkeypress: (e) => {
 
-                                    try {
+                                    if (e.keyCode == 13) {
+                                        IngestaUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                        IngestaUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        IngestaUciNeo.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + IngestaUciNeo.nuevoRegistro.hora;
 
-                                        if (e.keyCode == 13) {
-                                            IngestaUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            IngestaUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                            IngestaUciNeo.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + IngestaUciNeo.nuevoRegistro.hora;
+                                        console.log(777, IngestaUciNeo.nuevoRegistro.valor.indexOf("FORMULA"))
 
-                                            if (IngestaUciNeo.nuevoRegistro.tipo == 'Seno Materno' && (IngestaUciNeo.nuevoRegistro.valor !== 'Sí (X)' || IngestaUciNeo.nuevoRegistro.valor !== 'No (-)')) {
-                                                throw 1;
-                                            }
-
-                                            if (IngestaUciNeo.nuevoRegistro.tipo == 'Formula' && (IngestaUciNeo.nuevoRegistro.valor == 'Sí (X)' || IngestaUciNeo.nuevoRegistro.valor == 'No (-)')) {
-                                                throw 2;
-                                            }
-
+                                        if (IngestaUciNeo.nuevoRegistro.tipo == 'Seno Materno' && IngestaUciNeo.nuevoRegistro.valor.indexOf("FORMULA") == 0) {
+                                            $.alert('Solo se puede seleccionar Sí o No');
+                                        } else if (IngestaUciNeo.nuevoRegistro.tipo == 'Fórmula' && (IngestaUciNeo.nuevoRegistro.valor == 'Sí (X)' || IngestaUciNeo.nuevoRegistro.valor == 'No (-)')) {
+                                            $.alert('Solo se puede seleccionar un tipo de Fórmula');
+                                        } else {
                                             if (IngestaUciNeo.nuevoRegistro.editar == null) {
                                                 IngestaUciNeo.agregarRegistro();
                                                 IngestaUciNeo.nuevoRegistro.id = IngestaUciNeo.nuevoRegistro.nro + 'Eliminacion';
@@ -521,15 +519,6 @@ class IngestaUciNeo {
                                             }
                                         }
 
-                                    } catch (error) {
-
-                                        if (error == 1) {
-                                            $.alert('Solo se puede seleccionar Sí o No');
-                                        }
-
-                                        if (error == 2) {
-                                            $.alert('Solo se puede seleccionar un tipo de Fórmula');
-                                        }
 
                                     }
 
