@@ -98,6 +98,42 @@ class GasesUci {
 
     }
 
+    static copyAllRegistros(_options) {
+
+        let res = [];
+        let hash = {};
+
+        _options.map((option) => {
+            if (option.value != 0) {
+                GasesUci.iniciarRegistro();
+                GasesUci.nuevoRegistro.id = option.id;
+                GasesUci.nuevoRegistro.orden = option.getAttribute('orden');
+                GasesUci.nuevoRegistro.gas = option.value;
+                GasesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                GasesUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                res.push(GasesUci.nuevoRegistro);
+                GasesUci.nuevoRegistro = null;
+            }
+        });
+
+        GasesUci.allRegistros.push.apply(GasesUci.allRegistros, res);
+        // Asignar Nro
+
+        GasesUci.allRegistros.map((_v, _i) => {
+            if (_v.nro == null) {
+                GasesUci.allRegistros[_i].nro = (_i + 1);
+                if (_v.id == res.id) {
+                    res.nro = GasesUci.allRegistros[_i].nro;
+                }
+
+            }
+
+        });
+
+        FecthUci.registrarAllSeccion(res);
+
+    }
+
     static filterRegistros() {
 
         let result = [];
@@ -508,7 +544,7 @@ class GasesUci {
                 title: "Hora:",
             });
             GasesUci.sColumns.push({
-                title: "Valores:",
+                title: "Valor:",
             });
         }
 
@@ -794,7 +830,7 @@ class GasesUci {
                                     onclick: (e) => {
                                         e.preventDefault();
                                     },
-
+                                    /*
                                     oncontextmenu: (e) => {
                                         e.preventDefault();
                                         if (index == 0) {
@@ -853,6 +889,7 @@ class GasesUci {
 
                                         }
                                     },
+                                    */
                                     oncreate: (el) => {
                                         el.dom.className = "text-center pd-l-0 pd-r-0";
 
@@ -1007,8 +1044,25 @@ class GasesUci {
                                     'Cancelar Edición',
                                 ),
                                 m("button.btn.btn-xs.btn-dark[type='button']", {
-                                        //class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                        class: (oData.id == 'PH' ? '' : 'd-none'),
                                         onclick: () => {
+
+                                            GasesUci.copyAllRegistros(Array.from(document.getElementById('sec_Gases').options));
+                                            setTimeout(() => {
+                                                GasesUci.destroyTable();
+                                                GasesUci.filterRegistros();
+                                                GasesUci.show = false;
+                                                m.redraw();
+                                                setTimeout(() => {
+                                                    GasesUci.show = true;
+                                                    m.redraw();
+                                                }, 100);
+                                            }, 100);
+
+
+
+
+                                            /*
                                             console.log(99, oData)
 
                                             if (oData.hora == null) {
@@ -1067,6 +1121,8 @@ class GasesUci {
                                                         isAnimating = false;
                                                     })
                                             }, 250);
+
+                                            */
 
                                         },
                                     },
@@ -1192,7 +1248,7 @@ class GasesUci {
                         "HORA:"
                     ),
                     m("th[scope='col'][colspan='4']",
-                        "VALORES:"
+                        "VALOR:"
                     ),
 
                 ]),

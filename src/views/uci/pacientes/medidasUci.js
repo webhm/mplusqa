@@ -224,6 +224,42 @@ class MedidasUci {
 
     }
 
+    static copyAllRegistros(_options) {
+
+        let res = [];
+        let hash = {};
+
+        _options.map((option) => {
+            if (option.value != 0) {
+                MedidasUci.iniciarRegistro();
+                MedidasUci.nuevoRegistro.id = option.id;
+                MedidasUci.nuevoRegistro.orden = option.getAttribute('orden');
+                MedidasUci.nuevoRegistro.medida = option.value;
+                MedidasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                MedidasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                res.push(MedidasUci.nuevoRegistro);
+                MedidasUci.nuevoRegistro = null;
+            }
+        });
+
+        MedidasUci.allRegistros.push.apply(MedidasUci.allRegistros, res);
+        // Asignar Nro
+
+        MedidasUci.allRegistros.map((_v, _i) => {
+            if (_v.nro == null) {
+                MedidasUci.allRegistros[_i].nro = (_i + 1);
+                if (_v.id == res.id) {
+                    res.nro = MedidasUci.allRegistros[_i].nro;
+                }
+
+            }
+
+        });
+
+        FecthUci.registrarAllSeccion(res);
+
+    }
+
 
     static filterRegistros() {
 
@@ -874,7 +910,7 @@ class MedidasUci {
                                     onclick: (e) => {
                                         e.preventDefault();
                                     },
-
+                                    /*
                                     oncontextmenu: (e) => {
                                         e.preventDefault();
                                         if (index == 0) {
@@ -934,6 +970,7 @@ class MedidasUci {
 
                                         }
                                     },
+                                    */
                                     oncreate: (el) => {
                                         el.dom.className = "text-center pd-l-0 pd-r-0";
 
@@ -1077,7 +1114,7 @@ class MedidasUci {
                                     onclick: (e) => {
                                         e.preventDefault();
                                     },
-
+                                    /*
                                     oncontextmenu: (e) => {
                                         e.preventDefault();
                                         if (index == 0) {
@@ -1137,6 +1174,7 @@ class MedidasUci {
 
                                         }
                                     },
+                                    */
                                     oncreate: (el) => {
                                         el.dom.className = "text-center pd-l-0 pd-r-0";
 
@@ -1292,8 +1330,28 @@ class MedidasUci {
                                     'Cancelar Edición',
                                 ),
                                 m("button.btn.btn-xs.btn-dark[type='button']", {
-                                        //class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                        class: (oData.id == 'GastoCardiaco' ? '' : 'd-none'),
                                         onclick: () => {
+
+                                            MedidasUci.copyAllRegistros(Array.from(document.getElementById('sec_Medidas').options));
+                                            setTimeout(() => {
+                                                MedidasUci.destroyTable();
+                                                MedidasUci.filterRegistros();
+                                                MedidasUci.show = false;
+                                                m.redraw();
+                                                setTimeout(() => {
+                                                    MedidasUci.show = true;
+                                                    m.redraw();
+                                                }, 100);
+                                            }, 100);
+
+
+
+
+
+
+
+                                            /*
                                             if (oData.valor == null) {
                                                 alert('No se permite copiar. Ya existe un registro disponible.');
                                                 throw 'No se permite copiar. Ya existe un registro disponible.'
@@ -1344,6 +1402,8 @@ class MedidasUci {
                                                         isAnimating = false;
                                                     })
                                             }, 250);
+
+                                            */
 
                                         },
                                     },

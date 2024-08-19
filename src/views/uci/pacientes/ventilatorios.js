@@ -117,13 +117,16 @@ class VentilatoriosUci {
         // Asignar Nro
 
         VentilatoriosUci.allRegistros.map((_v, _i) => {
-            VentilatoriosUci.allRegistros[_i].nro = (_i + 1);
-        });
+            if (_v.nro == null) {
+                VentilatoriosUci.allRegistros[_i].nro = (_i + 1);
+                if (_v.id == res.id) {
+                    res.nro = VentilatoriosUci.allRegistros[_i].nro;
+                }
 
-        let result = VentilatoriosUci.allRegistros.sort((a, b) => b.nro - a.nro);
-        // Quitar duplicados
-        let resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
-        console.log(77, resultId)
+            }
+
+
+        });
 
         FecthUci.registrarAllSeccion(res);
 
@@ -1185,7 +1188,7 @@ class VentilatoriosUci {
                                     onclick: (e) => {
                                         e.preventDefault();
                                     },
-
+                                    /*
                                     oncontextmenu: (e) => {
                                         e.preventDefault();
                                         if (index == 0) {
@@ -1244,6 +1247,7 @@ class VentilatoriosUci {
 
                                         }
                                     },
+                                    */
                                     oncreate: (el) => {
                                         el.dom.className = "text-center pd-l-0 pd-r-0";
 
@@ -1406,7 +1410,7 @@ class VentilatoriosUci {
                                             VentilatoriosUci.copyAllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
                                             setTimeout(() => {
                                                 VentilatoriosUci.destroyTable();
-                                                VentilatoriosUci.filterRegistrosCopy();
+                                                VentilatoriosUci.filterRegistros();
                                                 VentilatoriosUci.show = false;
                                                 m.redraw();
                                                 setTimeout(() => {

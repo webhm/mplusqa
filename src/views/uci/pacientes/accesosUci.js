@@ -311,7 +311,8 @@ class AccesosUci {
                                                     } else {
                                                         AccesosUci.showOtros = false;
                                                     }
-                                                    AccesosUci.nuevoRegistro = null
+                                                    AccesosUci.nuevoRegistro = null;
+                                                    console.log(55, oData)
                                                     AccesosUci.verRegistro(oData);
                                                 },
                                             },

@@ -183,6 +183,40 @@ class GasesMedUci {
 
     }
 
+    static copyAllRegistros(_options) {
+
+        let res = [];
+        let hash = {};
+
+        _options.map((option) => {
+            if (option.value != 0) {
+                GasesMedUci.iniciarRegistro();
+                GasesMedUci.nuevoRegistro.id = option.id;
+                GasesMedUci.nuevoRegistro.orden = option.getAttribute('orden');
+                GasesMedUci.nuevoRegistro.medida = option.value;
+                GasesMedUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                GasesMedUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                res.push(GasesMedUci.nuevoRegistro);
+                GasesMedUci.nuevoRegistro = null;
+            }
+        });
+
+        GasesMedUci.allRegistros.push.apply(GasesMedUci.allRegistros, res);
+        // Asignar Nro
+
+        GasesMedUci.allRegistros.map((_v, _i) => {
+            if (_v.nro == null) {
+                GasesMedUci.allRegistros[_i].nro = (_i + 1);
+                if (_v.id == res.id) {
+                    res.nro = GasesMedUci.allRegistros[_i].nro;
+                }
+            }
+        });
+
+        FecthUci.registrarAllSeccion(res);
+
+    }
+
 
     static filterRegistros() {
 
@@ -325,10 +359,10 @@ class GasesMedUci {
 
         for (let index = 0; index < orderCol[0]; index++) {
             GasesMedUci.sColumns.push({
-                title: "Valor:",
+                title: "Hora:",
             });
             GasesMedUci.sColumns.push({
-                title: "Hora:",
+                title: "Valor:",
             });
         }
 
@@ -468,7 +502,7 @@ class GasesMedUci {
                                     onclick: (e) => {
                                         e.preventDefault();
                                     },
-
+                                    /*
                                     oncontextmenu: (e) => {
                                         e.preventDefault();
                                         if (index == 0) {
@@ -527,6 +561,7 @@ class GasesMedUci {
 
                                         }
                                     },
+                                    */
                                     oncreate: (el) => {
                                         el.dom.className = "text-center pd-l-0 pd-r-0";
 
@@ -669,7 +704,7 @@ class GasesMedUci {
                                     onclick: (e) => {
                                         e.preventDefault();
                                     },
-
+                                    /*
                                     oncontextmenu: (e) => {
                                         e.preventDefault();
                                         if (index == 0) {
@@ -728,6 +763,7 @@ class GasesMedUci {
 
                                         }
                                     },
+                                    */
                                     oncreate: (el) => {
                                         el.dom.className = "text-center pd-l-0 pd-r-0";
 
@@ -883,23 +919,11 @@ class GasesMedUci {
                                     'Cancelar Edición',
                                 ),
                                 m("button.btn.btn-xs.btn-dark[type='button']", {
-                                        //class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                        class: (oData.id == 'AireComprimido' ? '' : 'd-none'),
                                         onclick: () => {
-                                            if (oData.valor == null) {
-                                                alert('No se permite copiar. Ya existe un registro disponible.');
-                                                throw 'No se permite copiar. Ya existe un registro disponible.'
-                                            }
-                                            GasesMedUci.iniciarRegistro();
-                                            GasesMedUci.nuevoRegistro.id = oData.id;
-                                            GasesMedUci.nuevoRegistro.medida = oData.medida;
-                                            GasesMedUci.nuevoRegistro.orden = oData.orden;
-                                            GasesMedUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            GasesMedUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
+                                            GasesMedUci.copyAllRegistros(Array.from(document.getElementById('sec_GasesMed').options));
                                             setTimeout(() => {
-                                                GasesMedUci.agregarRegistro();
-                                                FecthUci.registrarSeccion(GasesMedUci.nuevoRegistro);
-                                                GasesMedUci.nuevoRegistro = null;
                                                 GasesMedUci.destroyTable();
                                                 GasesMedUci.filterRegistros();
                                                 GasesMedUci.show = false;
@@ -911,7 +935,41 @@ class GasesMedUci {
                                             }, 100);
 
 
-                                            let tt = $('#GasesMed_' + oData.id).offset().top;
+
+
+
+
+
+                                            /*
+                                            if (oData.valor == null) {
+                                                alert('No se permite copiar. Ya existe un registro disponible.');
+                                                throw 'No se permite copiar. Ya existe un registro disponible.'
+                                            }
+                                            MedidasUci.iniciarRegistro();
+                                            MedidasUci.nuevoRegistro.id = oData.id;
+                                            MedidasUci.nuevoRegistro.medida = oData.medida;
+                                            MedidasUci.nuevoRegistro.orden = oData.orden;
+                                            MedidasUci.nuevoRegistro.rango = oData.rango;
+                                            MedidasUci.nuevoRegistro.instrumento = oData.instrumento;
+                                            MedidasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            MedidasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+
+                                            setTimeout(() => {
+                                                MedidasUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(MedidasUci.nuevoRegistro);
+                                                MedidasUci.nuevoRegistro = null;
+                                                MedidasUci.destroyTable();
+                                                MedidasUci.filterRegistros();
+                                                MedidasUci.show = false;
+                                                m.redraw();
+                                                setTimeout(() => {
+                                                    MedidasUci.show = true;
+                                                    m.redraw();
+                                                }, 100);
+                                            }, 100);
+
+
+                                            let tt = $('#MedidasUci_' + oData.id).offset().top;
                                             setTimeout(() => {
                                                 let isAnimating = true;
                                                 $('html,body').animate({
@@ -925,7 +983,7 @@ class GasesMedUci {
 
                                             setTimeout(() => {
                                                 let isAnimating = true;
-                                                $('#registrosGasesMedUci').animate({
+                                                $('#registrosMedidasUci').animate({
                                                         scrollLeft: '+=460'
                                                     },
                                                     700, "easeInOutSine",
@@ -933,6 +991,8 @@ class GasesMedUci {
                                                         isAnimating = false;
                                                     })
                                             }, 250);
+
+                                            */
 
                                         },
                                     },
