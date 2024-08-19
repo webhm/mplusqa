@@ -425,7 +425,7 @@ class CultivosUci {
                             class: "custom-select",
                             value: (CultivosUci.nuevoRegistro !== null ? CultivosUci.nuevoRegistro.muestra : 0),
 
-                        }, m("option[value='0']", 'Seleccione...'), [{
+                        }, [{
                                 id: "HemocultivoViaCentral",
                                 label: "HEMOCULTIVO VIA CENTRAL"
                             },
