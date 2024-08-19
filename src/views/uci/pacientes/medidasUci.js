@@ -260,6 +260,28 @@ class MedidasUci {
 
     }
 
+    static eliminarAllRegistros() {
+
+
+        let res = [];
+        let result = [];
+        let resultNro = [];
+        let hash = {};
+
+        res = MedidasUci.allRegistros;
+
+        result = res.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
+
+        resultNro.map((_v, _i) => {
+            MedidasUci.eliminarRegistro(_v);
+            FecthUci.eliminarSeccion(_v);
+        });
+
+
+    }
+
 
     static filterRegistros() {
 
@@ -1408,6 +1430,30 @@ class MedidasUci {
                                         },
                                     },
                                     'Copiar',
+                                ),
+                                m("button.btn.btn-xs.btn-danger[type='button']", {
+                                        class: (oData.id == 'GastoCardiaco' ? '' : 'd-none'),
+                                        onclick: (el) => {
+
+                                            if (MedidasUci.allRegistros.length > 17) {
+                                                MedidasUci.eliminarAllRegistros();
+                                                setTimeout(() => {
+                                                    MedidasUci.destroyTable();
+                                                    MedidasUci.filterRegistros();
+                                                    MedidasUci.show = false;
+                                                    m.redraw();
+                                                    setTimeout(() => {
+                                                        MedidasUci.show = true;
+                                                        m.redraw();
+                                                    }, 100);
+                                                }, 100);
+                                            } else {
+                                                $.alert('No es posible eliminar los registros por defecto.');
+                                            }
+
+                                        },
+                                    },
+                                    'Eliminar',
                                 ),
 
 

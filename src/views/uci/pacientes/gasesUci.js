@@ -134,6 +134,28 @@ class GasesUci {
 
     }
 
+    static eliminarAllRegistros() {
+
+
+        let res = [];
+        let result = [];
+        let resultNro = [];
+        let hash = {};
+
+        res = GasesUci.allRegistros;
+
+        result = res.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
+
+        resultNro.map((_v, _i) => {
+            GasesUci.eliminarRegistro(_v);
+            FecthUci.eliminarSeccion(_v);
+        });
+
+
+    }
+
     static filterRegistros() {
 
         let result = [];
@@ -1127,6 +1149,30 @@ class GasesUci {
                                         },
                                     },
                                     'Copiar',
+                                ),
+                                m("button.btn.btn-xs.btn-danger[type='button']", {
+                                        class: (oData.id == 'PH' ? '' : 'd-none'),
+                                        onclick: (el) => {
+
+                                            if (GasesUci.allRegistros.length > 13) {
+                                                GasesUci.eliminarAllRegistros();
+                                                setTimeout(() => {
+                                                    GasesUci.destroyTable();
+                                                    GasesUci.filterRegistros();
+                                                    GasesUci.show = false;
+                                                    m.redraw();
+                                                    setTimeout(() => {
+                                                        GasesUci.show = true;
+                                                        m.redraw();
+                                                    }, 100);
+                                                }, 100);
+                                            } else {
+                                                $.alert('No es posible eliminar los registros por defecto.');
+                                            }
+
+                                        },
+                                    },
+                                    'Eliminar',
                                 ),
 
 

@@ -1510,6 +1510,31 @@ class PacientesUCI extends App {
                                     },
                                     'Copiar',
                                 ),
+                                m("button.btn.btn-xs.btn-danger[type='button']", {
+                                        class: (oData.id == 'PH' ? '' : 'd-none'),
+                                        onclick: (el) => {
+
+                                            if (GasesUci.allRegistros.length > 13) {
+                                                GasesUci.eliminarAllRegistros();
+                                                setTimeout(() => {
+                                                    GasesUci.destroyTable();
+                                                    GasesUci.filterRegistros();
+                                                    GasesUci.show = false;
+                                                    m.redraw();
+                                                    setTimeout(() => {
+                                                        GasesUci.show = true;
+                                                        m.redraw();
+                                                    }, 100);
+                                                }, 100);
+                                            } else {
+                                                $.alert('No es posible eliminar los registros por defecto.');
+                                            }
+
+                                        },
+                                    },
+                                    'Eliminar',
+                                ),
+
 
 
                             ])
@@ -2700,6 +2725,30 @@ class PacientesUCI extends App {
                                     },
                                     'Copiar',
                                 ),
+                                m("button.btn.btn-xs.btn-danger[type='button']", {
+                                        class: (oData.id == 'GastoCardiaco' ? '' : 'd-none'),
+                                        onclick: (el) => {
+
+                                            if (MedidasUci.allRegistros.length > 17) {
+                                                MedidasUci.eliminarAllRegistros();
+                                                setTimeout(() => {
+                                                    MedidasUci.destroyTable();
+                                                    MedidasUci.filterRegistros();
+                                                    MedidasUci.show = false;
+                                                    m.redraw();
+                                                    setTimeout(() => {
+                                                        MedidasUci.show = true;
+                                                        m.redraw();
+                                                    }, 100);
+                                                }, 100);
+                                            } else {
+                                                $.alert('No es posible eliminar los registros por defecto.');
+                                            }
+
+                                        },
+                                    },
+                                    'Eliminar',
+                                ),
 
 
                             ])
@@ -3692,6 +3741,30 @@ class PacientesUCI extends App {
                                     },
                                     'Copiar',
                                 ),
+                                m("button.btn.btn-xs.btn-danger[type='button']", {
+                                        class: (oData.id == 'cbPH' ? '' : 'd-none'),
+                                        onclick: (el) => {
+
+                                            if (ComburTestUci.allRegistros.length > 10) {
+                                                ComburTestUci.eliminarAllRegistros();
+                                                setTimeout(() => {
+                                                    ComburTestUci.destroyTable();
+                                                    ComburTestUci.filterRegistros();
+                                                    ComburTestUci.show = false;
+                                                    m.redraw();
+                                                    setTimeout(() => {
+                                                        ComburTestUci.show = true;
+                                                        m.redraw();
+                                                    }, 100);
+                                                }, 100);
+                                            } else {
+                                                $.alert('No es posible eliminar los registros por defecto.');
+                                            }
+
+                                        },
+                                    },
+                                    'Eliminar',
+                                ),
 
 
                             ])
@@ -4504,6 +4577,30 @@ class PacientesUCI extends App {
                                         },
                                     },
                                     'Copiar',
+                                ),
+                                m("button.btn.btn-xs.btn-danger[type='button']", {
+                                        class: (oData.id == 'AireComprimido' ? '' : 'd-none'),
+                                        onclick: (el) => {
+
+                                            if (GasesMedUci.allRegistros.length > 3) {
+                                                GasesMedUci.eliminarAllRegistros();
+                                                setTimeout(() => {
+                                                    GasesMedUci.destroyTable();
+                                                    GasesMedUci.filterRegistros();
+                                                    GasesMedUci.show = false;
+                                                    m.redraw();
+                                                    setTimeout(() => {
+                                                        GasesMedUci.show = true;
+                                                        m.redraw();
+                                                    }, 100);
+                                                }, 100);
+                                            } else {
+                                                $.alert('No es posible eliminar los registros por defecto.');
+                                            }
+
+                                        },
+                                    },
+                                    'Eliminar',
                                 ),
 
 

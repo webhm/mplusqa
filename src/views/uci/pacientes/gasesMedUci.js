@@ -217,6 +217,29 @@ class GasesMedUci {
 
     }
 
+    static eliminarAllRegistros() {
+
+
+        let res = [];
+        let result = [];
+        let resultNro = [];
+        let hash = {};
+
+        res = GasesMedUci.allRegistros;
+
+        result = res.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
+
+        resultNro.map((_v, _i) => {
+            GasesMedUci.eliminarRegistro(_v);
+            FecthUci.eliminarSeccion(_v);
+        });
+
+
+    }
+
+
 
     static filterRegistros() {
 
@@ -997,6 +1020,30 @@ class GasesMedUci {
                                         },
                                     },
                                     'Copiar',
+                                ),
+                                m("button.btn.btn-xs.btn-danger[type='button']", {
+                                        class: (oData.id == 'AireComprimido' ? '' : 'd-none'),
+                                        onclick: (el) => {
+
+                                            if (GasesMedUci.allRegistros.length > 3) {
+                                                GasesMedUci.eliminarAllRegistros();
+                                                setTimeout(() => {
+                                                    GasesMedUci.destroyTable();
+                                                    GasesMedUci.filterRegistros();
+                                                    GasesMedUci.show = false;
+                                                    m.redraw();
+                                                    setTimeout(() => {
+                                                        GasesMedUci.show = true;
+                                                        m.redraw();
+                                                    }, 100);
+                                                }, 100);
+                                            } else {
+                                                $.alert('No es posible eliminar los registros por defecto.');
+                                            }
+
+                                        },
+                                    },
+                                    'Eliminar',
                                 ),
 
 

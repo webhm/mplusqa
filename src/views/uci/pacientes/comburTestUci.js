@@ -220,6 +220,29 @@ class ComburTestUci {
     }
 
 
+    static eliminarAllRegistros() {
+
+
+        let res = [];
+        let result = [];
+        let resultNro = [];
+        let hash = {};
+
+        res = ComburTestUci.allRegistros;
+
+        result = res.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
+
+        resultNro.map((_v, _i) => {
+            ComburTestUci.eliminarRegistro(_v);
+            FecthUci.eliminarSeccion(_v);
+        });
+
+
+    }
+
+
     static filterRegistros() {
 
         let result = [];
@@ -1180,6 +1203,30 @@ class ComburTestUci {
                                         },
                                     },
                                     'Copiar',
+                                ),
+                                m("button.btn.btn-xs.btn-danger[type='button']", {
+                                        class: (oData.id == 'cbPH' ? '' : 'd-none'),
+                                        onclick: (el) => {
+
+                                            if (ComburTestUci.allRegistros.length > 10) {
+                                                ComburTestUci.eliminarAllRegistros();
+                                                setTimeout(() => {
+                                                    ComburTestUci.destroyTable();
+                                                    ComburTestUci.filterRegistros();
+                                                    ComburTestUci.show = false;
+                                                    m.redraw();
+                                                    setTimeout(() => {
+                                                        ComburTestUci.show = true;
+                                                        m.redraw();
+                                                    }, 100);
+                                                }, 100);
+                                            } else {
+                                                $.alert('No es posible eliminar los registros por defecto.');
+                                            }
+
+                                        },
+                                    },
+                                    'Eliminar',
                                 ),
 
 
