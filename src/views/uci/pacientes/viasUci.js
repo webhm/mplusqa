@@ -775,7 +775,7 @@ class ViasUci {
                                     id: "cufecha" + ViasUci.nuevoRegistro.id,
                                     oncreate: (el) => {
                                         if (ViasUci.nuevoRegistro.curacion !== undefined) {
-                                            el.dom.value = ViasUci.nuevoRegistro.curacion_fecha;
+                                            el.dom.value = ViasUci.nuevoRegistro.curacion;
                                         }
                                         setTimeout(() => {
                                             new Cleave("#cufecha" + ViasUci.nuevoRegistro.id, {
