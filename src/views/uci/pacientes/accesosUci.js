@@ -479,7 +479,7 @@ class AccesosUci {
                             },
                             class: "custom-select",
                             value: (AccesosUci.nuevoRegistro !== null ? AccesosUci.nuevoRegistro.acceso : 0),
-                        }, m("option[value='0']", 'Seleccione...'), [{
+                        }, [{
                                 id: "CateterIntracraneal",
                                 label: "CATETER INTRACRANEAL"
                             }, {
@@ -572,7 +572,7 @@ class AccesosUci {
                                     AccesosUci.nuevoRegistro.ubicacion = _value;
                                 },
                                 class: "custom-select"
-                            }, m('option', 'Seleccione...'), ['SUBDURAL', 'INTRAPARENQUIMATOSO', 'TIBIAL', 'NASO-TRAQUEAL', 'ORO-TRAQUEAL', 'SUBMAXILAR',
+                            }, ['SUBDURAL', 'INTRAPARENQUIMATOSO', 'TIBIAL', 'NASO-TRAQUEAL', 'ORO-TRAQUEAL', 'SUBMAXILAR',
                                 'TORAX DERECHO', 'TORAX IZQUIERDO', 'PLEURAL', 'MEDIASTINAL', 'TRAQUEA', 'FOSA NASAL DERECHA', 'FOSA NASAL IZQUIERDA', 'OROGASTRICA', 'EPIGASTRIO', 'YEYUNO', 'VEJIGA', 'NO APLICA'
                             ].map(x =>
                                 m('option', x)

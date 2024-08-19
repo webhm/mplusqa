@@ -486,7 +486,7 @@ class ViasUci {
                             },
                             class: "custom-select",
                             value: (ViasUci.nuevoRegistro !== null ? ViasUci.nuevoRegistro.via : 0),
-                        }, m("option[value='0']", 'Seleccione...'), [{
+                        }, [{
                                 id: "ViaPeriferica",
                                 label: "VIA PERIFERICA"
                             }, {
@@ -834,26 +834,37 @@ class ViasUci {
                 }, [
                     m("td.tx-14.tx-normal.wd-30p[colspan='3']",
                         (ViasUci.nuevoRegistro !== null ? [
-                            m('select.tx-semibold', {
-                                id: "condicion" + ViasUci.nuevoRegistro.id,
-                                oncreate: (el) => {
-                                    if (ViasUci.nuevoRegistro.condicion !== undefined) {
-                                        el.dom.value = ViasUci.nuevoRegistro.condicion;
-                                    }
-                                },
-                                onchange: (e) => {
-                                    let _value = e.target.options[e.target.selectedIndex].value;
-                                    ViasUci.nuevoRegistro.condicion = _value;
-                                },
-                                class: "custom-select",
-                            }, m('option', 'Seleccione...'), [
-                                'VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES',
-                                'CATETER PERMEABLE',
-                                'EN BUENAS CONDICIONES',
-                                'SIN SIGNOS DE INFECCION'
-                            ].map(x =>
-                                m('option', x)
-                            ))
+                            m("div.input-group", [
+                                m('select.tx-semibold', {
+                                    id: "condicion" + ViasUci.nuevoRegistro.id,
+                                    oncreate: (el) => {
+                                        if (ViasUci.nuevoRegistro.condicion !== undefined) {
+                                            el.dom.value = ViasUci.nuevoRegistro.condicion;
+                                        }
+                                    },
+                                    onchange: (e) => {
+                                        let _value = e.target.options[e.target.selectedIndex].value;
+                                        ViasUci.nuevoRegistro.condicion = _value;
+                                    },
+                                    class: "custom-select",
+                                }, [
+                                    'VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES',
+                                    'CATETER PERMEABLE',
+                                    'EN BUENAS CONDICIONES',
+                                    'SIN SIGNOS DE INFECCION'
+                                ].map(x =>
+                                    m('option', x)
+                                )),
+                                m("button.input-group-text.tx-semibold", {
+                                        onclick: () => {
+                                            ViasUci.nuevoRegistro.condicion = null;
+                                            document.getElementById("condicion" + ViasUci.nuevoRegistro.id).value = null;
+                                        }
+                                    },
+                                    m("i.fas.fa-times")
+                                )
+                            ])
+
                         ] : [])
 
 
