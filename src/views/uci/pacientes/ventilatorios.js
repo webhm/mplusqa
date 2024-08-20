@@ -134,6 +134,7 @@ class VentilatoriosUci {
 
     static eliminarAllRegistros() {
 
+
         let res = [];
         let result = [];
         let resultNro = [];
@@ -1518,64 +1519,6 @@ class VentilatoriosUci {
                                             } else {
                                                 $.alert('No es posible eliminar los registros por defecto.');
                                             }
-
-
-
-
-
-                                            /*
-                                        if (oData.condicion == null) {
-                                            alert('No se permite copiar. Ya existe un registro disponible.');
-                                            throw 'No se permite copiar. Ya existe un registro disponible.'
-                                        }
-                                       
-                                        VentilatoriosUci.iniciarRegistro();
-                                        VentilatoriosUci.nuevoRegistro.id = oData.id;
-                                        VentilatoriosUci.nuevoRegistro.ventilatorio = oData.ventilatorio;
-                                        VentilatoriosUci.nuevoRegistro.orden = oData.orden;
-                                        VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                        VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-
-                                        setTimeout(() => {
-                                            VentilatoriosUci.agregarRegistro();
-                                            FecthUci.registrarSeccion(VentilatoriosUci.nuevoRegistro);
-                                            VentilatoriosUci.nuevoRegistro = null;
-                                            VentilatoriosUci.destroyTable();
-                                            VentilatoriosUci.filterRegistros();
-                                            VentilatoriosUci.show = false;
-                                            m.redraw();
-                                            setTimeout(() => {
-                                                VentilatoriosUci.show = true;
-                                                m.redraw();
-                                            }, 100);
-                                        }, 100);
-
-
-                                        let tt = $('#Ventilatorios_' + oData.id).offset().top;
-                                        setTimeout(() => {
-                                            let isAnimating = true;
-                                            $('html,body').animate({
-                                                    scrollTop: tt
-                                                },
-                                                700, "easeInOutSine",
-                                                function() {
-                                                    isAnimating = false;
-                                                })
-                                        }, 250);
-
-                                        setTimeout(() => {
-                                            let isAnimating = true;
-                                            $('#registrosVentilatorios').animate({
-                                                    scrollLeft: '+=460'
-                                                },
-                                                700, "easeInOutSine",
-                                                function() {
-                                                    isAnimating = false;
-                                                })
-                                        }, 250);
-
-                                        */
-
 
                                         },
                                     },

@@ -107,6 +107,61 @@ class CateterUci {
 
     }
 
+    static copyAllRegistros() {
+
+        let re = [];
+        let res = [];
+        let result = [];
+        let resultNro = [];
+        let hash = {};
+
+        re = CateterUci.registros;
+
+        result = re.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true).sort((a, b) => a.nro - b.nro);
+
+        resultNro.map((_v, _i) => {
+            CateterUci.iniciarRegistro();
+            CateterUci.nuevoRegistro.id = _v.id;
+            CateterUci.nuevoRegistro.cateter = _v.cateter;
+            if (PacientesUCI.numeroTurno != 1) {
+                CateterUci.nuevoRegistro.observacion = _v.observacion;
+                CateterUci.nuevoRegistro.am = _v.am;
+                CateterUci.nuevoRegistro.pm = _v.pm;
+                CateterUci.nuevoRegistro.hs = _v.hs;
+            }
+            CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+            CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+            res.push(CateterUci.nuevoRegistro);
+            CateterUci.nuevoRegistro = null;
+        });
+
+
+        CateterUci.registros.push.apply(CateterUci.registros, res);
+        // Asignar Nro
+
+        CateterUci.registros.map((_v, _i) => {
+            if (_v.nro == null) {
+                CateterUci.registros[_i].nro = (_i + 1);
+                if (_v.id == res.id) {
+                    res.nro = CateterUci.registros[_i].nro;
+                }
+
+            }
+
+
+        });
+
+
+        console.log(7788, res)
+
+        CateterUci.filterRegistros();
+        PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
+        FecthUci.registrarAllSeccion(res);
+
+    }
+
     static getRegistros() {
         return CateterUci.registros;
     }
@@ -522,25 +577,14 @@ class CateterUci {
                                             },
                                             'Cancelar Edición',
                                         ),
+
                                         m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'RecoletcorVejiga' ? '' : 'd-none'),
                                                 onclick: () => {
-                                                    CateterUci.iniciarRegistro();
-                                                    CateterUci.nuevoRegistro.id = oData.id;
-                                                    CateterUci.nuevoRegistro.cateter = oData.cateter;
-                                                    if (PacientesUCI.numeroTurno != 1) {
-                                                        CateterUci.nuevoRegistro.am = oData.am;
-                                                        CateterUci.nuevoRegistro.pm = oData.pm;
-                                                        CateterUci.nuevoRegistro.hs = oData.hs;
-                                                        CateterUci.nuevoRegistro.observacion = oData.observacion;
-                                                    }
-                                                    CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    CateterUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
-                                                    CateterUci.nuevoRegistro = null;
-                                                    CateterUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
+
+                                                    CateterUci.copyAllRegistros();
+
+
                                                 },
                                             },
                                             'Copiar',

@@ -93,6 +93,58 @@ class MarcapasosUci {
 
     }
 
+    static copyAllRegistros() {
+
+        let re = [];
+        let res = [];
+        let result = [];
+        let resultNro = [];
+        let hash = {};
+
+        re = MarcapasosUci.registros;
+
+        result = re.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true).sort((a, b) => a.nro - b.nro);
+
+        resultNro.map((_v, _i) => {
+            MarcapasosUci.iniciarRegistro();
+            MarcapasosUci.nuevoRegistro.id = _v.id;
+            MarcapasosUci.nuevoRegistro.hora = _v.hora;
+            if (PacientesUCI.numeroTurno != 1) {
+                MarcapasosUci.nuevoRegistro.observacion = _v.observacion;
+                MarcapasosUci.nuevoRegistro.am = _v.am;
+                MarcapasosUci.nuevoRegistro.pm = _v.pm;
+                MarcapasosUci.nuevoRegistro.hs = _v.hs;
+            }
+            MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+            MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+            res.push(MarcapasosUci.nuevoRegistro);
+            MarcapasosUci.nuevoRegistro = null;
+        });
+
+
+        MarcapasosUci.registros.push.apply(MarcapasosUci.registros, res);
+        // Asignar Nro
+
+        MarcapasosUci.registros.map((_v, _i) => {
+            if (_v.nro == null) {
+                MarcapasosUci.registros[_i].nro = (_i + 1);
+                if (_v.id == res.id) {
+                    res.nro = MarcapasosUci.registros[_i].nro;
+                }
+            }
+        });
+
+
+        console.log(7788, res)
+
+        MarcapasosUci.filterRegistros();
+        PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+        FecthUci.registrarAllSeccion(res);
+
+    }
+
     static filterRegistros() {
 
         let result = [];
@@ -527,24 +579,10 @@ class MarcapasosUci {
                                             'Cancelar Edición',
                                         ),
                                         m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'Frecuencia' ? '' : 'd-none'),
                                                 onclick: () => {
-                                                    MarcapasosUci.iniciarRegistro();
-                                                    MarcapasosUci.nuevoRegistro.id = oData.id;
-                                                    MarcapasosUci.nuevoRegistro.hora = oData.hora;
-                                                    if (PacientesUCI.numeroTurno != 1) {
-                                                        MarcapasosUci.nuevoRegistro.am = oData.am;
-                                                        MarcapasosUci.nuevoRegistro.pm = oData.pm;
-                                                        MarcapasosUci.nuevoRegistro.hs = oData.hs;
-                                                        MarcapasosUci.nuevoRegistro.observacion = oData.observacion;
-                                                    }
-                                                    MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    MarcapasosUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
-                                                    MarcapasosUci.nuevoRegistro = null;
-                                                    MarcapasosUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+                                                    MarcapasosUci.copyAllRegistros();
+
                                                 },
                                             },
                                             'Copiar',

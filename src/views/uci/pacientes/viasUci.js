@@ -846,6 +846,23 @@ class ViasUci {
                                         let _value = e.target.options[e.target.selectedIndex].value;
                                         ViasUci.nuevoRegistro.condicion = _value;
                                     },
+                                    onkeypress: (e) => {
+                                        if (e.keyCode == 13) {
+                                            ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            if (ViasUci.nuevoRegistro.editar == null) {
+                                                ViasUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(ViasUci.nuevoRegistro);
+                                                ViasUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                            } else {
+                                                ViasUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(ViasUci.nuevoRegistro);
+                                                ViasUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                            }
+                                        }
+                                    },
                                     class: "custom-select",
                                 }, [
                                     'VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES',

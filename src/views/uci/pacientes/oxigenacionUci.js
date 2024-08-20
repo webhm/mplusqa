@@ -108,6 +108,59 @@ class OxigenacionUci {
         OxigenacionUci.registros = _arr;
 
     }
+
+    static copyAllRegistros() {
+
+        let re = [];
+        let res = [];
+        let result = [];
+        let resultNro = [];
+        let hash = {};
+
+        re = OxigenacionUci.registros;
+
+        result = re.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true).sort((a, b) => a.nro - b.nro);
+
+        resultNro.map((_v, _i) => {
+            OxigenacionUci.iniciarRegistro();
+            OxigenacionUci.nuevoRegistro.id = _v.id;
+            OxigenacionUci.nuevoRegistro.oxi = _v.oxi;
+            if (PacientesUCI.numeroTurno != 1) {
+                OxigenacionUci.nuevoRegistro.observacion = _v.observacion;
+                OxigenacionUci.nuevoRegistro.am = _v.am;
+                OxigenacionUci.nuevoRegistro.pm = _v.pm;
+                OxigenacionUci.nuevoRegistro.hs = _v.hs;
+            }
+            OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+            OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+            res.push(OxigenacionUci.nuevoRegistro);
+            OxigenacionUci.nuevoRegistro = null;
+        });
+
+
+        OxigenacionUci.registros.push.apply(OxigenacionUci.registros, res);
+        // Asignar Nro
+
+        OxigenacionUci.registros.map((_v, _i) => {
+            if (_v.nro == null) {
+                OxigenacionUci.registros[_i].nro = (_i + 1);
+                if (_v.id == res.id) {
+                    res.nro = OxigenacionUci.registros[_i].nro;
+                }
+            }
+        });
+
+
+        console.log(7788, res)
+
+        OxigenacionUci.filterRegistros();
+        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+        FecthUci.registrarAllSeccion(res);
+
+    }
+
     static getRegistros() {
         return OxigenacionUci.registros;
     }
@@ -527,24 +580,10 @@ class OxigenacionUci {
                                             'Cancelar Edición',
                                         ),
                                         m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'AireAmbiente' ? '' : 'd-none'),
                                                 onclick: () => {
-                                                    OxigenacionUci.iniciarRegistro();
-                                                    OxigenacionUci.nuevoRegistro.id = oData.id;
-                                                    OxigenacionUci.nuevoRegistro.oxi = oData.oxi;
-                                                    if (PacientesUCI.numeroTurno != 1) {
-                                                        OxigenacionUci.nuevoRegistro.am = oData.am;
-                                                        OxigenacionUci.nuevoRegistro.pm = oData.pm;
-                                                        OxigenacionUci.nuevoRegistro.hs = oData.hs;
-                                                        OxigenacionUci.nuevoRegistro.observacion = oData.observacion;
-                                                    }
-                                                    OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    OxigenacionUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
-                                                    OxigenacionUci.nuevoRegistro = null;
-                                                    OxigenacionUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+                                                    OxigenacionUci.copyAllRegistros();
+
                                                 },
                                             },
                                             'Copiar',

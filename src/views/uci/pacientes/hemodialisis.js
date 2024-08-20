@@ -110,6 +110,61 @@ class HemodialisisUci {
 
     }
 
+    static copyAllRegistros() {
+
+        let re = [];
+        let res = [];
+        let result = [];
+        let resultNro = [];
+        let hash = {};
+
+        re = HemodialisisUci.registros;
+
+        result = re.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true).sort((a, b) => a.nro - b.nro);
+
+        resultNro.map((_v, _i) => {
+            HemodialisisUci.iniciarRegistro();
+            HemodialisisUci.nuevoRegistro.id = _v.id;
+            HemodialisisUci.nuevoRegistro.hemo = _v.hemo;
+            if (PacientesUCI.numeroTurno != 1) {
+                HemodialisisUci.nuevoRegistro.observacion = _v.observacion;
+                HemodialisisUci.nuevoRegistro.am = _v.am;
+                HemodialisisUci.nuevoRegistro.pm = _v.pm;
+                HemodialisisUci.nuevoRegistro.hs = _v.hs;
+            }
+            HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+            HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+            res.push(HemodialisisUci.nuevoRegistro);
+            HemodialisisUci.nuevoRegistro = null;
+        });
+
+
+        HemodialisisUci.registros.push.apply(HemodialisisUci.registros, res);
+        // Asignar Nro
+
+        HemodialisisUci.registros.map((_v, _i) => {
+            if (_v.nro == null) {
+                HemodialisisUci.registros[_i].nro = (_i + 1);
+                if (_v.id == res.id) {
+                    res.nro = HemodialisisUci.registros[_i].nro;
+                }
+
+            }
+
+
+        });
+
+
+        console.log(7788, res)
+
+        HemodialisisUci.filterRegistros();
+        PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
+        FecthUci.registrarAllSeccion(res);
+
+    }
+
     static getRegistros() {
         return HemodialisisUci.registros;
     }
@@ -527,24 +582,12 @@ class HemodialisisUci {
                                             'Cancelar Edición',
                                         ),
                                         m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'ParcheLimpioSeco' ? '' : 'd-none'),
                                                 onclick: () => {
-                                                    HemodialisisUci.iniciarRegistro();
-                                                    HemodialisisUci.nuevoRegistro.id = oData.id;
-                                                    HemodialisisUci.nuevoRegistro.hemo = oData.hemo;
-                                                    if (PacientesUCI.numeroTurno != 1) {
-                                                        HemodialisisUci.nuevoRegistro.am = oData.am;
-                                                        HemodialisisUci.nuevoRegistro.pm = oData.pm;
-                                                        HemodialisisUci.nuevoRegistro.hs = oData.hs;
-                                                        HemodialisisUci.nuevoRegistro.observacion = oData.observacion;
-                                                    }
-                                                    HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    HemodialisisUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
-                                                    HemodialisisUci.nuevoRegistro = null;
-                                                    HemodialisisUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
+
+                                                    HemodialisisUci.copyAllRegistros();
+
+
                                                 },
                                             },
                                             'Copiar',

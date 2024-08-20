@@ -1,7 +1,4 @@
 import m from "mithril";
-import App from "../../../models/App";
-import Loader from "../../utils/loader";
-import Errors from "../../utils/errors";
 import PacientesUCI from "./pacientesUci";
 import TurnosUci from "./turnosUci";
 import FecthUci from "./fecthUci";
@@ -106,6 +103,62 @@ class VentilacionUci {
         VentilacionUci.registros = _arr;
 
     }
+
+    static copyAllRegistros() {
+
+        let re = [];
+        let res = [];
+        let result = [];
+        let resultNro = [];
+        let hash = {};
+
+        re = VentilacionUci.registros;
+
+        result = re.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true).sort((a, b) => a.nro - b.nro);
+
+        resultNro.map((_v, _i) => {
+            VentilacionUci.iniciarRegistro();
+            VentilacionUci.nuevoRegistro.id = _v.id;
+            VentilacionUci.nuevoRegistro.ventilacion = _v.ventilacion;
+            if (PacientesUCI.numeroTurno != 1) {
+                VentilacionUci.nuevoRegistro.observacion = _v.observacion;
+                VentilacionUci.nuevoRegistro.am = _v.am;
+                VentilacionUci.nuevoRegistro.pm = _v.pm;
+                VentilacionUci.nuevoRegistro.hs = _v.hs;
+            }
+            VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+            VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+            res.push(VentilacionUci.nuevoRegistro);
+            VentilacionUci.nuevoRegistro = null;
+        });
+
+
+        VentilacionUci.registros.push.apply(VentilacionUci.registros, res);
+        // Asignar Nro
+
+        VentilacionUci.registros.map((_v, _i) => {
+            if (_v.nro == null) {
+                VentilacionUci.registros[_i].nro = (_i + 1);
+                if (_v.id == res.id) {
+                    res.nro = VentilacionUci.registros[_i].nro;
+                }
+
+            }
+
+
+        });
+
+
+        console.log(7788, res)
+
+        VentilacionUci.filterRegistros();
+        PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
+        FecthUci.registrarAllSeccion(res);
+
+    }
+
     static getRegistros() {
         return VentilacionUci.registros;
     }
@@ -524,24 +577,12 @@ class VentilacionUci {
                                             'Cancelar Edición',
                                         ),
                                         m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'PosicionSemifowler' ? '' : 'd-none'),
                                                 onclick: () => {
-                                                    VentilacionUci.iniciarRegistro();
-                                                    VentilacionUci.nuevoRegistro.id = oData.id;
-                                                    VentilacionUci.nuevoRegistro.ventilacion = oData.ventilacion;
-                                                    if (PacientesUCI.numeroTurno != 1) {
-                                                        VentilacionUci.nuevoRegistro.am = oData.am;
-                                                        VentilacionUci.nuevoRegistro.pm = oData.pm;
-                                                        VentilacionUci.nuevoRegistro.hs = oData.hs;
-                                                        VentilacionUci.nuevoRegistro.observacion = oData.observacion;
-                                                    }
-                                                    VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    VentilacionUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
-                                                    VentilacionUci.nuevoRegistro = null;
-                                                    VentilacionUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
+
+                                                    VentilacionUci.copyAllRegistros();
+
+
                                                 },
                                             },
                                             'Copiar',
