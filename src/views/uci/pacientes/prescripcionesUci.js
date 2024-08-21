@@ -1812,8 +1812,8 @@ class PrescripcionesUci {
                                 }
                             },
                             class: "custom-select",
-                            value: (PrescripcionesUci.nuevoRegistro !== null && PrescripcionesUci.nuevoRegistro.tipo !== null ? PrescripcionesUci.nuevoRegistro.tipo : 0),
-                        }, [{
+                            value: (PrescripcionesUci.nuevoRegistro !== null && PrescripcionesUci.nuevoRegistro.tipo !== null ? PrescripcionesUci.nuevoRegistro.tipo : ''),
+                        }, m('option[value=""][disabled="disabled"]', 'Seleccione...'), [{
                                 id: "Medicacion",
                                 label: "MEDICACIÓN"
                             },
@@ -1927,9 +1927,10 @@ class PrescripcionesUci {
                                         PrescripcionesUci.nuevoRegistro.frecuencia = _value;
                                         PrescripcionesUci.nuevoRegistro.label = _label;
                                     },
+                                    placeholder: 'Seleccione...',
                                     class: "custom-select",
-                                    value: (PrescripcionesUci.nuevoRegistro !== null && PrescripcionesUci.nuevoRegistro.frecuencia !== null ? PrescripcionesUci.nuevoRegistro.frecuencia : 0),
-                                }, [{
+                                    value: (PrescripcionesUci.nuevoRegistro !== null && PrescripcionesUci.nuevoRegistro.frecuencia !== null ? PrescripcionesUci.nuevoRegistro.frecuencia : ''),
+                                }, m('option[value=""][disabled="disabled"]', 'Seleccione...'), [{
                                         id: 1,
                                         value: 1,
                                         label: "CADA HORA"

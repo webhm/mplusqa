@@ -485,8 +485,8 @@ class ViasUci {
                                 }
                             },
                             class: "custom-select",
-                            value: (ViasUci.nuevoRegistro !== null ? ViasUci.nuevoRegistro.via : 0),
-                        }, [{
+                            value: (ViasUci.nuevoRegistro !== null ? ViasUci.nuevoRegistro.via : ''),
+                        }, m('option[value=""][disabled="disabled"]', 'Seleccione...'), [{
                                 id: "ViaPeriferica",
                                 label: "VIA PERIFERICA"
                             }, {
@@ -864,7 +864,7 @@ class ViasUci {
                                         }
                                     },
                                     class: "custom-select",
-                                }, [
+                                }, m('option[value=""][disabled="disabled"]', 'Seleccione...'), [
                                     'VIA PERIFERICA PERMEABLE Y EN BUENAS CONDICIONES',
                                     'CATETER PERMEABLE',
                                     'EN BUENAS CONDICIONES',

@@ -478,8 +478,8 @@ class AccesosUci {
                                 }
                             },
                             class: "custom-select",
-                            value: (AccesosUci.nuevoRegistro !== null ? AccesosUci.nuevoRegistro.acceso : 0),
-                        }, [{
+                            value: (AccesosUci.nuevoRegistro !== null ? AccesosUci.nuevoRegistro.acceso : ''),
+                        }, m('option[value=""][disabled="disabled"]', 'Seleccione...'), [{
                                 id: "CateterIntracraneal",
                                 label: "CATETER INTRACRANEAL"
                             }, {

@@ -423,9 +423,9 @@ class CultivosUci {
                                 }
                             },
                             class: "custom-select",
-                            value: (CultivosUci.nuevoRegistro !== null ? CultivosUci.nuevoRegistro.muestra : 0),
+                            value: (CultivosUci.nuevoRegistro !== null ? CultivosUci.nuevoRegistro.muestra : ''),
 
-                        }, [{
+                        }, m('option[value=""][disabled="disabled"]', 'Seleccione...'), [{
                                 id: "HemocultivoViaCentral",
                                 label: "HEMOCULTIVO VIA CENTRAL"
                             },
