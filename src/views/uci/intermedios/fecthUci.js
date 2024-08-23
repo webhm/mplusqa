@@ -438,24 +438,13 @@ class FecthUci {
                 });
 
 
-
-                // Existe turnos abiertos
-                let turnosAbiertos = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') && v.STATUS == 1 && v.TIPO_BIT == 'UCIINTER')
-
-                if (turnosAbiertos.length > 0) {
-                    FecthUci.loaderSecciones = true;
-                    TurnosUci.turnos = FecthUci.setTurnosAbiertos(turnosAbiertos);
-                    PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
-                    setTimeout(() => {
-                        $.alert('Existen turnos abiertos. Por favor cierre los turnos para continuar.');
-                    }, 500);
+                if (moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 00:00'), 'DD-MM-YYYY HH:mm').unix() && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix()) {
 
 
+                    let _hoy = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
 
-                } else {
-
-                    // Filter Turnos de Hoy
-                    let turnosHoy = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY') && v.TIPO_BIT == 'UCIINTER')
+                    // Filter Turnos 
+                    let turnosHoy = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == _hoy && v.TIPO_BIT == 'UCIINTER')
 
                     if (turnosHoy.length > 0) {
                         TurnosUci.turnos = FecthUci.setTurnos(turnosHoy);
@@ -463,7 +452,40 @@ class FecthUci {
                     }
 
                     FecthUci.loadSecciones();
+
+                } else {
+
+
+                    // Existe turnos abiertos
+                    let turnosAbiertos = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') && v.STATUS == 1 && v.TIPO_BIT == 'UCIINTER')
+
+                    if (turnosAbiertos.length > 0) {
+                        FecthUci.loaderSecciones = true;
+                        TurnosUci.turnos = FecthUci.setTurnosAbiertos(turnosAbiertos);
+                        PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
+                        setTimeout(() => {
+                            $.alert('Existen turnos abiertos. Por favor cierre los turnos para continuar.');
+                        }, 500);
+
+
+
+                    } else {
+
+                        // Filter Turnos de Hoy
+                        let turnosHoy = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY') && v.TIPO_BIT == 'UCIINTER')
+
+                        if (turnosHoy.length > 0) {
+                            TurnosUci.turnos = FecthUci.setTurnos(turnosHoy);
+                            PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
+                        }
+
+                        FecthUci.loadSecciones();
+                    }
+
                 }
+
+
+
 
 
 

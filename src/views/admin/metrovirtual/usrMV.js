@@ -17,7 +17,7 @@ class usrMV extends App {
     idFiltro = 1;
     constructor(_data) {
         super();
-        if (App.isAuthenticated() && App.hasProfile('ADM_USUARIOS_METROPLUS')) {
+        if (App.isAuthenticated() && App.hasProfile('PERFIL_ADM_PACIENTES_METROVIRTUAL')) {
             App.setTitle("Usuarios MetroVirtual");
             this.view = this.page;
         }
@@ -77,23 +77,23 @@ class usrMV extends App {
                                     m("h5.mg-b-0",
                                         "Todos los Usuarios:",
                                         m("span.badge.bg-litecoin.tx-white.tx-semibold.pd-l-10.pd-r-10.mg-l-5.tx-15", {
-                                            oncreate: (el) => {
-                                                if (this.idFiltro == 1) {
-                                                    el.dom.innerHTML = 'Grp-radius-Medicos';
-                                                }
-                                                if (this.idFiltro == 2) {
-                                                    el.dom.innerHTML = 'Grp-radius-Residentes';
-                                                }
-                                            },
-                                            onupdate: (el) => {
-                                                if (this.idFiltro == 1) {
-                                                    el.dom.innerHTML = 'Grp-radius-Medicos';
-                                                }
-                                                if (this.idFiltro == 2) {
-                                                    el.dom.innerHTML = 'Grp-radius-Residentes';
+                                                oncreate: (el) => {
+                                                    if (this.idFiltro == 1) {
+                                                        el.dom.innerHTML = 'Grp-radius-Medicos';
+                                                    }
+                                                    if (this.idFiltro == 2) {
+                                                        el.dom.innerHTML = 'Grp-radius-Residentes';
+                                                    }
+                                                },
+                                                onupdate: (el) => {
+                                                    if (this.idFiltro == 1) {
+                                                        el.dom.innerHTML = 'Grp-radius-Medicos';
+                                                    }
+                                                    if (this.idFiltro == 2) {
+                                                        el.dom.innerHTML = 'Grp-radius-Residentes';
+                                                    }
                                                 }
                                             }
-                                        }
 
                                         )
 
@@ -103,9 +103,9 @@ class usrMV extends App {
                                         m("div.dropdown.dropleft", [
 
                                             m("div.link-03.lh-0.mg-l-5[id='dropdownMenuButton'][data-toggle='dropdown'][aria-haspopup='true'][aria-expanded='false']", {
-                                                style: { "cursor": "pointer" },
-                                                title: "Filtrar"
-                                            },
+                                                    style: { "cursor": "pointer" },
+                                                    title: "Filtrar"
+                                                },
                                                 m("i.fas.fa-filter.tx-18.pd-5")
                                             ),
                                             m(".dropdown-menu.tx-13[aria-labelledby='dropdownMenuButton']", [
@@ -164,7 +164,7 @@ class usrMV extends App {
                 ),
                 m("div.mg-t-10.bg-white", {
 
-                },
+                    },
 
                     m("div.mg-t-10.bg-white",
                         m("div.card-header.pd-t-20.pd-b-0.bd-b-0", [
@@ -233,8 +233,8 @@ class usrMV extends App {
                                 m("tbody", [
                                     m("tr", [
                                         m("th", {
-                                            style: { "background-color": "#a8bed6" }
-                                        },
+                                                style: { "background-color": "#a8bed6" }
+                                            },
                                             "Nombres Completos:"
                                         ),
                                         m("td[colspan='4']", {
@@ -242,8 +242,8 @@ class usrMV extends App {
 
                                         }, this.dataUser.sn + ' ' + this.dataUser.cn),
                                         m("th", {
-                                            style: { "background-color": "#a8bed6" }
-                                        },
+                                                style: { "background-color": "#a8bed6" }
+                                            },
                                             "Grupo:"
                                         ),
                                         m("td[colspan='4']", {
@@ -255,25 +255,25 @@ class usrMV extends App {
 
                                     m("tr", [
                                         m("th", {
-                                            style: { "background-color": "#a8bed6" }
-                                        },
+                                                style: { "background-color": "#a8bed6" }
+                                            },
                                             "Correo electrónico:"
                                         ),
                                         m("td[colspan='4']", {
-                                            style: { "background-color": "#eaeff5" }
+                                                style: { "background-color": "#eaeff5" }
 
-                                        },
+                                            },
                                             this.dataUser.mail
                                         ),
                                         m("th", {
-                                            style: { "background-color": "#a8bed6" }
-                                        },
+                                                style: { "background-color": "#a8bed6" }
+                                            },
                                             "Historial de Actividad:"
                                         ),
                                         m("td[colspan='4']", {
-                                            style: { "background-color": "#eaeff5" }
+                                                style: { "background-color": "#eaeff5" }
 
-                                        },
+                                            },
                                             m('.tx-12.d-block', 'Creado: ' + this.dataUser.whencreated),
                                             m('.tx-12.d-block', 'Actualizado: ' + this.dataUser.whenchanged),
                                             m('.tx-12.d-block', 'Última Contraseña: ' + this.dataUser.pwdlastset),
@@ -297,14 +297,14 @@ class usrMV extends App {
                                     m("tr.d-print-none", [
 
                                         m("td[colspan='10']", {
-                                            style: { "background-color": "#eaeff5" }
+                                                style: { "background-color": "#eaeff5" }
 
-                                        },
+                                            },
                                             m("ul.nav.nav-tabs[id='myTab'][role='tablist']", {}, [
                                                 m("li.nav-item",
                                                     m("a.nav-link[id='home-tab'][data-toggle='tab'][href='#home'][role='tab'][aria-controls='home'][aria-selected='true']", {
-                                                        style: { "color": "#476ba3" }
-                                                    },
+                                                            style: { "color": "#476ba3" }
+                                                        },
                                                         m("i.fas.fa-file-alt.pd-1.mg-r-2"),
 
                                                         " HOJA 005"
@@ -312,8 +312,8 @@ class usrMV extends App {
                                                 ),
                                                 m("li.nav-item",
                                                     m("a.nav-link[id='home-muestra'][data-toggle='tab'][href='#muestra'][role='tab'][aria-controls='muestra']", {
-                                                        style: { "color": "#476ba3" }
-                                                    },
+                                                            style: { "color": "#476ba3" }
+                                                        },
                                                         m("i.fas.fa-edit.pd-1.mg-r-2"),
 
                                                         " TOMA DE MUESTRA "
@@ -321,8 +321,8 @@ class usrMV extends App {
                                                 ),
                                                 m("li.nav-item",
                                                     m("a.nav-link[id='home-recep'][data-toggle='tab'][href='#recep'][role='tab'][aria-controls='recep']", {
-                                                        style: { "color": "#476ba3" }
-                                                    },
+                                                            style: { "color": "#476ba3" }
+                                                        },
                                                         m("i.fas.fa-inbox.pd-1.mg-r-2"),
 
                                                         " RECEP. DE MUESTRA "
@@ -330,8 +330,8 @@ class usrMV extends App {
                                                 ),
                                                 m("li.nav-item",
                                                     m("a.nav-link[id='home-comment'][data-toggle='tab'][href='#comment'][role='tab'][aria-controls='comment']", {
-                                                        style: { "color": "#476ba3" }
-                                                    },
+                                                            style: { "color": "#476ba3" }
+                                                        },
                                                         m("i.fas.fa-inbox.pd-1.mg-r-2"),
 
                                                         " COMENTARIOS "
@@ -371,11 +371,11 @@ class usrMV extends App {
                                                         m("div.mg-0.mg-t-5.text-right", [
 
                                                             m("button.btn.btn-xs.btn-primary.mg-l-2.tx-semibold[type='button']", {
-                                                                onclick: function () {
+                                                                onclick: function() {
 
                                                                 },
                                                             }, [
-                                                                m("i.fas.fa-paper-plane.mg-r-5",)
+                                                                m("i.fas.fa-paper-plane.mg-r-5", )
                                                             ], "Guardar"),
 
 
@@ -420,7 +420,7 @@ class usrMV extends App {
         let __this = this;
 
         if (__this.usuarios !== null && __this.usuarios.status) {
-            return __this.usuarios.data.map(function (_val, _i, _contentData) {
+            return __this.usuarios.data.map(function(_val, _i, _contentData) {
                 if (__this.idUsr == _val.samaccountname) {
                     __this.dataUser = _val;
                 }
@@ -434,17 +434,17 @@ class usrMV extends App {
         let _queryString = '?idFiltro=' + this.idFiltro;
 
         return m.request({
-            method: "GET",
-            url: ApiHTTP.apiUrl + "/v2/sso/usuarios/metroplus" + _queryString,
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-                'Authorization': localStorage.getItem('userToken')
-            },
-        })
-            .then(function (result) {
+                method: "GET",
+                url: ApiHTTP.apiUrl + "/v2/sso/usuarios/metroplus" + _queryString,
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    'Authorization': localStorage.getItem('userToken')
+                },
+            })
+            .then(function(result) {
                 return result;
             })
-            .catch(function (e) {
+            .catch(function(e) {
                 return {
                     'status': null,
                     'message': e
@@ -484,83 +484,83 @@ class usrMV extends App {
             cache: false,
             destroy: true,
             columns: [{
-                title: "N° : ",
-            },
-            {
-                title: "Usuario AD:",
-            },
-            {
-                title: "Nombres:",
-            },
-            {
-                title: "Apellidos:",
-            },
-            {
-                title: "E-mail:",
-            },
-            {
-                title: "Opciones:",
-            }
+                    title: "N° : ",
+                },
+                {
+                    title: "Usuario AD:",
+                },
+                {
+                    title: "Nombres:",
+                },
+                {
+                    title: "Apellidos:",
+                },
+                {
+                    title: "E-mail:",
+                },
+                {
+                    title: "Opciones:",
+                }
             ],
             aoColumnDefs: [{
-                mRender: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
+                    mRender: function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    },
+                    visible: true,
+                    aTargets: [0],
+                    orderable: false,
                 },
-                visible: true,
-                aTargets: [0],
-                orderable: false,
-            },
-            {
-                mRender: function (data, type, full) {
-                    return full.samaccountname;
-                },
-                visible: true,
-                aTargets: [1],
-                orderable: true,
-
-            },
-            {
-                mRender: function (data, type, full) {
-                    return full.sn;
+                {
+                    mRender: function(data, type, full) {
+                        return full.samaccountname;
+                    },
+                    visible: true,
+                    aTargets: [1],
+                    orderable: true,
 
                 },
-                visible: true,
-                aTargets: [2],
-                orderable: true,
+                {
+                    mRender: function(data, type, full) {
+                        return full.sn;
 
-            }, {
-                mRender: function (data, type, full) {
-                    return full.cn;
+                    },
+                    visible: true,
+                    aTargets: [2],
+                    orderable: true,
+
+                }, {
+                    mRender: function(data, type, full) {
+                        return full.cn;
+
+                    },
+                    visible: true,
+                    aTargets: [3],
+                    orderable: true,
+
+                }, {
+                    mRender: function(data, type, full) {
+                        return full.mail;
+
+                    },
+                    visible: true,
+                    aTargets: [4],
+                    orderable: true,
 
                 },
-                visible: true,
-                aTargets: [3],
-                orderable: true,
+                {
+                    mRender: function(data, type, full) {
+                        return ''
 
-            }, {
-                mRender: function (data, type, full) {
-                    return full.mail;
+                    },
+                    visible: true,
+                    aTargets: [5],
+                    orderable: true,
 
-                },
-                visible: true,
-                aTargets: [4],
-                orderable: true,
-
-            },
-            {
-                mRender: function (data, type, full) {
-                    return ''
-
-                },
-                visible: true,
-                aTargets: [5],
-                orderable: true,
-
-            }
+                }
 
 
             ],
-            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
                 m.mount(nRow, {
                     view: () => {
@@ -581,8 +581,8 @@ class usrMV extends App {
                                 aData.mail,
                                 m('br'),
                                 m("span.tx-12[data-toggle='collapse'][href='#collapseExample_" + aData.samaccountname + "'][role='button'][aria-expanded='false'][aria-controls='collapseExample_" + aData.samaccountname + "']", {
-                                    style: 'cursor:pointer;'
-                                },
+                                        style: 'cursor:pointer;'
+                                    },
                                     'Creado: ' + aData.whencreated
                                 ),
                                 m(".collapse[id='collapseExample_" + aData.samaccountname + "']", [
