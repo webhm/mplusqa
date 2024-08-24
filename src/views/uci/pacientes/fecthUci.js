@@ -444,7 +444,7 @@ class FecthUci {
                     let _hoy = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
 
                     // Filter Turnos 
-                    let turnosHoy = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == _hoy && v.TIPO_BIT == 'UCIADULTO')
+                    let turnosHoy = res.data.dataTurnos.filter(v => (moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == _hoy || moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY')) && v.TIPO_BIT == 'UCIADULTO')
 
                     if (turnosHoy.length > 0) {
                         TurnosUci.turnos = FecthUci.setTurnos(turnosHoy);
@@ -557,10 +557,14 @@ class FecthUci {
 
             FecthUci.loaderSecciones = true;
 
-            if (moment(moment(), 'DD-MM-YYYY HH:mm').unix() <= moment(moment().format('DD-MM-YYYY') + ' 12:00', 'DD-MM-YYYY HH:mm').unix()) {
+            if (moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 00:00'), 'DD-MM-YYYY HH:mm').unix() && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix()) {
+
+
+                let _ayer = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
+
 
                 // Filter Secciones de Hoy
-                let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+                let seccionesHoy = res.data.filter(v => (moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == _ayer || moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY')))
                     // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
                 console.log('seccionesHoy', seccionesHoy)
                     // Filter prescripciones 
@@ -569,23 +573,36 @@ class FecthUci {
                 FecthUci.dataSecciones = seccionesHoy.concat(prescripcionesUci);
                 // FecthUci.dataSecciones = seccionesHoy;
 
+
             } else {
 
-                // Filter Secciones de Hoy
-                let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
-                    // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
-                console.log('seccionesHoy', seccionesHoy)
+                if (moment(moment(), 'DD-MM-YYYY HH:mm').unix() <= moment(moment().format('DD-MM-YYYY') + ' 12:00', 'DD-MM-YYYY HH:mm').unix()) {
 
-                FecthUci.dataSecciones = seccionesHoy
+                    // Filter Secciones de Hoy
+                    let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+                        // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+                    console.log('seccionesHoy', seccionesHoy)
+                        // Filter prescripciones 
+                    let prescripcionesUci = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().subtract(1, 'days').format('DD-MM-YYYY') && v.SECCION == 'PrescripcionesUci')
+                    console.log('prescripcionesUci', prescripcionesUci)
+                    FecthUci.dataSecciones = seccionesHoy.concat(prescripcionesUci);
+                    // FecthUci.dataSecciones = seccionesHoy;
+
+                } else {
+
+                    // Filter Secciones de Hoy
+                    let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+                        // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+                    console.log('seccionesHoy', seccionesHoy)
+
+                    FecthUci.dataSecciones = seccionesHoy
+                }
+
             }
 
-            /*
 
-            let prescripcionesUci = res.data.filter(v => v.SECCION == 'PrescripcionesUci')
-            console.log('prescripcionesUci', prescripcionesUci)
-            FecthUci.dataSecciones = seccionesHoy.concat(prescripcionesUci);
 
-            */
+
 
 
 
