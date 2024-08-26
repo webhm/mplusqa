@@ -336,6 +336,8 @@ class PacientesUCI extends App {
         _arr = resultId.sort((a, b) => a.nro - b.nro);
 
         return _arr;
+
+
     }
 
     static parseSeccionMarcapasos(options) {
