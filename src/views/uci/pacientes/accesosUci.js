@@ -565,14 +565,17 @@ class AccesosUci {
                                 oncreate: (el) => {
                                     if (AccesosUci.nuevoRegistro.ubicacion != undefined) {
                                         el.dom.value = AccesosUci.nuevoRegistro.ubicacion;
+                                    } else {
+                                        el.dom.value = "";
                                     }
                                 },
                                 onchange: (e) => {
                                     let _value = e.target.options[e.target.selectedIndex].value;
                                     AccesosUci.nuevoRegistro.ubicacion = _value;
+                                    e.dom.value = AccesosUci.nuevoRegistro.condicion;
                                 },
                                 class: "custom-select",
-                            }, ['SUBDURAL', 'INTRAPARENQUIMATOSO', 'TIBIAL', 'NASO-TRAQUEAL', 'ORO-TRAQUEAL', 'SUBMAXILAR',
+                            }, m('option[value=""][disabled="disabled"]', 'Seleccione...'), ['SUBDURAL', 'INTRAPARENQUIMATOSO', 'TIBIAL', 'NASO-TRAQUEAL', 'ORO-TRAQUEAL', 'SUBMAXILAR',
                                 'TORAX DERECHO', 'TORAX IZQUIERDO', 'PLEURAL', 'MEDIASTINAL', 'TRAQUEA', 'FOSA NASAL DERECHA', 'FOSA NASAL IZQUIERDA', 'OROGASTRICA', 'EPIGASTRIO', 'YEYUNO', 'VEJIGA', 'NO APLICA'
                             ].map(x =>
                                 m('option', x)
