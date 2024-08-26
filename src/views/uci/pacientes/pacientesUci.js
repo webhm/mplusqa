@@ -1613,7 +1613,7 @@ class PacientesUCI extends App {
         let PresionVenosaCentral = 0;
         let PresionVenosaCentralAuricula = 0;
         let Biss = 0;
-
+        let ETCO2 = 0;
 
         resultNro.map((col, i) => {
             if (col.id == 'GastoCardiaco') {
@@ -1667,9 +1667,12 @@ class PacientesUCI extends App {
             if (col.id == 'Biss') {
                 Biss++;
             }
+            if (col.id == 'ETCO2') {
+                ETCO2++;
+            }
         });
 
-        columnas = [GastoCardiaco, IndiceCardiaco, VolumenSistolico, PresionCapilarPulmonar, IndiceResistenciaVascularSistemicaIndexada, ResistenciaVascularSistemica, IndiceResistenciaVascularPulmonarIndexada, PresionCuna, PresionArteriaPulmonar, TransporteArterialOxigeno, ConcentracionOxigeno, PresionPerfusionCerebral, PresionIntraCraneal, PresionIntraAbdominal, PresionVenosaCentral, PresionVenosaCentralAuricula, Biss];
+        columnas = [GastoCardiaco, IndiceCardiaco, VolumenSistolico, PresionCapilarPulmonar, IndiceResistenciaVascularSistemicaIndexada, ResistenciaVascularSistemica, IndiceResistenciaVascularPulmonarIndexada, PresionCuna, PresionArteriaPulmonar, TransporteArterialOxigeno, ConcentracionOxigeno, PresionPerfusionCerebral, PresionIntraCraneal, PresionIntraAbdominal, PresionVenosaCentral, PresionVenosaCentralAuricula, Biss, ETCO2];
 
         resultNro.map((col, i) => {
             let fila = {};
@@ -2051,7 +2054,28 @@ class PacientesUCI extends App {
                     });
                 }
             }
+            if (col.id == 'ETCO2') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
 
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
 
         });
 
@@ -2493,7 +2517,8 @@ class PacientesUCI extends App {
                                             if (v.id == oData.id) {
                                                 let _i = v.idObj[index];
                                                 if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].valor !== null) {
+                                                    if (resultNro[_i].valor !== undefined && resultNro[_i].valor !== null) {
+                                                        console.log(89, resultNro[_i].valor)
                                                         let _v = MedidasUci.valorarRango(resultNro[_i].valor, oData.id);
                                                         if (_v.toString().indexOf('Fuera') != -1) {
                                                             el.dom.classList.add("tx-danger");

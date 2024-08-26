@@ -221,6 +221,14 @@ class MedidasUci {
             }
         }
 
+        if (id == 'ETCO2') {
+            if (valor > 45) {
+                return valor + ' Fuera del rango';
+            } else {
+                return valor;
+            }
+        }
+
 
     }
 
@@ -324,6 +332,7 @@ class MedidasUci {
         let PresionVenosaCentral = 0;
         let PresionVenosaCentralAuricula = 0;
         let Biss = 0;
+        let ETCO2 = 0;
 
 
         resultNro.map((col, i) => {
@@ -378,9 +387,13 @@ class MedidasUci {
             if (col.id == 'Biss') {
                 Biss++;
             }
+
+            if (col.id == 'ETCO2') {
+                ETCO2++;
+            }
         });
 
-        columnas = [GastoCardiaco, IndiceCardiaco, VolumenSistolico, PresionCapilarPulmonar, IndiceResistenciaVascularSistemicaIndexada, ResistenciaVascularSistemica, IndiceResistenciaVascularPulmonarIndexada, PresionCuna, PresionArteriaPulmonar, TransporteArterialOxigeno, ConcentracionOxigeno, PresionPerfusionCerebral, PresionIntraCraneal, PresionIntraAbdominal, PresionVenosaCentral, PresionVenosaCentralAuricula, Biss];
+        columnas = [GastoCardiaco, IndiceCardiaco, VolumenSistolico, PresionCapilarPulmonar, IndiceResistenciaVascularSistemicaIndexada, ResistenciaVascularSistemica, IndiceResistenciaVascularPulmonarIndexada, PresionCuna, PresionArteriaPulmonar, TransporteArterialOxigeno, ConcentracionOxigeno, PresionPerfusionCerebral, PresionIntraCraneal, PresionIntraAbdominal, PresionVenosaCentral, PresionVenosaCentralAuricula, Biss, ETCO2];
 
         resultNro.map((col, i) => {
             let fila = {};
@@ -741,6 +754,28 @@ class MedidasUci {
                 }
             }
             if (col.id == 'Biss') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'ETCO2') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -1711,6 +1746,13 @@ class MedidasUci {
                                 id: "Biss",
                                 label: "BISS (MONITOR)",
                                 rango: "40 - 60",
+                                intrumento: "Monitor"
+                            },
+                            {
+                                orden: 18,
+                                id: "ETCO2",
+                                label: "ETCO2",
+                                rango: "35 - 45 mmHg",
                                 intrumento: "Monitor"
                             }
                         ].map(x =>
