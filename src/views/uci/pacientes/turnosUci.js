@@ -106,7 +106,7 @@ class TurnosUci {
                     }
                 });
 
-                throw "Ya existe un turno generado. Espere la hora del siguiente turno para generar nuevos registros.";
+                throw "Existen turnos abiertos. Por favor cierre los turnos para continuar o espere la hora del siguiente turno para generar nuevos registros.";
             }
         }
     }
