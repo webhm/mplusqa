@@ -1060,6 +1060,7 @@ class VentilatoriosUci {
                                                         el.dom.innerHTML = '';
                                                     }
                                                 } else {
+                                                    console.log(66, resultNro[_i])
                                                     el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
                                                 }
                                             }
@@ -1262,6 +1263,7 @@ class VentilatoriosUci {
                                                         el.dom.innerHTML = '<button type="button" id="btn' + resultNro[_i].nro + '" class="btn btn-xs btn-success btn-block tx-12">Registrar</button>';
                                                     }
                                                 } else {
+                                                    console.log(66, resultNro[_i])
                                                     el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
                                                 }
                                             }

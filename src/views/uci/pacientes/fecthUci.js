@@ -30,6 +30,8 @@ class FecthUci {
                 especialidad: 'MEDICINA INTERNA',
                 statusHora: _v.STATUS_HORA,
                 status: parseInt(_v.STATUS),
+                usuarioAsume: _v.STATUS_HORA,
+                usuarioCancela: _v.STATUS_HORA,
                 gestion: 0,
             });
             TurnosUci.turnos.push(TurnosUci.nuevoTurno);
@@ -459,17 +461,20 @@ class FecthUci {
 
 
                     // Existe turnos abiertos
-                    let turnosAbiertos = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') && v.STATUS == 1 && v.TIPO_BIT == 'UCIADULTO')
-
+                    let turnosAbiertos = res.data.dataTurnos.filter(v => (moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') || moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY')) && v.STATUS == 1 && v.TIPO_BIT == 'UCIADULTO')
 
                     if (turnosAbiertos.length > 0) {
+
                         FecthUci.loaderSecciones = true;
                         TurnosUci.turnos = FecthUci.setTurnosAbiertos(turnosAbiertos);
                         PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
+
+                        /*
+
                         setTimeout(() => {
                             $.alert('Existen turnos abiertos. Por favor cierre los turnos para continuar.');
                         }, 500);
-
+                        */
 
 
                     } else {
@@ -478,7 +483,6 @@ class FecthUci {
 
                         let turnosHoy = res.data.dataTurnos.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix() && v.TIPO_BIT == 'UCIADULTO')
 
-                        console.log(8888, turnosHoy)
 
                         if (turnosHoy.length > 0) {
                             TurnosUci.turnos = FecthUci.setTurnos(turnosHoy);

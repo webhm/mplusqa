@@ -937,16 +937,16 @@ class PrescripcionesUci {
 
 
                                             if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && (oData.frecuencia == '0') && (oData.label != 'EN ESTE MOMENTO')) {
-                                                el.dom.parentElement.parentElement.className = 'd-none';
+                                                el.dom.parentElement.parentElement.className = 'd-none 1';
                                             }
 
                                             if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && oData.frecuencia == '0' && (oData.label == 'EN ESTE MOMENTO')) {
-                                                el.dom.parentElement.parentElement.className = 'd-none';
+                                                el.dom.parentElement.parentElement.className = 'd-none 2';
                                             }
 
 
                                             if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && fechaPres > fechaHorario && oData.frecuencia >= 6) {
-                                                el.dom.parentElement.parentElement.className = 'd-none';
+                                                el.dom.parentElement.parentElement.className = 'd-none 3';
                                             }
 
                                         }

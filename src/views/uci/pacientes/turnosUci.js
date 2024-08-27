@@ -100,7 +100,7 @@ class TurnosUci {
             if (element.numeroTurno == PacientesUCI.numeroTurno && moment(element.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY')) {
                 $.alert({
                     title: "Error:",
-                    content: "Ya existe un turno generado. Espere la hora del siguiente turno para generar nuevos registros.",
+                    content: "Existen turnos abiertos. Por favor cierre los turnos para continuar o espere la hora del siguiente turno para generar nuevos registros.",
                     onClose: function() {
                         window.location.reload();
                     }
