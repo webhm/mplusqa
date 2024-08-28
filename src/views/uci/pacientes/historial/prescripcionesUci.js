@@ -155,32 +155,31 @@ class PrescripcionesUci {
 
     }
     static validarStatus(data, timestamp) {
-
-
-
-
         let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.velocidadInfusion == '' && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() >= moment(timestamp, 'DD-MM-YYYY HH:mm').unix() && moment(v.timestamp, 'DD-MM-YYYY HH:mm').unix() < moment(timestamp, 'DD-MM-YYYY HH:mm').add(1, 'hours').unix());
         return _p[0];
-
     }
     static validarDeshacer(data, timestamp = '') {
-
         let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && v.status == 5);
         return _p[0];
-
     }
-
-
-
+    static validarAdministracion(data) {
+        let _p = PrescripcionesUci.allRegistros.filter(v => v.prescripcion == data.prescripcion && (v.status == 2 || v.status == 3 || v.status == 5));
+        if (_p[0] != undefined && _p[0].length != 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     static comprobarFrecuencia(data, horario, fechaHora) {
 
+        let _hora = (data.horaPres.substring(0, data.horaPres.length - 3) + ':00');
 
         let _h = moment.duration(horario).asHours();
-        let _ho = moment.duration(data.hora).asHours();
+        let _ho = moment.duration(_hora).asHours();
         let fechaHorarioUnix = moment(fechaHora, 'DD-MM-YYYY HH:mm').unix();
-        let fechaPresUnix = moment(moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + data.horaPres, 'DD-MM-YYYY HH:mm').unix();
+        let fechaPresUnix = moment(moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + _hora, 'DD-MM-YYYY HH:mm').unix();
         let fechaPresUnixPasado = moment(moment().format('DD-MM-YYYY') + ' ' + '10:00', 'DD-MM-YYYY HH:mm').unix();
-        let fechaPres = moment(moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + data.horaPres, 'DD-MM-YYYY HH:mm');
+        let fechaPres = moment(moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + _hora, 'DD-MM-YYYY HH:mm');
 
         // Es de hoy
         if (data.frecuencia !== '0' && moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY')) {
@@ -193,8 +192,12 @@ class PrescripcionesUci {
 
         } else if (data.frecuencia !== '0' && moment(data.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY')) {
 
-            if (fechaHorarioUnix <= fechaPresUnixPasado && (_h - _ho) % data.frecuencia == 0) {
-                return true;
+            if (fechaHorarioUnix >= fechaPresUnix) {
+                if (fechaHorarioUnix <= fechaPresUnixPasado && (_h - _ho) % data.frecuencia == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }
@@ -206,7 +209,6 @@ class PrescripcionesUci {
 
 
     }
-
 
     static filterRegistros() {
 
@@ -548,10 +550,37 @@ class PrescripcionesUci {
 
                                             el.dom.parentElement.className = 'tx-12 tx-semibold bg-light op-5';
                                         }
+
+
                                         // validar si son de hoy
-                                        if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY')) {
-                                            el.dom.parentElement.className = 'tx-12 tx-semibold bg-warning op-8';
+                                        let fechaHorario = moment(moment().format('DD-MM-YYYY') + '  10:00', 'DD-MM-YYYY HH:mm').unix();
+                                        let fechaPres = moment(moment().format('DD-MM-YYYY') + ' ' + oData.hora, 'DD-MM-YYYY HH:mm').unix();
+
+
+                                        if (moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 00:00'), 'DD-MM-YYYY HH:mm').unix() && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix()) {
+
+                                        } else {
+
+                                            if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && oData.frecuencia !== '0') {
+                                                el.dom.parentElement.className = 'tx-12 tx-semibold bg-warning op-8 ';
+                                            }
+
+
+                                            if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && (oData.frecuencia == '0') && (oData.label != 'EN ESTE MOMENTO')) {
+                                                el.dom.parentElement.parentElement.className = 'd-none 1';
+                                            }
+
+                                            if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && oData.frecuencia == '0' && (oData.label == 'EN ESTE MOMENTO')) {
+                                                el.dom.parentElement.parentElement.className = 'd-none 2';
+                                            }
+
+
+                                            if (moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') !== moment().format('DD-MM-YYYY') && fechaPres > fechaHorario && oData.frecuencia >= 6) {
+                                                el.dom.parentElement.parentElement.className = 'd-none 3';
+                                            }
+
                                         }
+
                                     },
                                 }, [oData.prescripcion + ' (' + oData.label + ')']),
 
@@ -820,7 +849,9 @@ class PrescripcionesUci {
                                                 } else {
 
                                                     let fechaHorario = moment(horas[index].fechaHora, 'DD-MM-YYYY HH:mm').unix();
-                                                    let fechaPres = moment(moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + oData.horaPres, 'DD-MM-YYYY HH:mm').unix();
+                                                    let _hora = (oData.horaPres.substring(0, oData.horaPres.length - 3) + ':00');
+
+                                                    let fechaPres = moment(moment(oData.timestamp, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + _hora, 'DD-MM-YYYY HH:mm').unix();
 
                                                     if (fechaHorario == fechaPres && oData.label == 'EN ESTE MOMENTO') {
 

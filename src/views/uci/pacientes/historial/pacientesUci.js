@@ -1393,10 +1393,10 @@ class PacientesUCIHistorial extends App {
 
         for (let index = 0; index < orderCol[0]; index++) {
             VentilatoriosUci.sColumns.push({
-                title: "Parámetro:",
+                title: "Hora:",
             });
             VentilatoriosUci.sColumns.push({
-                title: "Hora:",
+                title: "Valor:",
             });
         }
 
@@ -1477,8 +1477,8 @@ class PacientesUCIHistorial extends App {
                                                 let _i = v.idObj[index];
 
                                                 if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].condicion !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].condicion;
+                                                    if (resultNro[_i].hora !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].hora;
                                                     } else {
                                                         el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
                                                     }
@@ -1518,8 +1518,8 @@ class PacientesUCIHistorial extends App {
                                                 let _i = v.idObj[index];
 
                                                 if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].hora !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].hora;
+                                                    if (resultNro[_i].condicion !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].condicion;
                                                     } else {
                                                         el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
                                                     }
@@ -1540,6 +1540,7 @@ class PacientesUCIHistorial extends App {
                 orderable: true,
 
             });
+
 
         }
 
@@ -1999,7 +2000,7 @@ class PacientesUCIHistorial extends App {
                 title: "Hora:",
             });
             GasesUci.sColumns.push({
-                title: "Valores:",
+                title: "Valor:",
             });
         }
 
@@ -2236,6 +2237,7 @@ class PacientesUCIHistorial extends App {
         let PresionVenosaCentral = 0;
         let PresionVenosaCentralAuricula = 0;
         let Biss = 0;
+        let ETCO2 = 0;
 
 
         resultNro.map((col, i) => {
@@ -2290,9 +2292,12 @@ class PacientesUCIHistorial extends App {
             if (col.id == 'Biss') {
                 Biss++;
             }
+            if (col.id == 'ETCO2') {
+                ETCO2++;
+            }
         });
 
-        columnas = [GastoCardiaco, IndiceCardiaco, VolumenSistolico, PresionCapilarPulmonar, IndiceResistenciaVascularSistemicaIndexada, ResistenciaVascularSistemica, IndiceResistenciaVascularPulmonarIndexada, PresionCuna, PresionArteriaPulmonar, TransporteArterialOxigeno, ConcentracionOxigeno, PresionPerfusionCerebral, PresionIntraCraneal, PresionIntraAbdominal, PresionVenosaCentral, PresionVenosaCentralAuricula, Biss];
+        columnas = [GastoCardiaco, IndiceCardiaco, VolumenSistolico, PresionCapilarPulmonar, IndiceResistenciaVascularSistemicaIndexada, ResistenciaVascularSistemica, IndiceResistenciaVascularPulmonarIndexada, PresionCuna, PresionArteriaPulmonar, TransporteArterialOxigeno, ConcentracionOxigeno, PresionPerfusionCerebral, PresionIntraCraneal, PresionIntraAbdominal, PresionVenosaCentral, PresionVenosaCentralAuricula, Biss, ETCO2];
 
         resultNro.map((col, i) => {
             let fila = {};
@@ -2674,6 +2679,28 @@ class PacientesUCIHistorial extends App {
                     });
                 }
             }
+            if (col.id == 'ETCO2') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
 
 
         });
@@ -2703,10 +2730,10 @@ class PacientesUCIHistorial extends App {
 
         for (let index = 0; index < orderCol[0]; index++) {
             MedidasUci.sColumns.push({
-                title: "Valor:",
+                title: "Hora:",
             });
             MedidasUci.sColumns.push({
-                title: "Hora:",
+                title: "Valor:",
             });
         }
 
@@ -2782,6 +2809,50 @@ class PacientesUCIHistorial extends App {
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
+
+            MedidasUci.sRows.push({
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+
+                                    onclick: (e) => {
+                                        e.preventDefault();
+                                    },
+
+
+                                    oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
+                                        valores.filter((v, i) => {
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                if (resultNro[_i] !== undefined) {
+                                                    if (resultNro[_i].hora !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].hora;
+                                                        el.dom.id = "txtMedidasHora" + resultNro[_i].nro;
+                                                    } else {
+                                                        el.dom.id = "txtMedidasHora" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                    }
+                                                } else {
+                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                }
+                                            }
+                                        })
+                                    }
+
+                                }, []),
+
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: null,
+                orderable: true,
+            });
             MedidasUci.sRows.push({
                 fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
@@ -2831,49 +2902,6 @@ class PacientesUCIHistorial extends App {
                 aTargets: null,
                 orderable: true,
 
-            });
-            MedidasUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-
-                                    onclick: (e) => {
-                                        e.preventDefault();
-                                    },
-
-
-                                    oncreate: (el) => {
-                                        el.dom.className = "text-center pd-l-0 pd-r-0";
-
-                                        valores.filter((v, i) => {
-                                            if (v.id == oData.id) {
-                                                let _i = v.idObj[index];
-                                                if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].hora !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].hora;
-                                                        el.dom.id = "txtMedidasHora" + resultNro[_i].nro;
-                                                    } else {
-                                                        el.dom.id = "txtMedidasHora" + resultNro[_i].nro;
-                                                        el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                                                    }
-                                                } else {
-                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                                                }
-                                            }
-                                        })
-                                    }
-
-                                }, []),
-
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: null,
-                orderable: true,
             });
         }
 
@@ -3241,10 +3269,10 @@ class PacientesUCIHistorial extends App {
 
         for (let index = 0; index < orderCol[0]; index++) {
             ComburTestUci.sColumns.push({
-                title: "Valor:",
+                title: "Hora:",
             });
             ComburTestUci.sColumns.push({
-                title: "Hora:",
+                title: "Valor:",
             });
         }
 
@@ -3320,6 +3348,50 @@ class PacientesUCIHistorial extends App {
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
+
+            ComburTestUci.sRows.push({
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+
+                                    onclick: (e) => {
+                                        e.preventDefault();
+                                    },
+
+
+                                    oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
+                                        valores.filter((v, i) => {
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                if (resultNro[_i] !== undefined) {
+                                                    if (resultNro[_i].hora !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].hora;
+                                                        el.dom.id = "txtComburHora" + resultNro[_i].nro;
+                                                    } else {
+                                                        el.dom.id = "txtComburHora" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                    }
+                                                } else {
+                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                }
+                                            }
+                                        })
+                                    }
+
+                                }, []),
+
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: null,
+                orderable: true,
+            });
             ComburTestUci.sRows.push({
                 fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
@@ -3364,49 +3436,6 @@ class PacientesUCIHistorial extends App {
                 aTargets: null,
                 orderable: true,
 
-            });
-            ComburTestUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-
-                                    onclick: (e) => {
-                                        e.preventDefault();
-                                    },
-
-
-                                    oncreate: (el) => {
-                                        el.dom.className = "text-center pd-l-0 pd-r-0";
-
-                                        valores.filter((v, i) => {
-                                            if (v.id == oData.id) {
-                                                let _i = v.idObj[index];
-                                                if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].hora !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].hora;
-                                                        el.dom.id = "txtComburHora" + resultNro[_i].nro;
-                                                    } else {
-                                                        el.dom.id = "txtComburHora" + resultNro[_i].nro;
-                                                        el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                                                    }
-                                                } else {
-                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                                                }
-                                            }
-                                        })
-                                    }
-
-                                }, []),
-
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: null,
-                orderable: true,
             });
         }
 
@@ -3587,10 +3616,10 @@ class PacientesUCIHistorial extends App {
 
         for (let index = 0; index < orderCol[0]; index++) {
             GasesMedUci.sColumns.push({
-                title: "Valor:",
+                title: "Hora:",
             });
             GasesMedUci.sColumns.push({
-                title: "Hora:",
+                title: "Valor:",
             });
         }
 
@@ -3666,6 +3695,50 @@ class PacientesUCIHistorial extends App {
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
+
+            GasesMedUci.sRows.push({
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+
+                                    onclick: (e) => {
+                                        e.preventDefault();
+                                    },
+
+
+                                    oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
+                                        valores.filter((v, i) => {
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                if (resultNro[_i] !== undefined) {
+                                                    if (resultNro[_i].hora !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].hora;
+                                                        el.dom.id = "txtGasesMedHora" + resultNro[_i].nro;
+                                                    } else {
+                                                        el.dom.id = "txtGasesMedHora" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                    }
+                                                } else {
+                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                }
+                                            }
+                                        })
+                                    }
+
+                                }, []),
+
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: null,
+                orderable: true,
+            });
             GasesMedUci.sRows.push({
                 fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
@@ -3710,49 +3783,6 @@ class PacientesUCIHistorial extends App {
                 aTargets: null,
                 orderable: true,
 
-            });
-            GasesMedUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-
-                                    onclick: (e) => {
-                                        e.preventDefault();
-                                    },
-
-
-                                    oncreate: (el) => {
-                                        el.dom.className = "text-center pd-l-0 pd-r-0";
-
-                                        valores.filter((v, i) => {
-                                            if (v.id == oData.id) {
-                                                let _i = v.idObj[index];
-                                                if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].hora !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].hora;
-                                                        el.dom.id = "txtGasesMedHora" + resultNro[_i].nro;
-                                                    } else {
-                                                        el.dom.id = "txtGasesMedHora" + resultNro[_i].nro;
-                                                        el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                                                    }
-                                                } else {
-                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                                                }
-                                            }
-                                        })
-                                    }
-
-                                }, []),
-
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: null,
-                orderable: true,
             });
         }
 
