@@ -85,6 +85,15 @@ class VentilatorioNoInvasivo {
         return VentilatorioNoInvasivo.registros;
     }
 
+
+    static validarRegistroUnicoPorTurno(tipo) {
+        VentilatorioNoInvasivo.registros.map((_v, _i) => {
+            if (_v.tipo == tipo && _v.hora == VentilatorioNoInvasivo.nuevoRegistro.hora && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                throw 'error';
+            }
+        });
+    }
+
     static arqTable() {
         return {
             data: null,
@@ -438,12 +447,21 @@ class VentilatorioNoInvasivo {
 
                                 },
                                 oninput: (e) => {
-                                    setTimeout(() => {
-                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                        VentilatorioNoInvasivo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                        VentilatorioNoInvasivo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
 
+                                    setTimeout(() => {
+                                        try {
+
+                                            //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                            VentilatorioNoInvasivo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            VentilatorioNoInvasivo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            VentilatorioNoInvasivo.validarRegistroUnicoPorTurno(VentilatorioNoInvasivo.nuevoRegistro.tipo);
+
+                                        } catch (error) {
+                                            VentilatorioNoInvasivo.nuevoRegistro = null;
+                                            $.alert('No es posible ingresar este valor. Ya existe este registro.');
+                                        }
                                     }, 50);
+
                                 },
 
                             }),
