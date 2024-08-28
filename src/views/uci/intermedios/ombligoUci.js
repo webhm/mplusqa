@@ -312,6 +312,14 @@ class OmbligoUci {
         }
     }
 
+    static validarRegistroUnicoPorTurno(tipo) {
+        OmbligoUci.registros.map((_v, _i) => {
+            if (_v.tipo == tipo && _v.hora == OmbligoUci.nuevoRegistro.hora && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                throw 'error';
+            }
+        });
+    }
+
     view() {
         return [
             m("thead.bd.bd-2", {
@@ -435,10 +443,14 @@ class OmbligoUci {
                                 },
                                 oninput: (e) => {
                                     setTimeout(() => {
-                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                        OmbligoUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                        OmbligoUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
-
+                                        try {
+                                            OmbligoUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            OmbligoUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            OmbligoUci.validarRegistroUnicoPorTurno(OmbligoUci.nuevoRegistro.tipo);
+                                        } catch (error) {
+                                            OmbligoUci.nuevoRegistro = null;
+                                            $.alert('No es posible ingresar este valor. Ya existe este registro.');
+                                        }
                                     }, 50);
                                 },
 

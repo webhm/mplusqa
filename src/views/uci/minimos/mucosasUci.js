@@ -312,6 +312,15 @@ class MucosasUciNeo {
         }
     }
 
+    static validarRegistroUnicoPorTurno(tipo) {
+        MucosasUciNeo.registros.map((_v, _i) => {
+            if (_v.tipo == tipo && _v.hora == MucosasUciNeo.nuevoRegistro.hora && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                throw 'error';
+            }
+        });
+    }
+
+
     view() {
         return [
             m("thead.bd.bd-2", {
@@ -438,10 +447,16 @@ class MucosasUciNeo {
 
                                 },
                                 oninput: (e) => {
+
                                     setTimeout(() => {
-                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                        MucosasUciNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                        MucosasUciNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                        try {
+                                            MucosasUciNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            MucosasUciNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            MucosasUciNeo.validarRegistroUnicoPorTurno(MucosasUciNeo.nuevoRegistro.tipo);
+                                        } catch (error) {
+                                            MucosasUciNeo.nuevoRegistro = null;
+                                            $.alert('No es posible ingresar este valor. Ya existe este registro.');
+                                        }
                                     }, 50);
                                 },
 

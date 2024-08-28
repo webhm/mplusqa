@@ -328,6 +328,14 @@ class IngestaUciNeo {
         }
     }
 
+    static validarRegistroUnicoPorTurno(tipo) {
+        IngestaUciNeo.registros.map((_v, _i) => {
+            if (_v.tipo == tipo && _v.hora == IngestaUciNeo.nuevoRegistro.hora && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                throw 'error';
+            }
+        });
+    }
+
     view() {
         return [
             m("thead.bd.bd-2", {
@@ -470,12 +478,18 @@ class IngestaUciNeo {
 
                                 },
                                 oninput: (e) => {
-                                    setTimeout(() => {
-                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                        IngestaUciNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                        IngestaUciNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
 
+                                    setTimeout(() => {
+                                        try {
+                                            IngestaUciNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            IngestaUciNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            IngestaUciNeo.validarRegistroUnicoPorTurno(IngestaUciNeo.nuevoRegistro.tipo);
+                                        } catch (error) {
+                                            IngestaUciNeo.nuevoRegistro = null;
+                                            $.alert('No es posible ingresar este valor. Ya existe este registro.');
+                                        }
                                     }, 50);
+
                                 },
 
                             }),

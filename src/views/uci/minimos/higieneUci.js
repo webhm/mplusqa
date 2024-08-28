@@ -311,6 +311,14 @@ class HigieneUci {
         }
     }
 
+    static validarRegistroUnicoPorTurno(tipo) {
+        HigieneUci.registros.map((_v, _i) => {
+            if (_v.tipo == tipo && _v.hora == HigieneUci.nuevoRegistro.hora && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                throw 'error';
+            }
+        });
+    }
+
     view() {
         return [
             m("thead.bd.bd-2", {
@@ -433,6 +441,18 @@ class HigieneUci {
                                         HigieneUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
 
                                     }, 50);
+                                    setTimeout(() => {
+                                        try {
+                                            HigieneUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            HigieneUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            HigieneUci.validarRegistroUnicoPorTurno(HigieneUci.nuevoRegistro.tipo);
+                                        } catch (error) {
+                                            HigieneUci.nuevoRegistro = null;
+                                            $.alert('No es posible ingresar este valor. Ya existe este registro.');
+                                        }
+                                    }, 50);
+
+
                                 },
 
                             }),

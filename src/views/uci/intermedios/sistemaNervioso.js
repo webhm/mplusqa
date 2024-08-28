@@ -312,6 +312,14 @@ class SistemaNervioso {
         }
     }
 
+    static validarRegistroUnicoPorTurno(tipo) {
+        SistemaNervioso.registros.map((_v, _i) => {
+            if (_v.tipo == tipo && _v.hora == SistemaNervioso.nuevoRegistro.hora && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                throw 'error';
+            }
+        });
+    }
+
     view() {
         return [
             m("thead.bd.bd-2", {
@@ -435,10 +443,14 @@ class SistemaNervioso {
                                 },
                                 oninput: (e) => {
                                     setTimeout(() => {
-                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                        SistemaNervioso.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                        SistemaNervioso.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
-
+                                        try {
+                                            SistemaNervioso.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            SistemaNervioso.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            SistemaNervioso.validarRegistroUnicoPorTurno(SistemaNervioso.nuevoRegistro.tipo);
+                                        } catch (error) {
+                                            SistemaNervioso.nuevoRegistro = null;
+                                            $.alert('No es posible ingresar este valor. Ya existe este registro.');
+                                        }
                                     }, 50);
                                 },
 

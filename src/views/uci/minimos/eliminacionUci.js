@@ -311,6 +311,14 @@ class EliminacionUciNeo {
         }
     }
 
+    static validarRegistroUnicoPorTurno(tipo) {
+        EliminacionUciNeo.registros.map((_v, _i) => {
+            if (_v.tipo == tipo && _v.hora == EliminacionUciNeo.nuevoRegistro.hora && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                throw 'error';
+            }
+        });
+    }
+
     view() {
         return [
             m("thead.bd.bd-2", {
@@ -434,10 +442,14 @@ class EliminacionUciNeo {
                                 },
                                 oninput: (e) => {
                                     setTimeout(() => {
-                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                        EliminacionUciNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                        EliminacionUciNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
-
+                                        try {
+                                            EliminacionUciNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            EliminacionUciNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            EliminacionUciNeo.validarRegistroUnicoPorTurno(EliminacionUciNeo.nuevoRegistro.tipo);
+                                        } catch (error) {
+                                            EliminacionUciNeo.nuevoRegistro = null;
+                                            $.alert('No es posible ingresar este valor. Ya existe este registro.');
+                                        }
                                     }, 50);
                                 },
 
