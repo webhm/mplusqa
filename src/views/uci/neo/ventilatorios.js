@@ -322,6 +322,14 @@ class VentilatoriosNeo {
         }
     }
 
+    static validarRegistroUnicoPorTurno(tipo) {
+        VentilatoriosNeo.registros.map((_v, _i) => {
+            if (_v.tipo == tipo && _v.hora == VentilatoriosNeo.nuevoRegistro.hora && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                throw 'error';
+            }
+        });
+    }
+
     view() {
         return [
             m("thead.bd.bd-2", {
@@ -518,10 +526,17 @@ class VentilatoriosNeo {
                                 },
                                 oninput: (e) => {
                                     setTimeout(() => {
-                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                        VentilatoriosNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                        VentilatoriosNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                        try {
 
+                                            //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                            VentilatoriosNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            VentilatoriosNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            VentilatoriosNeo.validarRegistroUnicoPorTurno(VentilatoriosNeo.nuevoRegistro.tipo);
+
+                                        } catch (error) {
+                                            VentilatoriosNeo.nuevoRegistro = null;
+                                            $.alert('No es posible ingresar este valor. Ya existe este registro.');
+                                        }
                                     }, 50);
                                 },
 
