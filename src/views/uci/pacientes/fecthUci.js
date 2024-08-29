@@ -456,32 +456,22 @@ class FecthUci {
                     FecthUci.loadSecciones();
 
                 } else {
-
-
-                    // Existe turnos abiertos
-                    let turnosAbiertos = res.data.dataTurnos.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') && v.STATUS == 1 && v.TIPO_BIT == 'UCIADULTO')
-
-                    //  let turnosAbiertos = res.data.dataTurnos.filter(v => (moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') || moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY')) && v.STATUS == 1 && v.TIPO_BIT == 'UCIADULTO')
-
+                    // Inicia siguientes 24hrs
+                    // Existen turnos abiertos del dia anterior?
+                    let _ayer = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
+                    // Filter Turnos 
+                    let turnosAbiertos = res.data.dataTurnos.filter(v => (moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == _ayer || moment(v.FECHA, 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix()) && v.STATUS == '1' && v.TIPO_BIT == 'UCIADULTO');
 
                     if (turnosAbiertos.length > 0) {
                         FecthUci.loaderSecciones = true;
                         TurnosUci.turnos = FecthUci.setTurnosAbiertos(turnosAbiertos);
                         PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
-                        /*
                         setTimeout(() => {
                             $.alert('Existen turnos abiertos. Por favor cierre los turnos para continuar.');
                         }, 500);
-                        */
-
-
-
                     } else {
-
                         // Filter Turnos de Hoy
-
-                        let turnosHoy = res.data.dataTurnos.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix() && v.TIPO_BIT == 'UCIADULTO')
-
+                        let turnosHoy = res.data.dataTurnos.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix() && v.TIPO_BIT == 'UCIADULTO');
                         console.log(8888, turnosHoy)
 
                         if (turnosHoy.length > 0) {
