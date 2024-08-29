@@ -686,9 +686,7 @@ class PacientesUCIHistorial extends App {
             if (col.id == 'VolumenFugas') {
                 VolumenFugas++;
             }
-            if (col.id == 'ETCO2') {
-                ETCO2++;
-            }
+
             if (col.id == 'FIO2') {
                 FIO2++;
             }
@@ -739,7 +737,7 @@ class PacientesUCIHistorial extends App {
             }
         });
 
-        columnas = [VolumenAltaFrecuencia, ModoVentilatorio, PresionInspiratoria, DCO2, AmplitudDO2, Flujo, PresionMediaVia, Hercios, PresionBalonTuboOrotraqueal, NivelTuboOrotraqueal, VolumenFugas, ETCO2, FIO2, TiempoInspiratorio, RelacionInspiracionEspiracion, ResistenciaInspiratoria, ComplianceEstatica, FRPT, FRV, VolumenMinutoEspiradoPaciente, VolumenMinutoEspiradoMaquina, VolumenTidalEspiradoPaciente, VolumenTidalEspiradoMaquina, PresionSoporte, AutoPeep, PEEP, PresionMedia, PresionPico];
+        columnas = [VolumenAltaFrecuencia, ModoVentilatorio, PresionInspiratoria, DCO2, AmplitudDO2, Flujo, PresionMediaVia, Hercios, PresionBalonTuboOrotraqueal, NivelTuboOrotraqueal, VolumenFugas, FIO2, TiempoInspiratorio, RelacionInspiracionEspiracion, ResistenciaInspiratoria, ComplianceEstatica, FRPT, FRV, VolumenMinutoEspiradoPaciente, VolumenMinutoEspiradoMaquina, VolumenTidalEspiradoPaciente, VolumenTidalEspiradoMaquina, PresionSoporte, AutoPeep, PEEP, PresionMedia, PresionPico];
 
         resultNro.map((col, i) => {
             let fila = {};
@@ -989,28 +987,7 @@ class PacientesUCIHistorial extends App {
                     });
                 }
             }
-            if (col.id == 'ETCO2') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
 
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
             if (col.id == 'FIO2') {
                 fila.id = col.id;
                 fila.idObj = [];
