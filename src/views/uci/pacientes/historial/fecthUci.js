@@ -402,10 +402,14 @@ class FecthUci {
             if (res.data.length == 0) {
                 alert('No existe información en la fecha ingresada.');
             } else {
-                FecthUci.dataHistorial = res.data;
+
+                let _f2 = moment(fechaBusqueda, 'DD-MM-YYYY').add(1, 'days').format('DD-MM-YYYY');
+                let seccionesHoy = res.data.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment(fechaBusqueda, 'DD-MM-YYYY').format('DD-MM-YYYY') + ' 07:59', 'DD-MM-YYYY HH:mm').unix() && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment(_f2, 'DD-MM-YYYY').format('DD-MM-YYYY') + ' 08:00', 'DD-MM-YYYY HH:mm').unix());
+                console.log('seccionesHoy', seccionesHoy)
+                FecthUci.dataHistorial = seccionesHoy;
                 PacientesUCIHistorial.loadSecs();
 
-                console.log(res)
+
             }
 
 
