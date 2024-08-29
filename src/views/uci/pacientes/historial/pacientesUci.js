@@ -3925,7 +3925,9 @@ class PacientesUCIHistorial extends App {
         });
 
         result = res.sort((a, b) => b.nro - a.nro);
-        // Quitar duplicados
+
+        console.log(999, res)
+            // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.nro - b.nro);

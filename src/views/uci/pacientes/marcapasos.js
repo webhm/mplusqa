@@ -140,8 +140,11 @@ class MarcapasosUci {
         console.log(7788, res)
 
         MarcapasosUci.filterRegistros();
-        PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
-        FecthUci.registrarAllSeccion(res);
+        setTimeout(() => {
+            PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+            FecthUci.registrarAllSeccion(res);
+        }, 100);
+
 
     }
 
@@ -161,6 +164,7 @@ class MarcapasosUci {
         MarcapasosUci.registros = _arr;
 
     }
+
     static getRegistros() {
         return MarcapasosUci.registros;
     }

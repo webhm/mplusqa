@@ -154,8 +154,10 @@ class VentilacionUci {
         console.log(7788, res)
 
         VentilacionUci.filterRegistros();
-        PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
-        FecthUci.registrarAllSeccion(res);
+        setTimeout(() => {
+            PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
+            FecthUci.registrarAllSeccion(res);
+        }, 100);
 
     }
 

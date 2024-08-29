@@ -147,8 +147,12 @@ class CuidadosUci2 {
         console.log(7788, res)
 
         CuidadosUci2.filterRegistros();
-        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
-        FecthUci.registrarAllSeccion(res);
+        setTimeout(() => {
+            PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
+            FecthUci.registrarAllSeccion(res);
+        }, 100);
+
+
 
     }
 

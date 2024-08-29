@@ -157,8 +157,11 @@ class CateterUci {
         console.log(7788, res)
 
         CateterUci.filterRegistros();
-        PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
-        FecthUci.registrarAllSeccion(res);
+        setTimeout(() => {
+            PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
+            FecthUci.registrarAllSeccion(res);
+        }, 100);
+
 
     }
 

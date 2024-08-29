@@ -160,8 +160,10 @@ class HemodialisisUci {
         console.log(7788, res)
 
         HemodialisisUci.filterRegistros();
-        PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
-        FecthUci.registrarAllSeccion(res);
+        setTimeout(() => {
+            PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
+            FecthUci.registrarAllSeccion(res);
+        }, 100);
 
     }
 
