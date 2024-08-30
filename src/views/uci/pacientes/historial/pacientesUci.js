@@ -361,7 +361,7 @@ class PacientesUCIHistorial extends App {
             });
         });
 
-        result = res.sort((a, b) => b.nro - a.nro);
+        result = res.sort((a, b) => b.numeroTurno - a.numeroTurno);
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -386,7 +386,7 @@ class PacientesUCIHistorial extends App {
             });
         });
 
-        result = res.sort((a, b) => b.nro - a.nro);
+        result = res.sort((a, b) => b.numeroTurno - a.numeroTurno);
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -430,7 +430,8 @@ class PacientesUCIHistorial extends App {
             });
         });
 
-        result = res.sort((a, b) => b.nro - a.nro);
+        result = res.sort((a, b) => b.numeroTurno - a.numeroTurno);
+
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -455,7 +456,8 @@ class PacientesUCIHistorial extends App {
             });
         });
 
-        result = res.sort((a, b) => b.nro - a.nro);
+        result = res.sort((a, b) => b.numeroTurno - a.numeroTurno);
+
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -481,7 +483,8 @@ class PacientesUCIHistorial extends App {
             });
         });
 
-        result = res.sort((a, b) => b.nro - a.nro);
+        result = res.sort((a, b) => b.numeroTurno - a.numeroTurno);
+
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -634,7 +637,6 @@ class PacientesUCIHistorial extends App {
         let PresionBalonTuboOrotraqueal = 0;
         let NivelTuboOrotraqueal = 0;
         let VolumenFugas = 0;
-        let ETCO2 = 0;
         let FIO2 = 0;
         let TiempoInspiratorio = 0;
         let RelacionInspiracionEspiracion = 0;
@@ -3895,16 +3897,15 @@ class PacientesUCIHistorial extends App {
         options.map((option) => {
             FecthUci.dataHistorial.filter((obj) => {
                 let _obj = JSON.parse(obj.DATASECCION);
-                if (_obj.id === option.id) {
+                if (_obj.id === option.id && obj.SECCION == 'CuidadosGenerales') {
+                    console.log('c', obj)
                     res.push(_obj);
                 }
             });
         });
 
-        result = res.sort((a, b) => b.nro - a.nro);
-
-        console.log(999, res)
-            // Quitar duplicados
+        result = res.sort((a, b) => b.numeroTurno - a.numeroTurno);
+        // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.nro - b.nro);
