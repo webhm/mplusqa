@@ -270,11 +270,19 @@ class PacientesUCIHistorial extends App {
                                     m("button.btn.btn-xs.btn-light.tx-semibold.tx-14.mg-r-2.wd-10p[type='button']", {
                                         onclick: () => {
 
-                                            if (PacientesUCIHistorial.fechaBusqueda !== null) {
-                                                let fecha = moment(PacientesUCIHistorial.fechaBusqueda, 'DD/MM/YYYY').format('DD-MM-YYYY');
-                                                console.log(666, fecha)
-                                                FecthUci.loadSeccionesHistorial(fecha)
+                                            let _fechaBusqueda = PacientesUCIHistorial.fechaBusqueda;
+                                            if (moment(_fechaBusqueda, 'DD/MM/YYYY').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY') || moment(moment(_fechaBusqueda, 'DD/MM/YYYY').format('DD-MM-YYYY'), 'DD-MM-YYYY').unix() > moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').unix()) {
+                                                $.alert('La fecha ingresada no puede ser igual o mayor a hoy.');
+
+                                            } else {
+                                                if (PacientesUCIHistorial.fechaBusqueda !== null) {
+                                                    let fecha = moment(PacientesUCIHistorial.fechaBusqueda, 'DD/MM/YYYY').format('DD-MM-YYYY');
+                                                    console.log(666, fecha)
+                                                    FecthUci.loadSeccionesHistorial(fecha)
+                                                }
                                             }
+
+
 
 
 
