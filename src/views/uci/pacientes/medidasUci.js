@@ -1386,110 +1386,6 @@ class MedidasUci {
                                     },
                                     'Cancelar Edición',
                                 ),
-                                m("button.btn.btn-xs.btn-dark[type='button']", {
-                                        class: (oData.id == 'GastoCardiaco' ? '' : 'd-none'),
-                                        onclick: () => {
-
-                                            MedidasUci.copyAllRegistros(Array.from(document.getElementById('sec_Medidas').options));
-                                            setTimeout(() => {
-                                                MedidasUci.destroyTable();
-                                                MedidasUci.filterRegistros();
-                                                MedidasUci.show = false;
-                                                m.redraw();
-                                                setTimeout(() => {
-                                                    MedidasUci.show = true;
-                                                    m.redraw();
-                                                }, 100);
-                                            }, 100);
-
-
-
-
-
-
-
-                                            /*
-                                            if (oData.valor == null) {
-                                                alert('No se permite copiar. Ya existe un registro disponible.');
-                                                throw 'No se permite copiar. Ya existe un registro disponible.'
-                                            }
-                                            MedidasUci.iniciarRegistro();
-                                            MedidasUci.nuevoRegistro.id = oData.id;
-                                            MedidasUci.nuevoRegistro.medida = oData.medida;
-                                            MedidasUci.nuevoRegistro.orden = oData.orden;
-                                            MedidasUci.nuevoRegistro.rango = oData.rango;
-                                            MedidasUci.nuevoRegistro.instrumento = oData.instrumento;
-                                            MedidasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            MedidasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-
-                                            setTimeout(() => {
-                                                MedidasUci.agregarRegistro();
-                                                FecthUci.registrarSeccion(MedidasUci.nuevoRegistro);
-                                                MedidasUci.nuevoRegistro = null;
-                                                MedidasUci.destroyTable();
-                                                MedidasUci.filterRegistros();
-                                                MedidasUci.show = false;
-                                                m.redraw();
-                                                setTimeout(() => {
-                                                    MedidasUci.show = true;
-                                                    m.redraw();
-                                                }, 100);
-                                            }, 100);
-
-
-                                            let tt = $('#MedidasUci_' + oData.id).offset().top;
-                                            setTimeout(() => {
-                                                let isAnimating = true;
-                                                $('html,body').animate({
-                                                        scrollTop: tt
-                                                    },
-                                                    700, "easeInOutSine",
-                                                    function() {
-                                                        isAnimating = false;
-                                                    })
-                                            }, 250);
-
-                                            setTimeout(() => {
-                                                let isAnimating = true;
-                                                $('#registrosMedidasUci').animate({
-                                                        scrollLeft: '+=460'
-                                                    },
-                                                    700, "easeInOutSine",
-                                                    function() {
-                                                        isAnimating = false;
-                                                    })
-                                            }, 250);
-
-                                            */
-
-                                        },
-                                    },
-                                    'Copiar',
-                                ),
-                                m("button.btn.btn-xs.btn-danger[type='button']", {
-                                        class: (oData.id == 'GastoCardiaco' ? '' : 'd-none'),
-                                        onclick: (el) => {
-
-                                            if (MedidasUci.allRegistros.length > 17) {
-                                                MedidasUci.eliminarAllRegistros();
-                                                setTimeout(() => {
-                                                    MedidasUci.destroyTable();
-                                                    MedidasUci.filterRegistros();
-                                                    MedidasUci.show = false;
-                                                    m.redraw();
-                                                    setTimeout(() => {
-                                                        MedidasUci.show = true;
-                                                        m.redraw();
-                                                    }, 100);
-                                                }, 100);
-                                            } else {
-                                                $.alert('No es posible eliminar los registros por defecto.');
-                                            }
-
-                                        },
-                                    },
-                                    'Eliminar',
-                                ),
 
 
                             ])
@@ -1850,6 +1746,58 @@ class MedidasUci {
                     m("th[scope='col'][colspan='12']",
                         "Registros: "
                     ),
+                ]),
+                m("tr.tx-uppercase", [
+                    m("td[colspan='12'][align='right']", [
+                        m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
+                                onclick: () => {
+
+                                    MedidasUci.copyAllRegistros(Array.from(document.getElementById('sec_Medidas').options));
+                                    setTimeout(() => {
+                                        MedidasUci.destroyTable();
+                                        MedidasUci.filterRegistros();
+                                        MedidasUci.show = false;
+                                        m.redraw();
+                                        setTimeout(() => {
+                                            MedidasUci.show = true;
+                                            m.redraw();
+                                        }, 100);
+                                    }, 100);
+
+
+                                },
+                            },
+                            'Copiar',
+                        ),
+                        m("button.btn.btn-xs.btn-danger.mg-1[type='button']", {
+                                onclick: (el) => {
+
+
+                                    if (MedidasUci.allRegistros.length > 0) {
+                                        MedidasUci.eliminarAllRegistros();
+                                        setTimeout(() => {
+                                            MedidasUci.destroyTable();
+                                            MedidasUci.filterRegistros();
+                                            MedidasUci.show = false;
+                                            m.redraw();
+                                            setTimeout(() => {
+                                                MedidasUci.show = true;
+                                                m.redraw();
+                                            }, 100);
+                                        }, 100);
+                                    } else {
+                                        $.alert('No existen registros para eliminar.');
+                                    }
+
+
+
+
+
+                                },
+                            },
+                            'Eliminar',
+                        ),
+                    ]),
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12'][id='registrosMedidasUci']", { style: "max-width: 150px;overflow: auto;" },

@@ -1404,105 +1404,6 @@ class VentilatoriosUci {
                                     },
                                     'Cancelar Edición',
                                 ),
-                                m("button.btn.btn-xs.btn-dark[type='button']", {
-                                        class: (oData.id == 'ModoVentilatorio' ? '' : 'd-none'),
-                                        onclick: (el) => {
-
-                                            VentilatoriosUci.copyAllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
-                                            setTimeout(() => {
-                                                VentilatoriosUci.destroyTable();
-                                                VentilatoriosUci.filterRegistros();
-                                                VentilatoriosUci.show = false;
-                                                m.redraw();
-                                                setTimeout(() => {
-                                                    VentilatoriosUci.show = true;
-                                                    m.redraw();
-                                                }, 100);
-                                            }, 100);
-
-
-                                            /*
-                                            if (oData.condicion == null) {
-                                                alert('No se permite copiar. Ya existe un registro disponible.');
-                                                throw 'No se permite copiar. Ya existe un registro disponible.'
-                                            }
-                                           
-                                            VentilatoriosUci.iniciarRegistro();
-                                            VentilatoriosUci.nuevoRegistro.id = oData.id;
-                                            VentilatoriosUci.nuevoRegistro.ventilatorio = oData.ventilatorio;
-                                            VentilatoriosUci.nuevoRegistro.orden = oData.orden;
-                                            VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-
-                                            setTimeout(() => {
-                                                VentilatoriosUci.agregarRegistro();
-                                                FecthUci.registrarSeccion(VentilatoriosUci.nuevoRegistro);
-                                                VentilatoriosUci.nuevoRegistro = null;
-                                                VentilatoriosUci.destroyTable();
-                                                VentilatoriosUci.filterRegistros();
-                                                VentilatoriosUci.show = false;
-                                                m.redraw();
-                                                setTimeout(() => {
-                                                    VentilatoriosUci.show = true;
-                                                    m.redraw();
-                                                }, 100);
-                                            }, 100);
-
-
-                                            let tt = $('#Ventilatorios_' + oData.id).offset().top;
-                                            setTimeout(() => {
-                                                let isAnimating = true;
-                                                $('html,body').animate({
-                                                        scrollTop: tt
-                                                    },
-                                                    700, "easeInOutSine",
-                                                    function() {
-                                                        isAnimating = false;
-                                                    })
-                                            }, 250);
-
-                                            setTimeout(() => {
-                                                let isAnimating = true;
-                                                $('#registrosVentilatorios').animate({
-                                                        scrollLeft: '+=460'
-                                                    },
-                                                    700, "easeInOutSine",
-                                                    function() {
-                                                        isAnimating = false;
-                                                    })
-                                            }, 250);
-
-                                            */
-
-
-                                        },
-                                    },
-                                    'Copiar',
-                                ),
-                                m("button.btn.btn-xs.btn-danger[type='button']", {
-                                        class: (oData.id == 'ModoVentilatorio' ? '' : 'd-none'),
-                                        onclick: (el) => {
-
-                                            if (VentilatoriosUci.allRegistros.length > 28) {
-                                                VentilatoriosUci.eliminarAllRegistros();
-                                                setTimeout(() => {
-                                                    VentilatoriosUci.destroyTable();
-                                                    VentilatoriosUci.filterRegistros();
-                                                    VentilatoriosUci.show = false;
-                                                    m.redraw();
-                                                    setTimeout(() => {
-                                                        VentilatoriosUci.show = true;
-                                                        m.redraw();
-                                                    }, 100);
-                                                }, 100);
-                                            } else {
-                                                $.alert('No es posible eliminar los registros por defecto.');
-                                            }
-
-                                        },
-                                    },
-                                    'Eliminar',
-                                ),
 
 
                             ])
@@ -1946,6 +1847,110 @@ class VentilatoriosUci {
                     m("th[scope='col'][colspan='12']",
                         "Registros: "
                     ),
+                ]),
+
+                m("tr.tx-uppercase", [
+                    m("td[colspan='12'][align='right']", [
+                        m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
+                                onclick: (el) => {
+
+                                    VentilatoriosUci.copyAllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
+                                    setTimeout(() => {
+                                        VentilatoriosUci.destroyTable();
+                                        VentilatoriosUci.filterRegistros();
+                                        VentilatoriosUci.show = false;
+                                        m.redraw();
+                                        setTimeout(() => {
+                                            VentilatoriosUci.show = true;
+                                            m.redraw();
+                                        }, 100);
+                                    }, 100);
+
+
+                                    /*
+if (oData.condicion == null) {
+alert('No se permite copiar. Ya existe un registro disponible.');
+throw 'No se permite copiar. Ya existe un registro disponible.'
+}
+ 
+VentilatoriosUci.iniciarRegistro();
+VentilatoriosUci.nuevoRegistro.id = oData.id;
+VentilatoriosUci.nuevoRegistro.ventilatorio = oData.ventilatorio;
+VentilatoriosUci.nuevoRegistro.orden = oData.orden;
+VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+ 
+setTimeout(() => {
+VentilatoriosUci.agregarRegistro();
+FecthUci.registrarSeccion(VentilatoriosUci.nuevoRegistro);
+VentilatoriosUci.nuevoRegistro = null;
+VentilatoriosUci.destroyTable();
+VentilatoriosUci.filterRegistros();
+VentilatoriosUci.show = false;
+m.redraw();
+setTimeout(() => {
+VentilatoriosUci.show = true;
+m.redraw();
+}, 100);
+}, 100);
+ 
+ 
+let tt = $('#Ventilatorios_' + oData.id).offset().top;
+setTimeout(() => {
+let isAnimating = true;
+$('html,body').animate({
+scrollTop: tt
+},
+700, "easeInOutSine",
+function() {
+isAnimating = false;
+})
+}, 250);
+ 
+setTimeout(() => {
+let isAnimating = true;
+$('#registrosVentilatorios').animate({
+scrollLeft: '+=460'
+},
+700, "easeInOutSine",
+function() {
+isAnimating = false;
+})
+}, 250);
+ 
+*/
+
+
+                                },
+                            },
+                            'Copiar',
+                        ),
+                        m("button.btn.btn-xs.btn-danger.mg-1[type='button']", {
+                                onclick: (el) => {
+
+                                    if (VentilatoriosUci.allRegistros.length > 0) {
+                                        VentilatoriosUci.eliminarAllRegistros();
+                                        setTimeout(() => {
+                                            VentilatoriosUci.destroyTable();
+                                            VentilatoriosUci.filterRegistros();
+                                            VentilatoriosUci.show = false;
+                                            m.redraw();
+                                            setTimeout(() => {
+                                                VentilatoriosUci.show = true;
+                                                m.redraw();
+                                            }, 100);
+                                        }, 100);
+                                    } else {
+                                        $.alert('No existen registros para eliminar.');
+                                    }
+
+
+
+                                },
+                            },
+                            'Eliminar',
+                        ),
+                    ]),
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12'][id='registrosVentilatorios']", { style: "max-width: 150px;overflow: auto;" },
