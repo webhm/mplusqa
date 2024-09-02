@@ -1065,115 +1065,6 @@ class GasesUci {
                                     },
                                     'Cancelar Edición',
                                 ),
-                                m("button.btn.btn-xs.btn-dark[type='button']", {
-                                        class: (oData.id == 'PH' ? '' : 'd-none'),
-                                        onclick: () => {
-
-                                            GasesUci.copyAllRegistros(Array.from(document.getElementById('sec_Gases').options));
-                                            setTimeout(() => {
-                                                GasesUci.destroyTable();
-                                                GasesUci.filterRegistros();
-                                                GasesUci.show = false;
-                                                m.redraw();
-                                                setTimeout(() => {
-                                                    GasesUci.show = true;
-                                                    m.redraw();
-                                                }, 100);
-                                            }, 100);
-
-
-
-
-                                            /*
-                                            console.log(99, oData)
-
-                                            if (oData.hora == null) {
-                                                alert('No se permite copiar. Ya existe un registro disponible.');
-                                                throw 'No se permite copiar. Ya existe un registro disponible.'
-                                            }
-                                            GasesUci.iniciarRegistro();
-                                            GasesUci.nuevoRegistro.id = oData.id;
-                                            GasesUci.nuevoRegistro.gas = oData.gas;
-                                            GasesUci.nuevoRegistro.orden = oData.orden;
-                                            if (GasesUci.setHora != undefined) {
-                                                GasesUci.nuevoRegistro.hora = GasesUci.setHora;
-                                            } else {
-                                                GasesUci.nuevoRegistro.hora = oData.hora;
-                                            }
-                                            GasesUci.nuevoRegistro.fechaHora = oData.fechaHora;
-                                            GasesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            GasesUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-
-
-
-                                            setTimeout(() => {
-                                                GasesUci.agregarRegistro();
-                                                FecthUci.registrarSeccion(GasesUci.nuevoRegistro);
-                                                GasesUci.nuevoRegistro = null;
-                                                GasesUci.destroyTable();
-                                                GasesUci.filterRegistros();
-                                                GasesUci.show = false;
-                                                m.redraw();
-                                                setTimeout(() => {
-                                                    GasesUci.show = true;
-                                                    m.redraw();
-                                                }, 100);
-                                            }, 100);
-
-
-                                            let tt = $('#Gases_' + oData.id).offset().top;
-                                            setTimeout(() => {
-                                                let isAnimating = true;
-                                                $('html,body').animate({
-                                                        scrollTop: tt
-                                                    },
-                                                    700, "easeInOutSine",
-                                                    function() {
-                                                        isAnimating = false;
-                                                    })
-                                            }, 250);
-
-                                            setTimeout(() => {
-                                                let isAnimating = true;
-                                                $('#registrosGasesUci').animate({
-                                                        scrollLeft: '+=460'
-                                                    },
-                                                    700, "easeInOutSine",
-                                                    function() {
-                                                        isAnimating = false;
-                                                    })
-                                            }, 250);
-
-                                            */
-
-                                        },
-                                    },
-                                    'Copiar',
-                                ),
-                                m("button.btn.btn-xs.btn-danger[type='button']", {
-                                        class: (oData.id == 'PH' ? '' : 'd-none'),
-                                        onclick: (el) => {
-
-                                            if (GasesUci.allRegistros.length > 13) {
-                                                GasesUci.eliminarAllRegistros();
-                                                setTimeout(() => {
-                                                    GasesUci.destroyTable();
-                                                    GasesUci.filterRegistros();
-                                                    GasesUci.show = false;
-                                                    m.redraw();
-                                                    setTimeout(() => {
-                                                        GasesUci.show = true;
-                                                        m.redraw();
-                                                    }, 100);
-                                                }, 100);
-                                            } else {
-                                                $.alert('No es posible eliminar los registros por defecto.');
-                                            }
-
-                                        },
-                                    },
-                                    'Eliminar',
-                                ),
 
 
                             ])
@@ -1523,6 +1414,54 @@ class GasesUci {
                     m("th[scope='col'][colspan='12']",
                         "Registros: "
                     ),
+                ]),
+                m("tr.tx-uppercase", [
+                    m("td[colspan='12'][align='right']", [
+                        m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
+
+                                onclick: () => {
+
+                                    GasesUci.copyAllRegistros(Array.from(document.getElementById('sec_Gases').options));
+                                    setTimeout(() => {
+                                        GasesUci.destroyTable();
+                                        GasesUci.filterRegistros();
+                                        GasesUci.show = false;
+                                        m.redraw();
+                                        setTimeout(() => {
+                                            GasesUci.show = true;
+                                            m.redraw();
+                                        }, 100);
+                                    }, 100);
+
+                                },
+                            },
+                            'Copiar',
+                        ),
+                        m("button.btn.btn-xs.btn-danger.mg-1[type='button']", {
+
+                                onclick: (el) => {
+
+                                    if (GasesUci.allRegistros.length > 0) {
+                                        GasesUci.eliminarAllRegistros();
+                                        setTimeout(() => {
+                                            GasesUci.destroyTable();
+                                            GasesUci.filterRegistros();
+                                            GasesUci.show = false;
+                                            m.redraw();
+                                            setTimeout(() => {
+                                                GasesUci.show = true;
+                                                m.redraw();
+                                            }, 100);
+                                        }, 100);
+                                    } else {
+                                        $.alert('No existen registros para eliminar.');
+                                    }
+
+                                },
+                            },
+                            'Eliminar',
+                        ),
+                    ]),
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12'][id='registrosGasesUci']", { style: "max-width: 150px;overflow: auto;" },
