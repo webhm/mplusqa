@@ -128,177 +128,177 @@ class ValoracionUciNeo {
                 [1, 'desc']
             ],
             columns: [{
-                    title: "order Turno:",
-                },
-                {
-                    title: "order N°:",
-                },
-                {
-                    title: "Turno:",
-                },
-                {
-                    title: "N°:",
-                },
-                {
-                    title: "Tipo:",
-                },
-                {
-                    title: "Valor:",
-                },
-                {
-                    title: "Opciones:",
-                }
+                title: "order Turno:",
+            },
+            {
+                title: "order N°:",
+            },
+            {
+                title: "Turno:",
+            },
+            {
+                title: "N°:",
+            },
+            {
+                title: "Tipo:",
+            },
+            {
+                title: "Valor:",
+            },
+            {
+                title: "Opciones:",
+            }
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, full) {
-                        return full.fechaHoraTurno;
-                    },
-                    visible: false,
-                    aTargets: [0],
-                    orderable: true,
+                mRender: function (data, type, full) {
+                    return full.fechaHoraTurno;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.nro;
-                    },
-                    visible: false,
-                    aTargets: [1],
-                    orderable: true,
-
+                visible: false,
+                aTargets: [0],
+                orderable: true,
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.nro;
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center.pd-5', [
-                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                            },
-                                            (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                            (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                            (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        ),
-                                    ])
+                visible: false,
+                aTargets: [1],
+                orderable: true,
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '15%',
-                    visible: true,
-                    aTargets: [2],
-                    orderable: false,
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center.pd-5', [
+                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                        class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                    },
+                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    ),
+                                ])
 
+                            ]
+                        }
+                    });
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.nro;
-                    },
+                width: '15%',
+                visible: true,
+                aTargets: [2],
+                orderable: false,
 
-                    visible: false,
-                    aTargets: [3],
-                    orderable: false,
-
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.nro;
                 },
 
-                {
-                    mRender: function(data, type, full) {
-                        return full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                    },
+                visible: false,
+                aTargets: [3],
+                orderable: false,
 
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
+            },
 
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    visible: true,
-                    aTargets: [5],
-                    orderable: true,
-
+            {
+                mRender: function (data, type, full) {
+                    return full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
                 },
 
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    ValoracionUciNeo.nuevoRegistro = null
-                                                    ValoracionUciNeo.verRegistro(oData);
-                                                },
-                                            },
-                                            'Editar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
-                                                class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
+                visible: true,
+                aTargets: [4],
+                orderable: true,
 
-                                                onclick: () => {
-                                                    oData.editar = null;
-                                                    ValoracionUciNeo.nuevoRegistro = null;
-                                                },
-                                            },
-                                            'Cancelar Edición',
-                                        ),
-                                        m("button.btn.btn-xs.btn-danger[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                                        ValoracionUciNeo.eliminarRegistro(oData);
-                                                        FecthUci.eliminarSeccion(oData);
-                                                        ValoracionUciNeo.nuevoRegistro = null;
-                                                        PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
-                                                    }
-                                                },
-                                            },
-                                            'Eliminar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
-                                                onclick: () => {
-                                                    ValoracionUciNeo.iniciarRegistro();
-                                                    ValoracionUciNeo.nuevoRegistro.id = oData.id;
-                                                    ValoracionUciNeo.nuevoRegistro.via = oData.via;
-                                                    ValoracionUciNeo.nuevoRegistro.ubicacion = oData.ubicacion;
-                                                    ValoracionUciNeo.nuevoRegistro.tipo = oData.tipo;
-                                                    ValoracionUciNeo.nuevoRegistro.inicio = oData.inicio;
-                                                    ValoracionUciNeo.nuevoRegistro.retiro = oData.retiro;
-                                                    ValoracionUciNeo.nuevoRegistro.curacion = oData.curacion;
-                                                    ValoracionUciNeo.nuevoRegistro.condicion = oData.condicion;
-                                                    ValoracionUciNeo.nuevoRegistro.observacion = oData.observacion;
-                                                    ValoracionUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    ValoracionUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                },
+                visible: true,
+                aTargets: [5],
+                orderable: true,
 
-                                                },
-                                            },
-                                            'Copiar',
-                                        ),
-                                    ])
+            },
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [6],
-                    orderable: true,
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m("div.btn-block.btn-group.wd-100p.pd-5", [
+                                    m("button.btn.btn-xs.btn-success[type='button']", {
+                                        class: (oData.editar ? 'd-none' : ''),
+                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                        onclick: () => {
+                                            ValoracionUciNeo.nuevoRegistro = null
+                                            ValoracionUciNeo.verRegistro(oData);
+                                        },
+                                    },
+                                        'Editar',
+                                    ),
+                                    m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
+                                        class: (oData.editar ? '' : 'd-none'),
+                                        disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
 
-                }
+                                        onclick: () => {
+                                            oData.editar = null;
+                                            ValoracionUciNeo.nuevoRegistro = null;
+                                        },
+                                    },
+                                        'Cancelar Edición',
+                                    ),
+                                    m("button.btn.btn-xs.btn-danger[type='button']", {
+                                        class: (oData.editar ? 'd-none' : ''),
+                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                        onclick: () => {
+                                            if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                                ValoracionUciNeo.eliminarRegistro(oData);
+                                                FecthUci.eliminarSeccion(oData);
+                                                ValoracionUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                            }
+                                        },
+                                    },
+                                        'Eliminar',
+                                    ),
+                                    m("button.btn.btn-xs.btn-dark[type='button']", {
+                                        class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                        onclick: () => {
+                                            ValoracionUciNeo.iniciarRegistro();
+                                            ValoracionUciNeo.nuevoRegistro.id = oData.id;
+                                            ValoracionUciNeo.nuevoRegistro.via = oData.via;
+                                            ValoracionUciNeo.nuevoRegistro.ubicacion = oData.ubicacion;
+                                            ValoracionUciNeo.nuevoRegistro.tipo = oData.tipo;
+                                            ValoracionUciNeo.nuevoRegistro.inicio = oData.inicio;
+                                            ValoracionUciNeo.nuevoRegistro.retiro = oData.retiro;
+                                            ValoracionUciNeo.nuevoRegistro.curacion = oData.curacion;
+                                            ValoracionUciNeo.nuevoRegistro.condicion = oData.condicion;
+                                            ValoracionUciNeo.nuevoRegistro.observacion = oData.observacion;
+                                            ValoracionUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            ValoracionUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+
+                                        },
+                                    },
+                                        'Copiar',
+                                    ),
+                                ])
+
+                            ]
+                        }
+                    });
+                },
+                width: '10%',
+                visible: true,
+                aTargets: [6],
+                orderable: true,
+
+            }
 
 
             ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
             },
         };
@@ -316,10 +316,10 @@ class ValoracionUciNeo {
     view() {
         return [
             m("thead.bd.bd-2", {
-                    style: { "border-color": "#5173a1" },
-                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+                style: { "border-color": "#5173a1" },
+                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
-                },
+            },
 
                 m("tr.tx-uppercase", {
                     class: (PacientesUCI.tipoAtencion !== null && PacientesUCI.tipoAtencion == 'NEO' ? '' : 'd-none'),
@@ -363,15 +363,15 @@ class ValoracionUciNeo {
                         m("div.input-group", [
                             m("div.input-group-append",
                                 m("button.btn.btn-xs.btn-light[type='button']", {
-                                        title: "Nuevo",
-                                        onclick: () => {
-                                            if (ValoracionUciNeo.nuevoRegistro == null) {
-                                                ValoracionUciNeo.iniciarRegistro();
-                                            } else {
-                                                ValoracionUciNeo.nuevoRegistro = null;
-                                            }
+                                    title: "Nuevo",
+                                    onclick: () => {
+                                        if (ValoracionUciNeo.nuevoRegistro == null) {
+                                            ValoracionUciNeo.iniciarRegistro();
+                                        } else {
+                                            ValoracionUciNeo.nuevoRegistro = null;
                                         }
-                                    },
+                                    }
+                                },
                                     m("i.fas.fa-plus")
                                 )
                             ),
@@ -426,21 +426,21 @@ class ValoracionUciNeo {
                                     class: "custom-select",
                                     value: (ValoracionUciNeo.nuevoRegistro !== null ? ValoracionUciNeo.nuevoRegistro.tipo : 0),
                                 }, [{
-                                        id: "Tono",
-                                        label: "TONO"
-                                    },
-                                    {
-                                        id: "Cabeza",
-                                        label: "CABEZA"
-                                    },
-                                    {
-                                        id: "Abdomen",
-                                        label: "ABDOMEN"
-                                    },
-                                    {
-                                        id: "CordonUmbilical",
-                                        label: "CORDON UMBILICAL"
-                                    },
+                                    id: "Tono",
+                                    label: "TONO"
+                                },
+                                {
+                                    id: "Cabeza",
+                                    label: "CABEZA"
+                                },
+                                {
+                                    id: "Abdomen",
+                                    label: "ABDOMEN"
+                                },
+                                {
+                                    id: "CordonUmbilical",
+                                    label: "CORDON UMBILICAL"
+                                },
                                 ].map(x =>
                                     m('option[id="' + x.id + '"]', x.label)
                                 ))
@@ -486,21 +486,21 @@ class ValoracionUciNeo {
                                 class: "custom-select",
                                 value: (ValoracionUciNeo.nuevoRegistro !== null ? ValoracionUciNeo.nuevoRegistro.valor : 0),
                             }, [{
-                                    id: "AdecuadoEdad",
-                                    label: "ADECUADO PARA LA EDAD"
-                                },
-                                {
-                                    id: "Hipotonico",
-                                    label: "HIPOTONICO"
-                                },
-                                {
-                                    id: "Hipertonico",
-                                    label: "HIPERTONICO"
-                                },
-                                {
-                                    id: "Temblores",
-                                    label: "TEMBLORES"
-                                },
+                                id: "AdecuadoEdad",
+                                label: "ADECUADO PARA LA EDAD"
+                            },
+                            {
+                                id: "Hipotonico",
+                                label: "HIPOTONICO"
+                            },
+                            {
+                                id: "Hipertonico",
+                                label: "HIPERTONICO"
+                            },
+                            {
+                                id: "Temblores",
+                                label: "TEMBLORES"
+                            },
                             ].map(x =>
                                 m('option[id="' + x.id + '"]', x.label)
                             )),
@@ -540,21 +540,21 @@ class ValoracionUciNeo {
                                 class: "custom-select",
                                 value: (ValoracionUciNeo.nuevoRegistro !== null ? ValoracionUciNeo.nuevoRegistro.valor : 0),
                             }, [{
-                                    id: "FontanelaNormotensa",
-                                    label: "FONTANELA NORMOTENSA"
-                                },
-                                {
-                                    id: "FontanelaTensa",
-                                    label: "FONTANELA TENSA"
-                                },
-                                {
-                                    id: "FontanelaAbombada",
-                                    label: "FONTANELA ABOMBADA"
-                                },
-                                {
-                                    id: "FontanelaDeprimida",
-                                    label: "FONTANELA DEPRIMIDA"
-                                },
+                                id: "FontanelaNormotensa",
+                                label: "FONTANELA NORMOTENSA"
+                            },
+                            {
+                                id: "FontanelaTensa",
+                                label: "FONTANELA TENSA"
+                            },
+                            {
+                                id: "FontanelaAbombada",
+                                label: "FONTANELA ABOMBADA"
+                            },
+                            {
+                                id: "FontanelaDeprimida",
+                                label: "FONTANELA DEPRIMIDA"
+                            },
                             ].map(x =>
                                 m('option[id="' + x.id + '"]', x.label)
                             )),
@@ -594,21 +594,21 @@ class ValoracionUciNeo {
                                 class: "custom-select",
                                 value: (ValoracionUciNeo.nuevoRegistro !== null ? ValoracionUciNeo.nuevoRegistro.valor : 0),
                             }, [{
-                                    id: "Blando",
-                                    label: "BLANDO"
-                                },
-                                {
-                                    id: "Distendido",
-                                    label: "DISTENDIDO"
-                                },
-                                {
-                                    id: "Globoso",
-                                    label: "GLOBOSO"
-                                },
-                                {
-                                    id: "AsasAintestinalesVisibles",
-                                    label: "ASAS AINTESTINALES VISIBLES"
-                                },
+                                id: "Blando",
+                                label: "BLANDO"
+                            },
+                            {
+                                id: "Distendido",
+                                label: "DISTENDIDO"
+                            },
+                            {
+                                id: "Globoso",
+                                label: "GLOBOSO"
+                            },
+                            {
+                                id: "AsasAintestinalesVisibles",
+                                label: "ASAS AINTESTINALES VISIBLES"
+                            },
                             ].map(x =>
                                 m('option[id="' + x.id + '"]', x.label)
                             )),
@@ -648,17 +648,17 @@ class ValoracionUciNeo {
                                 class: "custom-select",
                                 value: (ValoracionUciNeo.nuevoRegistro !== null ? ValoracionUciNeo.nuevoRegistro.valor : 0),
                             }, [{
-                                    id: "Normal",
-                                    label: "NORMAL"
-                                },
-                                {
-                                    id: "Enrojecido",
-                                    label: "ENROJECIDO"
-                                },
-                                {
-                                    id: "Secreciones",
-                                    label: "SECRECIONES"
-                                }
+                                id: "Normal",
+                                label: "NORMAL"
+                            },
+                            {
+                                id: "Enrojecido",
+                                label: "ENROJECIDO"
+                            },
+                            {
+                                id: "Secreciones",
+                                label: "SECRECIONES"
+                            }
 
                             ].map(x =>
                                 m('option[id="' + x.id + '"]', x.label)

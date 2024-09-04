@@ -123,15 +123,15 @@ class PacientesUCI extends App {
     static vMain() {
         return [
             m("div.content.content-components", {
-                    style: { "margin-right": "0px", "margin-left": "0px", "margin-top": "0px" }
-                },
+                style: { "margin-right": "0px", "margin-left": "0px", "margin-top": "0px" }
+            },
                 m("div.container.mg-l-0.mg-r-0", {
                     style: { "max-width": "100%" }
                 }, [
                     m("table.table.table-bordered.table-sm.tx-14", [
                         m("thead.bd.bd-2", {
-                                style: { "border-color": "#5173a1" }
-                            },
+                            style: { "border-color": "#5173a1" }
+                        },
 
                             m("tr.tx-uppercase", {
                                 style: { "background-color": "#CCCCFF", }
@@ -149,7 +149,7 @@ class PacientesUCI extends App {
                             m("tr.bd.bd-2.text-right", {
                                 style: { "border-color": "#5173a1" }
                             }, [
-                                m("td[colspan='6']", ),
+                                m("td[colspan='6']",),
                                 m("td[colspan='6']",
                                     m("button.btn.btn-xs.btn-primary.tx-semibold.tx-14.mg-r-2[type='button']", {
                                         onclick: () => {
@@ -161,7 +161,7 @@ class PacientesUCI extends App {
                                                     confirm: {
                                                         text: 'Confirmar',
                                                         btnClass: "btn-success op-8",
-                                                        action: function() {
+                                                        action: function () {
                                                             TurnosUci.iniciarTurno();
                                                             PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
                                                         }
@@ -906,17 +906,17 @@ class PacientesUCI extends App {
 
         GasesUci.sColumns = [];
         GasesUci.sColumns = [{
-                title: "Turno: ",
-            },
-            {
-                title: "Order Nro : ",
-            },
-            {
-                title: "Turno: ",
-            },
-            {
-                title: "Gases:",
-            },
+            title: "Turno: ",
+        },
+        {
+            title: "Order Nro : ",
+        },
+        {
+            title: "Turno: ",
+        },
+        {
+            title: "Gases:",
+        },
 
         ];
 
@@ -942,75 +942,75 @@ class PacientesUCI extends App {
 
         GasesUci.sRows = [];
         GasesUci.sRows = [{
-                mRender: function(data, type, full) {
-                    return full.fechaHoraTurno;
-                },
-                visible: false,
-                aTargets: [0],
-                orderable: true,
+            mRender: function (data, type, full) {
+                return full.fechaHoraTurno;
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.orden;
-                },
-                visible: false,
-                aTargets: [1],
-                orderable: true,
-
+            visible: false,
+            aTargets: [0],
+            orderable: true,
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.orden;
             },
-            {
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                        },
-                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                    ),
-                                ])
+            visible: false,
+            aTargets: [1],
+            orderable: true,
 
-                            ]
-                        }
-                    });
-                },
-                width: '15%',
-                visible: false,
-                aTargets: [2],
-                orderable: false,
+        },
+        {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div.text-center.pd-5', [
+                                m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                    class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                },
+                                    (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                ),
+                            ])
 
+                        ]
+                    }
+                });
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.gas;
-                },
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-                                    id: 'Gases_' + oData.id,
-                                }, [oData.gas]),
+            width: '15%',
+            visible: false,
+            aTargets: [2],
+            orderable: false,
 
-                            ]
-                        }
-                    });
-                },
-
-                visible: true,
-                aTargets: [3],
-                orderable: true,
-
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.gas;
             },
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div', {
+                                id: 'Gases_' + oData.id,
+                            }, [oData.gas]),
+
+                        ]
+                    }
+                });
+            },
+
+            visible: true,
+            aTargets: [3],
+            orderable: true,
+
+        },
         ];
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
             GasesUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -1046,10 +1046,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1057,10 +1057,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosGasesUci').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1150,7 +1150,7 @@ class PacientesUCI extends App {
 
             });
             GasesUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -1187,10 +1187,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1198,10 +1198,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosGasesUci').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1368,10 +1368,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1379,10 +1379,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosGasesUci').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1404,27 +1404,27 @@ class PacientesUCI extends App {
         }
 
         GasesUci.sRows.push({
-            fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                 return m.mount(nTd, {
                     view: () => {
                         return [
                             m("div.btn-block.btn-group.wd-100p.pd-5", [
 
                                 m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                        class: (GasesUci.nuevoRegistro !== null && GasesUci.nuevoRegistro.editar && GasesUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
-                                        onclick: () => {
-                                            oData.editar = null;
-                                            document.getElementById('gasesValores' + GasesUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
-                                            document.getElementById('txtGasesValores' + GasesUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
-                                            document.getElementById('gasesHora' + GasesUci.nuevoRegistro.nro).className = "form-control d-none";
-                                            document.getElementById('txtGasesHora' + GasesUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
-                                            if (document.getElementById('btn' + GasesUci.nuevoRegistro.nro) != null) {
-                                                document.getElementById('btn' + GasesUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
-                                            }
+                                    class: (GasesUci.nuevoRegistro !== null && GasesUci.nuevoRegistro.editar && GasesUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
+                                    onclick: () => {
+                                        oData.editar = null;
+                                        document.getElementById('gasesValores' + GasesUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
+                                        document.getElementById('txtGasesValores' + GasesUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                        document.getElementById('gasesHora' + GasesUci.nuevoRegistro.nro).className = "form-control d-none";
+                                        document.getElementById('txtGasesHora' + GasesUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                        if (document.getElementById('btn' + GasesUci.nuevoRegistro.nro) != null) {
+                                            document.getElementById('btn' + GasesUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
+                                        }
 
-                                            GasesUci.nuevoRegistro = null;
-                                        },
+                                        GasesUci.nuevoRegistro = null;
                                     },
+                                },
                                     'Cancelar Edición',
                                 ),
 
@@ -1444,6 +1444,8 @@ class PacientesUCI extends App {
         GasesUci.sRows.map((c, i) => {
             GasesUci.sRows[i].aTargets = [i];
         });
+
+        console.log(5454, _arr)
 
 
         return _arr;
@@ -1971,17 +1973,17 @@ class PacientesUCI extends App {
 
         MedidasUci.sColumns = [];
         MedidasUci.sColumns = [{
-                title: "Turno: ",
-            },
-            {
-                title: "Order Nro : ",
-            },
-            {
-                title: "Turno: ",
-            },
-            {
-                title: "Nombre y Unidad de Medida:",
-            },
+            title: "Turno: ",
+        },
+        {
+            title: "Order Nro : ",
+        },
+        {
+            title: "Turno: ",
+        },
+        {
+            title: "Nombre y Unidad de Medida:",
+        },
 
         ];
 
@@ -2007,75 +2009,75 @@ class PacientesUCI extends App {
 
         MedidasUci.sRows = [];
         MedidasUci.sRows = [{
-                mRender: function(data, type, full) {
-                    return full.fechaHoraTurno;
-                },
-                visible: false,
-                aTargets: [0],
-                orderable: true,
+            mRender: function (data, type, full) {
+                return full.fechaHoraTurno;
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.orden;
-                },
-                visible: false,
-                aTargets: [1],
-                orderable: true,
-
+            visible: false,
+            aTargets: [0],
+            orderable: true,
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.orden;
             },
-            {
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                        },
-                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                    ),
-                                ])
+            visible: false,
+            aTargets: [1],
+            orderable: true,
 
-                            ]
-                        }
-                    });
-                },
-                width: '15%',
-                visible: false,
-                aTargets: [2],
-                orderable: false,
+        },
+        {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div.text-center.pd-5', [
+                                m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                    class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                },
+                                    (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                ),
+                            ])
 
+                        ]
+                    }
+                });
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.medida;
-                },
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-                                    id: 'MedidasUci_' + oData.id,
-                                }, [oData.medida]),
+            width: '15%',
+            visible: false,
+            aTargets: [2],
+            orderable: false,
 
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: [3],
-                orderable: true,
-
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.medida;
             },
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div', {
+                                id: 'MedidasUci_' + oData.id,
+                            }, [oData.medida]),
+
+                        ]
+                    }
+                });
+            },
+            visible: true,
+            aTargets: [3],
+            orderable: true,
+
+        },
         ];
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
 
             MedidasUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -2112,10 +2114,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -2123,10 +2125,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosMedidasUci').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -2172,10 +2174,10 @@ class PacientesUCI extends App {
                                                     setTimeout(() => {
                                                         let isAnimating = true;
                                                         $('html,body').animate({
-                                                                scrollTop: tt
-                                                            },
+                                                            scrollTop: tt
+                                                        },
                                                             700, "easeInOutSine",
-                                                            function() {
+                                                            function () {
                                                                 isAnimating = false;
                                                             })
                                                     }, 250);
@@ -2184,10 +2186,10 @@ class PacientesUCI extends App {
                                                     setTimeout(() => {
                                                         let isAnimating = true;
                                                         $('#registrosMedidasUci').animate({
-                                                                scrollLeft: '+=460'
-                                                            },
+                                                            scrollLeft: '+=460'
+                                                        },
                                                             700, "easeInOutSine",
-                                                            function() {
+                                                            function () {
                                                                 isAnimating = false;
                                                             })
                                                     }, 250);
@@ -2275,7 +2277,7 @@ class PacientesUCI extends App {
                 orderable: true,
             });
             MedidasUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -2315,10 +2317,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -2327,10 +2329,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosMedidasUci').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -2501,10 +2503,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -2512,10 +2514,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosMedidasUci').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -2539,27 +2541,27 @@ class PacientesUCI extends App {
         }
 
         MedidasUci.sRows.push({
-            fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                 return m.mount(nTd, {
                     view: () => {
                         return [
                             m("div.btn-block.btn-group.wd-100p.pd-5", [
 
                                 m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                        class: (MedidasUci.nuevoRegistro !== null && MedidasUci.nuevoRegistro.editar && MedidasUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
-                                        onclick: () => {
-                                            oData.editar = null;
-                                            document.getElementById('medidasValor' + MedidasUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
-                                            document.getElementById('txtMedidasValor' + MedidasUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
-                                            document.getElementById('medidasHora' + MedidasUci.nuevoRegistro.nro).className = "form-control d-none";
-                                            document.getElementById('txtMedidasHora' + MedidasUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
-                                            if (document.getElementById('btn' + MedidasUci.nuevoRegistro.nro) != null) {
-                                                document.getElementById('btn' + MedidasUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
-                                            }
+                                    class: (MedidasUci.nuevoRegistro !== null && MedidasUci.nuevoRegistro.editar && MedidasUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
+                                    onclick: () => {
+                                        oData.editar = null;
+                                        document.getElementById('medidasValor' + MedidasUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
+                                        document.getElementById('txtMedidasValor' + MedidasUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                        document.getElementById('medidasHora' + MedidasUci.nuevoRegistro.nro).className = "form-control d-none";
+                                        document.getElementById('txtMedidasHora' + MedidasUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                        if (document.getElementById('btn' + MedidasUci.nuevoRegistro.nro) != null) {
+                                            document.getElementById('btn' + MedidasUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
+                                        }
 
-                                            MedidasUci.nuevoRegistro = null;
-                                        },
+                                        MedidasUci.nuevoRegistro = null;
                                     },
+                                },
                                     'Cancelar Edición',
                                 ),
 
@@ -2901,17 +2903,17 @@ class PacientesUCI extends App {
 
         ComburTestUci.sColumns = [];
         ComburTestUci.sColumns = [{
-                title: "Turno: ",
-            },
-            {
-                title: "Order Nro : ",
-            },
-            {
-                title: "Turno: ",
-            },
-            {
-                title: "Medida:",
-            },
+            title: "Turno: ",
+        },
+        {
+            title: "Order Nro : ",
+        },
+        {
+            title: "Turno: ",
+        },
+        {
+            title: "Medida:",
+        },
 
         ];
 
@@ -2937,75 +2939,75 @@ class PacientesUCI extends App {
 
         ComburTestUci.sRows = [];
         ComburTestUci.sRows = [{
-                mRender: function(data, type, full) {
-                    return full.fechaHoraTurno;
-                },
-                visible: false,
-                aTargets: [0],
-                orderable: true,
+            mRender: function (data, type, full) {
+                return full.fechaHoraTurno;
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.orden;
-                },
-                visible: false,
-                aTargets: [1],
-                orderable: true,
-
+            visible: false,
+            aTargets: [0],
+            orderable: true,
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.orden;
             },
-            {
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                        },
-                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                    ),
-                                ])
+            visible: false,
+            aTargets: [1],
+            orderable: true,
 
-                            ]
-                        }
-                    });
-                },
-                width: '15%',
-                visible: false,
-                aTargets: [2],
-                orderable: false,
+        },
+        {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div.text-center.pd-5', [
+                                m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                    class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                },
+                                    (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                ),
+                            ])
 
+                        ]
+                    }
+                });
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.medida;
-                },
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-                                    id: 'ComburTest_' + oData.id,
-                                }, [oData.medida]),
+            width: '15%',
+            visible: false,
+            aTargets: [2],
+            orderable: false,
 
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: [3],
-                orderable: true,
-
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.medida;
             },
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div', {
+                                id: 'ComburTest_' + oData.id,
+                            }, [oData.medida]),
+
+                        ]
+                    }
+                });
+            },
+            visible: true,
+            aTargets: [3],
+            orderable: true,
+
+        },
         ];
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
 
             ComburTestUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -3041,10 +3043,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -3053,10 +3055,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosComburTest').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -3202,7 +3204,7 @@ class PacientesUCI extends App {
                 orderable: true,
             });
             ComburTestUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -3242,10 +3244,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -3253,10 +3255,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosComburTest').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -3416,10 +3418,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -3427,10 +3429,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosComburTest').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -3453,26 +3455,26 @@ class PacientesUCI extends App {
         }
 
         ComburTestUci.sRows.push({
-            fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                 return m.mount(nTd, {
                     view: () => {
                         return [
                             m("div.btn-block.btn-group.wd-100p.pd-5", [
 
                                 m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                        class: (ComburTestUci.nuevoRegistro !== null && ComburTestUci.nuevoRegistro.editar && ComburTestUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
-                                        onclick: () => {
-                                            oData.editar = null;
-                                            document.getElementById('comburValor' + ComburTestUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
-                                            document.getElementById('txtComburValor' + ComburTestUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
-                                            document.getElementById('comburHora' + ComburTestUci.nuevoRegistro.nro).className = "form-control d-none";
-                                            document.getElementById('txtComburHora' + ComburTestUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
-                                            if (document.getElementById('btn' + ComburTestUci.nuevoRegistro.nro) != null) {
-                                                document.getElementById('btn' + ComburTestUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
-                                            }
-                                            ComburTestUci.nuevoRegistro = null;
-                                        },
+                                    class: (ComburTestUci.nuevoRegistro !== null && ComburTestUci.nuevoRegistro.editar && ComburTestUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
+                                    onclick: () => {
+                                        oData.editar = null;
+                                        document.getElementById('comburValor' + ComburTestUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
+                                        document.getElementById('txtComburValor' + ComburTestUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                        document.getElementById('comburHora' + ComburTestUci.nuevoRegistro.nro).className = "form-control d-none";
+                                        document.getElementById('txtComburHora' + ComburTestUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                        if (document.getElementById('btn' + ComburTestUci.nuevoRegistro.nro) != null) {
+                                            document.getElementById('btn' + ComburTestUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
+                                        }
+                                        ComburTestUci.nuevoRegistro = null;
                                     },
+                                },
                                     'Cancelar Edición',
                                 ),
 
@@ -3629,17 +3631,17 @@ class PacientesUCI extends App {
 
         GasesMedUci.sColumns = [];
         GasesMedUci.sColumns = [{
-                title: "Turno: ",
-            },
-            {
-                title: "Order Nro : ",
-            },
-            {
-                title: "Turno: ",
-            },
-            {
-                title: "Medida:",
-            },
+            title: "Turno: ",
+        },
+        {
+            title: "Order Nro : ",
+        },
+        {
+            title: "Turno: ",
+        },
+        {
+            title: "Medida:",
+        },
 
         ];
 
@@ -3665,75 +3667,75 @@ class PacientesUCI extends App {
 
         GasesMedUci.sRows = [];
         GasesMedUci.sRows = [{
-                mRender: function(data, type, full) {
-                    return full.fechaHoraTurno;
-                },
-                visible: false,
-                aTargets: [0],
-                orderable: true,
+            mRender: function (data, type, full) {
+                return full.fechaHoraTurno;
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.orden;
-                },
-                visible: false,
-                aTargets: [1],
-                orderable: true,
-
+            visible: false,
+            aTargets: [0],
+            orderable: true,
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.orden;
             },
-            {
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                        },
-                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                    ),
-                                ])
+            visible: false,
+            aTargets: [1],
+            orderable: true,
 
-                            ]
-                        }
-                    });
-                },
-                width: '15%',
-                visible: false,
-                aTargets: [2],
-                orderable: false,
+        },
+        {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div.text-center.pd-5', [
+                                m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                    class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                },
+                                    (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                ),
+                            ])
 
+                        ]
+                    }
+                });
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.medida;
-                },
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-                                    id: 'GasesMed_' + oData.id,
-                                }, [oData.medida]),
+            width: '15%',
+            visible: false,
+            aTargets: [2],
+            orderable: false,
 
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: [3],
-                orderable: true,
-
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.medida;
             },
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div', {
+                                id: 'GasesMed_' + oData.id,
+                            }, [oData.medida]),
+
+                        ]
+                    }
+                });
+            },
+            visible: true,
+            aTargets: [3],
+            orderable: true,
+
+        },
         ];
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
 
             GasesMedUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -3768,10 +3770,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -3779,10 +3781,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosGasesMedUci').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -3929,7 +3931,7 @@ class PacientesUCI extends App {
                 orderable: true,
             });
             GasesMedUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -3968,10 +3970,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -3980,10 +3982,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosGasesMedUci').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -4149,10 +4151,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -4160,10 +4162,10 @@ class PacientesUCI extends App {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosGasesMedUci').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -4186,26 +4188,26 @@ class PacientesUCI extends App {
         }
 
         GasesMedUci.sRows.push({
-            fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                 return m.mount(nTd, {
                     view: () => {
                         return [
                             m("div.btn-block.btn-group.wd-100p.pd-5", [
 
                                 m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                        class: (GasesMedUci.nuevoRegistro !== null && GasesMedUci.nuevoRegistro.editar && GasesMedUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
-                                        onclick: () => {
-                                            oData.editar = null;
-                                            document.getElementById('gasesMedValor' + GasesMedUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
-                                            document.getElementById('txtGasesMedValor' + GasesMedUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
-                                            document.getElementById('gasesMedHora' + GasesMedUci.nuevoRegistro.nro).className = "form-control d-none";
-                                            document.getElementById('txtGasesMedHora' + GasesMedUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
-                                            if (document.getElementById('btn' + GasesMedUci.nuevoRegistro.nro) != null) {
-                                                document.getElementById('btn' + GasesMedUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
-                                            }
-                                            GasesMedUci.nuevoRegistro = null;
-                                        },
+                                    class: (GasesMedUci.nuevoRegistro !== null && GasesMedUci.nuevoRegistro.editar && GasesMedUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
+                                    onclick: () => {
+                                        oData.editar = null;
+                                        document.getElementById('gasesMedValor' + GasesMedUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
+                                        document.getElementById('txtGasesMedValor' + GasesMedUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                        document.getElementById('gasesMedHora' + GasesMedUci.nuevoRegistro.nro).className = "form-control d-none";
+                                        document.getElementById('txtGasesMedHora' + GasesMedUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                        if (document.getElementById('btn' + GasesMedUci.nuevoRegistro.nro) != null) {
+                                            document.getElementById('btn' + GasesMedUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
+                                        }
+                                        GasesMedUci.nuevoRegistro = null;
                                     },
+                                },
                                     'Cancelar Edición',
                                 ),
 
@@ -5019,491 +5021,491 @@ class PacientesUCI extends App {
             destroy: true,
             // pageLength: 3,
             columns: [{
-                    title: "Tipo: ",
-                },
-                {
-                    title: "Fecha:",
-                },
-                {
-                    title: "Hora:",
-                },
-                {
-                    title: "Usuario:",
-                },
-                {
-                    title: "Paciente:",
-                },
+                title: "Tipo: ",
+            },
+            {
+                title: "Fecha:",
+            },
+            {
+                title: "Hora:",
+            },
+            {
+                title: "Usuario:",
+            },
+            {
+                title: "Paciente:",
+            },
 
-                {
-                    title: "Especialidad:",
-                },
-                {
-                    title: "Status:",
-                },
+            {
+                title: "Especialidad:",
+            },
+            {
+                title: "Status:",
+            },
 
-                {
-                    title: "Gestionar:",
-                },
-                {
-                    title: "Abrir/Cerrar:",
-                },
-                {
-                    title: "Asumir:",
-                },
-                {
-                    title: "Cancelar:",
-                }
+            {
+                title: "Gestionar:",
+            },
+            {
+                title: "Abrir/Cerrar:",
+            },
+            {
+                title: "Asumir:",
+            },
+            {
+                title: "Cancelar:",
+            }
             ],
             aoColumnDefs: [{
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
 
 
 
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center', [
-                                        m("button.btn-xs.btn-block.tx-semibold.tx-15[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno && oData.gestion == 1 ? 'bg-warning' : 'bg-light')
-                                            },
-                                            (oData.numeroTurno == 1 ? 'AM' : ''),
-                                            (oData.numeroTurno == 2 ? 'PM' : ''),
-                                            (oData.numeroTurno == 3 ? 'HS' : ''),
-                                        ),
-                                    ])
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center', [
+                                    m("button.btn-xs.btn-block.tx-semibold.tx-15[type='button']", {
+                                        class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno && oData.gestion == 1 ? 'bg-warning' : 'bg-light')
+                                    },
+                                        (oData.numeroTurno == 1 ? 'AM' : ''),
+                                        (oData.numeroTurno == 2 ? 'PM' : ''),
+                                        (oData.numeroTurno == 3 ? 'HS' : ''),
+                                    ),
+                                ])
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '5%',
-                    visible: true,
-                    aTargets: [0],
-                    orderable: false,
+                            ]
+                        }
+                    });
                 },
-                {
+                width: '5%',
+                visible: true,
+                aTargets: [0],
+                orderable: false,
+            },
+            {
 
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("input.form-control.tx-13.tx-semibold[type='text'][placeholder='DD/MM/YYYY']", {
-                                        id: 'fechaTurno',
-                                        disabled: true,
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m("input.form-control.tx-13.tx-semibold[type='text'][placeholder='DD/MM/YYYY']", {
+                                    id: 'fechaTurno',
+                                    disabled: true,
+                                    oncreate: (el) => {
+                                        if (oData.fechaTurno !== undefined) {
+                                            el.dom.value = moment(oData.fechaTurno, 'DD-MM-YYYY').format('DD/MM/YYYY');
+                                        }
+                                        setTimeout(() => {
+                                            new Cleave("#fechaTurno", {
+                                                date: true,
+                                                datePattern: ["d", "m", "Y"]
+                                            });
+                                        }, 50);
+                                    },
+                                }),
+                            ]
+                        }
+                    });
+                },
+                width: '15%',
+                visible: true,
+                aTargets: [1],
+                orderable: false,
+
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+
+
+                    let _d = true;
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+
+                                m("div.input-group", [
+                                    m("input.form-control.tx-13.tx-semibold[type='text'][placeholder='HH:mm]", {
+                                        id: 'horaTurno' + iRow,
+                                        disabled: _d,
                                         oncreate: (el) => {
-                                            if (oData.fechaTurno !== undefined) {
-                                                el.dom.value = moment(oData.fechaTurno, 'DD-MM-YYYY').format('DD/MM/YYYY');
+                                            if (oData.horaTurno !== undefined) {
+                                                el.dom.value = oData.horaTurno;
                                             }
                                             setTimeout(() => {
-                                                new Cleave("#fechaTurno", {
-                                                    date: true,
-                                                    datePattern: ["d", "m", "Y"]
+                                                new Cleave("#horaTurno" + iRow, {
+                                                    time: true,
+                                                    timePattern: ['h', 'm']
                                                 });
                                             }, 50);
                                         },
-                                    }),
-                                ]
-                            }
-                        });
-                    },
-                    width: '15%',
-                    visible: true,
-                    aTargets: [1],
-                    orderable: false,
-
-                },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-
-
-                        let _d = true;
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-
-                                    m("div.input-group", [
-                                        m("input.form-control.tx-13.tx-semibold[type='text'][placeholder='HH:mm]", {
-                                            id: 'horaTurno' + iRow,
-                                            disabled: _d,
-                                            oncreate: (el) => {
-                                                if (oData.horaTurno !== undefined) {
-                                                    el.dom.value = oData.horaTurno;
-                                                }
-                                                setTimeout(() => {
-                                                    new Cleave("#horaTurno" + iRow, {
-                                                        time: true,
-                                                        timePattern: ['h', 'm']
-                                                    });
-                                                }, 50);
-                                            },
-                                            oninput: (e) => {
-                                                setTimeout(() => {
-                                                    TurnosUci.nuevoTurno.horaTurno = e.target.value;
-                                                }, 50);
-                                            },
-                                            onkeypress: (e) => {
-                                                if (e.keyCode == 13) {
-                                                    _d = true;
-                                                    PacientesUCI.fechaHoraTurno = oData.fechaHoraTurno;
-                                                    FecthUci.actualizarHoraAtencion();
-                                                }
-                                            },
-                                        }),
-                                        m("div.input-group-append", {
-                                                class: (oData.status == 1 && oData.statusHora == 1 ? '' : 'd-none')
-                                            },
-                                            m("button.btn.btn-xs.btn-light[type='button']", {
-                                                    title: "Editar Hora",
-                                                    onclick: () => {
-                                                        _d = !_d;
-
-                                                    }
-                                                },
-                                                m("i.fas.fa-edit")
-                                            )
-                                        )
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    width: '15%',
-                    visible: true,
-                    aTargets: [2],
-                    orderable: false,
-
-                },
-                {
-
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("input.form-control.tx-13.tx-semibold[type='text']", {
-                                        disabled: 'disabled',
-                                        oncreate: (el) => {
-                                            if (oData.usuarioTurno !== undefined) {
-                                                el.dom.value = oData.usuarioTurno;
+                                        oninput: (e) => {
+                                            setTimeout(() => {
+                                                TurnosUci.nuevoTurno.horaTurno = e.target.value;
+                                            }, 50);
+                                        },
+                                        onkeypress: (e) => {
+                                            if (e.keyCode == 13) {
+                                                _d = true;
+                                                PacientesUCI.fechaHoraTurno = oData.fechaHoraTurno;
+                                                FecthUci.actualizarHoraAtencion();
                                             }
                                         },
                                     }),
-                                ]
-                            }
-                        });
-                    },
-                    width: '15%',
-                    visible: true,
-                    aTargets: [3],
-                    orderable: false,
+                                    m("div.input-group-append", {
+                                        class: (oData.status == 1 && oData.statusHora == 1 ? '' : 'd-none')
+                                    },
+                                        m("button.btn.btn-xs.btn-light[type='button']", {
+                                            title: "Editar Hora",
+                                            onclick: () => {
+                                                _d = !_d;
 
+                                            }
+                                        },
+                                            m("i.fas.fa-edit")
+                                        )
+                                    )
+                                ])
+
+                            ]
+                        }
+                    });
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.paciente;
-                    },
-                    visible: false,
-                    aTargets: [4],
-                    orderable: false,
+                width: '15%',
+                visible: true,
+                aTargets: [2],
+                orderable: false,
+
+            },
+            {
+
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m("input.form-control.tx-13.tx-semibold[type='text']", {
+                                    disabled: 'disabled',
+                                    oncreate: (el) => {
+                                        if (oData.usuarioTurno !== undefined) {
+                                            el.dom.value = oData.usuarioTurno;
+                                        }
+                                    },
+                                }),
+                            ]
+                        }
+                    });
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.especialidad;
-                    },
-                    visible: false,
-                    aTargets: [5],
-                    orderable: false,
+                width: '15%',
+                visible: true,
+                aTargets: [3],
+                orderable: false,
 
-
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.paciente;
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center', [
-                                        m("button.btn-xs.btn-block.tx-semibold.tx-13[type='button']", {
-                                                class: (oData.status == 1 || oData.status == 4 ? 'bg-warning' : 'bg-success'),
-                                            },
-                                            (oData.status == 1 ? 'Turno Abierto' : ''),
-                                            (oData.status == 2 ? 'Turno Cerrado' : ''),
-                                            (oData.status == 4 ? 'Turno Abierto' : ''),
-                                        ),
-
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [6],
-                    orderable: false,
+                visible: false,
+                aTargets: [4],
+                orderable: false,
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.especialidad;
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center', [
-                                        m("button.btn.btn-xs.btn-block.btn-success.tx-13.tx-semibold[type='button']", {
-                                                disabled: (oData.status == 1 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
-                                                onclick: () => {
-
-                                                    oData.statusHora = 2;
-                                                    TurnosUci.nuevoTurno = oData;
-
-                                                    oData.iniciarGestion();
-
-                                                    PacientesUCI.fechaHoraTurno = oData.fechaTurno + ' ' + oData.horaTurno;
-
-                                                    CuidadosUci2.registros = PacientesUCI.parseSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options));
-                                                    PacientesUCI.setTurnoSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options))
-
-                                                    CateterUci.registros = PacientesUCI.parseSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
-                                                    PacientesUCI.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
-
-                                                    VentilacionUci.registros = PacientesUCI.parseSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
-                                                    PacientesUCI.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
-
-                                                    HemodialisisUci.registros = PacientesUCI.parseSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
-                                                    PacientesUCI.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
-
-                                                    MarcapasosUci.registros = PacientesUCI.parseSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
-                                                    PacientesUCI.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
-
-                                                    VentilatoriosUci.allRegistros = PacientesUCI.parseSeccionVentilatorios_AllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
-                                                    // PacientesUCI.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
-                                                    VentilatoriosUci.registros = PacientesUCI.parseSeccionVentilatorios_v2(Array.from(document.getElementById('sec_Ventilatorios').options));
-
-                                                    GasesUci.allRegistros = PacientesUCI.parseSeccionGases_AllRegistros(Array.from(document.getElementById('sec_Gases').options));
-                                                    // PacientesUCI.setTurnoSeccionGases(Array.from(document.getElementById('sec_Gases').options));
-                                                    GasesUci.registros = PacientesUCI.parseSeccionGases_v2(Array.from(document.getElementById('sec_Gases').options));
-
-                                                    OxigenacionUci.registros = PacientesUCI.parseSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
-                                                    PacientesUCI.setTurnoSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
-
-                                                    MedidasUci.allRegistros = PacientesUCI.parseSeccionMedidas_AllRegistros(Array.from(document.getElementById('sec_Medidas').options));
-                                                    // PacientesUCI.setTurnoSeccionMedidas(Array.from(document.getElementById('sec_Medidas').options));
-                                                    MedidasUci.registros = PacientesUCI.parseSeccionMedidas_v2(Array.from(document.getElementById('sec_Medidas').options));
-
-                                                    ComburTestUci.allRegistros = PacientesUCI.parseSeccionComburTest_AllRegistros(Array.from(document.getElementById('sec_ComburTest').options));
-                                                    // PacientesUCI.setTurnoSeccionComburTest(Array.from(document.getElementById('sec_ComburTest').options));
-                                                    ComburTestUci.registros = PacientesUCI.parseSeccionComburTest_v2(Array.from(document.getElementById('sec_ComburTest').options));
-
-                                                    GasesMedUci.allRegistros = PacientesUCI.parseSeccionGasesMed_AllRegistros(Array.from(document.getElementById('sec_GasesMed').options));
-                                                    // PacientesUCI.setTurnoSeccionGasesMed(Array.from(document.getElementById('sec_GasesMed').options));
-                                                    GasesMedUci.registros = PacientesUCI.parseSeccionGasesMed_v2(Array.from(document.getElementById('sec_GasesMed').options));
-
-                                                    PrescripcionesUci.allRegistros = PacientesUCI.parseSeccionPrescripcionesUci_AllRegistros(Array.from(document.getElementById('sec_PrescripcionesUci').options));
-                                                    PrescripcionesUci.registros = PacientesUCI.parseSeccionPrescripcionesUci_v2(Array.from(document.getElementById('sec_PrescripcionesUci').options));
+                visible: false,
+                aTargets: [5],
+                orderable: false,
 
 
-                                                    PacientesUCI.showSecciones();
-                                                },
-                                            },
-                                            'Gestionar',
-                                        ),
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
 
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center', [
+                                    m("button.btn-xs.btn-block.tx-semibold.tx-13[type='button']", {
+                                        class: (oData.status == 1 || oData.status == 4 ? 'bg-warning' : 'bg-success'),
+                                    },
+                                        (oData.status == 1 ? 'Turno Abierto' : ''),
+                                        (oData.status == 2 ? 'Turno Cerrado' : ''),
+                                        (oData.status == 4 ? 'Turno Abierto' : ''),
+                                    ),
 
-                                    ])
+                                ])
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [7],
-                    orderable: false,
-
+                            ]
+                        }
+                    });
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center', {
-                                        class: (FecthUci.loaderSecciones == false ? '' : 'd-none'),
-                                    }, [
-                                        m("button.btn.btn-xs.btn-block.btn-secondary.tx-13.tx-semibold[type='button']", {
-                                                disabled: 'disabled',
-                                            },
-                                            'Espere...',
-                                        ),
-                                    ]),
-                                    m('div.text-center', {
+                width: '10%',
+                visible: true,
+                aTargets: [6],
+                orderable: false,
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center', [
+                                    m("button.btn.btn-xs.btn-block.btn-success.tx-13.tx-semibold[type='button']", {
+                                        disabled: (oData.status == 1 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
+                                        onclick: () => {
 
-                                        class: ((oData.status == 1 || oData.status == 4) && FecthUci.loaderSecciones == true ? '' : 'd-none'),
-                                    }, [
-                                        m("button.btn.btn-xs.btn-block.btn-danger.tx-13.tx-semibold[type='button']", {
-                                                disabled: ((oData.status == 1 || oData.status == 4) && FecthUci.loaderSecciones == true ? '' : 'disabled'),
-                                                onclick: () => {
-                                                    FecthUci.loaderSecciones = false;
-                                                    oData.cerrarTurno();
-                                                    FecthUci.cerrarTurno(oData);
-                                                },
-                                            },
-                                            'Cerrar',
-                                        ),
+                                            oData.statusHora = 2;
+                                            TurnosUci.nuevoTurno = oData;
+
+                                            oData.iniciarGestion();
+
+                                            PacientesUCI.fechaHoraTurno = oData.fechaTurno + ' ' + oData.horaTurno;
+
+                                            CuidadosUci2.registros = PacientesUCI.parseSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options));
+                                            PacientesUCI.setTurnoSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options))
+
+                                            CateterUci.registros = PacientesUCI.parseSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
+                                            PacientesUCI.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
+
+                                            VentilacionUci.registros = PacientesUCI.parseSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
+                                            PacientesUCI.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
+
+                                            HemodialisisUci.registros = PacientesUCI.parseSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
+                                            PacientesUCI.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
+
+                                            MarcapasosUci.registros = PacientesUCI.parseSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
+                                            PacientesUCI.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
+
+                                            VentilatoriosUci.allRegistros = PacientesUCI.parseSeccionVentilatorios_AllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
+                                            // PacientesUCI.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
+                                            VentilatoriosUci.registros = PacientesUCI.parseSeccionVentilatorios_v2(Array.from(document.getElementById('sec_Ventilatorios').options));
+
+                                            GasesUci.allRegistros = PacientesUCI.parseSeccionGases_AllRegistros(Array.from(document.getElementById('sec_Gases').options));
+                                            // PacientesUCI.setTurnoSeccionGases(Array.from(document.getElementById('sec_Gases').options));
+                                            GasesUci.registros = PacientesUCI.parseSeccionGases_v2(Array.from(document.getElementById('sec_Gases').options));
+
+                                            OxigenacionUci.registros = PacientesUCI.parseSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
+                                            PacientesUCI.setTurnoSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
+
+                                            MedidasUci.allRegistros = PacientesUCI.parseSeccionMedidas_AllRegistros(Array.from(document.getElementById('sec_Medidas').options));
+                                            // PacientesUCI.setTurnoSeccionMedidas(Array.from(document.getElementById('sec_Medidas').options));
+                                            MedidasUci.registros = PacientesUCI.parseSeccionMedidas_v2(Array.from(document.getElementById('sec_Medidas').options));
+
+                                            ComburTestUci.allRegistros = PacientesUCI.parseSeccionComburTest_AllRegistros(Array.from(document.getElementById('sec_ComburTest').options));
+                                            // PacientesUCI.setTurnoSeccionComburTest(Array.from(document.getElementById('sec_ComburTest').options));
+                                            ComburTestUci.registros = PacientesUCI.parseSeccionComburTest_v2(Array.from(document.getElementById('sec_ComburTest').options));
+
+                                            GasesMedUci.allRegistros = PacientesUCI.parseSeccionGasesMed_AllRegistros(Array.from(document.getElementById('sec_GasesMed').options));
+                                            // PacientesUCI.setTurnoSeccionGasesMed(Array.from(document.getElementById('sec_GasesMed').options));
+                                            GasesMedUci.registros = PacientesUCI.parseSeccionGasesMed_v2(Array.from(document.getElementById('sec_GasesMed').options));
+
+                                            PrescripcionesUci.allRegistros = PacientesUCI.parseSeccionPrescripcionesUci_AllRegistros(Array.from(document.getElementById('sec_PrescripcionesUci').options));
+                                            PrescripcionesUci.registros = PacientesUCI.parseSeccionPrescripcionesUci_v2(Array.from(document.getElementById('sec_PrescripcionesUci').options));
 
 
-                                    ]),
-                                    m('div.text-center', {
-                                        class: (oData.status == 2 && FecthUci.loaderSecciones == true ? '' : 'd-none'),
-                                    }, [
-                                        m("button.btn.btn-xs.btn-block.btn-success.tx-13.tx-semibold[type='button']", {
-                                                disabled: (oData.status == 2 && oData.numeroTurno == PacientesUCI.numeroTurno && FecthUci.loaderSecciones == true ? '' : 'disabled'),
-                                                onclick: () => {
-                                                    FecthUci.loaderSecciones = false;
-                                                    oData.reAbrirTurno();
-                                                    FecthUci.reAbrirTurno(oData);
-                                                },
-                                            },
-                                            'Abrir',
-                                        ),
+                                            PacientesUCI.showSecciones();
+                                        },
+                                    },
+                                        'Gestionar',
+                                    ),
 
 
-                                    ])
+                                ])
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [8],
-                    orderable: false,
-
+                            ]
+                        }
+                    });
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center', [
-                                        m("button.btn.btn-xs.btn-block.btn-warning.tx-13.tx-semibold[type='button']", {
-                                                disabled: (oData.status == 1 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
+                width: '10%',
+                visible: true,
+                aTargets: [7],
+                orderable: false,
 
-                                                onclick: () => {
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center', {
+                                    class: (FecthUci.loaderSecciones == false ? '' : 'd-none'),
+                                }, [
+                                    m("button.btn.btn-xs.btn-block.btn-secondary.tx-13.tx-semibold[type='button']", {
+                                        disabled: 'disabled',
+                                    },
+                                        'Espere...',
+                                    ),
+                                ]),
+                                m('div.text-center', {
 
-                                                    $.confirm({
-                                                        title: '¿Asumir?',
-                                                        content: '' +
-                                                            '<form action="" class="formName">' +
-                                                            '<div class="form-group ">' +
-                                                            '<label>Comentario:</label>' +
-                                                            '<textarea placeholder="Comentario" class="comment form-control wd-100p" rows="3" required></textarea>' +
-                                                            '</div>' +
-                                                            '</form>',
-                                                        buttons: {
-                                                            formSubmit: {
-                                                                text: 'Confirmar',
-                                                                btnClass: 'btn-success op-8',
-                                                                action: function() {
-                                                                    let comment = this.$content.find('.comment').val();
-                                                                    if (!comment) {
-                                                                        $.alert('Un comentario es obligatorio.');
-                                                                        return false;
-                                                                    }
-                                                                    // $.alert('Ud asumira todos los registros de esta turno.');
-                                                                    FecthUci.loaderSecciones = false;
-                                                                    FecthUci.asumirTurno(oData, PacientesUCI.usuarioTurno, comment);
-                                                                }
-                                                            },
-                                                            cancel: {
-                                                                btnClass: "btn-danger op-8",
-                                                                text: 'Cancelar',
+                                    class: ((oData.status == 1 || oData.status == 4) && FecthUci.loaderSecciones == true ? '' : 'd-none'),
+                                }, [
+                                    m("button.btn.btn-xs.btn-block.btn-danger.tx-13.tx-semibold[type='button']", {
+                                        disabled: ((oData.status == 1 || oData.status == 4) && FecthUci.loaderSecciones == true ? '' : 'disabled'),
+                                        onclick: () => {
+                                            FecthUci.loaderSecciones = false;
+                                            oData.cerrarTurno();
+                                            FecthUci.cerrarTurno(oData);
+                                        },
+                                    },
+                                        'Cerrar',
+                                    ),
+
+
+                                ]),
+                                m('div.text-center', {
+                                    class: (oData.status == 2 && FecthUci.loaderSecciones == true ? '' : 'd-none'),
+                                }, [
+                                    m("button.btn.btn-xs.btn-block.btn-success.tx-13.tx-semibold[type='button']", {
+                                        disabled: (oData.status == 2 && oData.numeroTurno == PacientesUCI.numeroTurno && FecthUci.loaderSecciones == true ? '' : 'disabled'),
+                                        onclick: () => {
+                                            FecthUci.loaderSecciones = false;
+                                            oData.reAbrirTurno();
+                                            FecthUci.reAbrirTurno(oData);
+                                        },
+                                    },
+                                        'Abrir',
+                                    ),
+
+
+                                ])
+
+                            ]
+                        }
+                    });
+                },
+                width: '10%',
+                visible: true,
+                aTargets: [8],
+                orderable: false,
+
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center', [
+                                    m("button.btn.btn-xs.btn-block.btn-warning.tx-13.tx-semibold[type='button']", {
+                                        disabled: (oData.status == 1 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
+
+                                        onclick: () => {
+
+                                            $.confirm({
+                                                title: '¿Asumir?',
+                                                content: '' +
+                                                    '<form action="" class="formName">' +
+                                                    '<div class="form-group ">' +
+                                                    '<label>Comentario:</label>' +
+                                                    '<textarea placeholder="Comentario" class="comment form-control wd-100p" rows="3" required></textarea>' +
+                                                    '</div>' +
+                                                    '</form>',
+                                                buttons: {
+                                                    formSubmit: {
+                                                        text: 'Confirmar',
+                                                        btnClass: 'btn-success op-8',
+                                                        action: function () {
+                                                            let comment = this.$content.find('.comment').val();
+                                                            if (!comment) {
+                                                                $.alert('Un comentario es obligatorio.');
+                                                                return false;
                                                             }
-
+                                                            // $.alert('Ud asumira todos los registros de esta turno.');
+                                                            FecthUci.loaderSecciones = false;
+                                                            FecthUci.asumirTurno(oData, PacientesUCI.usuarioTurno, comment);
                                                         }
+                                                    },
+                                                    cancel: {
+                                                        btnClass: "btn-danger op-8",
+                                                        text: 'Cancelar',
+                                                    }
 
-                                                    });
+                                                }
 
-                                                },
-                                            },
-                                            'Asumir',
-                                        ),
+                                            });
 
-                                    ])
+                                        },
+                                    },
+                                        'Asumir',
+                                    ),
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [9],
-                    orderable: false,
+                                ])
 
+                            ]
+                        }
+                    });
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center', [
-                                        m("button.btn.btn-xs.btn-block.btn-danger.tx-13.tx-semibold[type='button']", {
-                                                disabled: ((oData.status == 1 || oData.status == 4) && FecthUci.loaderSecciones == true ? '' : 'disabled'),
+                width: '10%',
+                visible: true,
+                aTargets: [9],
+                orderable: false,
 
-                                                onclick: () => {
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center', [
+                                    m("button.btn.btn-xs.btn-block.btn-danger.tx-13.tx-semibold[type='button']", {
+                                        disabled: ((oData.status == 1 || oData.status == 4) && FecthUci.loaderSecciones == true ? '' : 'disabled'),
 
-                                                    $.confirm({
-                                                        title: '¿Cancelar?',
-                                                        content: '' +
-                                                            '<form action="" class="formName">' +
-                                                            '<div class="form-group ">' +
-                                                            '<label>Comentario:</label>' +
-                                                            '<textarea placeholder="Comentario" class="comment form-control wd-100p" rows="3" required></textarea>' +
-                                                            '</div>' +
-                                                            '</form>',
-                                                        buttons: {
-                                                            formSubmit: {
-                                                                text: 'Confirmar',
-                                                                btnClass: 'btn-success op-8',
-                                                                action: function() {
-                                                                    let comment = this.$content.find('.comment').val();
-                                                                    if (!comment) {
-                                                                        $.alert('Un comentario es obligatorio.');
-                                                                        return false;
-                                                                    }
-                                                                    // $.alert('Ud asumira todos los registros de esta turno.');
-                                                                    FecthUci.loaderSecciones = false;
-                                                                    FecthUci.cancelarTurno(oData, PacientesUCI.usuarioTurno, comment);
-                                                                }
-                                                            },
-                                                            cancel: {
-                                                                btnClass: "btn-danger op-8",
-                                                                text: 'Cancelar',
+                                        onclick: () => {
+
+                                            $.confirm({
+                                                title: '¿Cancelar?',
+                                                content: '' +
+                                                    '<form action="" class="formName">' +
+                                                    '<div class="form-group ">' +
+                                                    '<label>Comentario:</label>' +
+                                                    '<textarea placeholder="Comentario" class="comment form-control wd-100p" rows="3" required></textarea>' +
+                                                    '</div>' +
+                                                    '</form>',
+                                                buttons: {
+                                                    formSubmit: {
+                                                        text: 'Confirmar',
+                                                        btnClass: 'btn-success op-8',
+                                                        action: function () {
+                                                            let comment = this.$content.find('.comment').val();
+                                                            if (!comment) {
+                                                                $.alert('Un comentario es obligatorio.');
+                                                                return false;
                                                             }
-
+                                                            // $.alert('Ud asumira todos los registros de esta turno.');
+                                                            FecthUci.loaderSecciones = false;
+                                                            FecthUci.cancelarTurno(oData, PacientesUCI.usuarioTurno, comment);
                                                         }
+                                                    },
+                                                    cancel: {
+                                                        btnClass: "btn-danger op-8",
+                                                        text: 'Cancelar',
+                                                    }
 
-                                                    });
+                                                }
 
-                                                },
-                                            },
-                                            'Cancelar',
-                                        ),
+                                            });
 
-                                    ])
+                                        },
+                                    },
+                                        'Cancelar',
+                                    ),
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [10],
-                    orderable: false,
+                                ])
 
-                }
+                            ]
+                        }
+                    });
+                },
+                width: '10%',
+                visible: true,
+                aTargets: [10],
+                orderable: false,
+
+            }
 
 
             ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
             },
         };

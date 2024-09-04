@@ -119,195 +119,195 @@ class VentilatoriosNeo {
                 [1, 'desc']
             ],
             columns: [{
-                    title: "order Turno:",
-                },
-                {
-                    title: "order N°:",
-                },
-                {
-                    title: "Turno:",
-                },
-                {
-                    title: "N°:",
-                },
-                {
-                    title: "Tipo:",
-                },
-                {
-                    title: "Hora:",
-                },
-                {
-                    title: "Valor:",
-                },
-                {
-                    title: "Cantidad:",
-                },
-                {
-                    title: "Opciones:",
-                }
+                title: "order Turno:",
+            },
+            {
+                title: "order N°:",
+            },
+            {
+                title: "Turno:",
+            },
+            {
+                title: "N°:",
+            },
+            {
+                title: "Tipo:",
+            },
+            {
+                title: "Hora:",
+            },
+            {
+                title: "Valor:",
+            },
+            {
+                title: "Cantidad:",
+            },
+            {
+                title: "Opciones:",
+            }
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, full) {
-                        return full.fechaHoraTurno;
-                    },
-                    visible: false,
-                    aTargets: [0],
-                    orderable: true,
+                mRender: function (data, type, full) {
+                    return full.fechaHoraTurno;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.nro;
-                    },
-                    visible: false,
-                    aTargets: [1],
-                    orderable: true,
-
+                visible: false,
+                aTargets: [0],
+                orderable: true,
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.nro;
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center.pd-5', [
-                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                            },
-                                            (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                            (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                            (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        ),
-                                    ])
+                visible: false,
+                aTargets: [1],
+                orderable: true,
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '15%',
-                    visible: true,
-                    aTargets: [2],
-                    orderable: false,
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center.pd-5', [
+                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                        class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                    },
+                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    ),
+                                ])
 
+                            ]
+                        }
+                    });
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.nro;
-                    },
+                width: '15%',
+                visible: true,
+                aTargets: [2],
+                orderable: false,
 
-                    visible: false,
-                    aTargets: [3],
-                    orderable: false,
-
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.nro;
                 },
 
-                {
-                    mRender: function(data, type, full) {
-                        return full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                    },
+                visible: false,
+                aTargets: [3],
+                orderable: false,
 
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
+            },
 
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return full.hora != null ? full.hora : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                    },
-
-                    visible: true,
-                    aTargets: [5],
-                    orderable: true,
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    visible: true,
-                    aTargets: [6],
-                    orderable: true,
-
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.cantidad != null ? full.cantidad : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    visible: false,
-                    aTargets: [7],
-                    orderable: true,
-
+            {
+                mRender: function (data, type, full) {
+                    return full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
                 },
 
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    VentilatoriosNeo.nuevoRegistro = null
-                                                    VentilatoriosNeo.verRegistro(oData);
-                                                },
-                                            },
-                                            'Editar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
-                                                class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
+                visible: true,
+                aTargets: [4],
+                orderable: true,
 
-                                                onclick: () => {
-                                                    oData.editar = null;
-                                                    VentilatoriosNeo.nuevoRegistro = null;
-                                                },
-                                            },
-                                            'Cancelar Edición',
-                                        ),
-                                        m("button.btn.btn-xs.btn-danger[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                                        VentilatoriosNeo.eliminarRegistro(oData);
-                                                        FecthUci.eliminarSeccion(oData);
-                                                        VentilatoriosNeo.nuevoRegistro = null;
-                                                        PacientesUCI.vReloadTable('table-VentilatoriosNeo', VentilatoriosNeo.getRegistros());
-                                                    }
-                                                },
-                                            },
-                                            'Eliminar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
-                                                onclick: () => {
-                                                    VentilatoriosNeo.iniciarRegistro();
-                                                    VentilatoriosNeo.nuevoRegistro.id = oData.id;
-                                                    VentilatoriosNeo.nuevoRegistro.tipo = oData.tipo;
-                                                    VentilatoriosNeo.nuevoRegistro.valor = oData.valor;
-                                                    VentilatoriosNeo.nuevoRegistro.hora = oData.hora;
-                                                    VentilatoriosNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    VentilatoriosNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.hora != null ? full.hora : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                },
 
-                                                },
-                                            },
-                                            'Copiar',
-                                        ),
-                                    ])
+                visible: true,
+                aTargets: [5],
+                orderable: true,
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [8],
-                    orderable: true,
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                },
+                visible: true,
+                aTargets: [6],
+                orderable: true,
 
-                }
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.cantidad != null ? full.cantidad : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                },
+                visible: false,
+                aTargets: [7],
+                orderable: true,
+
+            },
+
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m("div.btn-block.btn-group.wd-100p.pd-5", [
+                                    m("button.btn.btn-xs.btn-success[type='button']", {
+                                        class: (oData.editar ? 'd-none' : ''),
+                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                        onclick: () => {
+                                            VentilatoriosNeo.nuevoRegistro = null
+                                            VentilatoriosNeo.verRegistro(oData);
+                                        },
+                                    },
+                                        'Editar',
+                                    ),
+                                    m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
+                                        class: (oData.editar ? '' : 'd-none'),
+                                        disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
+
+                                        onclick: () => {
+                                            oData.editar = null;
+                                            VentilatoriosNeo.nuevoRegistro = null;
+                                        },
+                                    },
+                                        'Cancelar Edición',
+                                    ),
+                                    m("button.btn.btn-xs.btn-danger[type='button']", {
+                                        class: (oData.editar ? 'd-none' : ''),
+                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                        onclick: () => {
+                                            if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                                VentilatoriosNeo.eliminarRegistro(oData);
+                                                FecthUci.eliminarSeccion(oData);
+                                                VentilatoriosNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-VentilatoriosNeo', VentilatoriosNeo.getRegistros());
+                                            }
+                                        },
+                                    },
+                                        'Eliminar',
+                                    ),
+                                    m("button.btn.btn-xs.btn-dark[type='button']", {
+                                        class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                        onclick: () => {
+                                            VentilatoriosNeo.iniciarRegistro();
+                                            VentilatoriosNeo.nuevoRegistro.id = oData.id;
+                                            VentilatoriosNeo.nuevoRegistro.tipo = oData.tipo;
+                                            VentilatoriosNeo.nuevoRegistro.valor = oData.valor;
+                                            VentilatoriosNeo.nuevoRegistro.hora = oData.hora;
+                                            VentilatoriosNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            VentilatoriosNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+
+                                        },
+                                    },
+                                        'Copiar',
+                                    ),
+                                ])
+
+                            ]
+                        }
+                    });
+                },
+                width: '10%',
+                visible: true,
+                aTargets: [8],
+                orderable: true,
+
+            }
             ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
             },
         };
@@ -333,13 +333,12 @@ class VentilatoriosNeo {
     view() {
         return [
             m("thead.bd.bd-2", {
-                    style: { "border-color": "#5173a1" },
-                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+                style: { "border-color": "#5173a1" },
+                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
-                },
+            },
 
                 m("tr.tx-uppercase", {
-                    // class: (PacientesUCI.tipoAtencion !== null && PacientesUCI.tipoAtencion == 'NEO' ? '' : 'd-none'),
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
                         if (VentilatoriosNeo.show) {
@@ -384,15 +383,15 @@ class VentilatoriosNeo {
                         m("div.input-group", [
                             m("div.input-group-append",
                                 m("button.btn.btn-xs.btn-light[type='button']", {
-                                        title: "Nuevo",
-                                        onclick: () => {
-                                            if (VentilatoriosNeo.nuevoRegistro == null) {
-                                                VentilatoriosNeo.iniciarRegistro();
-                                            } else {
-                                                VentilatoriosNeo.nuevoRegistro = null;
-                                            }
+                                    title: "Nuevo",
+                                    onclick: () => {
+                                        if (VentilatoriosNeo.nuevoRegistro == null) {
+                                            VentilatoriosNeo.iniciarRegistro();
+                                        } else {
+                                            VentilatoriosNeo.nuevoRegistro = null;
                                         }
-                                    },
+                                    }
+                                },
                                     m("i.fas.fa-plus")
                                 )
                             ),
@@ -414,95 +413,95 @@ class VentilatoriosNeo {
                                     class: "custom-select",
                                     value: (VentilatoriosNeo.nuevoRegistro !== null ? VentilatoriosNeo.nuevoRegistro.tipo : 0),
                                 }, [{
-                                        orden: 1,
-                                        id: "ModoVentilatorio",
-                                        label: "MODO VENTILATORIO"
-                                    },
-                                    {
-                                        orden: 2,
-                                        id: "FIO2",
-                                        label: "FIO2"
-                                    },
-                                    {
-                                        orden: 3,
-                                        id: "Flujo",
-                                        label: "FLUJO"
-                                    },
-                                    {
-                                        orden: 4,
-                                        id: "VolumenMinutoEspiradoMaquina",
-                                        label: "VOLUMEN MINUTO ESPIRADO MÁQUINA"
-                                    },
-                                    {
-                                        orden: 5,
-                                        id: "VolumenTidalEspiradoMaquina",
-                                        label: "VOLUMEN TIDAL ESPIRADO MÁQUINA"
-                                    },
-                                    {
-                                        orden: 6,
-                                        id: "PresionInspiratoriaMaxima",
-                                        label: "PRESION INSPIRATORIA MAXIMA / PIP"
-                                    },
-                                    {
-                                        orden: 7,
-                                        id: "PEEP",
-                                        label: "PEEP"
-                                    },
-                                    {
-                                        orden: 8,
-                                        id: "TiempoInspiracion",
-                                        label: "TIEMPO INSPIRACIÓN"
-                                    },
-                                    {
-                                        orden: 9,
-                                        id: "TiempoEspiracion",
-                                        label: "TIEMPO ESPIRACIÓN"
-                                    },
-                                    {
-                                        orden: 10,
-                                        id: "FRV",
-                                        label: "FRECUENCIA RESPIRATORIA MÁQUINA"
-                                    },
-                                    {
-                                        orden: 11,
-                                        id: "RelacionInspiracionEspiracion",
-                                        label: "RELACIÓN INSPIRACION - ESPIRACION"
-                                    },
-                                    {
-                                        orden: 12,
-                                        id: "Amplitud",
-                                        label: "AMPLITUD"
-                                    },
-                                    {
-                                        orden: 13,
-                                        id: "Hercios",
-                                        label: "HERCIOS"
-                                    }, {
-                                        orden: 14,
-                                        id: "PresionMediaViaArea",
-                                        label: "PRESION MEDIA VIA AÉREA"
-                                    }, {
-                                        orden: 15,
-                                        id: "OxigenoLitrosMinuto",
-                                        label: "OXÍGENO LITROS POR MINUTO"
-                                    }, {
-                                        orden: 16,
-                                        id: "ComplianceResistencia",
-                                        label: "COMPLIANCE / RESISTENCIA"
-                                    },
-                                    {
-                                        orden: 17,
-                                        id: "Co2",
-                                        label: "CO2"
-                                    }, {
-                                        orden: 18,
-                                        id: "AireComprimido",
-                                        label: "AIRE COMPRIMIDO (PORCENTAJE)"
-                                    }, {
-                                        orden: 19,
-                                        id: "OxidoNitrico",
-                                        label: "ÓXIDO NÍTRICO"
-                                    },
+                                    orden: 1,
+                                    id: "ModoVentilatorio",
+                                    label: "MODO VENTILATORIO"
+                                },
+                                {
+                                    orden: 2,
+                                    id: "FIO2",
+                                    label: "FIO2"
+                                },
+                                {
+                                    orden: 3,
+                                    id: "Flujo",
+                                    label: "FLUJO"
+                                },
+                                {
+                                    orden: 4,
+                                    id: "VolumenMinutoEspiradoMaquina",
+                                    label: "VOLUMEN MINUTO ESPIRADO MÁQUINA"
+                                },
+                                {
+                                    orden: 5,
+                                    id: "VolumenTidalEspiradoMaquina",
+                                    label: "VOLUMEN TIDAL ESPIRADO MÁQUINA"
+                                },
+                                {
+                                    orden: 6,
+                                    id: "PresionInspiratoriaMaxima",
+                                    label: "PRESION INSPIRATORIA MAXIMA / PIP"
+                                },
+                                {
+                                    orden: 7,
+                                    id: "PEEP",
+                                    label: "PEEP"
+                                },
+                                {
+                                    orden: 8,
+                                    id: "TiempoInspiracion",
+                                    label: "TIEMPO INSPIRACIÓN"
+                                },
+                                {
+                                    orden: 9,
+                                    id: "TiempoEspiracion",
+                                    label: "TIEMPO ESPIRACIÓN"
+                                },
+                                {
+                                    orden: 10,
+                                    id: "FRV",
+                                    label: "FRECUENCIA RESPIRATORIA MÁQUINA"
+                                },
+                                {
+                                    orden: 11,
+                                    id: "RelacionInspiracionEspiracion",
+                                    label: "RELACIÓN INSPIRACION - ESPIRACION"
+                                },
+                                {
+                                    orden: 12,
+                                    id: "Amplitud",
+                                    label: "AMPLITUD"
+                                },
+                                {
+                                    orden: 13,
+                                    id: "Hercios",
+                                    label: "HERCIOS"
+                                }, {
+                                    orden: 14,
+                                    id: "PresionMediaViaArea",
+                                    label: "PRESION MEDIA VIA AÉREA"
+                                }, {
+                                    orden: 15,
+                                    id: "OxigenoLitrosMinuto",
+                                    label: "OXÍGENO LITROS POR MINUTO"
+                                }, {
+                                    orden: 16,
+                                    id: "ComplianceResistencia",
+                                    label: "COMPLIANCE / RESISTENCIA"
+                                },
+                                {
+                                    orden: 17,
+                                    id: "Co2",
+                                    label: "CO2"
+                                }, {
+                                    orden: 18,
+                                    id: "AireComprimido",
+                                    label: "AIRE COMPRIMIDO (PORCENTAJE)"
+                                }, {
+                                    orden: 19,
+                                    id: "OxidoNitrico",
+                                    label: "ÓXIDO NÍTRICO"
+                                },
                                 ].map(x =>
                                     m('option[id="' + x.id + '"]', x.label)
                                 ))
@@ -516,6 +515,10 @@ class VentilatoriosNeo {
                                 class: 'form-control',
                                 oncreate: (el) => {
 
+                                    if (VentilatoriosNeo.nuevoRegistro !== null && VentilatoriosNeo.nuevoRegistro.hora !== null) {
+                                        el.dom.value = VentilatoriosNeo.nuevoRegistro.hora;
+                                    }
+
                                     setTimeout(() => {
                                         new Cleave("#" + el.dom.id, {
                                             time: true,
@@ -527,12 +530,10 @@ class VentilatoriosNeo {
                                 oninput: (e) => {
                                     setTimeout(() => {
                                         try {
-
                                             //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
                                             VentilatoriosNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
                                             VentilatoriosNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
                                             VentilatoriosNeo.validarRegistroUnicoPorTurno(VentilatoriosNeo.nuevoRegistro.tipo);
-
                                         } catch (error) {
                                             VentilatoriosNeo.nuevoRegistro = null;
                                             $.alert('No es posible ingresar este valor. Ya existe este registro.');
@@ -545,9 +546,18 @@ class VentilatoriosNeo {
                     ),
                     m("td.tx-normal[colspan='4']",
                         (VentilatoriosNeo.nuevoRegistro !== null ? [
-                            m("input[type='text'][placeholder='Cantidad']", {
+                            m("input[type='text'][placeholder='Valor']", {
                                 id: 'cantidadValorVentilatoriosNeo',
                                 class: 'form-control',
+                                oncreate: (el) => {
+
+                                    if (VentilatoriosNeo.nuevoRegistro !== null && VentilatoriosNeo.nuevoRegistro.valor !== null) {
+                                        el.dom.value = VentilatoriosNeo.nuevoRegistro.valor;
+                                    }
+
+
+
+                                },
                                 oninput: (e) => {
                                     setTimeout(() => {
                                         //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
@@ -561,17 +571,25 @@ class VentilatoriosNeo {
                                         VentilatoriosNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                         VentilatoriosNeo.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + VentilatoriosNeo.nuevoRegistro.hora;
 
-                                        if (VentilatoriosNeo.nuevoRegistro.editar == null) {
-                                            VentilatoriosNeo.agregarRegistro();
-                                            FecthUci.registrarSeccion(VentilatoriosNeo.nuevoRegistro);
-                                            VentilatoriosNeo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-VentilatoriosNeo', VentilatoriosNeo.getRegistros());
+                                        if (moment(VentilatoriosNeo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
+                                            $.alert(VentilatoriosNeo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
+                                        } else if (VentilatoriosNeo.nuevoRegistro.valor == null || VentilatoriosNeo.nuevoRegistro.valor.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
                                         } else {
-                                            VentilatoriosNeo.editarRegistro();
-                                            FecthUci.actualizarSeccion(VentilatoriosNeo.nuevoRegistro);
-                                            VentilatoriosNeo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-VentilatoriosNeo', VentilatoriosNeo.getRegistros());
+                                            if (VentilatoriosNeo.nuevoRegistro.editar == null) {
+                                                VentilatoriosNeo.agregarRegistro();
+                                                FecthUci.registrarSeccion(VentilatoriosNeo.nuevoRegistro);
+                                                VentilatoriosNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-VentilatoriosNeo', VentilatoriosNeo.getRegistros());
+                                            } else {
+                                                VentilatoriosNeo.editarRegistro();
+                                                FecthUci.actualizarSeccion(VentilatoriosNeo.nuevoRegistro);
+                                                VentilatoriosNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-VentilatoriosNeo', VentilatoriosNeo.getRegistros());
+                                            }
                                         }
+
+
                                     }
                                 },
                             }),
