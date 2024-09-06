@@ -456,18 +456,21 @@ class FecthUci {
 
                     // Inicia siguientes 24hrs
                     // Existen turnos abiertos?
-                    let turnosAbiertos = res.data.dataTurnos.filter(v => (moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') || moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix()) && v.STATUS == '1' && v.TIPO_BIT == 'UCINEO');
-                    if (turnosAbiertos.length > 0) {
 
-                        FecthUci.loaderSecciones = true;
-                        TurnosUci.turnos = FecthUci.setTurnos(turnosAbiertos);
+
+                    let _ayer = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
+
+                    let turnosHoy = res.data.dataTurnos.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(_ayer + ' 07:59', 'DD-MM-YYYY HH:mm').unix() && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix() && v.STATUS == '1' && v.TIPO_BIT == 'UCINEO');
+
+                    if (turnosHoy.length > 0) {
+
+                        TurnosUci.turnos = FecthUci.setTurnos(turnosHoy);
                         PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
                         FecthUci.loadSecciones();
 
                     } else {
                         // Filter Turnos de Hoy
                         let turnosHoy = res.data.dataTurnos.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix() && v.TIPO_BIT == 'UCINEO');
-                        console.log(8888, turnosHoy)
 
                         if (turnosHoy.length > 0) {
                             TurnosUci.turnos = FecthUci.setTurnos(turnosHoy);
@@ -569,7 +572,7 @@ class FecthUci {
                     // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
                     let seccionesHoy = res.data.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix());
                     console.log('seccionesHoy', seccionesHoy)
-                    // Filter prescripciones 
+                    // Filter prescripciones
                     let prescripcionesUci = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().subtract(1, 'days').format('DD-MM-YYYY') && v.SECCION == 'PrescripcionesUci')
                     console.log('prescripcionesUci', prescripcionesUci)
                     FecthUci.dataSecciones = seccionesHoy.concat(prescripcionesUci);
