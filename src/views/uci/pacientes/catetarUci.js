@@ -115,52 +115,58 @@ class CateterUci {
         let resultNro = [];
         let hash = {};
 
-        re = CateterUci.registros;
+        try {
 
-        result = re.sort((a, b) => b.nro - a.nro);
-        // Quitar duplicados
-        resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true).sort((a, b) => a.nro - b.nro);
+            re = CateterUci.registros;
 
-        resultNro.map((_v, _i) => {
-            CateterUci.iniciarRegistro();
-            CateterUci.nuevoRegistro.id = _v.id;
-            CateterUci.nuevoRegistro.cateter = _v.cateter;
-            if (PacientesUCI.numeroTurno != 1) {
-                CateterUci.nuevoRegistro.observacion = _v.observacion;
-                CateterUci.nuevoRegistro.am = _v.am;
-                CateterUci.nuevoRegistro.pm = _v.pm;
-                CateterUci.nuevoRegistro.hs = _v.hs;
-            }
-            CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-            CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-            res.push(CateterUci.nuevoRegistro);
-            CateterUci.nuevoRegistro = null;
-        });
+            result = re.sort((a, b) => b.nro - a.nro);
+            // Quitar duplicados
+            resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true).sort((a, b) => a.nro - b.nro);
+
+            resultNro.map((_v, _i) => {
+                CateterUci.iniciarRegistro();
+                CateterUci.nuevoRegistro.id = _v.id;
+                CateterUci.nuevoRegistro.cateter = _v.cateter;
+                if (PacientesUCI.numeroTurno != 1) {
+                    CateterUci.nuevoRegistro.observacion = _v.observacion;
+                    CateterUci.nuevoRegistro.am = _v.am;
+                    CateterUci.nuevoRegistro.pm = _v.pm;
+                    CateterUci.nuevoRegistro.hs = _v.hs;
+                }
+                CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                res.push(CateterUci.nuevoRegistro);
+                CateterUci.nuevoRegistro = null;
+            });
 
 
-        CateterUci.registros.push.apply(CateterUci.registros, res);
-        // Asignar Nro
+            CateterUci.registros.push.apply(CateterUci.registros, res);
+            // Asignar Nro
 
-        CateterUci.registros.map((_v, _i) => {
-            if (_v.nro == null) {
-                CateterUci.registros[_i].nro = (_i + 1);
-                if (_v.id == res.id) {
-                    res.nro = CateterUci.registros[_i].nro;
+            CateterUci.registros.map((_v, _i) => {
+                if (_v.nro == null) {
+                    CateterUci.registros[_i].nro = (_i + 1);
+                    if (_v.id == res.id) {
+                        res.nro = CateterUci.registros[_i].nro;
+                    }
+
                 }
 
-            }
+
+            });
 
 
-        });
+            console.log(7788, res)
 
+            CateterUci.filterRegistros();
 
-        console.log(7788, res)
-
-        CateterUci.filterRegistros();
-        setTimeout(() => {
-            PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
             FecthUci.registrarAllSeccion(res);
-        }, 100);
+
+        } catch (error) {
+
+        } finally {
+            PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
+        }
 
 
     }
