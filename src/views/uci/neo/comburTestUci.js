@@ -526,7 +526,7 @@ class ComburTestNeo {
                                     if (e.keyCode == 13) {
                                         ComburTestNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         ComburTestNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                        ComburTestNeo.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + ComburTestNeo.nuevoRegistro.hora;
+                                        ComburTestNeo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + ComburTestNeo.nuevoRegistro.hora;
 
                                         if (moment(ComburTestNeo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
                                             $.alert(ComburTestNeo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');

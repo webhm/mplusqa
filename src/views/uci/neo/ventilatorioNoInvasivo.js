@@ -498,7 +498,7 @@ class VentilatorioNoInvasivo {
                                     if (e.keyCode == 13) {
                                         VentilatorioNoInvasivo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         VentilatorioNoInvasivo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                        VentilatorioNoInvasivo.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + VentilatorioNoInvasivo.nuevoRegistro.hora;
+                                        VentilatorioNoInvasivo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + VentilatorioNoInvasivo.nuevoRegistro.hora;
 
                                         if (moment(VentilatorioNoInvasivo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
                                             $.alert(VentilatorioNoInvasivo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');

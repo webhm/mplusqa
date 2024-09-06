@@ -592,10 +592,6 @@ class FecthUci {
 
             }
 
-
-
-
-
         }).catch(function (e) {
 
         });

@@ -569,7 +569,7 @@ class VentilatoriosNeo {
                                     if (e.keyCode == 13) {
                                         VentilatoriosNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         VentilatoriosNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                        VentilatoriosNeo.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + VentilatoriosNeo.nuevoRegistro.hora;
+                                        VentilatoriosNeo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + VentilatoriosNeo.nuevoRegistro.hora;
 
                                         if (moment(VentilatoriosNeo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
                                             $.alert(VentilatoriosNeo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');

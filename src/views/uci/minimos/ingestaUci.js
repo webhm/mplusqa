@@ -123,197 +123,197 @@ class IngestaUciNeo {
                 [1, 'desc']
             ],
             columns: [{
-                    title: "order Turno:",
-                },
-                {
-                    title: "order N°:",
-                },
-                {
-                    title: "Turno:",
-                },
-                {
-                    title: "N°:",
-                },
-                {
-                    title: "Tipo:",
-                },
-                {
-                    title: "Hora:",
-                },
-                {
-                    title: "Valor:",
-                },
-                {
-                    title: "Medida:",
-                },
-                {
-                    title: "Opciones:",
-                }
+                title: "order Turno:",
+            },
+            {
+                title: "order N°:",
+            },
+            {
+                title: "Turno:",
+            },
+            {
+                title: "N°:",
+            },
+            {
+                title: "Tipo:",
+            },
+            {
+                title: "Hora:",
+            },
+            {
+                title: "Valor:",
+            },
+            {
+                title: "Medida:",
+            },
+            {
+                title: "Opciones:",
+            }
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, full) {
-                        return full.fechaHoraTurno;
-                    },
-                    visible: false,
-                    aTargets: [0],
-                    orderable: true,
+                mRender: function (data, type, full) {
+                    return full.fechaHoraTurno;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.nro;
-                    },
-                    visible: false,
-                    aTargets: [1],
-                    orderable: true,
-
+                visible: false,
+                aTargets: [0],
+                orderable: true,
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.nro;
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center.pd-5', [
-                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                            },
-                                            (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                            (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                            (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        ),
-                                    ])
+                visible: false,
+                aTargets: [1],
+                orderable: true,
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '15%',
-                    visible: true,
-                    aTargets: [2],
-                    orderable: false,
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center.pd-5', [
+                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                        class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                    },
+                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    ),
+                                ])
 
+                            ]
+                        }
+                    });
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.nro;
-                    },
+                width: '15%',
+                visible: true,
+                aTargets: [2],
+                orderable: false,
 
-                    visible: false,
-                    aTargets: [3],
-                    orderable: false,
-
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.nro;
                 },
 
-                {
-                    mRender: function(data, type, full) {
-                        return full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                    },
+                visible: false,
+                aTargets: [3],
+                orderable: false,
 
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
+            },
 
+            {
+                mRender: function (data, type, full) {
+                    return full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.hora != null ? full.hora : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                    },
 
-                    visible: true,
-                    aTargets: [5],
-                    orderable: true,
+                visible: true,
+                aTargets: [4],
+                orderable: true,
 
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.hora != null ? full.hora : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    visible: true,
-                    aTargets: [6],
-                    orderable: true,
 
+                visible: true,
+                aTargets: [5],
+                orderable: true,
+
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.medida != null ? full.medida : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    visible: true,
-                    aTargets: [7],
-                    orderable: true,
+                visible: true,
+                aTargets: [6],
+                orderable: true,
 
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.medida != null ? full.medida : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    IngestaUciNeo.nuevoRegistro = null
-                                                    IngestaUciNeo.verRegistro(oData);
-                                                },
-                                            },
-                                            'Editar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
-                                                class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
+                visible: true,
+                aTargets: [7],
+                orderable: true,
 
-                                                onclick: () => {
-                                                    oData.editar = null;
-                                                    IngestaUciNeo.nuevoRegistro = null;
-                                                },
-                                            },
-                                            'Cancelar Edición',
-                                        ),
-                                        m("button.btn.btn-xs.btn-danger[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                                        IngestaUciNeo.eliminarRegistro(oData);
-                                                        FecthUci.eliminarSeccion(oData);
-                                                        IngestaUciNeo.nuevoRegistro = null;
-                                                        PacientesUCI.vReloadTable('table-ingesta', IngestaUciNeo.getRegistros());
-                                                    }
-                                                },
-                                            },
-                                            'Eliminar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
-                                                onclick: () => {
-                                                    IngestaUciNeo.iniciarRegistro();
-                                                    IngestaUciNeo.nuevoRegistro.id = oData.id;
-                                                    IngestaUciNeo.nuevoRegistro.tipo = oData.tipo;
-                                                    IngestaUciNeo.nuevoRegistro.valor = oData.valor;
-                                                    IngestaUciNeo.nuevoRegistro.hora = oData.hora;
-                                                    IngestaUciNeo.nuevoRegistro.medida = oData.medida;
-                                                    IngestaUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    IngestaUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m("div.btn-block.btn-group.wd-100p.pd-5", [
+                                    m("button.btn.btn-xs.btn-success[type='button']", {
+                                        class: (oData.editar ? 'd-none' : ''),
+                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                        onclick: () => {
+                                            IngestaUciNeo.nuevoRegistro = null
+                                            IngestaUciNeo.verRegistro(oData);
+                                        },
+                                    },
+                                        'Editar',
+                                    ),
+                                    m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
+                                        class: (oData.editar ? '' : 'd-none'),
+                                        disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
 
-                                                },
-                                            },
-                                            'Copiar',
-                                        ),
-                                    ])
+                                        onclick: () => {
+                                            oData.editar = null;
+                                            IngestaUciNeo.nuevoRegistro = null;
+                                        },
+                                    },
+                                        'Cancelar Edición',
+                                    ),
+                                    m("button.btn.btn-xs.btn-danger[type='button']", {
+                                        class: (oData.editar ? 'd-none' : ''),
+                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                        onclick: () => {
+                                            if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                                IngestaUciNeo.eliminarRegistro(oData);
+                                                FecthUci.eliminarSeccion(oData);
+                                                IngestaUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-ingesta', IngestaUciNeo.getRegistros());
+                                            }
+                                        },
+                                    },
+                                        'Eliminar',
+                                    ),
+                                    m("button.btn.btn-xs.btn-dark[type='button']", {
+                                        class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                        onclick: () => {
+                                            IngestaUciNeo.iniciarRegistro();
+                                            IngestaUciNeo.nuevoRegistro.id = oData.id;
+                                            IngestaUciNeo.nuevoRegistro.tipo = oData.tipo;
+                                            IngestaUciNeo.nuevoRegistro.valor = oData.valor;
+                                            IngestaUciNeo.nuevoRegistro.hora = oData.hora;
+                                            IngestaUciNeo.nuevoRegistro.medida = oData.medida;
+                                            IngestaUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            IngestaUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [8],
-                    orderable: true,
+                                        },
+                                    },
+                                        'Copiar',
+                                    ),
+                                ])
 
-                }
+                            ]
+                        }
+                    });
+                },
+                width: '10%',
+                visible: true,
+                aTargets: [8],
+                orderable: true,
+
+            }
 
 
             ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
             },
         };
@@ -339,10 +339,10 @@ class IngestaUciNeo {
     view() {
         return [
             m("thead.bd.bd-2", {
-                    style: { "border-color": "#5173a1" },
-                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+                style: { "border-color": "#5173a1" },
+                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
-                },
+            },
 
                 m("tr.tx-uppercase", {
                     // class: (PacientesUCI.tipoAtencion !== null && PacientesUCI.tipoAtencion == 'NEO' ? '' : 'd-none'),
@@ -393,15 +393,15 @@ class IngestaUciNeo {
                         m("div.input-group", [
                             m("div.input-group-append",
                                 m("button.btn.btn-xs.btn-light[type='button']", {
-                                        title: "Nuevo",
-                                        onclick: () => {
-                                            if (IngestaUciNeo.nuevoRegistro == null) {
-                                                IngestaUciNeo.iniciarRegistro();
-                                            } else {
-                                                IngestaUciNeo.nuevoRegistro = null;
-                                            }
+                                    title: "Nuevo",
+                                    onclick: () => {
+                                        if (IngestaUciNeo.nuevoRegistro == null) {
+                                            IngestaUciNeo.iniciarRegistro();
+                                        } else {
+                                            IngestaUciNeo.nuevoRegistro = null;
                                         }
-                                    },
+                                    }
+                                },
                                     m("i.fas.fa-plus")
                                 )
                             ),
@@ -432,13 +432,13 @@ class IngestaUciNeo {
                                     class: "custom-select",
                                     value: (IngestaUciNeo.nuevoRegistro !== null ? IngestaUciNeo.nuevoRegistro.tipo : 0),
                                 }, [{
-                                        id: "SenoMaterno",
-                                        label: "Seno Materno"
-                                    },
-                                    {
-                                        id: "Formula",
-                                        label: "Fórmula"
-                                    }
+                                    id: "SenoMaterno",
+                                    label: "Seno Materno"
+                                },
+                                {
+                                    id: "Formula",
+                                    label: "Fórmula"
+                                }
                                 ].map(x =>
                                     m('option[id="' + x.id + '"]', x.label)
                                 ))
@@ -510,7 +510,7 @@ class IngestaUciNeo {
                                     if (e.keyCode == 13) {
                                         IngestaUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         IngestaUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                        IngestaUciNeo.nuevoRegistro.timestamp = moment().format('DD-MM-YYYY') + ' ' + IngestaUciNeo.nuevoRegistro.hora;
+                                        IngestaUciNeo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + IngestaUciNeo.nuevoRegistro.hora;
 
                                         console.log(777, IngestaUciNeo.nuevoRegistro.valor.indexOf("FORMULA"))
 
@@ -541,73 +541,73 @@ class IngestaUciNeo {
                                 class: "custom-select",
                                 value: (IngestaUciNeo.nuevoRegistro !== null ? IngestaUciNeo.nuevoRegistro.valor : 0),
                             }, [{
-                                    id: "X",
-                                    label: "Sí (X)"
-                                },
-                                {
-                                    id: "-",
-                                    label: "No (-)"
-                                },
-                                {
-                                    id: "FORMULA LIQUIDA LECHE (ENFAMIL PREMIUM E1) 20 KILOCALORIAS",
-                                    label: "FORMULA LIQUIDA LECHE (ENFAMIL PREMIUM E1) 20 KILOCALORIAS"
-                                },
-                                {
-                                    id: "FORMULA LIQUIDA LECHE (SIMILAC TOTAL CONFORT ETAPA 1)",
-                                    label: "FORMULA LIQUIDA LECHE (SIMILAC TOTAL CONFORT ETAPA 1)"
-                                },
-                                {
-                                    id: "FORMULA LIQUIDA LECHE S26 GOLD RFT (ALULA) 70 MILILITROS",
-                                    label: "FORMULA LIQUIDA LECHE S26 GOLD RFT (ALULA) 70 MILILITROS"
-                                },
-                                {
-                                    id: "FORMULA LIQUIDA LECHE(NAN PREMATURO DSHL 024-1)70 MILILITROS",
-                                    label: "FORMULA LIQUIDA LECHE(NAN PREMATURO DSHL 024-1)70 MILILITROS"
-                                },
-                                {
-                                    id: "FORMULA LIQUIDA LECHE(NUTRILON)20 KILOCALORIAS/90 MILILITROS",
-                                    label: "FORMULA LIQUIDA LECHE(NUTRILON)20 KILOCALORIAS/90 MILILITROS"
-                                },
-                                {
-                                    id: "FORMULA POLVO LECHE (ENFAMIL CONFORT PREMIUM) 400 GRAMOS",
-                                    label: "FORMULA POLVO LECHE (ENFAMIL CONFORT PREMIUM) 400 GRAMOS"
-                                },
-                                {
-                                    id: "FORMULA POLVO LECHE (ISOMIL ETAPA 1) 400 GRAMOS",
-                                    label: "FORMULA POLVO LECHE (ISOMIL ETAPA 1) 400 GRAMOS"
-                                },
-                                {
-                                    id: "FORMULA POLVO LECHE (NAN PREMATURO) 400 GRAMOS",
-                                    label: "FORMULA POLVO LECHE (NAN PREMATURO) 400 GRAMOS"
-                                },
-                                {
-                                    id: "FORMULA POLVO LECHE (NEOCATE)",
-                                    label: "FORMULA POLVO LECHE (NEOCATE)"
-                                },
-                                {
-                                    id: "FORMULA POLVO LECHE (NESSUCAR) 550 GRAMOS",
-                                    label: "FORMULA POLVO LECHE (NESSUCAR) 550 GRAMOS"
-                                },
-                                {
-                                    id: "FORMULA POLVO LECHE (NUTRAMIGEN PREMIUM LGG) 357 GRAMOS",
-                                    label: "FORMULA POLVO LECHE (NUTRAMIGEN PREMIUM LGG) 357 GRAMOS"
-                                },
-                                {
-                                    id: "FORMULA POLVO LECHE (NUTRILON PEPTI JUNIOR) 400 GRAMOS",
-                                    label: "FORMULA POLVO LECHE (NUTRILON PEPTI JUNIOR) 400 GRAMOS"
-                                },
-                                {
-                                    id: "FORMULA POLVO LECHE (S26 GOLD CONFORT E1) 400 GRAMOS",
-                                    label: "FORMULA POLVO LECHE (S26 GOLD CONFORT E1) 400 GRAMOS"
-                                },
-                                {
-                                    id: "FORMULA POLVO LECHE (SIMILAC NEOSURE) 370 GRAMOS",
-                                    label: "FORMULA POLVO LECHE (SIMILAC NEOSURE) 370 GRAMOS"
-                                },
-                                {
-                                    id: "FORMULA POLVO LECHE(SIMILAC SENSITIVE SIN LACTOSA) 375 GRAMOS",
-                                    label: "FORMULA POLVO LECHE(SIMILAC SENSITIVE SIN LACTOSA) 375 GRAMOS"
-                                },
+                                id: "X",
+                                label: "Sí (X)"
+                            },
+                            {
+                                id: "-",
+                                label: "No (-)"
+                            },
+                            {
+                                id: "FORMULA LIQUIDA LECHE (ENFAMIL PREMIUM E1) 20 KILOCALORIAS",
+                                label: "FORMULA LIQUIDA LECHE (ENFAMIL PREMIUM E1) 20 KILOCALORIAS"
+                            },
+                            {
+                                id: "FORMULA LIQUIDA LECHE (SIMILAC TOTAL CONFORT ETAPA 1)",
+                                label: "FORMULA LIQUIDA LECHE (SIMILAC TOTAL CONFORT ETAPA 1)"
+                            },
+                            {
+                                id: "FORMULA LIQUIDA LECHE S26 GOLD RFT (ALULA) 70 MILILITROS",
+                                label: "FORMULA LIQUIDA LECHE S26 GOLD RFT (ALULA) 70 MILILITROS"
+                            },
+                            {
+                                id: "FORMULA LIQUIDA LECHE(NAN PREMATURO DSHL 024-1)70 MILILITROS",
+                                label: "FORMULA LIQUIDA LECHE(NAN PREMATURO DSHL 024-1)70 MILILITROS"
+                            },
+                            {
+                                id: "FORMULA LIQUIDA LECHE(NUTRILON)20 KILOCALORIAS/90 MILILITROS",
+                                label: "FORMULA LIQUIDA LECHE(NUTRILON)20 KILOCALORIAS/90 MILILITROS"
+                            },
+                            {
+                                id: "FORMULA POLVO LECHE (ENFAMIL CONFORT PREMIUM) 400 GRAMOS",
+                                label: "FORMULA POLVO LECHE (ENFAMIL CONFORT PREMIUM) 400 GRAMOS"
+                            },
+                            {
+                                id: "FORMULA POLVO LECHE (ISOMIL ETAPA 1) 400 GRAMOS",
+                                label: "FORMULA POLVO LECHE (ISOMIL ETAPA 1) 400 GRAMOS"
+                            },
+                            {
+                                id: "FORMULA POLVO LECHE (NAN PREMATURO) 400 GRAMOS",
+                                label: "FORMULA POLVO LECHE (NAN PREMATURO) 400 GRAMOS"
+                            },
+                            {
+                                id: "FORMULA POLVO LECHE (NEOCATE)",
+                                label: "FORMULA POLVO LECHE (NEOCATE)"
+                            },
+                            {
+                                id: "FORMULA POLVO LECHE (NESSUCAR) 550 GRAMOS",
+                                label: "FORMULA POLVO LECHE (NESSUCAR) 550 GRAMOS"
+                            },
+                            {
+                                id: "FORMULA POLVO LECHE (NUTRAMIGEN PREMIUM LGG) 357 GRAMOS",
+                                label: "FORMULA POLVO LECHE (NUTRAMIGEN PREMIUM LGG) 357 GRAMOS"
+                            },
+                            {
+                                id: "FORMULA POLVO LECHE (NUTRILON PEPTI JUNIOR) 400 GRAMOS",
+                                label: "FORMULA POLVO LECHE (NUTRILON PEPTI JUNIOR) 400 GRAMOS"
+                            },
+                            {
+                                id: "FORMULA POLVO LECHE (S26 GOLD CONFORT E1) 400 GRAMOS",
+                                label: "FORMULA POLVO LECHE (S26 GOLD CONFORT E1) 400 GRAMOS"
+                            },
+                            {
+                                id: "FORMULA POLVO LECHE (SIMILAC NEOSURE) 370 GRAMOS",
+                                label: "FORMULA POLVO LECHE (SIMILAC NEOSURE) 370 GRAMOS"
+                            },
+                            {
+                                id: "FORMULA POLVO LECHE(SIMILAC SENSITIVE SIN LACTOSA) 375 GRAMOS",
+                                label: "FORMULA POLVO LECHE(SIMILAC SENSITIVE SIN LACTOSA) 375 GRAMOS"
+                            },
                             ].map(x =>
                                 m('option[id="' + x.id + '"]', x.label)
                             ))

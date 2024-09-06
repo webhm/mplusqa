@@ -128,272 +128,272 @@ class ViasUci {
                 [1, 'desc']
             ],
             columns: [{
-                    title: "order Turno:",
-                },
-                {
-                    title: "order N°:",
-                },
-                {
-                    title: "Turno:",
-                },
-                {
-                    title: "N°:",
-                },
-                {
-                    title: "Via:",
-                },
-                {
-                    title: "Ubicación:",
-                },
-                {
-                    title: "Tipo:",
-                },
+                title: "order Turno:",
+            },
+            {
+                title: "order N°:",
+            },
+            {
+                title: "Turno:",
+            },
+            {
+                title: "N°:",
+            },
+            {
+                title: "Via:",
+            },
+            {
+                title: "Ubicación:",
+            },
+            {
+                title: "Tipo:",
+            },
 
-                {
-                    title: "Inicio:",
-                },
-                {
-                    title: "Retiro:",
-                },
+            {
+                title: "Inicio:",
+            },
+            {
+                title: "Retiro:",
+            },
 
-                {
-                    title: "Cambio:",
-                },
-                {
-                    title: "Curación:",
-                },
-                {
-                    title: "Condición:",
-                },
-                {
-                    title: "Observación:",
-                },
-                {
-                    title: "Opciones:",
-                }
+            {
+                title: "Cambio:",
+            },
+            {
+                title: "Curación:",
+            },
+            {
+                title: "Condición:",
+            },
+            {
+                title: "Observación:",
+            },
+            {
+                title: "Opciones:",
+            }
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, full) {
-                        return full.fechaHoraTurno;
-                    },
-                    visible: false,
-                    aTargets: [0],
-                    orderable: true,
+                mRender: function (data, type, full) {
+                    return full.fechaHoraTurno;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.nro;
-                    },
-                    visible: false,
-                    aTargets: [1],
-                    orderable: true,
-
+                visible: false,
+                aTargets: [0],
+                orderable: true,
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.nro;
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center.pd-5', [
-                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                            },
-                                            (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                            (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                            (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        ),
-                                    ])
+                visible: false,
+                aTargets: [1],
+                orderable: true,
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '15%',
-                    visible: true,
-                    aTargets: [2],
-                    orderable: false,
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center.pd-5', [
+                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                        class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                    },
+                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    ),
+                                ])
 
+                            ]
+                        }
+                    });
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.nro;
-                    },
+                width: '15%',
+                visible: true,
+                aTargets: [2],
+                orderable: false,
 
-                    visible: false,
-                    aTargets: [3],
-                    orderable: false,
-
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.nro;
                 },
 
-                {
-                    mRender: function(data, type, full) {
-                        return (full.id == 'Otros' ? full.otros : (full.via != null ? full.via : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'));
-                    },
+                visible: false,
+                aTargets: [3],
+                orderable: false,
 
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
+            },
 
+            {
+                mRender: function (data, type, full) {
+                    return (full.id == 'Otros' ? full.otros : (full.via != null ? full.via : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'));
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.ubicacion != null ? full.ubicacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    visible: true,
-                    aTargets: [5],
-                    orderable: true,
 
+                visible: true,
+                aTargets: [4],
+                orderable: true,
+
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.ubicacion != null ? full.ubicacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    visible: true,
-                    aTargets: [6],
-                    orderable: true,
+                visible: true,
+                aTargets: [5],
+                orderable: true,
+
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.inicio != null ? full.inicio : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    visible: true,
-                    aTargets: [7],
-                    orderable: true,
-
-
+                visible: true,
+                aTargets: [6],
+                orderable: true,
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.inicio != null ? full.inicio : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.retiro != null ? full.retiro : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    visible: true,
-                    aTargets: [8],
-                    orderable: true,
+                visible: true,
+                aTargets: [7],
+                orderable: true,
 
 
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.retiro != null ? full.retiro : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.cambio != null ? full.cambio : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    visible: true,
-                    aTargets: [9],
-                    orderable: true,
+                visible: true,
+                aTargets: [8],
+                orderable: true,
 
 
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.cambio != null ? full.cambio : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.curacion != null ? full.curacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    visible: true,
-                    aTargets: [10],
-                    orderable: true,
+                visible: true,
+                aTargets: [9],
+                orderable: true,
 
 
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.curacion != null ? full.curacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.condicion != null ? full.condicion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    visible: true,
-                    aTargets: [11],
-                    orderable: true,
+                visible: true,
+                aTargets: [10],
+                orderable: true,
 
 
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.condicion != null ? full.condicion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.observacion != null ? full.observacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    visible: true,
-                    aTargets: [12],
-                    orderable: true,
+                visible: true,
+                aTargets: [11],
+                orderable: true,
 
 
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.observacion != null ? full.observacion : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    if (oData.id == 'Otros') {
-                                                        ViasUci.showOtros = true;
-                                                    } else {
-                                                        ViasUci.showOtros = false;
-                                                    }
-                                                    ViasUci.nuevoRegistro = null
-                                                    ViasUci.verRegistro(oData);
-                                                },
-                                            },
-                                            'Editar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
-                                                class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
+                visible: true,
+                aTargets: [12],
+                orderable: true,
 
-                                                onclick: () => {
-                                                    oData.editar = null;
-                                                    ViasUci.nuevoRegistro = null;
-                                                },
-                                            },
-                                            'Cancelar Edición',
-                                        ),
-                                        m("button.btn.btn-xs.btn-danger[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                                        ViasUci.eliminarRegistro(oData);
-                                                        FecthUci.eliminarSeccion(oData);
-                                                        ViasUci.nuevoRegistro = null;
-                                                        PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
-                                                    }
-                                                },
-                                            },
-                                            'Eliminar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
-                                                onclick: () => {
-                                                    ViasUci.iniciarRegistro();
-                                                    ViasUci.nuevoRegistro.id = oData.id;
-                                                    ViasUci.nuevoRegistro.via = oData.via;
-                                                    ViasUci.nuevoRegistro.ubicacion = oData.ubicacion;
-                                                    ViasUci.nuevoRegistro.tipo = oData.tipo;
-                                                    ViasUci.nuevoRegistro.inicio = oData.inicio;
-                                                    ViasUci.nuevoRegistro.retiro = oData.retiro;
-                                                    ViasUci.nuevoRegistro.curacion = oData.curacion;
-                                                    ViasUci.nuevoRegistro.condicion = oData.condicion;
-                                                    ViasUci.nuevoRegistro.observacion = oData.observacion;
-                                                    ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
-                                                },
-                                            },
-                                            'Copiar',
-                                        ),
-                                    ])
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m("div.btn-block.btn-group.wd-100p.pd-5", [
+                                    m("button.btn.btn-xs.btn-success[type='button']", {
+                                        class: (oData.editar ? 'd-none' : ''),
+                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                        onclick: () => {
+                                            if (oData.id == 'Otros') {
+                                                ViasUci.showOtros = true;
+                                            } else {
+                                                ViasUci.showOtros = false;
+                                            }
+                                            ViasUci.nuevoRegistro = null
+                                            ViasUci.verRegistro(oData);
+                                        },
+                                    },
+                                        'Editar',
+                                    ),
+                                    m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
+                                        class: (oData.editar ? '' : 'd-none'),
+                                        disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [13],
-                    orderable: true,
+                                        onclick: () => {
+                                            oData.editar = null;
+                                            ViasUci.nuevoRegistro = null;
+                                        },
+                                    },
+                                        'Cancelar Edición',
+                                    ),
+                                    m("button.btn.btn-xs.btn-danger[type='button']", {
+                                        class: (oData.editar ? 'd-none' : ''),
+                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                        onclick: () => {
+                                            if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                                ViasUci.eliminarRegistro(oData);
+                                                FecthUci.eliminarSeccion(oData);
+                                                ViasUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-vias', ViasUci.getRegistros());
+                                            }
+                                        },
+                                    },
+                                        'Eliminar',
+                                    ),
+                                    m("button.btn.btn-xs.btn-dark[type='button']", {
+                                        class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                        onclick: () => {
+                                            ViasUci.iniciarRegistro();
+                                            ViasUci.nuevoRegistro.id = oData.id;
+                                            ViasUci.nuevoRegistro.via = oData.via;
+                                            ViasUci.nuevoRegistro.ubicacion = oData.ubicacion;
+                                            ViasUci.nuevoRegistro.tipo = oData.tipo;
+                                            ViasUci.nuevoRegistro.inicio = oData.inicio;
+                                            ViasUci.nuevoRegistro.retiro = oData.retiro;
+                                            ViasUci.nuevoRegistro.curacion = oData.curacion;
+                                            ViasUci.nuevoRegistro.condicion = oData.condicion;
+                                            ViasUci.nuevoRegistro.observacion = oData.observacion;
+                                            ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
-                }
+                                        },
+                                    },
+                                        'Copiar',
+                                    ),
+                                ])
+
+                            ]
+                        }
+                    });
+                },
+                width: '10%',
+                visible: true,
+                aTargets: [13],
+                orderable: true,
+
+            }
 
 
             ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
             },
         };
@@ -411,10 +411,10 @@ class ViasUci {
     view() {
         return [
             m("thead.bd.bd-2", {
-                    style: { "border-color": "#5173a1" },
-                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+                style: { "border-color": "#5173a1" },
+                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
-                },
+            },
 
                 m("tr.tx-uppercase", {
 
@@ -487,34 +487,34 @@ class ViasUci {
                             class: "custom-select",
                             value: (ViasUci.nuevoRegistro !== null ? ViasUci.nuevoRegistro.via : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                id: "ViaPeriferica",
-                                label: "VIA PERIFERICA"
-                            }, {
-                                id: "CateterSubclavio",
-                                label: "CATETER SUBCLAVIO"
-                            }, {
-                                id: "CateterYugular",
-                                label: "CATETER YUGULAR"
-                            }, {
-                                id: "CateterFemoral",
-                                label: "CATETER FEMORAL"
-                            }, {
-                                id: "CateterCentralInsercionPeriferica",
-                                label: "CATETER CENTRAL DE INSERCION PERIFERICA"
-                            }, {
-                                id: "CateterHemodialisis",
-                                label: "CATETER DE HEMODIALISIS"
-                            }, {
-                                id: "CateterImplantableSubcutaneo",
-                                label: "CATETER IMPLANTABLE SUBCUTANEO"
-                            }, {
-                                id: "LineaArterial",
-                                label: "LINEA ARTERIAL"
-                            },
-                            {
-                                id: "Otros",
-                                label: "OTROS"
-                            }
+                            id: "ViaPeriferica",
+                            label: "VIA PERIFERICA"
+                        }, {
+                            id: "CateterSubclavio",
+                            label: "CATETER SUBCLAVIO"
+                        }, {
+                            id: "CateterYugular",
+                            label: "CATETER YUGULAR"
+                        }, {
+                            id: "CateterFemoral",
+                            label: "CATETER FEMORAL"
+                        }, {
+                            id: "CateterCentralInsercionPeriferica",
+                            label: "CATETER CENTRAL DE INSERCION PERIFERICA"
+                        }, {
+                            id: "CateterHemodialisis",
+                            label: "CATETER DE HEMODIALISIS"
+                        }, {
+                            id: "CateterImplantableSubcutaneo",
+                            label: "CATETER IMPLANTABLE SUBCUTANEO"
+                        }, {
+                            id: "LineaArterial",
+                            label: "LINEA ARTERIAL"
+                        },
+                        {
+                            id: "Otros",
+                            label: "OTROS"
+                        }
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
                         ))
