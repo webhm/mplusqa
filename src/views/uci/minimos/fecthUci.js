@@ -82,7 +82,7 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
             if (res.status == false) {
                 PacientesUCI.vReloadTable('table-turnos', []);
@@ -91,7 +91,7 @@ class FecthUci {
                     content: res.message,
                     buttons: {
                         Ok: {
-                            action: function() {
+                            action: function () {
                                 window.location.reload();
                             }
                         },
@@ -101,7 +101,7 @@ class FecthUci {
             }
 
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -130,9 +130,9 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -160,11 +160,11 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
 
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -193,9 +193,9 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -224,9 +224,9 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             window.location.reload();
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -254,10 +254,10 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             // El resultado
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -286,11 +286,11 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
             window.location.reload();
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -320,11 +320,11 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
             window.location.reload();
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -356,11 +356,11 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
             window.location.reload();
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -392,11 +392,11 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
             window.location.reload();
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -423,7 +423,7 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             if (res.status) {
 
                 TurnosUci.turnos = [];
@@ -442,10 +442,9 @@ class FecthUci {
                 if (moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 00:00'), 'DD-MM-YYYY HH:mm').unix() && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix()) {
 
 
-                    let _hoy = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
+                    let _ayer = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
 
-                    // Filter Turnos 
-                    let turnosHoy = res.data.dataTurnos.filter(v => (moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == _hoy || moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY')) && v.TIPO_BIT == 'UCIMINIMOS')
+                    let turnosHoy = res.data.dataTurnos.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(_ayer + ' 07:59', 'DD-MM-YYYY HH:mm').unix() && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix() && v.TIPO_BIT == 'UCIMINIMOS');
 
                     if (turnosHoy.length > 0) {
                         TurnosUci.turnos = FecthUci.setTurnos(turnosHoy);
@@ -455,19 +454,17 @@ class FecthUci {
                     FecthUci.loadSecciones();
 
                 } else {
-                    // Inicia siguientes 24hrs
-                    // Existen turnos abiertos del dia anterior?
-                    let _ayer = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
-                    // Filter Turnos 
-                    let turnosAbiertos = res.data.dataTurnos.filter(v => (moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == _ayer || moment(v.FECHA, 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix()) && v.STATUS == '1' && v.TIPO_BIT == 'UCIMINIMOS');
 
+                    // Inicia siguientes 24hrs
+                    // Existen turnos abiertos?
+                    let turnosAbiertos = res.data.dataTurnos.filter(v => (moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') != moment().format('DD-MM-YYYY') || moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix()) && v.STATUS == '1' && v.TIPO_BIT == 'UCIMINIMOS');
                     if (turnosAbiertos.length > 0) {
+
                         FecthUci.loaderSecciones = true;
-                        TurnosUci.turnos = FecthUci.setTurnosAbiertos(turnosAbiertos);
+                        TurnosUci.turnos = FecthUci.setTurnos(turnosAbiertos);
                         PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
-                        setTimeout(() => {
-                            $.alert('Existen turnos abiertos. Por favor cierre los turnos para continuar.');
-                        }, 500);
+                        FecthUci.loadSecciones();
+
                     } else {
                         // Filter Turnos de Hoy
                         let turnosHoy = res.data.dataTurnos.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix() && v.TIPO_BIT == 'UCIMINIMOS');
@@ -491,7 +488,7 @@ class FecthUci {
 
             }
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -516,14 +513,14 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
             if (res.status) {
                 PacientesUCI.tipoAtencion = res.data.ATENCION;
             }
 
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -550,7 +547,7 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
             FecthUci.loaderSecciones = true;
 
@@ -560,10 +557,9 @@ class FecthUci {
                 let _ayer = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
 
                 // Filter Secciones de Hoy
-                let seccionesHoy = res.data.filter(v => (moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == _ayer || moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY')))
-                    // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+                let seccionesHoy = res.data.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(_ayer + ' 07:59', 'DD-MM-YYYY HH:mm').unix() && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix());
                 console.log('seccionesHoy', seccionesHoy)
-                    // Filter prescripciones 
+                // Filter prescripciones
                 let prescripcionesUci = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().subtract(1, 'days').format('DD-MM-YYYY') && v.SECCION == 'PrescripcionesUci')
                 console.log('prescripcionesUci', prescripcionesUci)
                 FecthUci.dataSecciones = seccionesHoy.concat(prescripcionesUci);
@@ -578,7 +574,7 @@ class FecthUci {
                     // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
                     let seccionesHoy = res.data.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix());
                     console.log('seccionesHoy', seccionesHoy)
-                        // Filter prescripciones 
+                    // Filter prescripciones 
                     let prescripcionesUci = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().subtract(1, 'days').format('DD-MM-YYYY') && v.SECCION == 'PrescripcionesUci')
                     console.log('prescripcionesUci', prescripcionesUci)
                     FecthUci.dataSecciones = seccionesHoy.concat(prescripcionesUci);
@@ -600,7 +596,7 @@ class FecthUci {
 
 
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
     }
