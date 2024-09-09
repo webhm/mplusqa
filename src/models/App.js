@@ -125,7 +125,7 @@ class App {
                 App._msa.accountId = loginResponse.account.homeAccountId;
                 console.log(1, loginResponse);
                 App.login(loginResponse.idToken);
-            }).catch(function(error) {
+            }).catch(function (error) {
                 console.log(error);
             });
     }
@@ -142,7 +142,7 @@ class App {
             App._msa.myMSALObj.loginPopup(App._msa.loginRequest)
                 .then((loginResponse) => {
                     App.autorizarApp(loginResponse.account.username, nombreApp);
-                }).catch(function(error) {
+                }).catch(function (error) {
                     console.log(error);
                 });
         }
@@ -161,6 +161,8 @@ class App {
         ];
     }
 
+
+
     oncreate() {
         document.title = App.title + " | " + App.name + App.version;
     }
@@ -170,7 +172,7 @@ class App {
         document.title = App.title + " | " + App.name + App.version;
     }
 
-    view() {}
+    view() { }
 
 }
 

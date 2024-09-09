@@ -10,16 +10,16 @@ class Errors {
         this.error = _data.attrs.error;
     }
 
-    setFethError(_data) {
+    setFethError(message) {
         return [
             m("p.tx-danger.pd-0.mg-b-2.mg-t-5", [
                 m('i.fas.fa-exclamation-triangle'),
-                " Error:"
+                " Error: "
             ]),
             m("p.tx-justify.tx-danger.tx-color-03.mg-b-30",
                 "Lo sentimos, no pudimos completar con éxito esta petición. Recarga esta página nuevamente. Si el inconveniente persiste comunícate a nuestra Mesa de Ayuda CONCAS 02 399 8000 Ext: 2020.",
                 m('br'),
-                "HTTP ERROR: " + _data.message
+                "Descripción: " + message
             )
         ]
     }

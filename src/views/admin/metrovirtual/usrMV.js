@@ -7,6 +7,7 @@ import Errors from "../../utils/errors";
 import Table from "../../utils/table";
 import { Stopwatch } from "../../utils/stopWatch";
 import ApiHTTP from "../../../models/ApiHTTP";
+import ErrorMetroplus from "../../../models/Error";
 
 // Administración MV
 
@@ -18,29 +19,55 @@ class usrMV extends App {
     constructor(_data) {
         super();
         if (App.isAuthenticated() && App.hasProfile('PERFIL_ADM_PACIENTES_METROVIRTUAL')) {
-            App.setTitle("Usuarios MetroVirtual");
+            App.setTitle("Pacientes MetroVirtual");
             this.view = this.page;
         }
 
 
     }
-    oncreate(_data) {
-        if (_data.attrs.idFiltro !== undefined) {
-            this.idFiltro = _data.attrs.idFiltro;
-        }
-        this.fetchData().then((_data) => {
-            this.usuarios = _data;
-        });
-    }
-    onupdate(_data) {
 
-        if (_data.attrs.idUsr !== undefined) {
+    onupdate(_data) {
+        console.log(44, _data)
+
+
+        if (_data.attrs.idUsr !== undefined && this.idUsr == null) {
             this.idUsr = _data.attrs.idUsr;
         } else {
             this.idUsr = null;
         }
-        m.redraw();
+
+        if (_data.attrs.idFiltro !== undefined && _data.attrs.idFiltro !== 1) {
+            this.idFiltro = _data.attrs.idFiltro;
+        } else {
+            this.idFiltro = 1;
+        }
+
+        if (this.idUsr !== null && this.dataUser == null) {
+            this.fetchProfile().then((_data) => {
+                this.dataUser = _data;
+            }).catch((err) => {
+                this.dataUser = { status: false, message: err.message };
+                console.error(err)
+            });
+
+        }
+
+        if (this.idFiltro !== null && this.usuarios == null) {
+            this.fetchData().then((_data) => {
+                this.usuarios = _data;
+            }).catch((err) => {
+                this.usuarios = { status: false, message: err.message };
+                console.error(err)
+            });
+
+        }
+
+
+
+
     }
+
+
     vHeader() {
         return m(HeaderPrivate, { userName: App.userName });
     }
@@ -71,29 +98,29 @@ class usrMV extends App {
 
                     m("div", [
 
-                        (this.usuarios !== null && this.usuarios.status) ? [
+                        (this.usuarios !== null && this.usuarios.status == true) ? [
                             m("div.table-content.col-12.pd-r-0.pd-l-0", [
                                 m("div.d-flex.align-items-center.justify-content-between.mg-t-10", [
                                     m("h5.mg-b-0",
                                         "Todos los Usuarios:",
                                         m("span.badge.bg-litecoin.tx-white.tx-semibold.pd-l-10.pd-r-10.mg-l-5.tx-15", {
-                                                oncreate: (el) => {
-                                                    if (this.idFiltro == 1) {
-                                                        el.dom.innerHTML = 'Grp-radius-Medicos';
-                                                    }
-                                                    if (this.idFiltro == 2) {
-                                                        el.dom.innerHTML = 'Grp-radius-Residentes';
-                                                    }
-                                                },
-                                                onupdate: (el) => {
-                                                    if (this.idFiltro == 1) {
-                                                        el.dom.innerHTML = 'Grp-radius-Medicos';
-                                                    }
-                                                    if (this.idFiltro == 2) {
-                                                        el.dom.innerHTML = 'Grp-radius-Residentes';
-                                                    }
+                                            oncreate: (el) => {
+                                                if (this.idFiltro == 1) {
+                                                    el.dom.innerHTML = 'Grp-radius-Medicos';
+                                                }
+                                                if (this.idFiltro == 2) {
+                                                    el.dom.innerHTML = 'Grp-radius-Residentes';
+                                                }
+                                            },
+                                            onupdate: (el) => {
+                                                if (this.idFiltro == 1) {
+                                                    el.dom.innerHTML = 'Grp-radius-Medicos';
+                                                }
+                                                if (this.idFiltro == 2) {
+                                                    el.dom.innerHTML = 'Grp-radius-Residentes';
                                                 }
                                             }
+                                        }
 
                                         )
 
@@ -103,9 +130,9 @@ class usrMV extends App {
                                         m("div.dropdown.dropleft", [
 
                                             m("div.link-03.lh-0.mg-l-5[id='dropdownMenuButton'][data-toggle='dropdown'][aria-haspopup='true'][aria-expanded='false']", {
-                                                    style: { "cursor": "pointer" },
-                                                    title: "Filtrar"
-                                                },
+                                                style: { "cursor": "pointer" },
+                                                title: "Filtrar"
+                                            },
                                                 m("i.fas.fa-filter.tx-18.pd-5")
                                             ),
                                             m(".dropdown-menu.tx-13[aria-labelledby='dropdownMenuButton']", [
@@ -116,7 +143,7 @@ class usrMV extends App {
                                                     class: 'dropdown-item',
                                                     href: "/administracion/metrovirtual/?idFiltro=1",
                                                     onclick: (e) => {
-                                                        this.reloadData(1);
+
                                                         this.fetchData().then((_data) => {
                                                             this.usuarios = _data;
                                                         });
@@ -128,7 +155,6 @@ class usrMV extends App {
                                                     class: 'dropdown-item',
                                                     href: "/administracion/metrovirtual/?idFiltro=2",
                                                     onclick: (e) => {
-                                                        this.reloadData(2);
                                                         this.fetchData().then((_data) => {
                                                             this.usuarios = _data;
                                                         });
@@ -145,8 +171,20 @@ class usrMV extends App {
 
                             ]),
                             this.vTableUsuarios('table-usr', this.usuarios.data, this.arqTable())
-                        ] : (this.usuarios !== null && (!this.usuarios.status || this.usuarios.status == null)) ? [
-                            m(Errors, { type: (!this.usuarios.status ? 1 : 0), error: this.usuarios })
+                        ] : (this.usuarios !== null && (this.usuarios.status == false || this.usuarios.status == null)) ? [
+                            m(Errors, { type: (this.usuarios.status == false ? 1 : 0), error: this.usuarios.message }),
+                            m(m.route.Link, {
+                                class: 'dropdown-item',
+                                href: "/administracion/pacientes/metrovirtual/?idUsr=1501128480",
+                                onclick: (e) => {
+                                    this.dataUser = null;
+
+
+                                }
+                            }, [
+                                "Grp-radius-Residentes"
+                            ]),
+
                         ] : [
                             m(Loader)
                         ]
@@ -159,12 +197,10 @@ class usrMV extends App {
             m("div.section-nav", {
                 class: (this.usuarios !== null ? '' : 'd-none')
             }, [
-                m("label.nav-label",
-                    App.title + ":"
-                ),
-                m("div.mg-t-10.bg-white", {
 
-                    },
+                m("div.bg-white", {
+
+                },
 
                     m("div.mg-t-10.bg-white",
                         m("div.card-header.pd-t-20.pd-b-0.bd-b-0", [
@@ -176,7 +212,7 @@ class usrMV extends App {
                         m("div.card-body.pd-0", [
                             m("div.pd-t-10.pd-b-0.pd-x-20.d-flex.align-items-baseline", [
                                 m("h2.tx-normal.tx-rubik.mg-b-0.mg-r-5",
-                                    (this.usuarios !== null ? this.usuarios.data.length : 0)
+                                    (this.usuarios !== null && this.usuarios.status == true ? this.usuarios.data.length : 0)
                                 ),
                                 m("div.tx-14", [
                                     m("divv.lh-0.tx-gray-300", 'Resultado(s)')
@@ -194,7 +230,7 @@ class usrMV extends App {
         ];
     }
     vMainProfile() {
-        this.fetchProfile();
+
         return [
             m("div.content.content-components",
                 m("div.container.mg-l-0.mg-r-0", {
@@ -218,8 +254,10 @@ class usrMV extends App {
                     m("h1.df-title.mg-t-20.mg-b-10",
                         App.title + ":"
                     ),
-                    (this.dataUser !== null ? [
-                        m('div.table-responsive', [
+                    (this.dataUser !== null && this.dataUser.status == true) ? [
+                        m('div.table-responsive', {
+
+                        }, [
                             m("table.table.table-bordered.table-sm.tx-14", [
                                 m("thead",
 
@@ -233,8 +271,8 @@ class usrMV extends App {
                                 m("tbody", [
                                     m("tr", [
                                         m("th", {
-                                                style: { "background-color": "#a8bed6" }
-                                            },
+                                            style: { "background-color": "#a8bed6" }
+                                        },
                                             "Nombres Completos:"
                                         ),
                                         m("td[colspan='4']", {
@@ -242,8 +280,8 @@ class usrMV extends App {
 
                                         }, this.dataUser.sn + ' ' + this.dataUser.cn),
                                         m("th", {
-                                                style: { "background-color": "#a8bed6" }
-                                            },
+                                            style: { "background-color": "#a8bed6" }
+                                        },
                                             "Grupo:"
                                         ),
                                         m("td[colspan='4']", {
@@ -255,25 +293,25 @@ class usrMV extends App {
 
                                     m("tr", [
                                         m("th", {
-                                                style: { "background-color": "#a8bed6" }
-                                            },
+                                            style: { "background-color": "#a8bed6" }
+                                        },
                                             "Correo electrónico:"
                                         ),
                                         m("td[colspan='4']", {
-                                                style: { "background-color": "#eaeff5" }
+                                            style: { "background-color": "#eaeff5" }
 
-                                            },
+                                        },
                                             this.dataUser.mail
                                         ),
                                         m("th", {
-                                                style: { "background-color": "#a8bed6" }
-                                            },
+                                            style: { "background-color": "#a8bed6" }
+                                        },
                                             "Historial de Actividad:"
                                         ),
                                         m("td[colspan='4']", {
-                                                style: { "background-color": "#eaeff5" }
+                                            style: { "background-color": "#eaeff5" }
 
-                                            },
+                                        },
                                             m('.tx-12.d-block', 'Creado: ' + this.dataUser.whencreated),
                                             m('.tx-12.d-block', 'Actualizado: ' + this.dataUser.whenchanged),
                                             m('.tx-12.d-block', 'Última Contraseña: ' + this.dataUser.pwdlastset),
@@ -297,14 +335,14 @@ class usrMV extends App {
                                     m("tr.d-print-none", [
 
                                         m("td[colspan='10']", {
-                                                style: { "background-color": "#eaeff5" }
+                                            style: { "background-color": "#eaeff5" }
 
-                                            },
+                                        },
                                             m("ul.nav.nav-tabs[id='myTab'][role='tablist']", {}, [
                                                 m("li.nav-item",
                                                     m("a.nav-link[id='home-tab'][data-toggle='tab'][href='#home'][role='tab'][aria-controls='home'][aria-selected='true']", {
-                                                            style: { "color": "#476ba3" }
-                                                        },
+                                                        style: { "color": "#476ba3" }
+                                                    },
                                                         m("i.fas.fa-file-alt.pd-1.mg-r-2"),
 
                                                         " HOJA 005"
@@ -312,8 +350,8 @@ class usrMV extends App {
                                                 ),
                                                 m("li.nav-item",
                                                     m("a.nav-link[id='home-muestra'][data-toggle='tab'][href='#muestra'][role='tab'][aria-controls='muestra']", {
-                                                            style: { "color": "#476ba3" }
-                                                        },
+                                                        style: { "color": "#476ba3" }
+                                                    },
                                                         m("i.fas.fa-edit.pd-1.mg-r-2"),
 
                                                         " TOMA DE MUESTRA "
@@ -321,8 +359,8 @@ class usrMV extends App {
                                                 ),
                                                 m("li.nav-item",
                                                     m("a.nav-link[id='home-recep'][data-toggle='tab'][href='#recep'][role='tab'][aria-controls='recep']", {
-                                                            style: { "color": "#476ba3" }
-                                                        },
+                                                        style: { "color": "#476ba3" }
+                                                    },
                                                         m("i.fas.fa-inbox.pd-1.mg-r-2"),
 
                                                         " RECEP. DE MUESTRA "
@@ -330,11 +368,22 @@ class usrMV extends App {
                                                 ),
                                                 m("li.nav-item",
                                                     m("a.nav-link[id='home-comment'][data-toggle='tab'][href='#comment'][role='tab'][aria-controls='comment']", {
-                                                            style: { "color": "#476ba3" }
-                                                        },
+                                                        style: { "color": "#476ba3" }
+                                                    },
                                                         m("i.fas.fa-inbox.pd-1.mg-r-2"),
 
-                                                        " COMENTARIOS "
+                                                        " COMENTARIOS ",
+                                                        m(m.route.Link, {
+                                                            class: 'dropdown-item',
+                                                            href: "/administracion/pacientes/metrovirtual/?idFiltro=2",
+                                                            onclick: (e) => {
+                                                                this.usuarios = null;
+
+                                                            }
+                                                        }, [
+                                                            "Grp-radius-Residentes"
+                                                        ]),
+
                                                     )
                                                 ),
 
@@ -371,11 +420,11 @@ class usrMV extends App {
                                                         m("div.mg-0.mg-t-5.text-right", [
 
                                                             m("button.btn.btn-xs.btn-primary.mg-l-2.tx-semibold[type='button']", {
-                                                                onclick: function() {
+                                                                onclick: function () {
 
                                                                 },
                                                             }, [
-                                                                m("i.fas.fa-paper-plane.mg-r-5", )
+                                                                m("i.fas.fa-paper-plane.mg-r-5",)
                                                             ], "Guardar"),
 
 
@@ -401,55 +450,88 @@ class usrMV extends App {
                                 ])
                             ])
                         ])
+                    ] : (this.dataUser !== null && (this.dataUser.status == false || this.dataUser.status == null)) ? [
+                        m(Errors, { type: (this.dataUser.status == false ? 1 : 0), error: this.dataUser.message }),
+
                     ] : [
                         m(Loader)
-                    ])
+                    ]
+
                 ])
             ),
         ];
     }
     vMenu() {
-        return m(SidebarAdmin, { page: 'administracion/metrovirtual' });
+        return m(SidebarAdmin, { page: 'administracion/pacientes/metrovirtual' });
     }
-    reloadData(idFiltro) {
-        this.usuarios = null;
-        this.idFiltro = idFiltro;
-    }
+
     fetchProfile() {
 
-        let __this = this;
+        let _queryString = '?idFiltro=2';
 
-        if (__this.usuarios !== null && __this.usuarios.status) {
-            return __this.usuarios.data.map(function(_val, _i, _contentData) {
-                if (__this.idUsr == _val.samaccountname) {
-                    __this.dataUser = _val;
-                }
+        try {
+
+
+            return m.request({
+                method: "GET",
+                url: ApiHTTP.apiSoaUrl + "/v1/sso/usuarios/metrovirtual" + _queryString,
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    'apikey': 'kLrgbhKsy7Wi5WeWleqTwmjA0BKtW8Mb'
+                },
+                extract: function (xhr) { return { status: xhr.status, body: xhr.responseText } }
+
             })
+                .then(function (response) {
+                    if (response.status !== 200) {
+                        throw new ErrorMetroplus("Error HTTP", { cause: 'La respuesta del servidor no es correcta. Status Response:' + response.status });
+                    }
+                    return response.body;
+                });
+
+        } catch (error) {
+
+            throw new ErrorMetroplus("Error APP", { cause: error.message });
+
+
         }
 
 
     }
     fetchData() {
 
+
         let _queryString = '?idFiltro=' + this.idFiltro;
 
-        return m.request({
+        try {
+
+
+            return m.request({
                 method: "GET",
-                url: ApiHTTP.apiUrl + "/v2/sso/usuarios/metroplus" + _queryString,
+                url: ApiHTTP.apiSoaUrl + "/v1/sso/usuarios/metrovirtual" + _queryString,
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
-                    'Authorization': localStorage.getItem('userToken')
+                    'apikey': 'kLrgbhKsy7Wi5WeWleqTwmjA0BKtW8Mb'
                 },
+                extract: function (xhr) { return { status: xhr.status, body: xhr.responseText } }
+
             })
-            .then(function(result) {
-                return result;
-            })
-            .catch(function(e) {
-                return {
-                    'status': null,
-                    'message': e
-                };
-            });
+                .then(function (response) {
+                    if (response.status !== 200) {
+                        throw new ErrorMetroplus("Error HTTP", { cause: 'La respuesta del servidor no es correcta. Status Response:' + response.status });
+                    }
+                    return response.body;
+                });
+
+        } catch (error) {
+
+            throw new ErrorMetroplus("Error APP", { cause: error.message });
+
+
+        }
+
+
+
 
     }
     arqTable() {
@@ -484,83 +566,83 @@ class usrMV extends App {
             cache: false,
             destroy: true,
             columns: [{
-                    title: "N° : ",
-                },
-                {
-                    title: "Usuario AD:",
-                },
-                {
-                    title: "Nombres:",
-                },
-                {
-                    title: "Apellidos:",
-                },
-                {
-                    title: "E-mail:",
-                },
-                {
-                    title: "Opciones:",
-                }
+                title: "N° : ",
+            },
+            {
+                title: "Usuario AD:",
+            },
+            {
+                title: "Nombres:",
+            },
+            {
+                title: "Apellidos:",
+            },
+            {
+                title: "E-mail:",
+            },
+            {
+                title: "Opciones:",
+            }
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                    visible: true,
-                    aTargets: [0],
-                    orderable: false,
+                mRender: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.samaccountname;
-                    },
-                    visible: true,
-                    aTargets: [1],
-                    orderable: true,
-
+                visible: true,
+                aTargets: [0],
+                orderable: false,
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.samaccountname;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.sn;
+                visible: true,
+                aTargets: [1],
+                orderable: true,
 
-                    },
-                    visible: true,
-                    aTargets: [2],
-                    orderable: true,
-
-                }, {
-                    mRender: function(data, type, full) {
-                        return full.cn;
-
-                    },
-                    visible: true,
-                    aTargets: [3],
-                    orderable: true,
-
-                }, {
-                    mRender: function(data, type, full) {
-                        return full.mail;
-
-                    },
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.sn;
 
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return ''
+                visible: true,
+                aTargets: [2],
+                orderable: true,
 
-                    },
-                    visible: true,
-                    aTargets: [5],
-                    orderable: true,
+            }, {
+                mRender: function (data, type, full) {
+                    return full.cn;
 
-                }
+                },
+                visible: true,
+                aTargets: [3],
+                orderable: true,
+
+            }, {
+                mRender: function (data, type, full) {
+                    return full.mail;
+
+                },
+                visible: true,
+                aTargets: [4],
+                orderable: true,
+
+            },
+            {
+                mRender: function (data, type, full) {
+                    return ''
+
+                },
+                visible: true,
+                aTargets: [5],
+                orderable: true,
+
+            }
 
 
             ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
                 m.mount(nRow, {
                     view: () => {
@@ -581,8 +663,8 @@ class usrMV extends App {
                                 aData.mail,
                                 m('br'),
                                 m("span.tx-12[data-toggle='collapse'][href='#collapseExample_" + aData.samaccountname + "'][role='button'][aria-expanded='false'][aria-controls='collapseExample_" + aData.samaccountname + "']", {
-                                        style: 'cursor:pointer;'
-                                    },
+                                    style: 'cursor:pointer;'
+                                },
                                     'Creado: ' + aData.whencreated
                                 ),
                                 m(".collapse[id='collapseExample_" + aData.samaccountname + "']", [

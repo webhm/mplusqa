@@ -5619,7 +5619,7 @@ class PacientesUCI extends App {
                                     class: (oData.status == 2 && FecthUci.loaderSecciones == true ? '' : 'd-none'),
                                 }, [
                                     m("button.btn.btn-xs.btn-block.btn-success.tx-13.tx-semibold[type='button']", {
-                                        disabled: (oData.status == 2 && oData.numeroTurno == PacientesUCI.numeroTurno && FecthUci.loaderSecciones == true ? '' : 'disabled'),
+                                        disabled: (oData.status == 2 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
                                         onclick: () => {
                                             FecthUci.loaderSecciones = false;
                                             oData.reAbrirTurno();
@@ -5649,7 +5649,7 @@ class PacientesUCI extends App {
                             return [
                                 m('div.text-center', [
                                     m("button.btn.btn-xs.btn-block.btn-warning.tx-13.tx-semibold[type='button']", {
-                                        disabled: (oData.status == 1 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
+                                        disabled: ((oData.status == 1 && FecthUci.loaderSecciones == true || (oData.usuarioTurno != PacientesUCI.usuarioTurno && FecthUci.loaderSecciones == true)) ? '' : 'disabled'),
 
                                         onclick: () => {
 

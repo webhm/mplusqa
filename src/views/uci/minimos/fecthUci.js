@@ -38,21 +38,31 @@ class FecthUci {
 
     static setTurnosAbiertos(dataTurnos) {
 
+        let abiertos = false;
+
         dataTurnos.map((_v) => {
-            TurnosUci.setTurno({
-                fechaHoraTurno: _v.FECHA,
-                usuarioTurno: _v.USUARIO,
-                numeroHistoriaClinica: _v.NHC,
-                numeroAtencion: _v.ATENCION,
-                numeroTurno: parseInt(_v.PK_TURNO),
-                paciente: 'PACIENTE PRUEBA MV',
-                especialidad: 'MEDICINA INTERNA',
-                statusHora: _v.STATUS_HORA,
-                status: 4,
-                gestion: 0,
-            });
-            TurnosUci.turnos.push(TurnosUci.nuevoTurno);
+            if (parseInt(_v.STATUS) == 1) {
+                abiertos = true;
+            }
         });
+
+        if (abiertos) {
+            dataTurnos.map((_v) => {
+                TurnosUci.setTurno({
+                    fechaHoraTurno: _v.FECHA,
+                    usuarioTurno: _v.USUARIO,
+                    numeroHistoriaClinica: _v.NHC,
+                    numeroAtencion: _v.ATENCION,
+                    numeroTurno: parseInt(_v.PK_TURNO),
+                    paciente: 'PACIENTE PRUEBA MV',
+                    especialidad: 'MEDICINA INTERNA',
+                    statusHora: _v.STATUS_HORA,
+                    status: parseInt(_v.STATUS),
+                    gestion: 0,
+                });
+                TurnosUci.turnos.push(TurnosUci.nuevoTurno);
+            });
+        }
 
         return TurnosUci.turnos;
 
@@ -438,8 +448,7 @@ class FecthUci {
                     numeroTurno: res.data.numeroTurno
                 });
 
-                // Filtro Turnos para horario HS
-                // Filtro Turnos para horario HS
+
                 if (moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 00:00'), 'DD-MM-YYYY HH:mm').unix() && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix()) {
 
 
@@ -458,19 +467,19 @@ class FecthUci {
 
                     // Inicia siguientes 24hrs
                     // Existen turnos abiertos?
+                    let turnosAbiertos = res.data.dataTurnos.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix() && (v.STATUS == '1' || v.STATUS == '2') && v.TIPO_BIT == 'UCIMINIMOS').sort((a, b) => moment(moment(a.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() - moment(moment(b.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix());
 
+                    let ta = [turnosAbiertos[turnosAbiertos.length - 1], turnosAbiertos[turnosAbiertos.length - 2], turnosAbiertos[turnosAbiertos.length - 3]];
 
-                    let _ayer = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
+                    TurnosUci.turnos = FecthUci.setTurnosAbiertos(ta);
 
-                    let turnosHoy = res.data.dataTurnos.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(_ayer + ' 07:59', 'DD-MM-YYYY HH:mm').unix() && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix() && v.STATUS == '1' && v.TIPO_BIT == 'UCIMINIMOS');
-
-                    if (turnosHoy.length > 0) {
-
-                        TurnosUci.turnos = FecthUci.setTurnos(turnosHoy);
+                    if (TurnosUci.turnos.length > 0) {
+                        console.log('ta', ta)
                         PacientesUCI.vReloadTable('table-turnos', TurnosUci.getTurnos());
                         FecthUci.loadSecciones();
 
                     } else {
+
                         // Filter Turnos de Hoy
                         let turnosHoy = res.data.dataTurnos.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix() && v.TIPO_BIT == 'UCIMINIMOS');
 

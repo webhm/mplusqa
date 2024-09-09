@@ -5501,7 +5501,7 @@ class PacientesUCI extends App {
                                         onclick: () => {
 
                                             if (oData.usuarioTurno != PacientesUCI.usuarioTurno) {
-                                                $.alert('Es necesario ausmir antes de continuar.');
+                                                $.alert('Es necesario asumir antes de continuar.');
                                             } else {
 
 
@@ -5596,7 +5596,7 @@ class PacientesUCI extends App {
                                         disabled: ((oData.status == 1 || oData.status == 4) && FecthUci.loaderSecciones == true ? '' : 'disabled'),
                                         onclick: () => {
                                             if (oData.usuarioTurno != PacientesUCI.usuarioTurno) {
-                                                $.alert('Es necesario ausmir antes de continuar.');
+                                                $.alert('Es necesario asumir antes de continuar.');
                                             } else {
                                                 FecthUci.loaderSecciones = false;
                                                 oData.cerrarTurno();
@@ -5614,10 +5614,10 @@ class PacientesUCI extends App {
                                     class: (oData.status == 2 && FecthUci.loaderSecciones == true ? '' : 'd-none'),
                                 }, [
                                     m("button.btn.btn-xs.btn-block.btn-success.tx-13.tx-semibold[type='button']", {
-                                        disabled: (oData.status == 2 && oData.numeroTurno == PacientesUCI.numeroTurno && FecthUci.loaderSecciones == true ? '' : 'disabled'),
+                                        disabled: (oData.status == 2 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
                                         onclick: () => {
                                             if (oData.usuarioTurno != PacientesUCI.usuarioTurno) {
-                                                $.alert('Es necesario ausmir antes de continuar.');
+                                                $.alert('Es necesario asumir antes de continuar.');
                                             } else {
                                                 FecthUci.loaderSecciones = false;
                                                 oData.reAbrirTurno();
@@ -5649,8 +5649,7 @@ class PacientesUCI extends App {
                             return [
                                 m('div.text-center', [
                                     m("button.btn.btn-xs.btn-block.btn-warning.tx-13.tx-semibold[type='button']", {
-                                        disabled: (oData.status == 1 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
-
+                                        disabled: ((oData.status == 1 && FecthUci.loaderSecciones == true || (oData.usuarioTurno != PacientesUCI.usuarioTurno && FecthUci.loaderSecciones == true)) ? '' : 'disabled'),
                                         onclick: () => {
 
                                             $.confirm({
@@ -5715,7 +5714,7 @@ class PacientesUCI extends App {
                                         onclick: () => {
 
                                             if (oData.usuarioTurno != PacientesUCI.usuarioTurno) {
-                                                $.alert('Es necesario ausmir antes de continuar.');
+                                                $.alert('Es necesario asumir antes de continuar.');
                                             } else {
                                                 $.confirm({
                                                     title: '¿Cancelar?',
