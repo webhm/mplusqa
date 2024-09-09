@@ -218,15 +218,15 @@ class PacientesUCIHistorial extends App {
     static vMain() {
         return [
             m("div.content.content-components", {
-                    style: { "margin-right": "0px", "margin-left": "0px", "margin-top": "0px" }
-                },
+                style: { "margin-right": "0px", "margin-left": "0px", "margin-top": "0px" }
+            },
                 m("div.container.mg-l-0.mg-r-0", {
                     style: { "max-width": "100%" }
                 }, [
                     m("table.table.table-bordered.table-sm.tx-14", [
                         m("thead.bd.bd-2", {
-                                style: { "border-color": "#5173a1" }
-                            },
+                            style: { "border-color": "#5173a1" }
+                        },
 
                             m("tr.tx-uppercase", {
                                 style: { "background-color": "#CCCCFF", }
@@ -1349,17 +1349,17 @@ class PacientesUCIHistorial extends App {
 
         VentilatoriosUci.sColumns = [];
         VentilatoriosUci.sColumns = [{
-                title: "Turno: ",
-            },
-            {
-                title: "Order Nro : ",
-            },
-            {
-                title: "Turno: ",
-            },
-            {
-                title: "Ventilatorio:",
-            },
+            title: "Turno: ",
+        },
+        {
+            title: "Order Nro : ",
+        },
+        {
+            title: "Turno: ",
+        },
+        {
+            title: "Ventilatorio:",
+        },
 
         ];
 
@@ -1382,63 +1382,64 @@ class PacientesUCIHistorial extends App {
 
         VentilatoriosUci.sRows = [];
         VentilatoriosUci.sRows = [{
-                mRender: function(data, type, full) {
-                    return full.fechaHoraTurno;
-                },
-                visible: false,
-                aTargets: [0],
-                orderable: true,
+            mRender: function (data, type, full) {
+                return full.fechaHoraTurno;
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.orden;
-                },
-                visible: false,
-                aTargets: [1],
-                orderable: true,
-
+            visible: false,
+            aTargets: [0],
+            orderable: true,
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.orden;
             },
-            {
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCIHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                        },
-                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                    ),
-                                ])
+            visible: false,
+            aTargets: [1],
+            orderable: true,
 
-                            ]
-                        }
-                    });
-                },
-                width: '15%',
-                visible: false,
-                aTargets: [2],
-                orderable: false,
+        },
+        {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div.text-center.pd-5', [
+                                m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                    class: (PacientesUCIHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                },
+                                    (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                ),
+                            ])
 
+                        ]
+                    }
+                });
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.ventilatorio;
-                },
+            width: '15%',
+            visible: false,
+            aTargets: [2],
+            orderable: false,
 
-                visible: true,
-                aTargets: [3],
-                orderable: true,
-
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.ventilatorio;
             },
+
+            visible: true,
+            aTargets: [3],
+            orderable: true,
+
+        },
         ];
 
         // Ordenar Filas
         for (let index = 0; index < orderCol[0]; index++) {
+
             VentilatoriosUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -1457,7 +1458,8 @@ class PacientesUCIHistorial extends App {
 
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].hora !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].hora;
+                                                        el.dom.innerHTML = (resultNro[_i].condicion == undefined ? '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>' : resultNro[_i].hora);
+
                                                     } else {
                                                         el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
                                                     }
@@ -1479,7 +1481,7 @@ class PacientesUCIHistorial extends App {
 
             });
             VentilatoriosUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -1498,7 +1500,8 @@ class PacientesUCIHistorial extends App {
 
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].condicion !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].condicion;
+                                                        el.dom.innerHTML = (resultNro[_i].condicion == undefined ? '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>' : resultNro[_i].condicion);
+
                                                     } else {
                                                         el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
                                                     }
@@ -1953,17 +1956,17 @@ class PacientesUCIHistorial extends App {
 
         GasesUci.sColumns = [];
         GasesUci.sColumns = [{
-                title: "Turno: ",
-            },
-            {
-                title: "Order Nro : ",
-            },
-            {
-                title: "Turno: ",
-            },
-            {
-                title: "Gases:",
-            },
+            title: "Turno: ",
+        },
+        {
+            title: "Order Nro : ",
+        },
+        {
+            title: "Turno: ",
+        },
+        {
+            title: "Gases:",
+        },
 
         ];
 
@@ -1989,75 +1992,75 @@ class PacientesUCIHistorial extends App {
 
         GasesUci.sRows = [];
         GasesUci.sRows = [{
-                mRender: function(data, type, full) {
-                    return full.fechaHoraTurno;
-                },
-                visible: false,
-                aTargets: [0],
-                orderable: true,
+            mRender: function (data, type, full) {
+                return full.fechaHoraTurno;
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.orden;
-                },
-                visible: false,
-                aTargets: [1],
-                orderable: true,
-
+            visible: false,
+            aTargets: [0],
+            orderable: true,
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.orden;
             },
-            {
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCIHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                        },
-                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                    ),
-                                ])
+            visible: false,
+            aTargets: [1],
+            orderable: true,
 
-                            ]
-                        }
-                    });
-                },
-                width: '15%',
-                visible: false,
-                aTargets: [2],
-                orderable: false,
+        },
+        {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div.text-center.pd-5', [
+                                m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                    class: (PacientesUCIHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                },
+                                    (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                ),
+                            ])
 
+                        ]
+                    }
+                });
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.gas;
-                },
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-                                    id: 'Gases_' + oData.id,
-                                }, [oData.gas]),
+            width: '15%',
+            visible: false,
+            aTargets: [2],
+            orderable: false,
 
-                            ]
-                        }
-                    });
-                },
-
-                visible: true,
-                aTargets: [3],
-                orderable: true,
-
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.gas;
             },
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div', {
+                                id: 'Gases_' + oData.id,
+                            }, [oData.gas]),
+
+                        ]
+                    }
+                });
+            },
+
+            visible: true,
+            aTargets: [3],
+            orderable: true,
+
+        },
         ];
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
             GasesUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -2097,7 +2100,7 @@ class PacientesUCIHistorial extends App {
 
             });
             GasesUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -2138,7 +2141,7 @@ class PacientesUCIHistorial extends App {
         }
 
         GasesUci.sRows.push({
-            fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                 return m.mount(nTd, {
                     view: () => {
                         return [
@@ -2686,17 +2689,17 @@ class PacientesUCIHistorial extends App {
 
         MedidasUci.sColumns = [];
         MedidasUci.sColumns = [{
-                title: "Turno: ",
-            },
-            {
-                title: "Order Nro : ",
-            },
-            {
-                title: "Turno: ",
-            },
-            {
-                title: "Nombre y Unidad de Medida:",
-            },
+            title: "Turno: ",
+        },
+        {
+            title: "Order Nro : ",
+        },
+        {
+            title: "Turno: ",
+        },
+        {
+            title: "Nombre y Unidad de Medida:",
+        },
 
         ];
 
@@ -2722,75 +2725,75 @@ class PacientesUCIHistorial extends App {
 
         MedidasUci.sRows = [];
         MedidasUci.sRows = [{
-                mRender: function(data, type, full) {
-                    return full.fechaHoraTurno;
-                },
-                visible: false,
-                aTargets: [0],
-                orderable: true,
+            mRender: function (data, type, full) {
+                return full.fechaHoraTurno;
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.orden;
-                },
-                visible: false,
-                aTargets: [1],
-                orderable: true,
-
+            visible: false,
+            aTargets: [0],
+            orderable: true,
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.orden;
             },
-            {
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCIHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                        },
-                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                    ),
-                                ])
+            visible: false,
+            aTargets: [1],
+            orderable: true,
 
-                            ]
-                        }
-                    });
-                },
-                width: '15%',
-                visible: false,
-                aTargets: [2],
-                orderable: false,
+        },
+        {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div.text-center.pd-5', [
+                                m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                    class: (PacientesUCIHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                },
+                                    (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                ),
+                            ])
 
+                        ]
+                    }
+                });
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.medida;
-                },
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-                                    id: 'MedidasUci_' + oData.id,
-                                }, [oData.medida]),
+            width: '15%',
+            visible: false,
+            aTargets: [2],
+            orderable: false,
 
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: [3],
-                orderable: true,
-
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.medida;
             },
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div', {
+                                id: 'MedidasUci_' + oData.id,
+                            }, [oData.medida]),
+
+                        ]
+                    }
+                });
+            },
+            visible: true,
+            aTargets: [3],
+            orderable: true,
+
+        },
         ];
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
 
             MedidasUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -2833,7 +2836,7 @@ class PacientesUCIHistorial extends App {
                 orderable: true,
             });
             MedidasUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -2885,7 +2888,7 @@ class PacientesUCIHistorial extends App {
         }
 
         MedidasUci.sRows.push({
-            fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                 return m.mount(nTd, {
                     view: () => {
                         return [
@@ -3225,17 +3228,17 @@ class PacientesUCIHistorial extends App {
 
         ComburTestUci.sColumns = [];
         ComburTestUci.sColumns = [{
-                title: "Turno: ",
-            },
-            {
-                title: "Order Nro : ",
-            },
-            {
-                title: "Turno: ",
-            },
-            {
-                title: "Medida:",
-            },
+            title: "Turno: ",
+        },
+        {
+            title: "Order Nro : ",
+        },
+        {
+            title: "Turno: ",
+        },
+        {
+            title: "Medida:",
+        },
 
         ];
 
@@ -3261,75 +3264,75 @@ class PacientesUCIHistorial extends App {
 
         ComburTestUci.sRows = [];
         ComburTestUci.sRows = [{
-                mRender: function(data, type, full) {
-                    return full.fechaHoraTurno;
-                },
-                visible: false,
-                aTargets: [0],
-                orderable: true,
+            mRender: function (data, type, full) {
+                return full.fechaHoraTurno;
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.orden;
-                },
-                visible: false,
-                aTargets: [1],
-                orderable: true,
-
+            visible: false,
+            aTargets: [0],
+            orderable: true,
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.orden;
             },
-            {
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCIHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                        },
-                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                    ),
-                                ])
+            visible: false,
+            aTargets: [1],
+            orderable: true,
 
-                            ]
-                        }
-                    });
-                },
-                width: '15%',
-                visible: false,
-                aTargets: [2],
-                orderable: false,
+        },
+        {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div.text-center.pd-5', [
+                                m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                    class: (PacientesUCIHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                },
+                                    (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                ),
+                            ])
 
+                        ]
+                    }
+                });
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.medida;
-                },
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-                                    id: 'ComburTest_' + oData.id,
-                                }, [oData.medida]),
+            width: '15%',
+            visible: false,
+            aTargets: [2],
+            orderable: false,
 
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: [3],
-                orderable: true,
-
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.medida;
             },
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div', {
+                                id: 'ComburTest_' + oData.id,
+                            }, [oData.medida]),
+
+                        ]
+                    }
+                });
+            },
+            visible: true,
+            aTargets: [3],
+            orderable: true,
+
+        },
         ];
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
 
             ComburTestUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -3372,7 +3375,7 @@ class PacientesUCIHistorial extends App {
                 orderable: true,
             });
             ComburTestUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -3419,7 +3422,7 @@ class PacientesUCIHistorial extends App {
         }
 
         ComburTestUci.sRows.push({
-            fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                 return m.mount(nTd, {
                     view: () => {
                         return []
@@ -3572,17 +3575,17 @@ class PacientesUCIHistorial extends App {
 
         GasesMedUci.sColumns = [];
         GasesMedUci.sColumns = [{
-                title: "Turno: ",
-            },
-            {
-                title: "Order Nro : ",
-            },
-            {
-                title: "Turno: ",
-            },
-            {
-                title: "Medida:",
-            },
+            title: "Turno: ",
+        },
+        {
+            title: "Order Nro : ",
+        },
+        {
+            title: "Turno: ",
+        },
+        {
+            title: "Medida:",
+        },
 
         ];
 
@@ -3608,75 +3611,75 @@ class PacientesUCIHistorial extends App {
 
         GasesMedUci.sRows = [];
         GasesMedUci.sRows = [{
-                mRender: function(data, type, full) {
-                    return full.fechaHoraTurno;
-                },
-                visible: false,
-                aTargets: [0],
-                orderable: true,
+            mRender: function (data, type, full) {
+                return full.fechaHoraTurno;
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.orden;
-                },
-                visible: false,
-                aTargets: [1],
-                orderable: true,
-
+            visible: false,
+            aTargets: [0],
+            orderable: true,
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.orden;
             },
-            {
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCIHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                        },
-                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                    ),
-                                ])
+            visible: false,
+            aTargets: [1],
+            orderable: true,
 
-                            ]
-                        }
-                    });
-                },
-                width: '15%',
-                visible: false,
-                aTargets: [2],
-                orderable: false,
+        },
+        {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div.text-center.pd-5', [
+                                m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                    class: (PacientesUCIHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                },
+                                    (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                ),
+                            ])
 
+                        ]
+                    }
+                });
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.medida;
-                },
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-                                    id: 'GasesMed_' + oData.id,
-                                }, [oData.medida]),
+            width: '15%',
+            visible: false,
+            aTargets: [2],
+            orderable: false,
 
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: [3],
-                orderable: true,
-
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.medida;
             },
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div', {
+                                id: 'GasesMed_' + oData.id,
+                            }, [oData.medida]),
+
+                        ]
+                    }
+                });
+            },
+            visible: true,
+            aTargets: [3],
+            orderable: true,
+
+        },
         ];
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
 
             GasesMedUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -3719,7 +3722,7 @@ class PacientesUCIHistorial extends App {
                 orderable: true,
             });
             GasesMedUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -3766,7 +3769,7 @@ class PacientesUCIHistorial extends App {
         }
 
         GasesMedUci.sRows.push({
-            fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                 return m.mount(nTd, {
                     view: () => {
                         return [
@@ -3898,7 +3901,7 @@ class PacientesUCIHistorial extends App {
             FecthUci.dataHistorial.filter((obj) => {
                 let _obj = JSON.parse(obj.DATASECCION);
                 if (_obj.id === option.id && obj.SECCION == 'CuidadosGenerales') {
-                    console.log('c', obj)
+
                     res.push(_obj);
                 }
             });
