@@ -471,6 +471,10 @@ class FecthUci {
 
                     let ta = [turnosAbiertos[turnosAbiertos.length - 1], turnosAbiertos[turnosAbiertos.length - 2], turnosAbiertos[turnosAbiertos.length - 3]];
 
+                    ta = ta.filter(function (element) {
+                        return element !== undefined;
+                    });
+
                     TurnosUci.turnos = FecthUci.setTurnosAbiertos(ta);
 
                     if (TurnosUci.turnos.length > 0) {
