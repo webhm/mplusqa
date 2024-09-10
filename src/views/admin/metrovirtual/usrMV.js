@@ -15,56 +15,55 @@ class usrMV extends App {
     usuarios = null;
     dataUser = null;
     idUsr = null;
-    idFiltro = 1;
+    idFiltro = null;
     constructor(_data) {
         super();
         if (App.isAuthenticated() && App.hasProfile('PERFIL_ADM_PACIENTES_METROVIRTUAL')) {
             App.setTitle("Pacientes MetroVirtual");
             this.view = this.page;
         }
+    }
+
+    onupdate(_data) {
+
+        if (_data.attrs.idFiltro !== undefined) {
+            this.idUsr = null;
+            this.idFiltro = _data.attrs.idFiltro;
+            this.loadUsuarios();
+        }
+
+        if (_data.attrs.idUsr !== undefined) {
+            this.idFiltro = null;
+            this.idUsr = _data.attrs.idUsr;
+            this.loadProfile();
+        }
 
 
     }
 
-    onupdate(_data) {
-        console.log(44, _data)
-
-
-        if (_data.attrs.idUsr !== undefined && this.idUsr == null) {
-            this.idUsr = _data.attrs.idUsr;
-        } else {
-            this.idUsr = null;
-        }
-
-        if (_data.attrs.idFiltro !== undefined && _data.attrs.idFiltro !== 1) {
-            this.idFiltro = _data.attrs.idFiltro;
-        } else {
+    loadUsuarios() {
+        if (this.idFiltro == null) {
             this.idFiltro = 1;
         }
-
-        if (this.idUsr !== null && this.dataUser == null) {
-            this.fetchProfile().then((_data) => {
-                this.dataUser = _data;
-            }).catch((err) => {
-                this.dataUser = { status: false, message: err.message };
-                console.error(err)
-            });
-
-        }
-
-        if (this.idFiltro !== null && this.usuarios == null) {
+        if (this.idFiltro !== null && this.idUsr == null && this.usuarios == null) {
             this.fetchData().then((_data) => {
                 this.usuarios = _data;
             }).catch((err) => {
                 this.usuarios = { status: false, message: err.message };
                 console.error(err)
             });
-
         }
+    }
 
-
-
-
+    loadProfile() {
+        if (this.idUsr !== null && this.idFiltro == null && this.dataUser == null) {
+            this.fetchProfile().then((_data) => {
+                this.dataUser = _data;
+            }).catch((err) => {
+                this.dataUser = { status: false, message: err.message };
+                console.error(err)
+            });
+        }
     }
 
 
@@ -141,24 +140,15 @@ class usrMV extends App {
                                                 ),
                                                 m(m.route.Link, {
                                                     class: 'dropdown-item',
-                                                    href: "/administracion/metrovirtual/?idFiltro=1",
-                                                    onclick: (e) => {
+                                                    href: "/administracion/pacientes/metrovirtual/?idFiltro=1",
 
-                                                        this.fetchData().then((_data) => {
-                                                            this.usuarios = _data;
-                                                        });
-                                                    }
                                                 }, [
                                                     "Grp-radius-Medicos"
                                                 ]),
                                                 m(m.route.Link, {
                                                     class: 'dropdown-item',
-                                                    href: "/administracion/metrovirtual/?idFiltro=2",
-                                                    onclick: (e) => {
-                                                        this.fetchData().then((_data) => {
-                                                            this.usuarios = _data;
-                                                        });
-                                                    }
+                                                    href: "/administracion/pacientes/metrovirtual/?idFiltro=2",
+
                                                 }, [
                                                     "Grp-radius-Residentes"
                                                 ]),
@@ -474,15 +464,17 @@ class usrMV extends App {
 
             return m.request({
                 method: "GET",
-                url: ApiHTTP.apiSoaUrl + "/v1/sso/usuarios/metrovirtual" + _queryString,
+                url: ApiHTTP.apiSoaUrl + "/v1/sso" + _queryString,
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
                     'apikey': 'kLrgbhKsy7Wi5WeWleqTwmjA0BKtW8Mb'
-                },
-                extract: function (xhr) { return { status: xhr.status, body: xhr.responseText } }
 
+                },
+                extract: function (xhr) {
+                    return { status: xhr.status, body: JSON.parse(xhr.responseText) }
+                }
             })
-                .then(function (response) {
+                .then((response) => {
                     if (response.status !== 200) {
                         throw new ErrorMetroplus("Error HTTP", { cause: 'La respuesta del servidor no es correcta. Status Response:' + response.status });
                     }
@@ -508,12 +500,17 @@ class usrMV extends App {
 
             return m.request({
                 method: "GET",
-                url: ApiHTTP.apiSoaUrl + "/v1/sso/usuarios/metrovirtual" + _queryString,
+                url: ApiHTTP.apiSoaUrl + "/v1/sso" + _queryString,
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
                     'apikey': 'kLrgbhKsy7Wi5WeWleqTwmjA0BKtW8Mb'
                 },
-                extract: function (xhr) { return { status: xhr.status, body: xhr.responseText } }
+                extract: function (xhr) {
+                    return {
+                        status: xhr.status,
+                        body: JSON.parse(xhr.responseText)
+                    }
+                }
 
             })
                 .then(function (response) {
