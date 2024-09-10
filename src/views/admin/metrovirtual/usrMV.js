@@ -24,46 +24,106 @@ class usrMV extends App {
         }
     }
 
-    onupdate(_data) {
+    oncreate(_data) {
 
+        // Set params URL
         if (_data.attrs.idFiltro !== undefined) {
-            this.idUsr = null;
             this.idFiltro = _data.attrs.idFiltro;
-            this.loadUsuarios();
         }
 
         if (_data.attrs.idUsr !== undefined) {
-            this.idFiltro = null;
             this.idUsr = _data.attrs.idUsr;
+        }
+
+        // Carga busqueda de usuarios por filtro en URL
+        if (_data.attrs.idFiltro !== undefined && _data.attrs.idUsr == undefined) {
+            this.loadUsuarios();
+        }
+
+        // Carga busqueda de usuarios por filtro por default
+        if (_data.attrs.idFiltro == undefined && _data.attrs.idUsr == undefined) {
+            this.idFiltro = 1;
+            this.loadUsuarios();
+        }
+
+        // Carga perfil de usario por PARAM URL
+        if (_data.attrs.idUsr !== undefined && _data.attrs.idFiltro == undefined) {
             this.loadProfile();
         }
 
 
     }
 
+    onupdate(_data) {
+
+        // Set para filtros
+        if (_data.attrs.idFiltro !== undefined && _data.attrs.idUsr == undefined && this.idFiltro == null) {
+
+            console.log(1)
+
+            if (_data.attrs.idFiltro !== undefined) {
+                this.idFiltro = _data.attrs.idFiltro;
+            }
+
+            // Carga busqueda de usuarios por filtro en URL
+            if (_data.attrs.idFiltro !== undefined && _data.attrs.idUsr == undefined) {
+                this.idFiltro = _data.attrs.idFiltro;
+                this.loadUsuarios();
+            }
+
+            // Carga busqueda de usuarios por filtro por default
+            if (_data.attrs.idFiltro == undefined && _data.attrs.idUsr == undefined) {
+                this.idFiltro = 1;
+                this.loadUsuarios();
+            }
+
+
+        }
+
+        // Set para idUsr
+        if (_data.attrs.idUsr !== undefined && _data.attrs.idFiltro == undefined && this.idUsr == null) {
+
+            console.log(2)
+
+            if (_data.attrs.idUsr !== undefined) {
+                this.idUsr = _data.attrs.idUsr;
+            }
+
+            // Carga perfil de usario por PARAM URL
+            if (_data.attrs.idUsr !== undefined && _data.attrs.idFiltro == undefined) {
+                this.loadProfile();
+            }
+
+
+        }
+
+
+
+
+    }
+
+    reloadData() {
+        this.idFiltro = null;
+        this.idUsr = null;
+
+    }
+
     loadUsuarios() {
-        if (this.idFiltro == null) {
-            this.idFiltro = 1;
-        }
-        if (this.idFiltro !== null && this.idUsr == null && this.usuarios == null) {
-            this.fetchData().then((_data) => {
-                this.usuarios = _data;
-            }).catch((err) => {
-                this.usuarios = { status: false, message: err.message };
-                console.error(err)
-            });
-        }
+        this.fetchData().then((_data) => {
+            this.usuarios = _data;
+        }).catch((err) => {
+            this.usuarios = { status: false, message: err.message };
+            console.error(err)
+        });
     }
 
     loadProfile() {
-        if (this.idUsr !== null && this.idFiltro == null && this.dataUser == null) {
-            this.fetchProfile().then((_data) => {
-                this.dataUser = _data;
-            }).catch((err) => {
-                this.dataUser = { status: false, message: err.message };
-                console.error(err)
-            });
-        }
+        this.fetchProfile().then((_data) => {
+            this.dataUser = _data;
+        }).catch((err) => {
+            this.dataUser = { status: false, message: err.message };
+            console.error(err)
+        });
     }
 
 
@@ -105,18 +165,18 @@ class usrMV extends App {
                                         m("span.badge.bg-litecoin.tx-white.tx-semibold.pd-l-10.pd-r-10.mg-l-5.tx-15", {
                                             oncreate: (el) => {
                                                 if (this.idFiltro == 1) {
-                                                    el.dom.innerHTML = 'Grp-radius-Medicos';
+                                                    el.dom.innerHTML = 'Pacientes de Hoy';
                                                 }
                                                 if (this.idFiltro == 2) {
-                                                    el.dom.innerHTML = 'Grp-radius-Residentes';
+                                                    el.dom.innerHTML = 'Pacientes Anteriores';
                                                 }
                                             },
                                             onupdate: (el) => {
                                                 if (this.idFiltro == 1) {
-                                                    el.dom.innerHTML = 'Grp-radius-Medicos';
+                                                    el.dom.innerHTML = 'Pacientes de Hoy';
                                                 }
                                                 if (this.idFiltro == 2) {
-                                                    el.dom.innerHTML = 'Grp-radius-Residentes';
+                                                    el.dom.innerHTML = 'Pacientes Anteriores';
                                                 }
                                             }
                                         }
@@ -141,16 +201,26 @@ class usrMV extends App {
                                                 m(m.route.Link, {
                                                     class: 'dropdown-item',
                                                     href: "/administracion/pacientes/metrovirtual/?idFiltro=1",
+                                                    onclick: (e) => {
+                                                        this.reloadData();
+
+
+                                                    }
 
                                                 }, [
-                                                    "Grp-radius-Medicos"
+                                                    "Pacientes de Hoy"
                                                 ]),
                                                 m(m.route.Link, {
                                                     class: 'dropdown-item',
                                                     href: "/administracion/pacientes/metrovirtual/?idFiltro=2",
+                                                    onclick: (e) => {
+                                                        this.reloadData();
+
+
+                                                    }
 
                                                 }, [
-                                                    "Grp-radius-Residentes"
+                                                    "Pacientes Anteriores"
                                                 ]),
 
 
@@ -160,20 +230,23 @@ class usrMV extends App {
                                 ]),
 
                             ]),
-                            this.vTableUsuarios('table-usr', this.usuarios.data, this.arqTable())
-                        ] : (this.usuarios !== null && (this.usuarios.status == false || this.usuarios.status == null)) ? [
-                            m(Errors, { type: (this.usuarios.status == false ? 1 : 0), error: this.usuarios.message }),
+                            this.vTableUsuarios('table-usr', this.usuarios.data, this.arqTable()),
                             m(m.route.Link, {
                                 class: 'dropdown-item',
                                 href: "/administracion/pacientes/metrovirtual/?idUsr=1501128480",
                                 onclick: (e) => {
-                                    this.dataUser = null;
+                                    this.reloadData();
 
 
                                 }
+
                             }, [
-                                "Grp-radius-Residentes"
+                                "CHANG CHAVEZ MARTIN FRANCISCO"
                             ]),
+
+                        ] : (this.usuarios !== null && (this.usuarios.status == false || this.usuarios.status == null)) ? [
+                            m(Errors, { type: (this.usuarios.status == false ? 1 : 0), error: this.usuarios.message }),
+
 
                         ] : [
                             m(Loader)
@@ -253,7 +326,7 @@ class usrMV extends App {
 
                                     m("tr.bg-litecoin.op-9.tx-white.tx-uppercase", [
                                         m("th[scope='col'][colspan='10']",
-                                            "DATOS DEL USUARIO: " + this.dataUser.samaccountname
+                                            "DATOS DEL USUARIO: "
                                         ),
 
                                     ])
@@ -268,17 +341,32 @@ class usrMV extends App {
                                         m("td[colspan='4']", {
                                             style: { "background-color": "#eaeff5" }
 
-                                        }, this.dataUser.sn + ' ' + this.dataUser.cn),
+                                        }, this.dataUser.data.APELLIDOS + ' ' + this.dataUser.data.NOMBRES),
                                         m("th", {
                                             style: { "background-color": "#a8bed6" }
                                         },
-                                            "Grupo:"
+                                            "NHC:"
                                         ),
                                         m("td[colspan='4']", {
                                             style: { "background-color": "#eaeff5" }
 
-                                        }, this.dataUser.grupo),
+                                        }, this.dataUser.data.NHC),
 
+                                    ]),
+                                    m("tr", [
+                                        m("th", {
+                                            style: { "background-color": "#a8bed6" }
+                                        },
+                                            "Direcciones:"
+                                        ),
+                                        m("td[colspan='8']", {
+                                            style: { "background-color": "#eaeff5" }
+
+                                        },
+                                            this.dataUser.data.DIRECCIONES.map((v, i) => {
+                                                return m('p.mg-0.pd-0', v.FIELD)
+                                            })
+                                        ),
                                     ]),
 
                                     m("tr", [
@@ -289,9 +377,10 @@ class usrMV extends App {
                                         ),
                                         m("td[colspan='4']", {
                                             style: { "background-color": "#eaeff5" }
-
                                         },
-                                            this.dataUser.mail
+                                            this.dataUser.data.EMAIL_ACCOUNT.map((v, i) => {
+                                                return m('p.mg-0.pd-0', v)
+                                            })
                                         ),
                                         m("th", {
                                             style: { "background-color": "#a8bed6" }
@@ -302,10 +391,10 @@ class usrMV extends App {
                                             style: { "background-color": "#eaeff5" }
 
                                         },
-                                            m('.tx-12.d-block', 'Creado: ' + this.dataUser.whencreated),
-                                            m('.tx-12.d-block', 'Actualizado: ' + this.dataUser.whenchanged),
-                                            m('.tx-12.d-block', 'Última Contraseña: ' + this.dataUser.pwdlastset),
-                                            m('.tx-12.d-block', 'Último Acceso: ' + this.dataUser.lastlogontimestamp),
+                                            m('.d-block', 'Creado: ' + this.dataUser.whencreated),
+                                            m('.d-block', 'Actualizado: ' + this.dataUser.whenchanged),
+                                            m('.d-block', 'Última Contraseña: ' + this.dataUser.pwdlastset),
+                                            m('.d-block', 'Último Acceso: ' + this.dataUser.lastlogontimestamp),
                                         ),
 
 
@@ -320,7 +409,6 @@ class usrMV extends App {
                                         m("th[scope='col'][colspan='10']",
                                             "OPCIONES DISPONIBLES:"
                                         ),
-
                                     ]),
                                     m("tr.d-print-none", [
 
@@ -333,9 +421,9 @@ class usrMV extends App {
                                                     m("a.nav-link[id='home-tab'][data-toggle='tab'][href='#home'][role='tab'][aria-controls='home'][aria-selected='true']", {
                                                         style: { "color": "#476ba3" }
                                                     },
-                                                        m("i.fas.fa-file-alt.pd-1.mg-r-2"),
+                                                        m("i.fas.fa-edit.pd-1.mg-r-2"),
 
-                                                        " HOJA 005"
+                                                        " RECUPERACIÓN DE CONTRASEÑA "
                                                     )
                                                 ),
                                                 m("li.nav-item",
@@ -344,38 +432,19 @@ class usrMV extends App {
                                                     },
                                                         m("i.fas.fa-edit.pd-1.mg-r-2"),
 
-                                                        " TOMA DE MUESTRA "
+                                                        " NOTIFICACIONES "
                                                     )
                                                 ),
                                                 m("li.nav-item",
                                                     m("a.nav-link[id='home-recep'][data-toggle='tab'][href='#recep'][role='tab'][aria-controls='recep']", {
                                                         style: { "color": "#476ba3" }
                                                     },
-                                                        m("i.fas.fa-inbox.pd-1.mg-r-2"),
+                                                        m("i.fas.fa-edit.pd-1.mg-r-2"),
 
-                                                        " RECEP. DE MUESTRA "
+                                                        " AVISO DE CIRUGÍA "
                                                     )
                                                 ),
-                                                m("li.nav-item",
-                                                    m("a.nav-link[id='home-comment'][data-toggle='tab'][href='#comment'][role='tab'][aria-controls='comment']", {
-                                                        style: { "color": "#476ba3" }
-                                                    },
-                                                        m("i.fas.fa-inbox.pd-1.mg-r-2"),
 
-                                                        " COMENTARIOS ",
-                                                        m(m.route.Link, {
-                                                            class: 'dropdown-item',
-                                                            href: "/administracion/pacientes/metrovirtual/?idFiltro=2",
-                                                            onclick: (e) => {
-                                                                this.usuarios = null;
-
-                                                            }
-                                                        }, [
-                                                            "Grp-radius-Residentes"
-                                                        ]),
-
-                                                    )
-                                                ),
 
 
 
@@ -457,18 +526,17 @@ class usrMV extends App {
 
     fetchProfile() {
 
-        let _queryString = '?idFiltro=2';
-
         try {
 
-
             return m.request({
-                method: "GET",
-                url: ApiHTTP.apiSoaUrl + "/v1/sso" + _queryString,
+                method: "POST",
+                url: "https://api.hospitalmetropolitano.org/v1/account-cvox",
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
-                    'apikey': 'kLrgbhKsy7Wi5WeWleqTwmjA0BKtW8Mb'
 
+                },
+                body: {
+                    "DNI": this.idUsr
                 },
                 extract: function (xhr) {
                     return { status: xhr.status, body: JSON.parse(xhr.responseText) }
@@ -566,7 +634,7 @@ class usrMV extends App {
                 title: "N° : ",
             },
             {
-                title: "Usuario AD:",
+                title: "Usuario:",
             },
             {
                 title: "Nombres:",
