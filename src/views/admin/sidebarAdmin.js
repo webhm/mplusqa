@@ -17,11 +17,14 @@ class MenuSidebar {
     view() {
         if (MenuAdmin.modulos.length !== 0) {
             return [
-                MenuAdmin.modulos.map(function(_v, _i, _contentData) {
+                MenuAdmin.modulos.map(function (_v, _i, _contentData) {
 
                     if (App.hasProfile(_v.profile)) {
                         return [
-                            m(m.route.Link, { href: "/" + _v.page, class: ((SidebarAdmin.page == _v.page) ? "active" : "") }, [
+                            m(m.route.Link, {
+                                href: "/" + _v.page,
+                                class: ((SidebarAdmin.page == _v.page) ? "active" : ""),
+                            }, [
                                 _v.label
                             ])
 

@@ -14,6 +14,8 @@ import ErrorMetroplus from "../../../models/Error";
 class usrMV extends App {
     usuarios = null;
     dataUser = null;
+    dataQsecs = null;
+    dataRsecs = null;
     idUsr = null;
     idFiltro = null;
     constructor(_data) {
@@ -43,11 +45,13 @@ class usrMV extends App {
         // Carga busqueda de usuarios por filtro por default
         if (_data.attrs.idFiltro == undefined && _data.attrs.idUsr == undefined) {
             this.idFiltro = 1;
+            this.usuarios = null;
             this.loadUsuarios();
         }
 
         // Carga perfil de usario por PARAM URL
         if (_data.attrs.idUsr !== undefined && _data.attrs.idFiltro == undefined) {
+            this.dataUser = null;
             this.loadProfile();
         }
 
@@ -56,10 +60,17 @@ class usrMV extends App {
 
     onupdate(_data) {
 
+        // Carga busqueda de usuarios por filtro por default
+        if (_data.attrs.idFiltro == undefined && _data.attrs.idUsr == undefined && this.idFiltro == null) {
+            this.idUsr = null;
+            this.idFiltro = 1;
+            this.usuarios = null;
+            this.loadUsuarios();
+        }
+
         // Set para filtros
         if (_data.attrs.idFiltro !== undefined && _data.attrs.idUsr == undefined && this.idFiltro == null) {
 
-            console.log(1)
 
             if (_data.attrs.idFiltro !== undefined) {
                 this.idFiltro = _data.attrs.idFiltro;
@@ -68,22 +79,24 @@ class usrMV extends App {
             // Carga busqueda de usuarios por filtro en URL
             if (_data.attrs.idFiltro !== undefined && _data.attrs.idUsr == undefined) {
                 this.idFiltro = _data.attrs.idFiltro;
+                this.usuarios = null;
                 this.loadUsuarios();
             }
 
             // Carga busqueda de usuarios por filtro por default
             if (_data.attrs.idFiltro == undefined && _data.attrs.idUsr == undefined) {
                 this.idFiltro = 1;
+                this.usuarios = null;
                 this.loadUsuarios();
             }
 
 
         }
 
+
         // Set para idUsr
         if (_data.attrs.idUsr !== undefined && _data.attrs.idFiltro == undefined && this.idUsr == null) {
 
-            console.log(2)
 
             if (_data.attrs.idUsr !== undefined) {
                 this.idUsr = _data.attrs.idUsr;
@@ -91,6 +104,7 @@ class usrMV extends App {
 
             // Carga perfil de usario por PARAM URL
             if (_data.attrs.idUsr !== undefined && _data.attrs.idFiltro == undefined) {
+                this.dataUser = null;
                 this.loadProfile();
             }
 
@@ -120,8 +134,43 @@ class usrMV extends App {
     loadProfile() {
         this.fetchProfile().then((_data) => {
             this.dataUser = _data;
+            this.dataQsecs = null;
+            this.dataRsecs = null;
+            this.loadPreguntasSeguridad();
+            this.loadRespuestasSeguridad();
         }).catch((err) => {
             this.dataUser = { status: false, message: err.message };
+            console.error(err)
+        });
+    }
+
+    loadPreguntasSeguridad() {
+        this.fetchPreguntasSeguridad().then((_data) => {
+            this.dataQsecs = _data;
+        }).catch((err) => {
+            this.dataQsecs = { status: false, message: err.message };
+            console.error(err)
+        });
+
+    }
+
+    loadRespuestasSeguridad() {
+        this.fetchRespuestasSeguridad().then((_data) => {
+            this.dataRsecs = _data;
+            console.log(_data)
+        }).catch((err) => {
+            this.dataRsecs = { status: false, message: err.message };
+            console.error(err)
+        });
+
+    }
+
+    loadRecoveryAccount() {
+        this.fetchRecoveryAccount().then((_data) => {
+            if (_data.status) {
+                $.alert('Proceso realizado con éxito.');
+            }
+        }).catch((err) => {
             console.error(err)
         });
     }
@@ -458,6 +507,81 @@ class usrMV extends App {
                                         m("td[colspan='10']",
                                             m(".tab-content.bd.bd-gray-300.bd-t-0[id='myTab']", [
                                                 m(".tab-pane.fade[id='home'][role='tabpanel'][aria-labelledby='home-tab']", [
+                                                    m("p.mg-0", [
+                                                        m("div.pd-5.tx-semibold", {
+                                                            style: { "background-color": "#a8bed6" }
+                                                        },
+                                                            "Preguntas de Seguridad:"
+                                                        ),
+                                                        m("div.pd-5", {
+                                                            style: { "background-color": "#eaeff5" }
+                                                        },
+                                                            (this.dataQsecs !== null && this.dataQsecs.status == true && this.dataRsecs !== null && this.dataRsecs.status == true) ? [
+                                                                m('p.pd-0.mg-0', {
+                                                                    class: (this.dataRsecs.data.Q1 != undefined ? '' : 'd-none')
+                                                                }, this.dataQsecs.data.Q1),
+                                                                m('p.pd-0.mg-l-5.mg-t-0.tx-danger', (this.dataRsecs.data.Q1 != undefined ? this.dataRsecs.data.Q1 : '')),
+                                                                m('p.pd-0.mg-0', {
+                                                                    class: (this.dataRsecs.data.Q2 != undefined ? '' : 'd-none')
+                                                                }, this.dataQsecs.data.Q2),
+                                                                m('p.pd-0.mg-l-5.mg-t-0.tx-danger', (this.dataRsecs.data.Q2 != undefined ? this.dataRsecs.data.Q2 : '')),
+                                                                m('p.pd-0.mg-0', {
+                                                                    class: (this.dataRsecs.data.Q3 != undefined ? '' : 'd-none')
+                                                                }, this.dataQsecs.data.Q3),
+                                                                m('p.pd-0.mg-l-5.mg-t-0.tx-danger', (this.dataRsecs.data.Q3 != undefined ? this.dataRsecs.data.Q3 : '')),
+                                                                m('p.pd-0.mg-0', {
+                                                                    class: (this.dataRsecs.data.Q4 != undefined ? '' : 'd-none')
+                                                                }, this.dataQsecs.data.Q4),
+                                                                m('p.pd-0.mg-l-5.mg-t-0.tx-danger', (this.dataRsecs.data.Q4 != undefined ? this.dataRsecs.data.Q4 : '')),
+
+                                                            ] : (this.dataRsecs !== null && this.dataRsecs.status == false) ? [
+                                                                m('p.pd-5', [
+                                                                    m("p.tx-danger.pd-0.mg-b-2.mg-t-5", [
+                                                                        m('i.fas.fa-exclamation-triangle'),
+                                                                        " Error: "
+                                                                    ]),
+                                                                    m("p.tx-justify.tx-danger.tx-color-03",
+                                                                        this.dataRsecs.message
+                                                                    )
+                                                                ])
+                                                            ] : [
+                                                                m(Loader)
+                                                            ]
+                                                        ),
+
+
+                                                    ]),
+                                                    m("p.mg-0", [
+                                                        m("div.pd-5.tx-semibold", {
+                                                            style: { "background-color": "#a8bed6" }
+                                                        },
+                                                            "Reestablecer Cuenta: *El usuario deberá volver a registrarse despues de esta acción."
+                                                        ),
+                                                        m("div.pd-5", {
+                                                            style: { "background-color": "#eaeff5" }
+                                                        },
+
+                                                            m("p.wd-100p", [
+                                                                m("button.btn.btn-xs.btn-block.btn-primary.tx-semibold.tx-white", {
+                                                                    onclick: () => {
+                                                                        this.loadRecoveryAccount();
+                                                                    }
+                                                                },
+
+                                                                    " Restablecer "
+
+                                                                )
+                                                            ])
+                                                        ),
+
+
+                                                    ]),
+
+
+
+
+
+
 
                                                 ]),
                                                 m(".tab-pane.fade[id='muestra'][role='tabpanel'][aria-labelledby='home-muestra']", [
@@ -524,6 +648,120 @@ class usrMV extends App {
         return m(SidebarAdmin, { page: 'administracion/pacientes/metrovirtual' });
     }
 
+    fetchRecoveryAccount() {
+
+        let _queryString = "?DNI=" + this.idUsr;
+
+        try {
+
+            return m.request({
+                method: "POST",
+                url: "https://api.hospitalmetropolitano.org/t/v1/delacmv" + _queryString,
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                extract: function (xhr) {
+                    return {
+                        status: xhr.status,
+                        body: JSON.parse(xhr.responseText)
+                    }
+                }
+            })
+                .then((response) => {
+
+                    if (response.status !== 200) {
+                        throw new ErrorMetroplus("Error HTTP", { cause: 'La respuesta del servidor no es correcta. Status Response:' + response.status });
+                    }
+                    return response.body;
+
+                });
+
+        } catch (error) {
+
+            throw new ErrorMetroplus("Error APP", { cause: error.message });
+
+
+        }
+
+
+    }
+
+    fetchPreguntasSeguridad() {
+
+        let _queryString = "?DNI=" + this.idUsr;
+
+        try {
+
+            return m.request({
+                method: "GET",
+                url: "https://api.hospitalmetropolitano.org/v1/qasec" + _queryString,
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                extract: function (xhr) {
+                    return {
+                        status: xhr.status,
+                        body: JSON.parse(xhr.responseText)
+                    }
+                }
+            })
+                .then((response) => {
+
+                    if (response.status !== 200) {
+                        throw new ErrorMetroplus("Error HTTP", { cause: 'La respuesta del servidor no es correcta. Status Response:' + response.status });
+                    }
+                    return response.body;
+
+                });
+
+        } catch (error) {
+
+            throw new ErrorMetroplus("Error APP", { cause: error.message });
+
+
+        }
+
+
+    }
+
+    fetchRespuestasSeguridad() {
+
+        let _queryString = "?DNI=" + this.idUsr;
+
+        try {
+
+            return m.request({
+                method: "GET",
+                url: "https://api.hospitalmetropolitano.org/v1/lostpass" + _queryString,
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                extract: function (xhr) {
+                    return {
+                        status: xhr.status,
+                        body: JSON.parse(xhr.responseText)
+                    }
+                }
+            })
+                .then((response) => {
+
+                    if (response.status !== 200) {
+                        throw new ErrorMetroplus("Error HTTP", { cause: 'La respuesta del servidor no es correcta. Status Response:' + response.status });
+                    }
+                    return response.body;
+
+                });
+
+        } catch (error) {
+
+            throw new ErrorMetroplus("Error APP", { cause: error.message });
+
+
+        }
+
+
+    }
+
     fetchProfile() {
 
         try {
@@ -533,7 +771,6 @@ class usrMV extends App {
                 url: "https://api.hospitalmetropolitano.org/v1/account-cvox",
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
-
                 },
                 body: {
                     "DNI": this.idUsr
@@ -558,6 +795,7 @@ class usrMV extends App {
 
 
     }
+
     fetchData() {
 
 
