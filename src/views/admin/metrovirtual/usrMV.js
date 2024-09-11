@@ -39,6 +39,7 @@ class usrMV extends App {
 
         // Carga busqueda de usuarios por filtro en URL
         if (_data.attrs.idFiltro !== undefined && _data.attrs.idUsr == undefined) {
+            this.usuarios = null;
             this.loadUsuarios();
         }
 
@@ -533,7 +534,10 @@ class usrMV extends App {
                                                                     class: (this.dataRsecs.data.Q4 != undefined ? '' : 'd-none')
                                                                 }, this.dataQsecs.data.Q4),
                                                                 m('p.pd-0.mg-l-5.mg-t-0.tx-danger', (this.dataRsecs.data.Q4 != undefined ? this.dataRsecs.data.Q4 : '')),
-
+                                                                m('p.pd-0.mg-0', {
+                                                                    class: (this.dataRsecs.data.Q5 != undefined ? '' : 'd-none')
+                                                                }, this.dataQsecs.data.Q5),
+                                                                m('p.pd-0.mg-l-5.mg-t-0.tx-danger', (this.dataRsecs.data.Q5 != undefined ? this.dataRsecs.data.Q5 : '')),
                                                             ] : (this.dataRsecs !== null && this.dataRsecs.status == false) ? [
                                                                 m('p.pd-5', [
                                                                     m("p.tx-danger.pd-0.mg-b-2.mg-t-5", [
@@ -694,9 +698,10 @@ class usrMV extends App {
 
             return m.request({
                 method: "GET",
-                url: "https://api.hospitalmetropolitano.org/v1/qasec" + _queryString,
+                url: ApiHTTP.apiSoaUrl + "/v1/mval/qsecs" + _queryString,
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
+                    'apikey': ApiHTTP.SOAKey
                 },
                 extract: function (xhr) {
                     return {
@@ -704,15 +709,14 @@ class usrMV extends App {
                         body: JSON.parse(xhr.responseText)
                     }
                 }
-            })
-                .then((response) => {
+            }).then((response) => {
 
-                    if (response.status !== 200) {
-                        throw new ErrorMetroplus("Error HTTP", { cause: 'La respuesta del servidor no es correcta. Status Response:' + response.status });
-                    }
-                    return response.body;
+                if (response.status !== 200) {
+                    throw new ErrorMetroplus("Error HTTP", { cause: 'La respuesta del servidor no es correcta. Status Response:' + response.status });
+                }
+                return response.body;
 
-                });
+            });
 
         } catch (error) {
 
@@ -809,7 +813,7 @@ class usrMV extends App {
                 url: ApiHTTP.apiSoaUrl + "/v1/sso" + _queryString,
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
-                    'apikey': 'kLrgbhKsy7Wi5WeWleqTwmjA0BKtW8Mb'
+                    'apikey': ApiHTTP.SOAKey
                 },
                 extract: function (xhr) {
                     return {
