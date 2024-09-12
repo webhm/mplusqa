@@ -101,7 +101,7 @@ class TurnosUci {
                 $.alert({
                     title: "Error:",
                     content: "Ya existe un turno generado. Espere la hora del siguiente turno para generar nuevos registros.",
-                    onClose: function() {
+                    onClose: function () {
                         window.location.reload();
                     }
                 });
@@ -112,7 +112,7 @@ class TurnosUci {
     }
 
     static getTurnos() {
-        return TurnosUci.turnos;
+        return TurnosUci.turnos.sort((a, b) => a.numeroTurno - b.numeroTurno);
     }
 }
 

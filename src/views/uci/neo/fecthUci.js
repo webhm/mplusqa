@@ -597,13 +597,43 @@ class FecthUci {
 
                 } else {
 
-                    // Filter Secciones de Hoy
-                    // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+                    // Validar turnos abiertos
 
-                    let seccionesHoy = res.data.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix());
-                    // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
-                    console.log('seccionesHoy', seccionesHoy)
-                    FecthUci.dataSecciones = seccionesHoy
+                    let _ayer = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
+
+                    let turnosAbiertos = res.data.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(_ayer + ' 07:59', 'DD-MM-YYYY HH:mm').unix() && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix());
+
+                    let ta = [turnosAbiertos[turnosAbiertos.length - 1], turnosAbiertos[turnosAbiertos.length - 2], turnosAbiertos[turnosAbiertos.length - 3]];
+
+                    ta = ta.filter(function (element) {
+                        return element !== undefined;
+                    });
+
+                    let _turnos = FecthUci.setTurnosAbiertos(ta);
+
+                    if (_turnos.length > 0) {
+
+                        let _ayer = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
+                        // Filter Secciones de Hoy
+                        let seccionesHoy = res.data.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(_ayer + ' 07:59', 'DD-MM-YYYY HH:mm').unix() && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix());
+                        console.log('seccionesHoy', seccionesHoy)
+                        // Filter prescripciones
+                        let prescripcionesUci = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().subtract(1, 'days').format('DD-MM-YYYY') && v.SECCION == 'PrescripcionesUci')
+                        console.log('prescripcionesUci', prescripcionesUci)
+                        FecthUci.dataSecciones = seccionesHoy.concat(prescripcionesUci);
+                        // FecthUci.dataSecciones = seccionesHoy;
+
+                    } else {
+                        // Filter Secciones de Hoy
+                        // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+
+                        let seccionesHoy = res.data.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix());
+                        // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
+                        console.log('seccionesHoy', seccionesHoy)
+                        FecthUci.dataSecciones = seccionesHoy
+                    }
+
+
 
                 }
 
