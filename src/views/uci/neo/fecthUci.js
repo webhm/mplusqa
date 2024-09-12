@@ -601,21 +601,13 @@ class FecthUci {
 
                     let _ayer = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
 
-                    let turnosAbiertos = res.data.dataTurnos.filter(
-                        v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(_ayer + ' 07:59', 'DD-MM-YYYY HH:mm').unix() &&
-                            moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix()
+                    let turnosAbiertos = TurnosUci.turnos.filter(
+                        v => moment(moment(v.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(_ayer + ' 07:59', 'DD-MM-YYYY HH:mm').unix() &&
+                            moment(moment(v.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix()
                     );
 
 
-                    let ta = [turnosAbiertos[turnosAbiertos.length - 1], turnosAbiertos[turnosAbiertos.length - 2], turnosAbiertos[turnosAbiertos.length - 3]];
-
-                    ta = ta.filter(function (element) {
-                        return element !== undefined;
-                    });
-
-                    let _turnos = FecthUci.setTurnosAbiertos(ta);
-
-                    if (_turnos.length > 0) {
+                    if (turnosAbiertos.length > 0) {
 
                         let _ayer = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
                         // Filter Secciones de Hoy
@@ -628,6 +620,7 @@ class FecthUci {
                         // FecthUci.dataSecciones = seccionesHoy;
 
                     } else {
+
                         // Filter Secciones de Hoy
                         // let seccionesHoy = res.data.filter(v => moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') == moment().format('DD-MM-YYYY'))
 
