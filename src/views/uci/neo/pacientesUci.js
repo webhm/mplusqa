@@ -345,7 +345,7 @@ class PacientesUCI extends App {
         options.map((option) => {
             FecthUci.dataSecciones.filter((obj) => {
                 let _obj = JSON.parse(obj.DATASECCION);
-                if (_obj.id === option.id && _obj.tipoBit == 'UCINEO') {
+                if (_obj.id === option.id && _obj.seccion == 'Marcapasos' && _obj.tipoBit == 'UCINEO') {
                     res.push(_obj);
                 }
             });
@@ -4602,7 +4602,7 @@ class PacientesUCI extends App {
         options.map((option) => {
             FecthUci.dataSecciones.filter((obj) => {
                 let _obj = JSON.parse(obj.DATASECCION);
-                if (_obj.id === option.id && _obj.tipoBit == 'UCINEO') {
+                if (_obj.id === option.id && _obj.seccion == 'CuidadosGenerales' && _obj.tipoBit == 'UCINEO') {
                     res.push(_obj);
                 }
             });

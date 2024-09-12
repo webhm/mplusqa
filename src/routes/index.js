@@ -32,6 +32,7 @@ import VerContrato from "../views/admisiones/contratos/verContrato";
 import CalendarioEndo2 from "../views/endoscopia/agenda/calendario2";
 import PedidoFlebotomista from "../views/laboratorio/flebotomista/pedidoFlebo";
 import PacientesUCIHistorial from "../views/uci/pacientes/historial/pacientesUci";
+import BitacoraUCI from "../views/uci/v2/bitacora";
 
 // Routes here
 const Routes = {
@@ -46,6 +47,7 @@ const Routes = {
     "/administracion/medicos/metrovirtual": usrMPLUS,
     "/administracion/metroplus": usrMPLUS,
     "/uci": Uci,
+    "/uci/bitacora": BitacoraUCI,
     "/uci/pacientes": PacientesUCI,
     "/uci/pacientes/neo": PacientesUCINEO,
     "/uci/pacientes/intermedios": PacientesUCIINTERMEDIOS,
