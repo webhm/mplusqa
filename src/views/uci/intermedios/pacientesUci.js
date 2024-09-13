@@ -5391,9 +5391,44 @@ class PacientesUCI extends App {
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
-                                                _d = true;
-                                                PacientesUCI.fechaHoraTurno = oData.fechaHoraTurno;
-                                                FecthUci.actualizarHoraAtencion();
+
+                                                try {
+
+                                                    if (oData.numeroTurno == 1 && moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() < moment(moment().format('DD-MM-YYYY') + ' 08:00', 'DD-MM-YYYY HH:mm').unix() || moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() > moment(moment().format('DD-MM-YYYY') + ' 15:59', 'DD-MM-YYYY HH:mm').unix()) {
+                                                        throw 1;
+                                                    }
+
+                                                    if (oData.numeroTurno == 2 && moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() < moment(moment().format('DD-MM-YYYY') + ' 16:00', 'DD-MM-YYYY HH:mm').unix() || moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() > moment(moment().format('DD-MM-YYYY') + ' 23:59', 'DD-MM-YYYY HH:mm').unix()) {
+                                                        throw 2;
+                                                    }
+
+                                                    if (oData.numeroTurno == 3 && moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() < moment(moment().format('DD-MM-YYYY') + ' 00:00', 'DD-MM-YYYY HH:mm').unix() || moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() > moment(moment().format('DD-MM-YYYY') + ' 07:59', 'DD-MM-YYYY HH:mm').unix()) {
+                                                        throw 3;
+                                                    }
+
+                                                    _d = true;
+                                                    PacientesUCI.fechaHoraTurno = oData.fechaHoraTurno;
+                                                    FecthUci.actualizarHoraAtencion();
+
+                                                } catch (error) {
+
+                                                    if (error == 1) {
+                                                        $.alert('La hora ingresada debe ser mayor o igual a 08:00 y menor o igual a 15:59')
+                                                    }
+
+                                                    if (error == 2) {
+                                                        $.alert('La hora ingresada debe ser mayor o igual a 16:00 y menor o igual a 23:59')
+                                                    }
+
+                                                    if (error == 3) {
+                                                        $.alert('La hora ingresada debe ser mayor o igual a 00:00 y menor o igual a 07:59')
+                                                    }
+
+                                                }
+
+                                                console.log(66, oData)
+                                                console.log(55, moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix())
+                                                console.log(55, moment(moment().format('DD-MM-YYYY') + ' 07:59', 'DD-MM-YYYY HH:mm').unix())
                                             }
                                         },
                                     }),
