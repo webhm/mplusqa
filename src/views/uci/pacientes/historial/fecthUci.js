@@ -57,9 +57,9 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -86,9 +86,9 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -115,9 +115,9 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -146,9 +146,9 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -176,9 +176,9 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             window.location.reload();
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -205,10 +205,10 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             // El resultado
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -236,11 +236,11 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
             window.location.reload();
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -267,7 +267,7 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             if (res.status) {
 
                 PacientesUCIHistorial.numeroHistoriaClinica = res.data.numeroHistoriaClinica;
@@ -290,7 +290,7 @@ class FecthUci {
 
             }
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -316,7 +316,7 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             if (res.status) {
 
                 TurnosUciHistorial.turnos = [];
@@ -340,7 +340,7 @@ class FecthUci {
 
             }
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
 
@@ -365,13 +365,13 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
             FecthUci.dataHistorial = res.data;
 
             console.log(res)
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
     }
@@ -397,14 +397,14 @@ class FecthUci {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
 
             if (res.data.length == 0) {
                 alert('No existe información en la fecha ingresada.');
             } else {
 
                 let _f2 = moment(fechaBusqueda, 'DD-MM-YYYY').add(1, 'days').format('DD-MM-YYYY');
-                let seccionesHoy = res.data.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment(fechaBusqueda, 'DD-MM-YYYY').format('DD-MM-YYYY') + ' 07:59', 'DD-MM-YYYY HH:mm').unix() && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment(_f2, 'DD-MM-YYYY').format('DD-MM-YYYY') + ' 08:00', 'DD-MM-YYYY HH:mm').unix());
+                let seccionesHoy = res.data.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment(fechaBusqueda, 'DD-MM-YYYY').format('DD-MM-YYYY') + ' 07:59', 'DD-MM-YYYY HH:mm').unix() && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment(_f2, 'DD-MM-YYYY').format('DD-MM-YYYY') + ' 08:00', 'DD-MM-YYYY HH:mm').unix() && JSON.parse(v.DATASECCION).tipoBit == undefined);
                 console.log('seccionesHoy', seccionesHoy)
                 FecthUci.dataHistorial = seccionesHoy;
                 PacientesUCIHistorial.loadSecs();
@@ -414,7 +414,7 @@ class FecthUci {
 
 
 
-        }).catch(function(e) {
+        }).catch(function (e) {
 
         });
     }
