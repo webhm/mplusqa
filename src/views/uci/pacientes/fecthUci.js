@@ -556,6 +556,7 @@ class FecthUci {
 
             if (moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment().format('DD-MM-YYYY 00:00'), 'DD-MM-YYYY HH:mm').unix() && moment(moment().format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 08:00'), 'DD-MM-YYYY HH:mm').unix()) {
 
+                console.log('estoy aqui')
 
                 let _ayer = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
 

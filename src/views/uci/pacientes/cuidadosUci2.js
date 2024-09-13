@@ -33,6 +33,7 @@ class Cuidado {
 
 class CuidadosUci2 {
 
+    static allRegistros = [];
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
@@ -105,52 +106,49 @@ class CuidadosUci2 {
         let resultNro = [];
         let hash = {};
 
-        try {
 
-            re = CuidadosUci2.registros;
+        re = CuidadosUci2.allRegistros;
 
-            result = re.sort((a, b) => b.nro - a.nro);
-            // Quitar duplicados
-            resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true).sort((a, b) => a.nro - b.nro);
+        result = re.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true).sort((a, b) => a.nro - b.nro);
 
-            resultNro.map((_v, _i) => {
-                CuidadosUci2.iniciarRegistro();
-                CuidadosUci2.nuevoRegistro.id = _v.id;
-                CuidadosUci2.nuevoRegistro.cuidado = _v.cuidado;
-                if (PacientesUCI.numeroTurno != 1) {
-                    CuidadosUci2.nuevoRegistro.frecuencia = _v.frecuencia;
-                    CuidadosUci2.nuevoRegistro.am = _v.am;
-                    CuidadosUci2.nuevoRegistro.pm = _v.pm;
-                    CuidadosUci2.nuevoRegistro.hs = _v.hs;
+        resultNro.map((_v, _i) => {
+            CuidadosUci2.iniciarRegistro();
+            CuidadosUci2.nuevoRegistro.id = _v.id;
+            CuidadosUci2.nuevoRegistro.cuidado = _v.cuidado;
+            if (PacientesUCI.numeroTurno != 1) {
+                CuidadosUci2.nuevoRegistro.frecuencia = _v.frecuencia;
+                CuidadosUci2.nuevoRegistro.am = _v.am;
+                CuidadosUci2.nuevoRegistro.pm = _v.pm;
+                CuidadosUci2.nuevoRegistro.hs = _v.hs;
+            }
+            CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+            CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+            res.push(CuidadosUci2.nuevoRegistro);
+            CuidadosUci2.nuevoRegistro = null;
+        });
+
+
+        CuidadosUci2.allRegistros.push.apply(CuidadosUci2.allRegistros, res);
+        // Asignar Nro
+
+        CuidadosUci2.allRegistros.map((_v, _i) => {
+            if (_v.nro == null) {
+                CuidadosUci2.allRegistros[_i].nro = (_i + 1);
+                if (_v.id == res.id) {
+                    res.nro = CuidadosUci2.allRegistros[_i].nro;
                 }
-                CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                res.push(CuidadosUci2.nuevoRegistro);
-                CuidadosUci2.nuevoRegistro = null;
-            });
+
+            }
+        });
+
+        CuidadosUci2.filterRegistros();
+        FecthUci.registrarAllSeccion(res);
+        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
 
 
-            CuidadosUci2.registros.push.apply(CuidadosUci2.registros, res);
-            // Asignar Nro
 
-            CuidadosUci2.registros.map((_v, _i) => {
-                if (_v.nro == null) {
-                    CuidadosUci2.registros[_i].nro = (_i + 1);
-                    if (_v.id == res.id) {
-                        res.nro = CuidadosUci2.registros[_i].nro;
-                    }
-
-                }
-            });
-            CuidadosUci2.filterRegistros();
-            FecthUci.registrarAllSeccion(res);
-
-        } catch (error) {
-
-        } finally {
-            console.log('ppppppppppppppp')
-            PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
-        }
     }
 
     static filterRegistros() {
@@ -160,7 +158,7 @@ class CuidadosUci2 {
         let _arr = [];
         let hash = {};
 
-        result = CuidadosUci2.registros.sort((a, b) => b.nro - a.nro);
+        result = CuidadosUci2.allRegistros.sort((a, b) => b.nro - a.nro);
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -627,7 +625,9 @@ class CuidadosUci2 {
                                     ),
                                     m("button.btn.btn-xs.btn-dark[type='button']", {
                                         class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'Posicion' ? '' : 'd-none'),
-                                        onclick: () => {
+                                        onclick: (el) => {
+
+                                            el.target.classList.add('d-none');
 
                                             CuidadosUci2.copyAllRegistros();
 

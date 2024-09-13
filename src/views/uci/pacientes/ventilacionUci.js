@@ -30,6 +30,7 @@ class Ventilacion {
 
 
 class VentilacionUci {
+    static allRegistros = [];
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
@@ -94,7 +95,7 @@ class VentilacionUci {
         let _arr = [];
         let hash = {};
 
-        result = VentilacionUci.registros.sort((a, b) => b.nro - a.nro);
+        result = VentilacionUci.allRegistros.sort((a, b) => b.nro - a.nro);
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -112,55 +113,51 @@ class VentilacionUci {
         let resultNro = [];
         let hash = {};
 
-        try {
-
-            re = VentilacionUci.registros;
-
-            result = re.sort((a, b) => b.nro - a.nro);
-            // Quitar duplicados
-            resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true).sort((a, b) => a.nro - b.nro);
-
-            resultNro.map((_v, _i) => {
-                VentilacionUci.iniciarRegistro();
-                VentilacionUci.nuevoRegistro.id = _v.id;
-                VentilacionUci.nuevoRegistro.ventilacion = _v.ventilacion;
-                if (PacientesUCI.numeroTurno != 1) {
-                    VentilacionUci.nuevoRegistro.observacion = _v.observacion;
-                    VentilacionUci.nuevoRegistro.am = _v.am;
-                    VentilacionUci.nuevoRegistro.pm = _v.pm;
-                    VentilacionUci.nuevoRegistro.hs = _v.hs;
-                }
-                VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                res.push(VentilacionUci.nuevoRegistro);
-                VentilacionUci.nuevoRegistro = null;
-            });
 
 
-            VentilacionUci.registros.push.apply(VentilacionUci.registros, res);
-            // Asignar Nro
+        re = VentilacionUci.allRegistros;
 
-            VentilacionUci.registros.map((_v, _i) => {
-                if (_v.nro == null) {
-                    VentilacionUci.registros[_i].nro = (_i + 1);
-                    if (_v.id == res.id) {
-                        res.nro = VentilacionUci.registros[_i].nro;
+        result = re.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true).sort((a, b) => a.nro - b.nro);
 
-                    }
+        resultNro.map((_v, _i) => {
+            VentilacionUci.iniciarRegistro();
+            VentilacionUci.nuevoRegistro.id = _v.id;
+            VentilacionUci.nuevoRegistro.ventilacion = _v.ventilacion;
+            if (PacientesUCI.numeroTurno != 1) {
+                VentilacionUci.nuevoRegistro.observacion = _v.observacion;
+                VentilacionUci.nuevoRegistro.am = _v.am;
+                VentilacionUci.nuevoRegistro.pm = _v.pm;
+                VentilacionUci.nuevoRegistro.hs = _v.hs;
+            }
+            VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+            VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+            res.push(VentilacionUci.nuevoRegistro);
+            VentilacionUci.nuevoRegistro = null;
+        });
+
+
+        VentilacionUci.allRegistros.push.apply(VentilacionUci.allRegistros, res);
+        // Asignar Nro
+
+        VentilacionUci.allRegistros.map((_v, _i) => {
+            if (_v.nro == null) {
+                VentilacionUci.allRegistros[_i].nro = (_i + 1);
+                if (_v.id == res.id) {
+                    res.nro = VentilacionUci.allRegistros[_i].nro;
 
                 }
 
+            }
 
-            });
 
-            VentilacionUci.filterRegistros();
-            FecthUci.registrarAllSeccion(res);
+        });
 
-        } catch (error) {
+        VentilacionUci.filterRegistros();
+        FecthUci.registrarAllSeccion(res);
+        PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
 
-        } finally {
-            PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
-        }
 
     }
 

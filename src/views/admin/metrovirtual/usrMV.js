@@ -670,15 +670,14 @@ class usrMV extends App {
                         body: JSON.parse(xhr.responseText)
                     }
                 }
-            })
-                .then((response) => {
+            }).then((response) => {
 
-                    if (response.status !== 200) {
-                        throw new ErrorMetroplus("Error HTTP", { cause: 'La respuesta del servidor no es correcta. Status Response:' + response.status });
-                    }
-                    return response.body;
+                if (response.status !== 200) {
+                    throw new ErrorMetroplus("Error HTTP", { cause: 'La respuesta del servidor no es correcta. Status Response:' + response.status });
+                }
+                return response.body;
 
-                });
+            });
 
         } catch (error) {
 

@@ -31,7 +31,7 @@ class Cateter {
 
 
 class CateterUci {
-
+    static allRegistros = [];
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
@@ -97,7 +97,7 @@ class CateterUci {
         let _arr = [];
         let hash = {};
 
-        result = CateterUci.registros.sort((a, b) => b.nro - a.nro);
+        result = CateterUci.allRegistros.sort((a, b) => b.nro - a.nro);
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -115,58 +115,56 @@ class CateterUci {
         let resultNro = [];
         let hash = {};
 
-        try {
-
-            re = CateterUci.registros;
-
-            result = re.sort((a, b) => b.nro - a.nro);
-            // Quitar duplicados
-            resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true).sort((a, b) => a.nro - b.nro);
-
-            resultNro.map((_v, _i) => {
-                CateterUci.iniciarRegistro();
-                CateterUci.nuevoRegistro.id = _v.id;
-                CateterUci.nuevoRegistro.cateter = _v.cateter;
-                if (PacientesUCI.numeroTurno != 1) {
-                    CateterUci.nuevoRegistro.observacion = _v.observacion;
-                    CateterUci.nuevoRegistro.am = _v.am;
-                    CateterUci.nuevoRegistro.pm = _v.pm;
-                    CateterUci.nuevoRegistro.hs = _v.hs;
-                }
-                CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                res.push(CateterUci.nuevoRegistro);
-                CateterUci.nuevoRegistro = null;
-            });
 
 
-            CateterUci.registros.push.apply(CateterUci.registros, res);
-            // Asignar Nro
+        re = CateterUci.allRegistros;
 
-            CateterUci.registros.map((_v, _i) => {
-                if (_v.nro == null) {
-                    CateterUci.registros[_i].nro = (_i + 1);
-                    if (_v.id == res.id) {
-                        res.nro = CateterUci.registros[_i].nro;
-                    }
+        result = re.sort((a, b) => b.nro - a.nro);
+        // Quitar duplicados
+        resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true).sort((a, b) => a.nro - b.nro);
 
+        resultNro.map((_v, _i) => {
+            CateterUci.iniciarRegistro();
+            CateterUci.nuevoRegistro.id = _v.id;
+            CateterUci.nuevoRegistro.cateter = _v.cateter;
+            if (PacientesUCI.numeroTurno != 1) {
+                CateterUci.nuevoRegistro.observacion = _v.observacion;
+                CateterUci.nuevoRegistro.am = _v.am;
+                CateterUci.nuevoRegistro.pm = _v.pm;
+                CateterUci.nuevoRegistro.hs = _v.hs;
+            }
+            CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+            CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+            res.push(CateterUci.nuevoRegistro);
+            CateterUci.nuevoRegistro = null;
+        });
+
+
+        CateterUci.allRegistros.push.apply(CateterUci.allRegistros, res);
+        // Asignar Nro
+
+        CateterUci.allRegistros.map((_v, _i) => {
+            if (_v.nro == null) {
+                CateterUci.allRegistros[_i].nro = (_i + 1);
+                if (_v.id == res.id) {
+                    res.nro = CateterUci.allRegistros[_i].nro;
                 }
 
+            }
 
-            });
+
+        });
 
 
-            console.log(7788, res)
+        console.log(7788, res)
 
-            CateterUci.filterRegistros();
+        CateterUci.filterRegistros();
 
-            FecthUci.registrarAllSeccion(res);
+        FecthUci.registrarAllSeccion(res);
 
-        } catch (error) {
+        PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
 
-        } finally {
-            PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
-        }
+
 
 
     }
@@ -209,412 +207,412 @@ class CateterUci {
                 [0, 'desc']
             ],
             columns: [{
-                    title: "Turno: ",
-                },
-                {
-                    title: "Order Nro : ",
-                },
-                {
-                    title: "Turno: ",
-                },
-                {
-                    title: "Cateter:",
-                },
-                {
-                    title: "AM:",
-                },
-                {
-                    title: "PM:",
-                },
-                {
-                    title: "HS:",
-                },
+                title: "Turno: ",
+            },
+            {
+                title: "Order Nro : ",
+            },
+            {
+                title: "Turno: ",
+            },
+            {
+                title: "Cateter:",
+            },
+            {
+                title: "AM:",
+            },
+            {
+                title: "PM:",
+            },
+            {
+                title: "HS:",
+            },
 
-                {
-                    title: "Observación:",
-                },
-                {
-                    title: "Opciones:",
-                }
+            {
+                title: "Observación:",
+            },
+            {
+                title: "Opciones:",
+            }
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, full) {
-                        return full.fechaHoraTurno;
-                    },
-                    visible: false,
-                    aTargets: [0],
-                    orderable: true,
+                mRender: function (data, type, full) {
+                    return full.fechaHoraTurno;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.nro;
-                    },
-                    visible: false,
-                    aTargets: [1],
-                    orderable: true,
-
+                visible: false,
+                aTargets: [0],
+                orderable: true,
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.nro;
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center.pd-5', [
-                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'bg-light' : 'bg-warning')
-                                            },
-                                            (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                            (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                            (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        ),
-                                    ])
+                visible: false,
+                aTargets: [1],
+                orderable: true,
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '15%',
-                    visible: true,
-                    aTargets: [2],
-                    orderable: false,
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center.pd-5', [
+                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                        class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'bg-light' : 'bg-warning')
+                                    },
+                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    ),
+                                ])
 
+                            ]
+                        }
+                    });
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.cateter;
-                    },
+                width: '15%',
+                visible: true,
+                aTargets: [2],
+                orderable: false,
 
-                    visible: true,
-                    aTargets: [3],
-                    orderable: true,
-
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.cateter;
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.pd-10', {
-                                        class: (oData.editar == true ? 'd-none' : ''),
+
+                visible: true,
+                aTargets: [3],
+                orderable: true,
+
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.pd-10', {
+                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    ondblclick: (e) => {
+                                        CateterUci.nuevoRegistro = null
+                                        CateterUci.verRegistro(oData);
+                                    },
+                                }, (oData.am !== null ? oData.am : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                (CateterUci.nuevoRegistro !== null ? [
+                                    m("input", {
+                                        id: "am" + CateterUci.nuevoRegistro.id,
+                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        type: "text",
+                                        placeholder: "...",
                                         ondblclick: (e) => {
+                                            oData.editar = null;
                                             CateterUci.nuevoRegistro = null
-                                            CateterUci.verRegistro(oData);
                                         },
-                                    }, (oData.am !== null ? oData.am : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                    (CateterUci.nuevoRegistro !== null ? [
-                                        m("input", {
-                                            id: "am" + CateterUci.nuevoRegistro.id,
-                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
-                                            type: "text",
-                                            placeholder: "...",
-                                            ondblclick: (e) => {
-                                                oData.editar = null;
-                                                CateterUci.nuevoRegistro = null
-                                            },
-                                            onkeypress: (e) => {
-                                                if (e.keyCode == 13) {
-                                                    CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    console.log(99, CateterUci.nuevoRegistro)
-                                                        // throw 'AA';
-                                                    if (CateterUci.nuevoRegistro.editar == null) {
-                                                        CateterUci.agregarRegistro();
-                                                        FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
-                                                        CateterUci.nuevoRegistro = null;
-                                                        CateterUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
-                                                    } else {
-                                                        CateterUci.editarRegistro();
-                                                        FecthUci.actualizarSeccion(CateterUci.nuevoRegistro);
-                                                        CateterUci.nuevoRegistro = null;
-                                                        CateterUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
-
-                                                    }
-
-
-                                                }
-                                            },
-                                            oninput: (e) => {
-                                                if (PacientesUCI.numeroTurno == 1) {
-                                                    CateterUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
-                                                } else {
-                                                    e.preventDefault();
-                                                }
-                                            },
-                                            value: (CateterUci.nuevoRegistro.am !== null ? CateterUci.nuevoRegistro.am : '')
-                                        })
-                                    ] : [])
-
-                                ]
-                            }
-                        });
-                    },
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
-
-                },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.pd-10', {
-                                        class: (oData.editar == true ? 'd-none' : ''),
-                                        ondblclick: (e) => {
-                                            CateterUci.nuevoRegistro = null
-                                            CateterUci.verRegistro(oData);
-                                        },
-                                    }, (oData.pm !== null ? oData.pm : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                    (CateterUci.nuevoRegistro !== null ? [
-                                        m("input", {
-                                            id: "pm" + CateterUci.nuevoRegistro.id,
-                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
-                                            type: "text",
-                                            placeholder: "...",
-                                            ondblclick: (e) => {
-                                                oData.editar = null;
-                                                CateterUci.nuevoRegistro = null
-                                            },
-                                            onkeypress: (e) => {
-                                                if (e.keyCode == 13) {
-
-                                                    CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    console.log(99, CateterUci.nuevoRegistro)
-
-                                                    // throw 'AA';
-                                                    if (CateterUci.nuevoRegistro.editar == null) {
-                                                        CateterUci.agregarRegistro();
-                                                        FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
-                                                        CateterUci.nuevoRegistro = null;
-                                                        CateterUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
-                                                    } else {
-                                                        CateterUci.editarRegistro();
-                                                        FecthUci.actualizarSeccion(CateterUci.nuevoRegistro);
-                                                        CateterUci.nuevoRegistro = null;
-                                                        CateterUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
-
-                                                    }
-
-
-                                                }
-                                            },
-                                            oninput: (e) => {
-                                                if (PacientesUCI.numeroTurno == 2) {
-                                                    CateterUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
-                                                } else {
-                                                    e.preventDefault();
-                                                }
-                                            },
-                                            value: (CateterUci.nuevoRegistro.pm !== null ? CateterUci.nuevoRegistro.pm : '')
-                                        })
-                                    ] : [])
-
-                                ]
-                            }
-                        });
-                    },
-                    visible: true,
-                    aTargets: [5],
-                    orderable: true,
-
-
-                },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.pd-10', {
-                                        class: (oData.editar == true ? 'd-none' : ''),
-                                        ondblclick: (e) => {
-                                            CateterUci.nuevoRegistro = null
-                                            CateterUci.verRegistro(oData);
-                                        },
-                                    }, (oData.hs !== null ? oData.hs : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                    (CateterUci.nuevoRegistro !== null ? [
-                                        m("input", {
-                                            id: "hs" + CateterUci.nuevoRegistro.id,
-                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
-                                            type: "text",
-                                            placeholder: "...",
-                                            ondblclick: (e) => {
-                                                oData.editar = null;
-                                                CateterUci.nuevoRegistro = null
-                                            },
-                                            onkeypress: (e) => {
-                                                if (e.keyCode == 13) {
-
-                                                    CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    console.log(99, CateterUci.nuevoRegistro)
-
-                                                    // throw 'AA';
-                                                    if (CateterUci.nuevoRegistro.editar == null) {
-                                                        CateterUci.agregarRegistro();
-                                                        FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
-                                                        CateterUci.nuevoRegistro = null;
-                                                        CateterUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
-                                                    } else {
-                                                        CateterUci.editarRegistro();
-                                                        FecthUci.actualizarSeccion(CateterUci.nuevoRegistro);
-                                                        CateterUci.nuevoRegistro = null;
-                                                        CateterUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
-
-                                                    }
-
-
-                                                }
-                                            },
-                                            oninput: (e) => {
-                                                if (PacientesUCI.numeroTurno == 3) {
-                                                    CateterUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
-                                                } else {
-                                                    e.preventDefault();
-                                                }
-                                            },
-                                            value: (CateterUci.nuevoRegistro.hs !== null ? CateterUci.nuevoRegistro.hs : '')
-
-                                        })
-                                    ] : [])
-
-                                ]
-                            }
-                        });
-                    },
-                    visible: true,
-                    aTargets: [6],
-                    orderable: true,
-
-
-                },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.pd-10', {
-                                        class: (oData.editar == true ? 'd-none' : ''),
-                                        ondblclick: (e) => {
-                                            CateterUci.nuevoRegistro = null
-                                            CateterUci.verRegistro(oData);
-                                        },
-                                    }, (oData.observacion !== null ? oData.observacion : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                    (CateterUci.nuevoRegistro !== null ? [
-                                        m("input", {
-                                            id: "observacion" + CateterUci.nuevoRegistro.id,
-                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
-                                            type: "text",
-                                            placeholder: "...",
-                                            onkeypress: (e) => {
-                                                if (e.keyCode == 13) {
-
-                                                    CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    console.log(99, CateterUci.nuevoRegistro)
-
-                                                    // throw 'AA';
-                                                    if (CateterUci.nuevoRegistro.editar == null) {
-                                                        CateterUci.agregarRegistro();
-                                                        FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
-                                                        CateterUci.nuevoRegistro = null;
-                                                        CateterUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
-                                                    } else {
-                                                        CateterUci.editarRegistro();
-                                                        FecthUci.actualizarSeccion(CateterUci.nuevoRegistro);
-                                                        CateterUci.nuevoRegistro = null;
-                                                        CateterUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
-
-                                                    }
-
-
-                                                }
-                                            },
-                                            ondblclick: (e) => {
-                                                oData.editar = null;
-                                                CateterUci.nuevoRegistro = null
-                                            },
-                                            oninput: (e) => {
-                                                CateterUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
-                                            },
-                                            value: (CateterUci.nuevoRegistro.observacion !== null ? CateterUci.nuevoRegistro.observacion : '')
-
-                                        })
-                                    ] : [])
-
-                                ]
-                            }
-                        });
-                    },
-                    visible: true,
-                    aTargets: [7],
-                    orderable: true,
-
-
-                },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success.d-none[type='button']", {
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    CateterUci.nuevoRegistro = null
-                                                    CateterUci.verRegistro(oData);
-                                                },
-                                            },
-                                            'Editar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                                class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
-
-                                                onclick: () => {
-                                                    oData.editar = null;
+                                        onkeypress: (e) => {
+                                            if (e.keyCode == 13) {
+                                                CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                console.log(99, CateterUci.nuevoRegistro)
+                                                // throw 'AA';
+                                                if (CateterUci.nuevoRegistro.editar == null) {
+                                                    CateterUci.agregarRegistro();
+                                                    FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
                                                     CateterUci.nuevoRegistro = null;
-                                                },
-                                            },
-                                            'Cancelar Edición',
-                                        ),
+                                                    CateterUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
+                                                } else {
+                                                    CateterUci.editarRegistro();
+                                                    FecthUci.actualizarSeccion(CateterUci.nuevoRegistro);
+                                                    CateterUci.nuevoRegistro = null;
+                                                    CateterUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
 
-                                        m("button.btn.btn-xs.btn-dark[type='button'][id='copyAll']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'RecoletcorVejiga' ? '' : 'd-none'),
-                                                onclick: () => {
+                                                }
 
-                                                    CateterUci.copyAllRegistros();
-                                                    document.getElementById('copyAll').remove();
 
-                                                },
-                                            },
-                                            'Copiar',
-                                        ),
+                                            }
+                                        },
+                                        oninput: (e) => {
+                                            if (PacientesUCI.numeroTurno == 1) {
+                                                CateterUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
+                                            } else {
+                                                e.preventDefault();
+                                            }
+                                        },
+                                        value: (CateterUci.nuevoRegistro.am !== null ? CateterUci.nuevoRegistro.am : '')
+                                    })
+                                ] : [])
 
-                                    ])
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: [4],
+                orderable: true,
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '5%',
-                    visible: true,
-                    aTargets: [8],
-                    orderable: true,
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.pd-10', {
+                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    ondblclick: (e) => {
+                                        CateterUci.nuevoRegistro = null
+                                        CateterUci.verRegistro(oData);
+                                    },
+                                }, (oData.pm !== null ? oData.pm : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                (CateterUci.nuevoRegistro !== null ? [
+                                    m("input", {
+                                        id: "pm" + CateterUci.nuevoRegistro.id,
+                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        type: "text",
+                                        placeholder: "...",
+                                        ondblclick: (e) => {
+                                            oData.editar = null;
+                                            CateterUci.nuevoRegistro = null
+                                        },
+                                        onkeypress: (e) => {
+                                            if (e.keyCode == 13) {
 
-                }
+                                                CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                console.log(99, CateterUci.nuevoRegistro)
+
+                                                // throw 'AA';
+                                                if (CateterUci.nuevoRegistro.editar == null) {
+                                                    CateterUci.agregarRegistro();
+                                                    FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
+                                                    CateterUci.nuevoRegistro = null;
+                                                    CateterUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
+                                                } else {
+                                                    CateterUci.editarRegistro();
+                                                    FecthUci.actualizarSeccion(CateterUci.nuevoRegistro);
+                                                    CateterUci.nuevoRegistro = null;
+                                                    CateterUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
+
+                                                }
+
+
+                                            }
+                                        },
+                                        oninput: (e) => {
+                                            if (PacientesUCI.numeroTurno == 2) {
+                                                CateterUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
+                                            } else {
+                                                e.preventDefault();
+                                            }
+                                        },
+                                        value: (CateterUci.nuevoRegistro.pm !== null ? CateterUci.nuevoRegistro.pm : '')
+                                    })
+                                ] : [])
+
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: [5],
+                orderable: true,
+
+
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.pd-10', {
+                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    ondblclick: (e) => {
+                                        CateterUci.nuevoRegistro = null
+                                        CateterUci.verRegistro(oData);
+                                    },
+                                }, (oData.hs !== null ? oData.hs : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                (CateterUci.nuevoRegistro !== null ? [
+                                    m("input", {
+                                        id: "hs" + CateterUci.nuevoRegistro.id,
+                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        type: "text",
+                                        placeholder: "...",
+                                        ondblclick: (e) => {
+                                            oData.editar = null;
+                                            CateterUci.nuevoRegistro = null
+                                        },
+                                        onkeypress: (e) => {
+                                            if (e.keyCode == 13) {
+
+                                                CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                console.log(99, CateterUci.nuevoRegistro)
+
+                                                // throw 'AA';
+                                                if (CateterUci.nuevoRegistro.editar == null) {
+                                                    CateterUci.agregarRegistro();
+                                                    FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
+                                                    CateterUci.nuevoRegistro = null;
+                                                    CateterUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
+                                                } else {
+                                                    CateterUci.editarRegistro();
+                                                    FecthUci.actualizarSeccion(CateterUci.nuevoRegistro);
+                                                    CateterUci.nuevoRegistro = null;
+                                                    CateterUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
+
+                                                }
+
+
+                                            }
+                                        },
+                                        oninput: (e) => {
+                                            if (PacientesUCI.numeroTurno == 3) {
+                                                CateterUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
+                                            } else {
+                                                e.preventDefault();
+                                            }
+                                        },
+                                        value: (CateterUci.nuevoRegistro.hs !== null ? CateterUci.nuevoRegistro.hs : '')
+
+                                    })
+                                ] : [])
+
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: [6],
+                orderable: true,
+
+
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.pd-10', {
+                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    ondblclick: (e) => {
+                                        CateterUci.nuevoRegistro = null
+                                        CateterUci.verRegistro(oData);
+                                    },
+                                }, (oData.observacion !== null ? oData.observacion : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                (CateterUci.nuevoRegistro !== null ? [
+                                    m("input", {
+                                        id: "observacion" + CateterUci.nuevoRegistro.id,
+                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        type: "text",
+                                        placeholder: "...",
+                                        onkeypress: (e) => {
+                                            if (e.keyCode == 13) {
+
+                                                CateterUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                console.log(99, CateterUci.nuevoRegistro)
+
+                                                // throw 'AA';
+                                                if (CateterUci.nuevoRegistro.editar == null) {
+                                                    CateterUci.agregarRegistro();
+                                                    FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
+                                                    CateterUci.nuevoRegistro = null;
+                                                    CateterUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
+                                                } else {
+                                                    CateterUci.editarRegistro();
+                                                    FecthUci.actualizarSeccion(CateterUci.nuevoRegistro);
+                                                    CateterUci.nuevoRegistro = null;
+                                                    CateterUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
+
+                                                }
+
+
+                                            }
+                                        },
+                                        ondblclick: (e) => {
+                                            oData.editar = null;
+                                            CateterUci.nuevoRegistro = null
+                                        },
+                                        oninput: (e) => {
+                                            CateterUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
+                                        },
+                                        value: (CateterUci.nuevoRegistro.observacion !== null ? CateterUci.nuevoRegistro.observacion : '')
+
+                                    })
+                                ] : [])
+
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: [7],
+                orderable: true,
+
+
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m("div.btn-block.btn-group.wd-100p.pd-5", [
+                                    m("button.btn.btn-xs.btn-success.d-none[type='button']", {
+                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                        onclick: () => {
+                                            CateterUci.nuevoRegistro = null
+                                            CateterUci.verRegistro(oData);
+                                        },
+                                    },
+                                        'Editar',
+                                    ),
+                                    m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
+                                        class: (oData.editar ? '' : 'd-none'),
+                                        disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
+
+                                        onclick: () => {
+                                            oData.editar = null;
+                                            CateterUci.nuevoRegistro = null;
+                                        },
+                                    },
+                                        'Cancelar Edición',
+                                    ),
+
+                                    m("button.btn.btn-xs.btn-dark[type='button'][id='copyAll']", {
+                                        class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'RecoletcorVejiga' ? '' : 'd-none'),
+                                        onclick: () => {
+
+                                            CateterUci.copyAllRegistros();
+                                            document.getElementById('copyAll').remove();
+
+                                        },
+                                    },
+                                        'Copiar',
+                                    ),
+
+                                ])
+
+                            ]
+                        }
+                    });
+                },
+                width: '5%',
+                visible: true,
+                aTargets: [8],
+                orderable: true,
+
+            }
 
 
             ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
             },
         };
@@ -631,10 +629,10 @@ class CateterUci {
     view() {
         return [
             m("thead.bd.bd-2", {
-                    style: { "border-color": "#5173a1" },
-                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+                style: { "border-color": "#5173a1" },
+                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
-                },
+            },
 
                 m("tr.tx-uppercase", {
 
@@ -707,27 +705,27 @@ class CateterUci {
                             class: "custom-select",
                             value: (CateterUci.nuevoRegistro !== null ? CateterUci.nuevoRegistro.cateter : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                id: "RecoletcorVejiga",
-                                label: "Recolector más abajo que vejiga"
-                            }, {
-                                id: "RecolectorNoTocaPiso",
-                                label: "Recolector no toca piso"
-                            }, {
-                                id: "OrinaRecolector",
-                                label: "Orina hasta 50% en recolector"
-                            },
-                            {
-                                id: "SondaFijadaMuslo",
-                                label: "Sonda fijada en muslo"
-                            },
-                            {
-                                id: "RegistroAseoGenital",
-                                label: "Registro de aseo genital"
-                            },
-                            {
-                                id: "RegistroDiasCateter",
-                                label: "Registro n° de días de cateter"
-                            }
+                            id: "RecoletcorVejiga",
+                            label: "Recolector más abajo que vejiga"
+                        }, {
+                            id: "RecolectorNoTocaPiso",
+                            label: "Recolector no toca piso"
+                        }, {
+                            id: "OrinaRecolector",
+                            label: "Orina hasta 50% en recolector"
+                        },
+                        {
+                            id: "SondaFijadaMuslo",
+                            label: "Sonda fijada en muslo"
+                        },
+                        {
+                            id: "RegistroAseoGenital",
+                            label: "Registro de aseo genital"
+                        },
+                        {
+                            id: "RegistroDiasCateter",
+                            label: "Registro n° de días de cateter"
+                        }
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
                         ))

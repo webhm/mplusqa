@@ -33,6 +33,7 @@ class Oxi {
 
 
 class OxigenacionUci {
+    static allRegistros = [];
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
@@ -99,7 +100,7 @@ class OxigenacionUci {
         let _arr = [];
         let hash = {};
 
-        result = OxigenacionUci.registros.sort((a, b) => b.nro - a.nro);
+        result = OxigenacionUci.allRegistros.sort((a, b) => b.nro - a.nro);
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -117,7 +118,7 @@ class OxigenacionUci {
         let resultNro = [];
         let hash = {};
 
-        re = OxigenacionUci.registros;
+        re = OxigenacionUci.allRegistros;
 
         result = re.sort((a, b) => b.nro - a.nro);
         // Quitar duplicados
@@ -140,14 +141,14 @@ class OxigenacionUci {
         });
 
 
-        OxigenacionUci.registros.push.apply(OxigenacionUci.registros, res);
+        OxigenacionUci.allRegistros.push.apply(OxigenacionUci.allRegistros, res);
         // Asignar Nro
 
-        OxigenacionUci.registros.map((_v, _i) => {
+        OxigenacionUci.allRegistros.map((_v, _i) => {
             if (_v.nro == null) {
-                OxigenacionUci.registros[_i].nro = (_i + 1);
+                OxigenacionUci.allRegistros[_i].nro = (_i + 1);
                 if (_v.id == res.id) {
-                    res.nro = OxigenacionUci.registros[_i].nro;
+                    res.nro = OxigenacionUci.allRegistros[_i].nro;
                 }
             }
         });
@@ -200,411 +201,411 @@ class OxigenacionUci {
                 [0, 'desc']
             ],
             columns: [{
-                    title: "Turno: ",
-                },
-                {
-                    title: "Order Nro : ",
-                },
-                {
-                    title: "Turno: ",
-                },
-                {
-                    title: "Oxigenación:",
-                },
-                {
-                    title: "AM:",
-                },
-                {
-                    title: "PM:",
-                },
+                title: "Turno: ",
+            },
+            {
+                title: "Order Nro : ",
+            },
+            {
+                title: "Turno: ",
+            },
+            {
+                title: "Oxigenación:",
+            },
+            {
+                title: "AM:",
+            },
+            {
+                title: "PM:",
+            },
 
-                {
-                    title: "HS:",
-                },
-                {
-                    title: "Observación:",
-                },
-                {
-                    title: "Opciones:",
-                }
+            {
+                title: "HS:",
+            },
+            {
+                title: "Observación:",
+            },
+            {
+                title: "Opciones:",
+            }
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, full) {
-                        return full.fechaHoraTurno;
-                    },
-                    visible: false,
-                    aTargets: [0],
-                    orderable: true,
+                mRender: function (data, type, full) {
+                    return full.fechaHoraTurno;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.nro;
-                    },
-                    visible: false,
-                    aTargets: [1],
-                    orderable: true,
-
+                visible: false,
+                aTargets: [0],
+                orderable: true,
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.nro;
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center.pd-5', [
-                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                            },
-                                            (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                            (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                            (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        ),
-                                    ])
+                visible: false,
+                aTargets: [1],
+                orderable: true,
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '15%',
-                    visible: true,
-                    aTargets: [2],
-                    orderable: false,
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center.pd-5', [
+                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                        class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                    },
+                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    ),
+                                ])
 
+                            ]
+                        }
+                    });
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.oxi;
-                    },
+                width: '15%',
+                visible: true,
+                aTargets: [2],
+                orderable: false,
 
-                    visible: true,
-                    aTargets: [3],
-                    orderable: true,
-
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.oxi;
                 },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.pd-10', {
-                                        class: (oData.editar == true ? 'd-none' : ''),
+
+                visible: true,
+                aTargets: [3],
+                orderable: true,
+
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.pd-10', {
+                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    ondblclick: (e) => {
+                                        OxigenacionUci.nuevoRegistro = null
+                                        OxigenacionUci.verRegistro(oData);
+                                    },
+                                }, (oData.am !== null ? oData.am : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                (OxigenacionUci.nuevoRegistro !== null ? [
+                                    m("input", {
+                                        id: "am" + OxigenacionUci.nuevoRegistro.id,
+                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        type: "text",
+                                        placeholder: "...",
                                         ondblclick: (e) => {
+                                            oData.editar = null;
                                             OxigenacionUci.nuevoRegistro = null
-                                            OxigenacionUci.verRegistro(oData);
                                         },
-                                    }, (oData.am !== null ? oData.am : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                    (OxigenacionUci.nuevoRegistro !== null ? [
-                                        m("input", {
-                                            id: "am" + OxigenacionUci.nuevoRegistro.id,
-                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
-                                            type: "text",
-                                            placeholder: "...",
-                                            ondblclick: (e) => {
-                                                oData.editar = null;
-                                                OxigenacionUci.nuevoRegistro = null
-                                            },
-                                            onkeypress: (e) => {
-                                                if (e.keyCode == 13) {
+                                        onkeypress: (e) => {
+                                            if (e.keyCode == 13) {
 
-                                                    OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    console.log(99, OxigenacionUci.nuevoRegistro)
+                                                OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                console.log(99, OxigenacionUci.nuevoRegistro)
 
-                                                    // throw 'AA';
-                                                    if (OxigenacionUci.nuevoRegistro.editar == null) {
-                                                        OxigenacionUci.agregarRegistro();
-                                                        FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
-                                                        OxigenacionUci.nuevoRegistro = null;
-                                                        OxigenacionUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
-                                                    } else {
-                                                        OxigenacionUci.editarRegistro();
-                                                        FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
-                                                        OxigenacionUci.nuevoRegistro = null;
-                                                        OxigenacionUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
-
-                                                    }
-
-
-                                                }
-                                            },
-                                            oninput: (e) => {
-                                                if (PacientesUCI.numeroTurno == 1) {
-                                                    OxigenacionUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
-                                                } else {
-                                                    e.preventDefault();
-                                                }
-                                            },
-                                            value: (OxigenacionUci.nuevoRegistro.am !== null ? OxigenacionUci.nuevoRegistro.am : '')
-                                        })
-                                    ] : [])
-
-                                ]
-                            }
-                        });
-                    },
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
-
-                },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.pd-10', {
-                                        class: (oData.editar == true ? 'd-none' : ''),
-                                        ondblclick: (e) => {
-                                            OxigenacionUci.nuevoRegistro = null
-                                            OxigenacionUci.verRegistro(oData);
-                                        },
-                                    }, (oData.pm !== null ? oData.pm : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                    (OxigenacionUci.nuevoRegistro !== null ? [
-                                        m("input", {
-                                            id: "pm" + OxigenacionUci.nuevoRegistro.id,
-                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
-                                            type: "text",
-                                            placeholder: "...",
-                                            ondblclick: (e) => {
-                                                oData.editar = null;
-                                                OxigenacionUci.nuevoRegistro = null
-                                            },
-                                            onkeypress: (e) => {
-                                                if (e.keyCode == 13) {
-
-                                                    OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    console.log(99, OxigenacionUci.nuevoRegistro)
-
-                                                    // throw 'AA';
-                                                    if (OxigenacionUci.nuevoRegistro.editar == null) {
-                                                        OxigenacionUci.agregarRegistro();
-                                                        FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
-                                                        OxigenacionUci.nuevoRegistro = null;
-                                                        OxigenacionUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
-                                                    } else {
-                                                        OxigenacionUci.editarRegistro();
-                                                        FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
-                                                        OxigenacionUci.nuevoRegistro = null;
-                                                        OxigenacionUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
-
-                                                    }
-
-
-                                                }
-                                            },
-                                            oninput: (e) => {
-                                                if (PacientesUCI.numeroTurno == 2) {
-                                                    OxigenacionUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
-                                                } else {
-                                                    e.preventDefault();
-                                                }
-                                            },
-                                            value: (OxigenacionUci.nuevoRegistro.pm !== null ? OxigenacionUci.nuevoRegistro.pm : '')
-                                        })
-                                    ] : [])
-
-                                ]
-                            }
-                        });
-                    },
-                    visible: true,
-                    aTargets: [5],
-                    orderable: true,
-                },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.pd-10', {
-                                        class: (oData.editar == true ? 'd-none' : ''),
-                                        ondblclick: (e) => {
-                                            OxigenacionUci.nuevoRegistro = null
-                                            OxigenacionUci.verRegistro(oData);
-                                        },
-                                    }, (oData.hs !== null ? oData.hs : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                    (OxigenacionUci.nuevoRegistro !== null ? [
-                                        m("input", {
-                                            id: "hs" + OxigenacionUci.nuevoRegistro.id,
-                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
-                                            type: "text",
-                                            placeholder: "...",
-                                            ondblclick: (e) => {
-                                                oData.editar = null;
-                                                OxigenacionUci.nuevoRegistro = null
-                                            },
-                                            onkeypress: (e) => {
-                                                if (e.keyCode == 13) {
-
-                                                    OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    console.log(99, OxigenacionUci.nuevoRegistro)
-
-                                                    // throw 'AA';
-                                                    if (OxigenacionUci.nuevoRegistro.editar == null) {
-                                                        OxigenacionUci.agregarRegistro();
-                                                        FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
-                                                        OxigenacionUci.nuevoRegistro = null;
-                                                        OxigenacionUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
-                                                    } else {
-                                                        OxigenacionUci.editarRegistro();
-                                                        FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
-                                                        OxigenacionUci.nuevoRegistro = null;
-                                                        OxigenacionUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
-
-                                                    }
-
-
-                                                }
-                                            },
-
-                                            oninput: (e) => {
-                                                if (PacientesUCI.numeroTurno == 3) {
-                                                    OxigenacionUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
-                                                } else {
-                                                    e.preventDefault();
-                                                }
-                                            },
-                                            value: (OxigenacionUci.nuevoRegistro.hs !== null ? OxigenacionUci.nuevoRegistro.hs : '')
-
-                                        })
-                                    ] : [])
-
-                                ]
-                            }
-                        });
-                    },
-                    visible: true,
-                    aTargets: [6],
-                    orderable: true,
-
-
-                },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.pd-10', {
-                                        class: (oData.editar == true ? 'd-none' : ''),
-                                        ondblclick: (e) => {
-                                            OxigenacionUci.nuevoRegistro = null
-                                            OxigenacionUci.verRegistro(oData);
-                                        },
-                                    }, (oData.observacion !== null ? oData.observacion : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                    (OxigenacionUci.nuevoRegistro !== null ? [
-                                        m("input", {
-                                            id: "observacion" + OxigenacionUci.nuevoRegistro.id,
-                                            class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
-                                            type: "text",
-                                            placeholder: "...",
-                                            onkeypress: (e) => {
-                                                if (e.keyCode == 13) {
-
-                                                    OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    console.log(99, OxigenacionUci.nuevoRegistro)
-
-                                                    // throw 'AA';
-                                                    if (OxigenacionUci.nuevoRegistro.editar == null) {
-                                                        OxigenacionUci.agregarRegistro();
-                                                        FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
-                                                        OxigenacionUci.nuevoRegistro = null;
-                                                        OxigenacionUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
-                                                    } else {
-                                                        OxigenacionUci.editarRegistro();
-                                                        FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
-                                                        OxigenacionUci.nuevoRegistro = null;
-                                                        OxigenacionUci.filterRegistros();
-                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
-
-                                                    }
-
-
-                                                }
-                                            },
-                                            ondblclick: (e) => {
-                                                oData.editar = null;
-                                                OxigenacionUci.nuevoRegistro = null
-                                            },
-                                            oninput: (e) => {
-                                                OxigenacionUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
-                                            },
-                                            value: (OxigenacionUci.nuevoRegistro.observacion !== null ? OxigenacionUci.nuevoRegistro.observacion : '')
-
-                                        })
-                                    ] : [])
-
-                                ]
-                            }
-                        });
-                    },
-                    visible: true,
-                    aTargets: [7],
-                    orderable: true,
-
-
-                },
-                {
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                        m("button.btn.btn-xs.btn-success.d-none[type='button']", {
-                                                class: (oData.editar ? 'd-none' : ''),
-                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                                onclick: () => {
-                                                    OxigenacionUci.nuevoRegistro = null
-                                                    OxigenacionUci.verRegistro(oData);
-                                                },
-                                            },
-                                            'Editar',
-                                        ),
-                                        m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                                class: (oData.editar ? '' : 'd-none'),
-                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
-
-                                                onclick: () => {
-                                                    oData.editar = null;
+                                                // throw 'AA';
+                                                if (OxigenacionUci.nuevoRegistro.editar == null) {
+                                                    OxigenacionUci.agregarRegistro();
+                                                    FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
                                                     OxigenacionUci.nuevoRegistro = null;
-                                                },
-                                            },
-                                            'Cancelar Edición',
-                                        ),
-                                        m("button.btn.btn-xs.btn-dark[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'AireAmbiente' ? '' : 'd-none'),
-                                                onclick: () => {
-                                                    OxigenacionUci.copyAllRegistros();
+                                                    OxigenacionUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+                                                } else {
+                                                    OxigenacionUci.editarRegistro();
+                                                    FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
+                                                    OxigenacionUci.nuevoRegistro = null;
+                                                    OxigenacionUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
 
-                                                },
-                                            },
-                                            'Copiar',
-                                        ),
+                                                }
 
-                                    ])
 
-                                ]
-                            }
-                        });
-                    },
-                    width: '5%',
-                    visible: true,
-                    aTargets: [8],
-                    orderable: true,
+                                            }
+                                        },
+                                        oninput: (e) => {
+                                            if (PacientesUCI.numeroTurno == 1) {
+                                                OxigenacionUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
+                                            } else {
+                                                e.preventDefault();
+                                            }
+                                        },
+                                        value: (OxigenacionUci.nuevoRegistro.am !== null ? OxigenacionUci.nuevoRegistro.am : '')
+                                    })
+                                ] : [])
 
-                }
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: [4],
+                orderable: true,
+
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.pd-10', {
+                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    ondblclick: (e) => {
+                                        OxigenacionUci.nuevoRegistro = null
+                                        OxigenacionUci.verRegistro(oData);
+                                    },
+                                }, (oData.pm !== null ? oData.pm : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                (OxigenacionUci.nuevoRegistro !== null ? [
+                                    m("input", {
+                                        id: "pm" + OxigenacionUci.nuevoRegistro.id,
+                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        type: "text",
+                                        placeholder: "...",
+                                        ondblclick: (e) => {
+                                            oData.editar = null;
+                                            OxigenacionUci.nuevoRegistro = null
+                                        },
+                                        onkeypress: (e) => {
+                                            if (e.keyCode == 13) {
+
+                                                OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                console.log(99, OxigenacionUci.nuevoRegistro)
+
+                                                // throw 'AA';
+                                                if (OxigenacionUci.nuevoRegistro.editar == null) {
+                                                    OxigenacionUci.agregarRegistro();
+                                                    FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
+                                                    OxigenacionUci.nuevoRegistro = null;
+                                                    OxigenacionUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+                                                } else {
+                                                    OxigenacionUci.editarRegistro();
+                                                    FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
+                                                    OxigenacionUci.nuevoRegistro = null;
+                                                    OxigenacionUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+
+                                                }
+
+
+                                            }
+                                        },
+                                        oninput: (e) => {
+                                            if (PacientesUCI.numeroTurno == 2) {
+                                                OxigenacionUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
+                                            } else {
+                                                e.preventDefault();
+                                            }
+                                        },
+                                        value: (OxigenacionUci.nuevoRegistro.pm !== null ? OxigenacionUci.nuevoRegistro.pm : '')
+                                    })
+                                ] : [])
+
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: [5],
+                orderable: true,
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.pd-10', {
+                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    ondblclick: (e) => {
+                                        OxigenacionUci.nuevoRegistro = null
+                                        OxigenacionUci.verRegistro(oData);
+                                    },
+                                }, (oData.hs !== null ? oData.hs : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                (OxigenacionUci.nuevoRegistro !== null ? [
+                                    m("input", {
+                                        id: "hs" + OxigenacionUci.nuevoRegistro.id,
+                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        type: "text",
+                                        placeholder: "...",
+                                        ondblclick: (e) => {
+                                            oData.editar = null;
+                                            OxigenacionUci.nuevoRegistro = null
+                                        },
+                                        onkeypress: (e) => {
+                                            if (e.keyCode == 13) {
+
+                                                OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                console.log(99, OxigenacionUci.nuevoRegistro)
+
+                                                // throw 'AA';
+                                                if (OxigenacionUci.nuevoRegistro.editar == null) {
+                                                    OxigenacionUci.agregarRegistro();
+                                                    FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
+                                                    OxigenacionUci.nuevoRegistro = null;
+                                                    OxigenacionUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+                                                } else {
+                                                    OxigenacionUci.editarRegistro();
+                                                    FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
+                                                    OxigenacionUci.nuevoRegistro = null;
+                                                    OxigenacionUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+
+                                                }
+
+
+                                            }
+                                        },
+
+                                        oninput: (e) => {
+                                            if (PacientesUCI.numeroTurno == 3) {
+                                                OxigenacionUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
+                                            } else {
+                                                e.preventDefault();
+                                            }
+                                        },
+                                        value: (OxigenacionUci.nuevoRegistro.hs !== null ? OxigenacionUci.nuevoRegistro.hs : '')
+
+                                    })
+                                ] : [])
+
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: [6],
+                orderable: true,
+
+
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.pd-10', {
+                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    ondblclick: (e) => {
+                                        OxigenacionUci.nuevoRegistro = null
+                                        OxigenacionUci.verRegistro(oData);
+                                    },
+                                }, (oData.observacion !== null ? oData.observacion : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
+                                (OxigenacionUci.nuevoRegistro !== null ? [
+                                    m("input", {
+                                        id: "observacion" + OxigenacionUci.nuevoRegistro.id,
+                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        type: "text",
+                                        placeholder: "...",
+                                        onkeypress: (e) => {
+                                            if (e.keyCode == 13) {
+
+                                                OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                console.log(99, OxigenacionUci.nuevoRegistro)
+
+                                                // throw 'AA';
+                                                if (OxigenacionUci.nuevoRegistro.editar == null) {
+                                                    OxigenacionUci.agregarRegistro();
+                                                    FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
+                                                    OxigenacionUci.nuevoRegistro = null;
+                                                    OxigenacionUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+                                                } else {
+                                                    OxigenacionUci.editarRegistro();
+                                                    FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
+                                                    OxigenacionUci.nuevoRegistro = null;
+                                                    OxigenacionUci.filterRegistros();
+                                                    PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+
+                                                }
+
+
+                                            }
+                                        },
+                                        ondblclick: (e) => {
+                                            oData.editar = null;
+                                            OxigenacionUci.nuevoRegistro = null
+                                        },
+                                        oninput: (e) => {
+                                            OxigenacionUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
+                                        },
+                                        value: (OxigenacionUci.nuevoRegistro.observacion !== null ? OxigenacionUci.nuevoRegistro.observacion : '')
+
+                                    })
+                                ] : [])
+
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: [7],
+                orderable: true,
+
+
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m("div.btn-block.btn-group.wd-100p.pd-5", [
+                                    m("button.btn.btn-xs.btn-success.d-none[type='button']", {
+                                        class: (oData.editar ? 'd-none' : ''),
+                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                        onclick: () => {
+                                            OxigenacionUci.nuevoRegistro = null
+                                            OxigenacionUci.verRegistro(oData);
+                                        },
+                                    },
+                                        'Editar',
+                                    ),
+                                    m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
+                                        class: (oData.editar ? '' : 'd-none'),
+                                        disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
+
+                                        onclick: () => {
+                                            oData.editar = null;
+                                            OxigenacionUci.nuevoRegistro = null;
+                                        },
+                                    },
+                                        'Cancelar Edición',
+                                    ),
+                                    m("button.btn.btn-xs.btn-dark[type='button']", {
+                                        class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'AireAmbiente' ? '' : 'd-none'),
+                                        onclick: () => {
+                                            OxigenacionUci.copyAllRegistros();
+
+                                        },
+                                    },
+                                        'Copiar',
+                                    ),
+
+                                ])
+
+                            ]
+                        }
+                    });
+                },
+                width: '5%',
+                visible: true,
+                aTargets: [8],
+                orderable: true,
+
+            }
 
 
             ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
             },
         };
@@ -622,10 +623,10 @@ class OxigenacionUci {
 
         return [
             m("thead.bd.bd-2", {
-                    style: { "border-color": "#5173a1" },
-                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+                style: { "border-color": "#5173a1" },
+                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
-                },
+            },
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
@@ -697,24 +698,24 @@ class OxigenacionUci {
                             class: "custom-select",
                             value: (OxigenacionUci.nuevoRegistro !== null ? OxigenacionUci.nuevoRegistro.oxi : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                id: "AireAmbiente",
-                                label: "AIRE AMBIENTE"
-                            }, {
-                                id: "CateterNasal",
-                                label: "CATETER NASAL"
-                            },
-                            {
-                                id: "Mascarilla",
-                                label: "MASCARILLA"
-                            },
-                            {
-                                id: "TuboenT",
-                                label: "TUBO EN T"
-                            },
-                            {
-                                id: "AltoFlujo",
-                                label: "ALTO FLUJO"
-                            },
+                            id: "AireAmbiente",
+                            label: "AIRE AMBIENTE"
+                        }, {
+                            id: "CateterNasal",
+                            label: "CATETER NASAL"
+                        },
+                        {
+                            id: "Mascarilla",
+                            label: "MASCARILLA"
+                        },
+                        {
+                            id: "TuboenT",
+                            label: "TUBO EN T"
+                        },
+                        {
+                            id: "AltoFlujo",
+                            label: "ALTO FLUJO"
+                        },
 
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)

@@ -261,6 +261,8 @@ class PacientesUCI extends App {
         });
 
         result = res.sort((a, b) => b.nro - a.nro);
+
+        CateterUci.allRegistros = result;
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -286,6 +288,8 @@ class PacientesUCI extends App {
         });
 
         result = res.sort((a, b) => b.nro - a.nro);
+
+        VentilacionUci.allRegistros = result;
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -330,6 +334,8 @@ class PacientesUCI extends App {
         });
 
         result = res.sort((a, b) => b.nro - a.nro);
+
+        HemodialisisUci.allRegistros = result;
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -357,6 +363,9 @@ class PacientesUCI extends App {
         });
 
         result = res.sort((a, b) => b.nro - a.nro);
+
+        MarcapasosUci.allRegistros = result;
+
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -384,6 +393,8 @@ class PacientesUCI extends App {
         });
 
         result = res.sort((a, b) => b.nro - a.nro);
+
+        OxigenacionUci.allRegistros = result;
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -4391,6 +4402,9 @@ class PacientesUCI extends App {
         });
 
         result = res.sort((a, b) => b.nro - a.nro);
+
+        CuidadosUci2.allRegistros = result;
+
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
