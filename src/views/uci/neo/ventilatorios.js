@@ -533,7 +533,9 @@ class VentilatoriosNeo {
                                             //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
                                             VentilatoriosNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
                                             VentilatoriosNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
-                                            VentilatoriosNeo.validarRegistroUnicoPorTurno(VentilatoriosNeo.nuevoRegistro.tipo);
+                                            if (VentilatoriosNeo.nuevoRegistro.editar != true) {
+                                                VentilatoriosNeo.validarRegistroUnicoPorTurno(VentilatoriosNeo.nuevoRegistro.tipo);
+                                            }
                                         } catch (error) {
                                             VentilatoriosNeo.nuevoRegistro = null;
                                             $.alert('No es posible ingresar este valor. Ya existe este registro.');

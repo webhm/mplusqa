@@ -461,10 +461,12 @@ class VentilatorioNoInvasivo {
                                     setTimeout(() => {
                                         try {
 
-                                            //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
+                                            console.log(99, VentilatorioNoInvasivo.nuevoRegistro)
                                             VentilatorioNoInvasivo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
                                             VentilatorioNoInvasivo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
-                                            VentilatorioNoInvasivo.validarRegistroUnicoPorTurno(VentilatorioNoInvasivo.nuevoRegistro.tipo);
+                                            if (VentilatorioNoInvasivo.nuevoRegistro.editar != true) {
+                                                VentilatorioNoInvasivo.validarRegistroUnicoPorTurno(VentilatorioNoInvasivo.nuevoRegistro.tipo);
+                                            }
 
                                         } catch (error) {
                                             VentilatorioNoInvasivo.nuevoRegistro = null;
@@ -496,6 +498,7 @@ class VentilatorioNoInvasivo {
                                 },
                                 onkeypress: (e) => {
                                     if (e.keyCode == 13) {
+
                                         VentilatorioNoInvasivo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         VentilatorioNoInvasivo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                         VentilatorioNoInvasivo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + VentilatorioNoInvasivo.nuevoRegistro.hora;
