@@ -5394,15 +5394,15 @@ class PacientesUCI extends App {
 
                                                     try {
 
-                                                        if (oData.numeroTurno == 1 && moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() < moment(moment().format('DD-MM-YYYY') + ' 08:00', 'DD-MM-YYYY HH:mm').unix() || moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() > moment(moment().format('DD-MM-YYYY') + ' 15:59', 'DD-MM-YYYY HH:mm').unix()) {
+                                                        if (oData.numeroTurno == 1 && moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() < moment(moment().format('DD-MM-YYYY') + ' 08:00', 'DD-MM-YYYY HH:mm').unix() || oData.numeroTurno == 1 && moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() > moment(moment().format('DD-MM-YYYY') + ' 15:59', 'DD-MM-YYYY HH:mm').unix()) {
                                                             throw 1;
                                                         }
 
-                                                        if (oData.numeroTurno == 2 && moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() < moment(moment().format('DD-MM-YYYY') + ' 16:00', 'DD-MM-YYYY HH:mm').unix() || moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() > moment(moment().format('DD-MM-YYYY') + ' 23:59', 'DD-MM-YYYY HH:mm').unix()) {
+                                                        if (oData.numeroTurno == 2 && moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() < moment(moment().format('DD-MM-YYYY') + ' 16:00', 'DD-MM-YYYY HH:mm').unix() || oData.numeroTurno == 2 && moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() > moment(moment().format('DD-MM-YYYY') + ' 23:59', 'DD-MM-YYYY HH:mm').unix()) {
                                                             throw 2;
                                                         }
 
-                                                        if (oData.numeroTurno == 3 && moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() < moment(moment().format('DD-MM-YYYY') + ' 00:00', 'DD-MM-YYYY HH:mm').unix() || moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() > moment(moment().format('DD-MM-YYYY') + ' 07:59', 'DD-MM-YYYY HH:mm').unix()) {
+                                                        if (oData.numeroTurno == 3 && moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() < moment(moment().format('DD-MM-YYYY') + ' 00:00', 'DD-MM-YYYY HH:mm').unix() || oData.numeroTurno == 3 && moment(moment(oData.fechaTurno + ' ' + TurnosUci.nuevoTurno.horaTurno, 'DD-MM-YYYY HH:mm')).unix() > moment(moment().format('DD-MM-YYYY') + ' 07:59', 'DD-MM-YYYY HH:mm').unix()) {
                                                             throw 3;
                                                         }
 
