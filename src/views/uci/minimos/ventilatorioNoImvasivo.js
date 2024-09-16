@@ -130,196 +130,196 @@ class VentilatorioNoInvasivo {
                 [1, 'desc']
             ],
             columns: [{
-                title: "order Turno:",
-            },
-            {
-                title: "order N°:",
-            },
-            {
-                title: "Turno:",
-            },
-            {
-                title: "N°:",
-            },
-            {
-                title: "Tipo:",
-            },
-            {
-                title: "Hora:",
-            },
-            {
-                title: "Valor:",
-            },
-            {
-                title: "Cantidad:",
-            },
-            {
-                title: "Opciones:",
-            }
+                    title: "order Turno:",
+                },
+                {
+                    title: "order N°:",
+                },
+                {
+                    title: "Turno:",
+                },
+                {
+                    title: "N°:",
+                },
+                {
+                    title: "Tipo:",
+                },
+                {
+                    title: "Hora:",
+                },
+                {
+                    title: "Valor:",
+                },
+                {
+                    title: "Cantidad:",
+                },
+                {
+                    title: "Opciones:",
+                }
             ],
             aoColumnDefs: [{
-                mRender: function (data, type, full) {
-                    return full.fechaHoraTurno;
+                    mRender: function(data, type, full) {
+                        return full.fechaHoraTurno;
+                    },
+                    visible: false,
+                    aTargets: [0],
+                    orderable: true,
                 },
-                visible: false,
-                aTargets: [0],
-                orderable: true,
-            },
-            {
-                mRender: function (data, type, full) {
-                    return full.nro;
+                {
+                    mRender: function(data, type, full) {
+                        return full.nro;
+                    },
+                    visible: false,
+                    aTargets: [1],
+                    orderable: true,
+
                 },
-                visible: false,
-                aTargets: [1],
-                orderable: true,
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center.pd-5', [
+                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                            },
+                                            (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                            (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                            (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        ),
+                                    ])
 
-            },
-            {
-                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                        class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                    },
-                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                    ),
-                                ])
+                                ]
+                            }
+                        });
+                    },
+                    width: '15%',
+                    visible: true,
+                    aTargets: [2],
+                    orderable: false,
 
-                            ]
-                        }
-                    });
                 },
-                width: '15%',
-                visible: true,
-                aTargets: [2],
-                orderable: false,
+                {
+                    mRender: function(data, type, full) {
+                        return full.nro;
+                    },
 
-            },
-            {
-                mRender: function (data, type, full) {
-                    return full.nro;
-                },
+                    visible: false,
+                    aTargets: [3],
+                    orderable: false,
 
-                visible: false,
-                aTargets: [3],
-                orderable: false,
-
-            },
-
-            {
-                mRender: function (data, type, full) {
-                    return full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
                 },
 
-                visible: true,
-                aTargets: [4],
-                orderable: true,
+                {
+                    mRender: function(data, type, full) {
+                        return full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                    },
 
-            },
-            {
-                mRender: function (data, type, full) {
-                    return full.hora != null ? full.hora : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                    visible: true,
+                    aTargets: [4],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.hora != null ? full.hora : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                    },
+
+                    visible: true,
+                    aTargets: [5],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    },
+                    visible: false,
+                    aTargets: [6],
+                    orderable: true,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return (full.cantidad != null ? full.cantidad : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    },
+                    visible: true,
+                    aTargets: [7],
+                    orderable: true,
+
                 },
 
-                visible: true,
-                aTargets: [5],
-                orderable: true,
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
+                                        m("button.btn.btn-xs.btn-success[type='button']", {
+                                                class: (oData.editar ? 'd-none' : ''),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                                onclick: () => {
+                                                    VentilatorioNoInvasivo.nuevoRegistro = null
+                                                    VentilatorioNoInvasivo.verRegistro(oData);
+                                                },
+                                            },
+                                            'Editar',
+                                        ),
+                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
+                                                class: (oData.editar ? '' : 'd-none'),
+                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
 
-            },
-            {
-                mRender: function (data, type, full) {
-                    return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                },
-                visible: false,
-                aTargets: [6],
-                orderable: true,
+                                                onclick: () => {
+                                                    oData.editar = null;
+                                                    VentilatorioNoInvasivo.nuevoRegistro = null;
+                                                },
+                                            },
+                                            'Cancelar Edición',
+                                        ),
+                                        m("button.btn.btn-xs.btn-danger[type='button']", {
+                                                class: (oData.editar ? 'd-none' : ''),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                                onclick: () => {
+                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                                        VentilatorioNoInvasivo.eliminarRegistro(oData);
+                                                        FecthUci.eliminarSeccion(oData);
+                                                        VentilatorioNoInvasivo.nuevoRegistro = null;
+                                                        PacientesUCI.vReloadTable('table-VentilatorioNoInvasivo', VentilatorioNoInvasivo.getRegistros());
+                                                    }
+                                                },
+                                            },
+                                            'Eliminar',
+                                        ),
+                                        m("button.btn.btn-xs.btn-dark[type='button']", {
+                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                                onclick: () => {
+                                                    VentilatorioNoInvasivo.iniciarRegistro();
+                                                    VentilatorioNoInvasivo.nuevoRegistro.id = oData.id;
+                                                    VentilatorioNoInvasivo.nuevoRegistro.tipo = oData.tipo;
+                                                    VentilatorioNoInvasivo.nuevoRegistro.valor = oData.valor;
+                                                    VentilatorioNoInvasivo.nuevoRegistro.hora = oData.hora;
+                                                    VentilatorioNoInvasivo.nuevoRegistro.cantidad = oData.cantidad;
+                                                    VentilatorioNoInvasivo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    VentilatorioNoInvasivo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 
-            },
-            {
-                mRender: function (data, type, full) {
-                    return (full.cantidad != null ? full.cantidad : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                },
-                visible: true,
-                aTargets: [7],
-                orderable: true,
+                                                },
+                                            },
+                                            'Copiar',
+                                        ),
+                                    ])
 
-            },
+                                ]
+                            }
+                        });
+                    },
+                    width: '10%',
+                    visible: true,
+                    aTargets: [8],
+                    orderable: true,
 
-            {
-                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                    m("button.btn.btn-xs.btn-success[type='button']", {
-                                        class: (oData.editar ? 'd-none' : ''),
-                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                        onclick: () => {
-                                            VentilatorioNoInvasivo.nuevoRegistro = null
-                                            VentilatorioNoInvasivo.verRegistro(oData);
-                                        },
-                                    },
-                                        'Editar',
-                                    ),
-                                    m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
-                                        class: (oData.editar ? '' : 'd-none'),
-                                        disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
-
-                                        onclick: () => {
-                                            oData.editar = null;
-                                            VentilatorioNoInvasivo.nuevoRegistro = null;
-                                        },
-                                    },
-                                        'Cancelar Edición',
-                                    ),
-                                    m("button.btn.btn-xs.btn-danger[type='button']", {
-                                        class: (oData.editar ? 'd-none' : ''),
-                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                        onclick: () => {
-                                            if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                                VentilatorioNoInvasivo.eliminarRegistro(oData);
-                                                FecthUci.eliminarSeccion(oData);
-                                                VentilatorioNoInvasivo.nuevoRegistro = null;
-                                                PacientesUCI.vReloadTable('table-VentilatorioNoInvasivo', VentilatorioNoInvasivo.getRegistros());
-                                            }
-                                        },
-                                    },
-                                        'Eliminar',
-                                    ),
-                                    m("button.btn.btn-xs.btn-dark[type='button']", {
-                                        class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
-                                        onclick: () => {
-                                            VentilatorioNoInvasivo.iniciarRegistro();
-                                            VentilatorioNoInvasivo.nuevoRegistro.id = oData.id;
-                                            VentilatorioNoInvasivo.nuevoRegistro.tipo = oData.tipo;
-                                            VentilatorioNoInvasivo.nuevoRegistro.valor = oData.valor;
-                                            VentilatorioNoInvasivo.nuevoRegistro.hora = oData.hora;
-                                            VentilatorioNoInvasivo.nuevoRegistro.cantidad = oData.cantidad;
-                                            VentilatorioNoInvasivo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            VentilatorioNoInvasivo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-
-                                        },
-                                    },
-                                        'Copiar',
-                                    ),
-                                ])
-
-                            ]
-                        }
-                    });
-                },
-                width: '10%',
-                visible: true,
-                aTargets: [8],
-                orderable: true,
-
-            }
+                }
             ],
-            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
             },
         };
@@ -337,10 +337,10 @@ class VentilatorioNoInvasivo {
     view() {
         return [
             m("thead.bd.bd-2", {
-                style: { "border-color": "#5173a1" },
-                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+                    style: { "border-color": "#5173a1" },
+                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
-            },
+                },
 
                 m("tr.tx-uppercase", {
                     // class: (PacientesUCI.tipoAtencion !== null && PacientesUCI.tipoAtencion == 'NEO' ? '' : 'd-none'),
@@ -388,15 +388,15 @@ class VentilatorioNoInvasivo {
                         m("div.input-group", [
                             m("div.input-group-append",
                                 m("button.btn.btn-xs.btn-light[type='button']", {
-                                    title: "Nuevo",
-                                    onclick: () => {
-                                        if (VentilatorioNoInvasivo.nuevoRegistro == null) {
-                                            VentilatorioNoInvasivo.iniciarRegistro();
-                                        } else {
-                                            VentilatorioNoInvasivo.nuevoRegistro = null;
+                                        title: "Nuevo",
+                                        onclick: () => {
+                                            if (VentilatorioNoInvasivo.nuevoRegistro == null) {
+                                                VentilatorioNoInvasivo.iniciarRegistro();
+                                            } else {
+                                                VentilatorioNoInvasivo.nuevoRegistro = null;
+                                            }
                                         }
-                                    }
-                                },
+                                    },
                                     m("i.fas.fa-plus")
                                 )
                             ),
@@ -418,12 +418,12 @@ class VentilatorioNoInvasivo {
                                     class: "custom-select",
                                     value: (VentilatorioNoInvasivo.nuevoRegistro !== null ? VentilatorioNoInvasivo.nuevoRegistro.tipo : 0),
                                 }, [{
-                                    id: "FlujoLibre",
-                                    label: "FLUJO LIBRE"
-                                }, {
-                                    id: "CateterNasal",
-                                    label: "CATETER NASAL"
-                                },
+                                        id: "FlujoLibre",
+                                        label: "FLUJO LIBRE"
+                                    }, {
+                                        id: "CateterNasal",
+                                        label: "CATETER NASAL"
+                                    },
 
                                 ].map(x =>
                                     m('option[id="' + x.id + '"]', x.label)
@@ -438,6 +438,10 @@ class VentilatorioNoInvasivo {
                                 class: 'form-control',
                                 oncreate: (el) => {
 
+                                    if (VentilatorioNoInvasivo.nuevoRegistro.hora !== null) {
+                                        el.dom.value = VentilatorioNoInvasivo.nuevoRegistro.hora;
+                                    }
+
                                     setTimeout(() => {
                                         new Cleave("#" + el.dom.id, {
                                             time: true,
@@ -451,10 +455,11 @@ class VentilatorioNoInvasivo {
                                     setTimeout(() => {
                                         try {
 
-                                            //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
                                             VentilatorioNoInvasivo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
                                             VentilatorioNoInvasivo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
-                                            VentilatorioNoInvasivo.validarRegistroUnicoPorTurno(VentilatorioNoInvasivo.nuevoRegistro.tipo);
+                                            if (VentilatorioNoInvasivo.nuevoRegistro.editar != true) {
+                                                VentilatorioNoInvasivo.validarRegistroUnicoPorTurno(VentilatorioNoInvasivo.nuevoRegistro.tipo);
+                                            }
 
                                         } catch (error) {
                                             VentilatorioNoInvasivo.nuevoRegistro = null;

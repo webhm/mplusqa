@@ -451,7 +451,10 @@ class OmbligoUci {
                                         try {
                                             OmbligoUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
                                             OmbligoUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
-                                            OmbligoUci.validarRegistroUnicoPorTurno(OmbligoUci.nuevoRegistro.tipo);
+                                            if (OmbligoUci.nuevoRegistro.editar != true) {
+                                                OmbligoUci.validarRegistroUnicoPorTurno(OmbligoUci.nuevoRegistro.tipo);
+                                            }
+
                                         } catch (error) {
                                             OmbligoUci.nuevoRegistro = null;
                                             $.alert('No es posible ingresar este valor. Ya existe este registro.');
