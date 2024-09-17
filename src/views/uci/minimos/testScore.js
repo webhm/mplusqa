@@ -310,6 +310,14 @@ class TestScoreUciNeo {
         }
     }
 
+    static validarRegistroUnicoPorTurno(tipo) {
+        TestScoreUciNeo.registros.map((_v, _i) => {
+            if (_v.tipo == tipo && _v.hora == TestScoreUciNeo.nuevoRegistro.hora && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                throw 'error';
+            }
+        });
+    }
+
     view() {
         return [
             m("thead.bd.bd-2", {
@@ -436,11 +444,18 @@ class TestScoreUciNeo {
 
                                 },
                                 oninput: (e) => {
-                                    setTimeout(() => {
-                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                        TestScoreUciNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                        TestScoreUciNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
 
+                                    setTimeout(() => {
+                                        try {
+                                            TestScoreUciNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            TestScoreUciNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            if (TestScoreUciNeo.nuevoRegistro.editar != true) {
+                                                TestScoreUciNeo.validarRegistroUnicoPorTurno(TestScoreUciNeo.nuevoRegistro.tipo);
+                                            }
+                                        } catch (error) {
+                                            TestScoreUciNeo.nuevoRegistro = null;
+                                            $.alert('No es posible ingresar este valor. Ya existe este registro.');
+                                        }
                                     }, 50);
                                 },
 

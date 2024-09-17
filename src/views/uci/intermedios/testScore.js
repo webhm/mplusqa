@@ -121,183 +121,183 @@ class TestScoreUciNeo {
                 [1, 'desc']
             ],
             columns: [{
-                title: "order Turno:",
-            },
-            {
-                title: "order N°:",
-            },
-            {
-                title: "Turno:",
-            },
-            {
-                title: "N°:",
-            },
-            {
-                title: "Tipo:",
-            },
-            {
-                title: "Hora:",
-            },
-            {
-                title: "Valor:",
-            },
-            {
-                title: "Opciones:",
-            }
+                    title: "order Turno:",
+                },
+                {
+                    title: "order N°:",
+                },
+                {
+                    title: "Turno:",
+                },
+                {
+                    title: "N°:",
+                },
+                {
+                    title: "Tipo:",
+                },
+                {
+                    title: "Hora:",
+                },
+                {
+                    title: "Valor:",
+                },
+                {
+                    title: "Opciones:",
+                }
             ],
             aoColumnDefs: [{
-                mRender: function (data, type, full) {
-                    return full.fechaHoraTurno;
+                    mRender: function(data, type, full) {
+                        return full.fechaHoraTurno;
+                    },
+                    visible: false,
+                    aTargets: [0],
+                    orderable: true,
                 },
-                visible: false,
-                aTargets: [0],
-                orderable: true,
-            },
-            {
-                mRender: function (data, type, full) {
-                    return full.nro;
+                {
+                    mRender: function(data, type, full) {
+                        return full.nro;
+                    },
+                    visible: false,
+                    aTargets: [1],
+                    orderable: true,
+
                 },
-                visible: false,
-                aTargets: [1],
-                orderable: true,
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center.pd-5', [
+                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                            },
+                                            (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                            (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                            (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        ),
+                                    ])
 
-            },
-            {
-                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                        class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                    },
-                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                    ),
-                                ])
+                                ]
+                            }
+                        });
+                    },
+                    width: '15%',
+                    visible: true,
+                    aTargets: [2],
+                    orderable: false,
 
-                            ]
-                        }
-                    });
                 },
-                width: '15%',
-                visible: true,
-                aTargets: [2],
-                orderable: false,
+                {
+                    mRender: function(data, type, full) {
+                        return full.nro;
+                    },
 
-            },
-            {
-                mRender: function (data, type, full) {
-                    return full.nro;
-                },
+                    visible: false,
+                    aTargets: [3],
+                    orderable: false,
 
-                visible: false,
-                aTargets: [3],
-                orderable: false,
-
-            },
-
-            {
-                mRender: function (data, type, full) {
-                    return full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
                 },
 
-                visible: true,
-                aTargets: [4],
-                orderable: true,
+                {
+                    mRender: function(data, type, full) {
+                        return full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                    },
 
-            },
-            {
-                mRender: function (data, type, full) {
-                    return (full.hora != null ? full.hora : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    visible: true,
+                    aTargets: [4],
+                    orderable: true,
+
                 },
-                visible: true,
-                aTargets: [5],
-                orderable: true,
+                {
+                    mRender: function(data, type, full) {
+                        return (full.hora != null ? full.hora : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    },
+                    visible: true,
+                    aTargets: [5],
+                    orderable: true,
 
-            },
-            {
-                mRender: function (data, type, full) {
-                    return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                 },
-                visible: true,
-                aTargets: [6],
-                orderable: true,
+                {
+                    mRender: function(data, type, full) {
+                        return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    },
+                    visible: true,
+                    aTargets: [6],
+                    orderable: true,
 
-            },
-
-            {
-                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                    m("button.btn.btn-xs.btn-success[type='button']", {
-                                        class: (oData.editar ? 'd-none' : ''),
-                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                        onclick: () => {
-                                            TestScoreUciNeo.nuevoRegistro = null
-                                            TestScoreUciNeo.verRegistro(oData);
-                                        },
-                                    },
-                                        'Editar',
-                                    ),
-                                    m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
-                                        class: (oData.editar ? '' : 'd-none'),
-                                        disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
-
-                                        onclick: () => {
-                                            oData.editar = null;
-                                            TestScoreUciNeo.nuevoRegistro = null;
-                                        },
-                                    },
-                                        'Cancelar Edición',
-                                    ),
-                                    m("button.btn.btn-xs.btn-danger[type='button']", {
-                                        class: (oData.editar ? 'd-none' : ''),
-                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                        onclick: () => {
-                                            if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                                TestScoreUciNeo.eliminarRegistro(oData);
-                                                FecthUci.eliminarSeccion(oData);
-                                                TestScoreUciNeo.nuevoRegistro = null;
-                                                PacientesUCI.vReloadTable('table-testscore', TestScoreUciNeo.getRegistros());
-                                            }
-                                        },
-                                    },
-                                        'Eliminar',
-                                    ),
-                                    m("button.btn.btn-xs.btn-dark[type='button']", {
-                                        class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
-                                        onclick: () => {
-                                            TestScoreUciNeo.iniciarRegistro();
-                                            TestScoreUciNeo.nuevoRegistro.id = oData.id;
-                                            TestScoreUciNeo.nuevoRegistro.tipo = oData.tipo;
-                                            TestScoreUciNeo.nuevoRegistro.valor = oData.valor;
-                                            TestScoreUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            TestScoreUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-
-                                        },
-                                    },
-                                        'Copiar',
-                                    ),
-                                ])
-
-                            ]
-                        }
-                    });
                 },
-                width: '10%',
-                visible: true,
-                aTargets: [7],
-                orderable: true,
 
-            }
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
+                                        m("button.btn.btn-xs.btn-success[type='button']", {
+                                                class: (oData.editar ? 'd-none' : ''),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                                onclick: () => {
+                                                    TestScoreUciNeo.nuevoRegistro = null
+                                                    TestScoreUciNeo.verRegistro(oData);
+                                                },
+                                            },
+                                            'Editar',
+                                        ),
+                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
+                                                class: (oData.editar ? '' : 'd-none'),
+                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
+
+                                                onclick: () => {
+                                                    oData.editar = null;
+                                                    TestScoreUciNeo.nuevoRegistro = null;
+                                                },
+                                            },
+                                            'Cancelar Edición',
+                                        ),
+                                        m("button.btn.btn-xs.btn-danger[type='button']", {
+                                                class: (oData.editar ? 'd-none' : ''),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                                onclick: () => {
+                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                                        TestScoreUciNeo.eliminarRegistro(oData);
+                                                        FecthUci.eliminarSeccion(oData);
+                                                        TestScoreUciNeo.nuevoRegistro = null;
+                                                        PacientesUCI.vReloadTable('table-testscore', TestScoreUciNeo.getRegistros());
+                                                    }
+                                                },
+                                            },
+                                            'Eliminar',
+                                        ),
+                                        m("button.btn.btn-xs.btn-dark[type='button']", {
+                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                                onclick: () => {
+                                                    TestScoreUciNeo.iniciarRegistro();
+                                                    TestScoreUciNeo.nuevoRegistro.id = oData.id;
+                                                    TestScoreUciNeo.nuevoRegistro.tipo = oData.tipo;
+                                                    TestScoreUciNeo.nuevoRegistro.valor = oData.valor;
+                                                    TestScoreUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    TestScoreUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+
+                                                },
+                                            },
+                                            'Copiar',
+                                        ),
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    width: '10%',
+                    visible: true,
+                    aTargets: [7],
+                    orderable: true,
+
+                }
 
 
             ],
-            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
             },
         };
@@ -323,10 +323,10 @@ class TestScoreUciNeo {
     view() {
         return [
             m("thead.bd.bd-2", {
-                style: { "border-color": "#5173a1" },
-                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+                    style: { "border-color": "#5173a1" },
+                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
-            },
+                },
 
                 m("tr.tx-uppercase", {
                     // class: (PacientesUCI.tipoAtencion !== null && PacientesUCI.tipoAtencion == 'NEO' ? '' : 'd-none'),
@@ -373,15 +373,15 @@ class TestScoreUciNeo {
                         m("div.input-group", [
                             m("div.input-group-append",
                                 m("button.btn.btn-xs.btn-light[type='button']", {
-                                    title: "Nuevo",
-                                    onclick: () => {
-                                        if (TestScoreUciNeo.nuevoRegistro == null) {
-                                            TestScoreUciNeo.iniciarRegistro();
-                                        } else {
-                                            TestScoreUciNeo.nuevoRegistro = null;
+                                        title: "Nuevo",
+                                        onclick: () => {
+                                            if (TestScoreUciNeo.nuevoRegistro == null) {
+                                                TestScoreUciNeo.iniciarRegistro();
+                                            } else {
+                                                TestScoreUciNeo.nuevoRegistro = null;
+                                            }
                                         }
-                                    }
-                                },
+                                    },
                                     m("i.fas.fa-plus")
                                 )
                             ),
@@ -405,21 +405,21 @@ class TestScoreUciNeo {
                                     class: "custom-select",
                                     value: (TestScoreUciNeo.nuevoRegistro !== null ? TestScoreUciNeo.nuevoRegistro.tipo : 0),
                                 }, [{
-                                    id: "QuejidoEspiratorio",
-                                    label: "Quejido Espiratorio"
-                                },
-                                {
-                                    id: "Cianosis",
-                                    label: "Cianosis"
-                                },
-                                {
-                                    id: "EntradaAire",
-                                    label: "Entrada de Aire"
-                                },
-                                {
-                                    id: "Retracciones",
-                                    label: "Retracciones"
-                                },
+                                        id: "QuejidoEspiratorio",
+                                        label: "Quejido Espiratorio"
+                                    },
+                                    {
+                                        id: "Cianosis",
+                                        label: "Cianosis"
+                                    },
+                                    {
+                                        id: "EntradaAire",
+                                        label: "Entrada de Aire"
+                                    },
+                                    {
+                                        id: "Retracciones",
+                                        label: "Retracciones"
+                                    },
                                 ].map(x =>
                                     m('option[id="' + x.id + '"]', x.label)
                                 ))
@@ -432,6 +432,10 @@ class TestScoreUciNeo {
                                 id: 'horaValorTestScoreUciNeo',
                                 class: 'form-control',
                                 oncreate: (el) => {
+
+                                    if (TestScoreUciNeo.nuevoRegistro.hora !== null) {
+                                        el.dom.value = TestScoreUciNeo.nuevoRegistro.hora;
+                                    }
 
                                     setTimeout(() => {
                                         new Cleave("#" + el.dom.id, {
@@ -446,7 +450,9 @@ class TestScoreUciNeo {
                                         try {
                                             TestScoreUciNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
                                             TestScoreUciNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
-                                            TestScoreUciNeo.validarRegistroUnicoPorTurno(TestScoreUciNeo.nuevoRegistro.tipo);
+                                            if (TestScoreUciNeo.nuevoRegistro.editar != true) {
+                                                TestScoreUciNeo.validarRegistroUnicoPorTurno(TestScoreUciNeo.nuevoRegistro.tipo);
+                                            }
                                         } catch (error) {
                                             TestScoreUciNeo.nuevoRegistro = null;
                                             $.alert('No es posible ingresar este valor. Ya existe este registro.');
@@ -473,38 +479,49 @@ class TestScoreUciNeo {
                                         TestScoreUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                         TestScoreUciNeo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + TestScoreUciNeo.nuevoRegistro.hora;
 
-                                        if (TestScoreUciNeo.nuevoRegistro.editar == null) {
-                                            TestScoreUciNeo.agregarRegistro();
-                                            TestScoreUciNeo.nuevoRegistro.id = TestScoreUciNeo.nuevoRegistro.nro + 'TestScoreUci';
-                                            FecthUci.registrarSeccion(TestScoreUciNeo.nuevoRegistro);
-                                            TestScoreUciNeo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-testscore', TestScoreUciNeo.getRegistros());
+                                        if (TestScoreUciNeo.nuevoRegistro.tipo == null || TestScoreUciNeo.nuevoRegistro.tipo.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
+                                        } else if (moment(TestScoreUciNeo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
+                                            $.alert(TestScoreUciNeo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
+                                        } else if (TestScoreUciNeo.nuevoRegistro.valor == null || TestScoreUciNeo.nuevoRegistro.valor.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
                                         } else {
-                                            TestScoreUciNeo.editarRegistro();
-                                            FecthUci.actualizarSeccion(TestScoreUciNeo.nuevoRegistro);
-                                            TestScoreUciNeo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-testscore', TestScoreUciNeo.getRegistros());
+                                            if (TestScoreUciNeo.nuevoRegistro.editar == null) {
+                                                TestScoreUciNeo.agregarRegistro();
+                                                TestScoreUciNeo.nuevoRegistro.id = TestScoreUciNeo.nuevoRegistro.nro + 'TestScoreUci';
+                                                FecthUci.registrarSeccion(TestScoreUciNeo.nuevoRegistro);
+                                                TestScoreUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-testscore', TestScoreUciNeo.getRegistros());
+                                            } else {
+                                                TestScoreUciNeo.editarRegistro();
+                                                FecthUci.actualizarSeccion(TestScoreUciNeo.nuevoRegistro);
+                                                TestScoreUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-testscore', TestScoreUciNeo.getRegistros());
+                                            }
+
                                         }
+
+
                                     }
                                 },
                                 class: "custom-select",
                                 value: (TestScoreUciNeo.nuevoRegistro !== null ? TestScoreUciNeo.nuevoRegistro.valor : 0),
                             }, [{
-                                id: "1",
-                                label: "Audible con Fonendoscopio (1)"
-                            },
-                            {
-                                id: "2",
-                                label: "Audible a Distancia (2)"
-                            },
-                            {
-                                id: "X",
-                                label: "Sí (X)"
-                            },
-                            {
-                                id: "-",
-                                label: "No (-)"
-                            },
+                                    id: "1",
+                                    label: "Audible con Fonendoscopio (1)"
+                                },
+                                {
+                                    id: "2",
+                                    label: "Audible a Distancia (2)"
+                                },
+                                {
+                                    id: "X",
+                                    label: "Sí (X)"
+                                },
+                                {
+                                    id: "-",
+                                    label: "No (-)"
+                                },
                             ].map(x =>
                                 m('option[id="' + x.id + '"]', x.label)
                             ))

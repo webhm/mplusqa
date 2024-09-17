@@ -4609,6 +4609,11 @@ class PacientesUCI extends App {
         });
 
         result = res.sort((a, b) => b.nro - a.nro);
+
+        console.log(77, result)
+
+        CuidadosUci2.allRegistros = result;
+
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -4696,12 +4701,22 @@ class PacientesUCI extends App {
                 }
             });
 
-            CuidadosUci2.registros.push.apply(CuidadosUci2.registros, res);
-            // Asignar Nro
-            CuidadosUci2.registros.map((_v, _i) => {
-                CuidadosUci2.registros[_i].nro = (_i + 1);
+            CuidadosUci2.allRegistros.push.apply(CuidadosUci2.allRegistros, res);
+
+
+            CuidadosUci2.allRegistros.map((_v, _i) => {
+                if (_v.nro == null) {
+                    CuidadosUci2.allRegistros[_i].nro = (_i + 1);
+                    if (_v.id == res.id) {
+                        res.nro = CuidadosUci2.allRegistros[_i].nro;
+                    }
+                }
             });
-            FecthUci.registrarAllSeccion(CuidadosUci2.registros);
+
+
+
+            FecthUci.registrarAllSeccion(res);
+            PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
 
         }
 
@@ -5521,16 +5536,18 @@ class PacientesUCI extends App {
                                                         oData.iniciarGestion();
                                                         PacientesUCI.fechaHoraTurno = oData.fechaTurno + ' ' + oData.horaTurno;
                                                         CuidadosUci2.registros = PacientesUCI.parseSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options));
-                                                        PacientesUCI.setTurnoSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options))
+                                                        setTimeout(() => {
+                                                            PacientesUCI.setTurnoSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options))
+                                                        }, 100)
 
-                                                        //    CateterUci.registros = PacientesUCI.parseSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
-                                                        //   PacientesUCI.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
+                                                        // CateterUci.registros = PacientesUCI.parseSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
+                                                        // PacientesUCI.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
 
-                                                        //   VentilacionUci.registros = PacientesUCI.parseSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
-                                                        //   PacientesUCI.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
+                                                        // VentilacionUci.registros = PacientesUCI.parseSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
+                                                        // PacientesUCI.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
 
                                                         // HemodialisisUci.registros = PacientesUCI.parseSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
-                                                        //  PacientesUCI.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
+                                                        // PacientesUCI.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
 
                                                         MarcapasosUci.registros = PacientesUCI.parseSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
                                                         PacientesUCI.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));

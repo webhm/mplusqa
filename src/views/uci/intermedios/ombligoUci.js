@@ -480,18 +480,27 @@ class OmbligoUci {
                                         OmbligoUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                         OmbligoUci.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + OmbligoUci.nuevoRegistro.hora;
 
-                                        if (OmbligoUci.nuevoRegistro.editar == null) {
-                                            OmbligoUci.agregarRegistro();
-                                            OmbligoUci.nuevoRegistro.id = OmbligoUci.nuevoRegistro.nro + 'Ombligo';
-                                            FecthUci.registrarSeccion(OmbligoUci.nuevoRegistro);
-                                            OmbligoUci.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-ombligo', OmbligoUci.getRegistros());
+                                        if (OmbligoUci.nuevoRegistro.tipo == null || OmbligoUci.nuevoRegistro.tipo.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
+                                        } else if (moment(OmbligoUci.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
+                                            $.alert(OmbligoUci.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
+                                        } else if (OmbligoUci.nuevoRegistro.valor == null || OmbligoUci.nuevoRegistro.valor.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
                                         } else {
-                                            OmbligoUci.editarRegistro();
-                                            FecthUci.actualizarSeccion(OmbligoUci.nuevoRegistro);
-                                            OmbligoUci.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-ombligo', OmbligoUci.getRegistros());
+                                            if (OmbligoUci.nuevoRegistro.editar == null) {
+                                                OmbligoUci.agregarRegistro();
+                                                OmbligoUci.nuevoRegistro.id = OmbligoUci.nuevoRegistro.nro + 'Ombligo';
+                                                FecthUci.registrarSeccion(OmbligoUci.nuevoRegistro);
+                                                OmbligoUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-ombligo', OmbligoUci.getRegistros());
+                                            } else {
+                                                OmbligoUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(OmbligoUci.nuevoRegistro);
+                                                OmbligoUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-ombligo', OmbligoUci.getRegistros());
+                                            }
                                         }
+
                                     }
                                 },
                                 class: "custom-select",

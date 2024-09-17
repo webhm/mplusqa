@@ -121,183 +121,183 @@ class HigieneUci {
                 [1, 'desc']
             ],
             columns: [{
-                title: "order Turno:",
-            },
-            {
-                title: "order N°:",
-            },
-            {
-                title: "Turno:",
-            },
-            {
-                title: "N°:",
-            },
-            {
-                title: "Tipo:",
-            },
-            {
-                title: "Hora:",
-            },
-            {
-                title: "Valor:",
-            },
-            {
-                title: "Opciones:",
-            }
+                    title: "order Turno:",
+                },
+                {
+                    title: "order N°:",
+                },
+                {
+                    title: "Turno:",
+                },
+                {
+                    title: "N°:",
+                },
+                {
+                    title: "Tipo:",
+                },
+                {
+                    title: "Hora:",
+                },
+                {
+                    title: "Valor:",
+                },
+                {
+                    title: "Opciones:",
+                }
             ],
             aoColumnDefs: [{
-                mRender: function (data, type, full) {
-                    return full.fechaHoraTurno;
+                    mRender: function(data, type, full) {
+                        return full.fechaHoraTurno;
+                    },
+                    visible: false,
+                    aTargets: [0],
+                    orderable: true,
                 },
-                visible: false,
-                aTargets: [0],
-                orderable: true,
-            },
-            {
-                mRender: function (data, type, full) {
-                    return full.nro;
+                {
+                    mRender: function(data, type, full) {
+                        return full.nro;
+                    },
+                    visible: false,
+                    aTargets: [1],
+                    orderable: true,
+
                 },
-                visible: false,
-                aTargets: [1],
-                orderable: true,
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center.pd-5', [
+                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                            },
+                                            (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                            (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                            (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        ),
+                                    ])
 
-            },
-            {
-                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                        class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                    },
-                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                    ),
-                                ])
+                                ]
+                            }
+                        });
+                    },
+                    width: '15%',
+                    visible: true,
+                    aTargets: [2],
+                    orderable: false,
 
-                            ]
-                        }
-                    });
                 },
-                width: '15%',
-                visible: true,
-                aTargets: [2],
-                orderable: false,
+                {
+                    mRender: function(data, type, full) {
+                        return full.nro;
+                    },
 
-            },
-            {
-                mRender: function (data, type, full) {
-                    return full.nro;
-                },
+                    visible: false,
+                    aTargets: [3],
+                    orderable: false,
 
-                visible: false,
-                aTargets: [3],
-                orderable: false,
-
-            },
-
-            {
-                mRender: function (data, type, full) {
-                    return full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
                 },
 
-                visible: true,
-                aTargets: [4],
-                orderable: true,
+                {
+                    mRender: function(data, type, full) {
+                        return full.tipo != null ? full.tipo : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                    },
 
-            },
-            {
-                mRender: function (data, type, full) {
-                    return (full.hora != null ? full.hora : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    visible: true,
+                    aTargets: [4],
+                    orderable: true,
+
                 },
-                visible: true,
-                aTargets: [5],
-                orderable: true,
+                {
+                    mRender: function(data, type, full) {
+                        return (full.hora != null ? full.hora : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    },
+                    visible: true,
+                    aTargets: [5],
+                    orderable: true,
 
-            },
-            {
-                mRender: function (data, type, full) {
-                    return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                 },
-                visible: true,
-                aTargets: [6],
-                orderable: true,
+                {
+                    mRender: function(data, type, full) {
+                        return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                    },
+                    visible: true,
+                    aTargets: [6],
+                    orderable: true,
 
-            },
-
-            {
-                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m("div.btn-block.btn-group.wd-100p.pd-5", [
-                                    m("button.btn.btn-xs.btn-success[type='button']", {
-                                        class: (oData.editar ? 'd-none' : ''),
-                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                        onclick: () => {
-                                            HigieneUci.nuevoRegistro = null
-                                            HigieneUci.verRegistro(oData);
-                                        },
-                                    },
-                                        'Editar',
-                                    ),
-                                    m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
-                                        class: (oData.editar ? '' : 'd-none'),
-                                        disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
-
-                                        onclick: () => {
-                                            oData.editar = null;
-                                            HigieneUci.nuevoRegistro = null;
-                                        },
-                                    },
-                                        'Cancelar Edición',
-                                    ),
-                                    m("button.btn.btn-xs.btn-danger[type='button']", {
-                                        class: (oData.editar ? 'd-none' : ''),
-                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
-                                        onclick: () => {
-                                            if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
-                                                HigieneUci.eliminarRegistro(oData);
-                                                FecthUci.eliminarSeccion(oData);
-                                                HigieneUci.nuevoRegistro = null;
-                                                PacientesUCI.vReloadTable('table-higiene', HigieneUci.getRegistros());
-                                            }
-                                        },
-                                    },
-                                        'Eliminar',
-                                    ),
-                                    m("button.btn.btn-xs.btn-dark[type='button']", {
-                                        class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
-                                        onclick: () => {
-                                            HigieneUci.iniciarRegistro();
-                                            HigieneUci.nuevoRegistro.id = oData.id;
-                                            HigieneUci.nuevoRegistro.tipo = oData.tipo;
-                                            HigieneUci.nuevoRegistro.valor = oData.valor;
-                                            HigieneUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            HigieneUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-
-                                        },
-                                    },
-                                        'Copiar',
-                                    ),
-                                ])
-
-                            ]
-                        }
-                    });
                 },
-                width: '10%',
-                visible: true,
-                aTargets: [7],
-                orderable: true,
 
-            }
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m("div.btn-block.btn-group.wd-100p.pd-5", [
+                                        m("button.btn.btn-xs.btn-success[type='button']", {
+                                                class: (oData.editar ? 'd-none' : ''),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                                onclick: () => {
+                                                    HigieneUci.nuevoRegistro = null
+                                                    HigieneUci.verRegistro(oData);
+                                                },
+                                            },
+                                            'Editar',
+                                        ),
+                                        m("button.btn.btn-xs.btn-block.btn-outline-danger[type='button']", {
+                                                class: (oData.editar ? '' : 'd-none'),
+                                                disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
+
+                                                onclick: () => {
+                                                    oData.editar = null;
+                                                    HigieneUci.nuevoRegistro = null;
+                                                },
+                                            },
+                                            'Cancelar Edición',
+                                        ),
+                                        m("button.btn.btn-xs.btn-danger[type='button']", {
+                                                class: (oData.editar ? 'd-none' : ''),
+                                                disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                                onclick: () => {
+                                                    if (confirm("¿Esta Ud seguro de eliminar este registro?") == true) {
+                                                        HigieneUci.eliminarRegistro(oData);
+                                                        FecthUci.eliminarSeccion(oData);
+                                                        HigieneUci.nuevoRegistro = null;
+                                                        PacientesUCI.vReloadTable('table-higiene', HigieneUci.getRegistros());
+                                                    }
+                                                },
+                                            },
+                                            'Eliminar',
+                                        ),
+                                        m("button.btn.btn-xs.btn-dark[type='button']", {
+                                                class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                                onclick: () => {
+                                                    HigieneUci.iniciarRegistro();
+                                                    HigieneUci.nuevoRegistro.id = oData.id;
+                                                    HigieneUci.nuevoRegistro.tipo = oData.tipo;
+                                                    HigieneUci.nuevoRegistro.valor = oData.valor;
+                                                    HigieneUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                    HigieneUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+
+                                                },
+                                            },
+                                            'Copiar',
+                                        ),
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    width: '10%',
+                    visible: true,
+                    aTargets: [7],
+                    orderable: true,
+
+                }
 
 
             ],
-            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
             },
         };
@@ -324,10 +324,10 @@ class HigieneUci {
     view() {
         return [
             m("thead.bd.bd-2", {
-                style: { "border-color": "#5173a1" },
-                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+                    style: { "border-color": "#5173a1" },
+                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
-            },
+                },
 
                 m("tr.tx-uppercase", {
                     // class: (PacientesUCI.tipoAtencion !== null && PacientesUCI.tipoAtencion == 'NEO' ? '' : 'd-none'),
@@ -374,15 +374,15 @@ class HigieneUci {
                         m("div.input-group", [
                             m("div.input-group-append",
                                 m("button.btn.btn-xs.btn-light[type='button']", {
-                                    title: "Nuevo",
-                                    onclick: () => {
-                                        if (HigieneUci.nuevoRegistro == null) {
-                                            HigieneUci.iniciarRegistro();
-                                        } else {
-                                            HigieneUci.nuevoRegistro = null;
+                                        title: "Nuevo",
+                                        onclick: () => {
+                                            if (HigieneUci.nuevoRegistro == null) {
+                                                HigieneUci.iniciarRegistro();
+                                            } else {
+                                                HigieneUci.nuevoRegistro = null;
+                                            }
                                         }
-                                    }
-                                },
+                                    },
                                     m("i.fas.fa-plus")
                                 )
                             ),
@@ -404,17 +404,17 @@ class HigieneUci {
                                     class: "custom-select",
                                     value: (HigieneUci.nuevoRegistro !== null ? HigieneUci.nuevoRegistro.tipo : 0),
                                 }, [{
-                                    id: "General",
-                                    label: "General"
-                                },
-                                {
-                                    id: "Parcial",
-                                    label: "Parcial"
-                                },
-                                {
-                                    id: "Ombligo",
-                                    label: "Ombligo"
-                                }
+                                        id: "General",
+                                        label: "General"
+                                    },
+                                    {
+                                        id: "Parcial",
+                                        label: "Parcial"
+                                    },
+                                    {
+                                        id: "Ombligo",
+                                        label: "Ombligo"
+                                    }
                                 ].map(x =>
                                     m('option[id="' + x.id + '"]', x.label)
                                 ))
@@ -427,6 +427,10 @@ class HigieneUci {
                                 id: 'horaValorHigieneUci',
                                 class: 'form-control',
                                 oncreate: (el) => {
+
+                                    if (HigieneUci.nuevoRegistro.hora !== null) {
+                                        el.dom.value = HigieneUci.nuevoRegistro.hora;
+                                    }
 
                                     setTimeout(() => {
                                         new Cleave("#" + el.dom.id, {
@@ -441,7 +445,11 @@ class HigieneUci {
                                         try {
                                             HigieneUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
                                             HigieneUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
-                                            HigieneUci.validarRegistroUnicoPorTurno(HigieneUci.nuevoRegistro.tipo);
+                                            if (HigieneUci.nuevoRegistro.editar != true) {
+                                                HigieneUci.validarRegistroUnicoPorTurno(HigieneUci.nuevoRegistro.tipo);
+                                            }
+
+
                                         } catch (error) {
                                             HigieneUci.nuevoRegistro = null;
                                             $.alert('No es posible ingresar este valor. Ya existe este registro.');
@@ -467,30 +475,39 @@ class HigieneUci {
                                         HigieneUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                         HigieneUci.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + HigieneUci.nuevoRegistro.hora;
 
-                                        if (HigieneUci.nuevoRegistro.editar == null) {
-                                            HigieneUci.agregarRegistro();
-                                            HigieneUci.nuevoRegistro.id = HigieneUci.nuevoRegistro.nro + 'Higiene';
-                                            FecthUci.registrarSeccion(HigieneUci.nuevoRegistro);
-                                            HigieneUci.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-higiene', HigieneUci.getRegistros());
+                                        if (HigieneUci.nuevoRegistro.tipo == null || HigieneUci.nuevoRegistro.tipo.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
+                                        } else if (moment(HigieneUci.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
+                                            $.alert(HigieneUci.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
+                                        } else if (HigieneUci.nuevoRegistro.valor == null || HigieneUci.nuevoRegistro.valor.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
                                         } else {
-                                            HigieneUci.editarRegistro();
-                                            FecthUci.actualizarSeccion(HigieneUci.nuevoRegistro);
-                                            HigieneUci.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-higiene', HigieneUci.getRegistros());
+                                            if (HigieneUci.nuevoRegistro.editar == null) {
+                                                HigieneUci.agregarRegistro();
+                                                HigieneUci.nuevoRegistro.id = HigieneUci.nuevoRegistro.nro + 'Higiene';
+                                                FecthUci.registrarSeccion(HigieneUci.nuevoRegistro);
+                                                HigieneUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-higiene', HigieneUci.getRegistros());
+                                            } else {
+                                                HigieneUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(HigieneUci.nuevoRegistro);
+                                                HigieneUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-higiene', HigieneUci.getRegistros());
+                                            }
                                         }
+
                                     }
                                 },
                                 class: "custom-select",
                                 value: (HigieneUci.nuevoRegistro !== null ? HigieneUci.nuevoRegistro.valor : 0),
                             }, [{
-                                id: "X",
-                                label: "Sí (X)"
-                            },
-                            {
-                                id: "-",
-                                label: "No (-)"
-                            },
+                                    id: "X",
+                                    label: "Sí (X)"
+                                },
+                                {
+                                    id: "-",
+                                    label: "No (-)"
+                                },
                             ].map(x =>
                                 m('option[id="' + x.id + '"]', x.label)
                             ))

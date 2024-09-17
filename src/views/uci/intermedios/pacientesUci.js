@@ -4662,6 +4662,8 @@ class PacientesUCI extends App {
         // Quitar duplicados
         // result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
 
+        console.log(55, res)
+
         // Ordenar desc
         _arr = res.sort((a, b) => a.nro - b.nro);
         return _arr;
@@ -5651,7 +5653,7 @@ class PacientesUCI extends App {
 
                                     ]),
                                     m('div.text-center', {
-                                        class: (oData.status == 2 && FecthUci.loaderSecciones == true ? '' : 'd-none'),
+                                        class: (oData.status == 2 && oData.numeroTurno == PacientesUCI.numeroTurno && FecthUci.loaderSecciones == true ? '' : 'd-none'),
                                     }, [
                                         m("button.btn.btn-xs.btn-block.btn-success.tx-13.tx-semibold[type='button']", {
                                                 disabled: (oData.status == 2 && FecthUci.loaderSecciones == true ? '' : 'disabled'),
