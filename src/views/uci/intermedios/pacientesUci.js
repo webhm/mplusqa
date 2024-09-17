@@ -217,7 +217,7 @@ class PacientesUCI extends App {
                             ]),
                             m("tr", [
                                 m("td[colspan='12']", [
-                                    PacientesUCI.vTable('table-turnos', TurnosUci.getTurnos(), PacientesUCI.arqTableTurnos())
+                                    PacientesUCI.vTable('table-turnos', TurnosUci.getTurnos().sort((a, b) => a.numeroTurno - b.numeroTurno), PacientesUCI.arqTableTurnos())
                                 ])
                             ]),
                             m('br')
@@ -5263,7 +5263,9 @@ class PacientesUCI extends App {
                 },
             },
             cache: false,
-            orden: false,
+            orden: [
+                [1, 'Desc']
+            ],
             destroy: true,
             // pageLength: 3,
             columns: [{
@@ -5303,6 +5305,9 @@ class PacientesUCI extends App {
                 }
             ],
             aoColumnDefs: [{
+                    mRender: function(data, type, full) {
+                        return full.numeroTurno;
+                    },
                     fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
 
 
