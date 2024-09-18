@@ -520,7 +520,7 @@ class ComburTestNeo {
                                         ComburTestNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         ComburTestNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                         ComburTestNeo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + ComburTestNeo.nuevoRegistro.hora;
-
+                                        // vALIDAR AJUSTE DE CAMBIOS
                                         if (ComburTestNeo.nuevoRegistro.tipo == null || ComburTestNeo.nuevoRegistro.tipo.length == 0) {
                                             $.alert('El campo Tipo o Valor no puede ser vacio.');
                                         } else if (moment(ComburTestNeo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
