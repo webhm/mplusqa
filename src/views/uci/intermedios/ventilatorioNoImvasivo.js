@@ -498,7 +498,7 @@ class VentilatorioNoInvasivo {
                                         console.log(77, VentilatorioNoInvasivo.nuevoRegistro)
 
 
-                                        if (VentilatorioNoInvasivo.nuevoRegistro.tipo == null || OmbligoUci.nuevoRegistro.tipo.length == 0) {
+                                        if (VentilatorioNoInvasivo.nuevoRegistro.tipo == null || VentilatorioNoInvasivo.nuevoRegistro.tipo.length == 0) {
                                             $.alert('El campo Tipo o Valor no puede ser vacio.');
                                         } else if (moment(VentilatorioNoInvasivo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
                                             $.alert(VentilatorioNoInvasivo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
