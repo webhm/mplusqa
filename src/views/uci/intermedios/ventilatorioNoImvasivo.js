@@ -497,19 +497,28 @@ class VentilatorioNoInvasivo {
                                         VentilatorioNoInvasivo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + VentilatorioNoInvasivo.nuevoRegistro.hora;
                                         console.log(77, VentilatorioNoInvasivo.nuevoRegistro)
 
-                                        if (VentilatorioNoInvasivo.nuevoRegistro.editar == null) {
-                                            VentilatorioNoInvasivo.agregarRegistro();
-                                            //  VentilatorioNoInvasivo.nuevoRegistro.id = VentilatorioNoInvasivo.nuevoRegistro.nro + 'Higiene';
-                                            VentilatorioNoInvasivo.nuevoRegistro.id = VentilatorioNoInvasivo.nuevoRegistro.nro;
-                                            FecthUci.registrarSeccion(VentilatorioNoInvasivo.nuevoRegistro);
-                                            VentilatorioNoInvasivo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-VentilatorioNoInvasivo', VentilatorioNoInvasivo.getRegistros());
+
+                                        if (VentilatorioNoInvasivo.nuevoRegistro.tipo == null || OmbligoUci.nuevoRegistro.tipo.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
+                                        } else if (moment(VentilatorioNoInvasivo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
+                                            $.alert(VentilatorioNoInvasivo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
+                                        } else if (VentilatorioNoInvasivo.nuevoRegistro.cantidad == null || VentilatorioNoInvasivo.nuevoRegistro.cantidad.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
                                         } else {
-                                            VentilatorioNoInvasivo.editarRegistro();
-                                            FecthUci.actualizarSeccion(VentilatorioNoInvasivo.nuevoRegistro);
-                                            VentilatorioNoInvasivo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-VentilatorioNoInvasivo', VentilatorioNoInvasivo.getRegistros());
+                                            if (VentilatorioNoInvasivo.nuevoRegistro.editar == null) {
+                                                VentilatorioNoInvasivo.agregarRegistro();
+                                                VentilatorioNoInvasivo.nuevoRegistro.id = VentilatorioNoInvasivo.nuevoRegistro.nro;
+                                                FecthUci.registrarSeccion(VentilatorioNoInvasivo.nuevoRegistro);
+                                                VentilatorioNoInvasivo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-VentilatorioNoInvasivo', VentilatorioNoInvasivo.getRegistros());
+                                            } else {
+                                                VentilatorioNoInvasivo.editarRegistro();
+                                                FecthUci.actualizarSeccion(VentilatorioNoInvasivo.nuevoRegistro);
+                                                VentilatorioNoInvasivo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-VentilatorioNoInvasivo', VentilatorioNoInvasivo.getRegistros());
+                                            }
                                         }
+
                                     }
                                 },
 
