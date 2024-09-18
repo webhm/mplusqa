@@ -43,12 +43,12 @@ class CateterUci {
         CateterUci.nuevoRegistro = new Cateter();
     }
     static agregarRegistro() {
-        if (CateterUci.registros.length == 0) {
+        if (CateterUci.allRegistros.length == 0) {
             CateterUci.nuevoRegistro.nro = 1;
-            CateterUci.registros.push(CateterUci.nuevoRegistro);
+            CateterUci.allRegistros.push(CateterUci.nuevoRegistro);
         } else {
-            CateterUci.nuevoRegistro.nro = (CateterUci.registros[CateterUci.registros.length - 1].nro + 1);
-            CateterUci.registros.push(CateterUci.nuevoRegistro);
+            CateterUci.nuevoRegistro.nro = (CateterUci.allRegistros[CateterUci.allRegistros.length - 1].nro + 1);
+            CateterUci.allRegistros.push(CateterUci.nuevoRegistro);
         }
     }
     static verRegistro(registro) {
@@ -58,9 +58,9 @@ class CateterUci {
     }
     static editarRegistro() {
         CateterUci.nuevoRegistro.editar = null;
-        CateterUci.registros.map((_v, _i) => {
+        CateterUci.allRegistros.map((_v, _i) => {
             if (_v.nro == CateterUci.nuevoRegistro.nro) {
-                CateterUci.registros[_i] = CateterUci.nuevoRegistro;
+                CateterUci.allRegistros[_i] = CateterUci.nuevoRegistro;
             }
         });
 
@@ -320,13 +320,11 @@ class CateterUci {
                                                     FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
                                                     CateterUci.nuevoRegistro = null;
                                                     CateterUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
                                                 } else {
                                                     CateterUci.editarRegistro();
                                                     FecthUci.actualizarSeccion(CateterUci.nuevoRegistro);
                                                     CateterUci.nuevoRegistro = null;
                                                     CateterUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
 
                                                 }
 
@@ -388,13 +386,11 @@ class CateterUci {
                                                     FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
                                                     CateterUci.nuevoRegistro = null;
                                                     CateterUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
                                                 } else {
                                                     CateterUci.editarRegistro();
                                                     FecthUci.actualizarSeccion(CateterUci.nuevoRegistro);
                                                     CateterUci.nuevoRegistro = null;
                                                     CateterUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
 
                                                 }
 
@@ -457,13 +453,11 @@ class CateterUci {
                                                     FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
                                                     CateterUci.nuevoRegistro = null;
                                                     CateterUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
                                                 } else {
                                                     CateterUci.editarRegistro();
                                                     FecthUci.actualizarSeccion(CateterUci.nuevoRegistro);
                                                     CateterUci.nuevoRegistro = null;
                                                     CateterUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
 
                                                 }
 
@@ -523,13 +517,11 @@ class CateterUci {
                                                     FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
                                                     CateterUci.nuevoRegistro = null;
                                                     CateterUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
                                                 } else {
                                                     CateterUci.editarRegistro();
                                                     FecthUci.actualizarSeccion(CateterUci.nuevoRegistro);
                                                     CateterUci.nuevoRegistro = null;
                                                     CateterUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
 
                                                 }
 
@@ -829,13 +821,11 @@ class CateterUci {
                                             FecthUci.registrarSeccion(CateterUci.nuevoRegistro);
                                             CateterUci.nuevoRegistro = null;
                                             CateterUci.filterRegistros();
-                                            PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
                                         } else {
                                             CateterUci.editarRegistro();
                                             FecthUci.actualizarSeccion(CateterUci.nuevoRegistro);
                                             CateterUci.nuevoRegistro = null;
                                             CateterUci.filterRegistros();
-                                            PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
 
                                         }
                                     }

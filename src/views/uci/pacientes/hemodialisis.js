@@ -44,12 +44,12 @@ class HemodialisisUci {
         HemodialisisUci.nuevoRegistro = new Hemodialisis();
     }
     static agregarRegistro() {
-        if (HemodialisisUci.registros.length == 0) {
+        if (HemodialisisUci.allRegistros.length == 0) {
             HemodialisisUci.nuevoRegistro.nro = 1;
-            HemodialisisUci.registros.push(HemodialisisUci.nuevoRegistro);
+            HemodialisisUci.allRegistros.push(HemodialisisUci.nuevoRegistro);
         } else {
-            HemodialisisUci.nuevoRegistro.nro = (HemodialisisUci.registros[HemodialisisUci.registros.length - 1].nro + 1);
-            HemodialisisUci.registros.push(HemodialisisUci.nuevoRegistro);
+            HemodialisisUci.nuevoRegistro.nro = (HemodialisisUci.allRegistros[HemodialisisUci.allRegistros.length - 1].nro + 1);
+            HemodialisisUci.allRegistros.push(HemodialisisUci.nuevoRegistro);
         }
         FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
 
@@ -62,9 +62,9 @@ class HemodialisisUci {
 
     static editarRegistro() {
         HemodialisisUci.nuevoRegistro.editar = null;
-        HemodialisisUci.registros.map((_v, _i) => {
+        HemodialisisUci.allRegistros.map((_v, _i) => {
             if (_v.nro == HemodialisisUci.nuevoRegistro.nro) {
-                HemodialisisUci.registros[_i] = HemodialisisUci.nuevoRegistro;
+                HemodialisisUci.allRegistros[_i] = HemodialisisUci.nuevoRegistro;
             }
         });
 
@@ -317,13 +317,11 @@ class HemodialisisUci {
                                                     FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
                                                     HemodialisisUci.nuevoRegistro = null;
                                                     HemodialisisUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
                                                 } else {
                                                     HemodialisisUci.editarRegistro();
                                                     FecthUci.actualizarSeccion(HemodialisisUci.nuevoRegistro);
                                                     HemodialisisUci.nuevoRegistro = null;
                                                     HemodialisisUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
 
                                                 }
 
@@ -385,13 +383,11 @@ class HemodialisisUci {
                                                     FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
                                                     HemodialisisUci.nuevoRegistro = null;
                                                     HemodialisisUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
                                                 } else {
                                                     HemodialisisUci.editarRegistro();
                                                     FecthUci.actualizarSeccion(HemodialisisUci.nuevoRegistro);
                                                     HemodialisisUci.nuevoRegistro = null;
                                                     HemodialisisUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
 
                                                 }
 
@@ -452,13 +448,11 @@ class HemodialisisUci {
                                                     FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
                                                     HemodialisisUci.nuevoRegistro = null;
                                                     HemodialisisUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
                                                 } else {
                                                     HemodialisisUci.editarRegistro();
                                                     FecthUci.actualizarSeccion(HemodialisisUci.nuevoRegistro);
                                                     HemodialisisUci.nuevoRegistro = null;
                                                     HemodialisisUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
 
                                                 }
 
@@ -518,13 +512,11 @@ class HemodialisisUci {
                                                     FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
                                                     HemodialisisUci.nuevoRegistro = null;
                                                     HemodialisisUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
                                                 } else {
                                                     HemodialisisUci.editarRegistro();
                                                     FecthUci.actualizarSeccion(HemodialisisUci.nuevoRegistro);
                                                     HemodialisisUci.nuevoRegistro = null;
                                                     HemodialisisUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
 
                                                 }
 

@@ -65,7 +65,7 @@ class CuidadosUci2 {
         CuidadosUci2.nuevoRegistro.editar = null;
         CuidadosUci2.allRegistros.map((_v, _i) => {
             if (_v.nro == CuidadosUci2.nuevoRegistro.nro) {
-                CuidadosUci2.registros[_i] = CuidadosUci2.nuevoRegistro;
+                CuidadosUci2.allRegistros[_i] = CuidadosUci2.nuevoRegistro;
             }
         });
 

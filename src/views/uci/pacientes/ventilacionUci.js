@@ -41,12 +41,12 @@ class VentilacionUci {
         VentilacionUci.nuevoRegistro = new Ventilacion();
     }
     static agregarRegistro() {
-        if (VentilacionUci.registros.length == 0) {
+        if (VentilacionUci.allRegistros.length == 0) {
             VentilacionUci.nuevoRegistro.nro = 1;
-            VentilacionUci.registros.push(VentilacionUci.nuevoRegistro);
+            VentilacionUci.allRegistros.push(VentilacionUci.nuevoRegistro);
         } else {
-            VentilacionUci.nuevoRegistro.nro = (VentilacionUci.registros[VentilacionUci.registros.length - 1].nro + 1);
-            VentilacionUci.registros.push(VentilacionUci.nuevoRegistro);
+            VentilacionUci.nuevoRegistro.nro = (VentilacionUci.allRegistros[VentilacionUci.allRegistros.length - 1].nro + 1);
+            VentilacionUci.allRegistros.push(VentilacionUci.nuevoRegistro);
         }
     }
     static verRegistro(registro) {
@@ -56,9 +56,9 @@ class VentilacionUci {
     }
     static editarRegistro() {
         VentilacionUci.nuevoRegistro.editar = null;
-        VentilacionUci.registros.map((_v, _i) => {
+        VentilacionUci.allRegistros.map((_v, _i) => {
             if (_v.nro == VentilacionUci.nuevoRegistro.nro) {
-                VentilacionUci.registros[_i] = VentilacionUci.nuevoRegistro;
+                VentilacionUci.allRegistros[_i] = VentilacionUci.nuevoRegistro;
             }
         });
 
@@ -315,13 +315,11 @@ class VentilacionUci {
                                                     FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
                                                     VentilacionUci.nuevoRegistro = null;
                                                     VentilacionUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
                                                 } else {
                                                     VentilacionUci.editarRegistro();
                                                     FecthUci.actualizarSeccion(VentilacionUci.nuevoRegistro);
                                                     VentilacionUci.nuevoRegistro = null;
                                                     VentilacionUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
 
                                                 }
 
@@ -383,13 +381,11 @@ class VentilacionUci {
                                                     FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
                                                     VentilacionUci.nuevoRegistro = null;
                                                     VentilacionUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
                                                 } else {
                                                     VentilacionUci.editarRegistro();
                                                     FecthUci.actualizarSeccion(VentilacionUci.nuevoRegistro);
                                                     VentilacionUci.nuevoRegistro = null;
                                                     VentilacionUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
 
                                                 }
 
@@ -450,13 +446,11 @@ class VentilacionUci {
                                                     FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
                                                     VentilacionUci.nuevoRegistro = null;
                                                     VentilacionUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
                                                 } else {
                                                     VentilacionUci.editarRegistro();
                                                     FecthUci.actualizarSeccion(VentilacionUci.nuevoRegistro);
                                                     VentilacionUci.nuevoRegistro = null;
                                                     VentilacionUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
 
                                                 }
 
@@ -516,13 +510,11 @@ class VentilacionUci {
                                                     FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
                                                     VentilacionUci.nuevoRegistro = null;
                                                     VentilacionUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
                                                 } else {
                                                     VentilacionUci.editarRegistro();
                                                     FecthUci.actualizarSeccion(VentilacionUci.nuevoRegistro);
                                                     VentilacionUci.nuevoRegistro = null;
                                                     VentilacionUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
 
                                                 }
 

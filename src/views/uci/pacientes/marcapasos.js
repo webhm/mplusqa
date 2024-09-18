@@ -45,12 +45,12 @@ class MarcapasosUci {
     }
     static agregarRegistro() {
         // Agrega registro
-        if (MarcapasosUci.registros.length == 0) {
+        if (MarcapasosUci.allRegistros.length == 0) {
             MarcapasosUci.nuevoRegistro.nro = 1;
-            MarcapasosUci.registros.push(MarcapasosUci.nuevoRegistro);
+            MarcapasosUci.allRegistros.push(MarcapasosUci.nuevoRegistro);
         } else {
-            MarcapasosUci.nuevoRegistro.nro = (MarcapasosUci.registros[MarcapasosUci.registros.length - 1].nro + 1);
-            MarcapasosUci.registros.push(MarcapasosUci.nuevoRegistro);
+            MarcapasosUci.nuevoRegistro.nro = (MarcapasosUci.allRegistros[MarcapasosUci.allRegistros.length - 1].nro + 1);
+            MarcapasosUci.allRegistros.push(MarcapasosUci.nuevoRegistro);
         }
 
     }
@@ -61,9 +61,9 @@ class MarcapasosUci {
     }
     static editarRegistro() {
         MarcapasosUci.nuevoRegistro.editar = null;
-        MarcapasosUci.registros.map((_v, _i) => {
+        MarcapasosUci.allRegistros.map((_v, _i) => {
             if (_v.nro == MarcapasosUci.nuevoRegistro.nro) {
-                MarcapasosUci.registros[_i] = MarcapasosUci.nuevoRegistro;
+                MarcapasosUci.allRegistros[_i] = MarcapasosUci.nuevoRegistro;
             }
         });
 
@@ -319,13 +319,11 @@ class MarcapasosUci {
                                                     FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
                                                     MarcapasosUci.nuevoRegistro = null;
                                                     MarcapasosUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
                                                 } else {
                                                     MarcapasosUci.editarRegistro();
                                                     FecthUci.actualizarSeccion(MarcapasosUci.nuevoRegistro);
                                                     MarcapasosUci.nuevoRegistro = null;
                                                     MarcapasosUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
 
                                                 }
 
@@ -387,13 +385,11 @@ class MarcapasosUci {
                                                     FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
                                                     MarcapasosUci.nuevoRegistro = null;
                                                     MarcapasosUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
                                                 } else {
                                                     MarcapasosUci.editarRegistro();
                                                     FecthUci.actualizarSeccion(MarcapasosUci.nuevoRegistro);
                                                     MarcapasosUci.nuevoRegistro = null;
                                                     MarcapasosUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
 
                                                 }
 
@@ -454,13 +450,11 @@ class MarcapasosUci {
                                                     FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
                                                     MarcapasosUci.nuevoRegistro = null;
                                                     MarcapasosUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
                                                 } else {
                                                     MarcapasosUci.editarRegistro();
                                                     FecthUci.actualizarSeccion(MarcapasosUci.nuevoRegistro);
                                                     MarcapasosUci.nuevoRegistro = null;
                                                     MarcapasosUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
 
                                                 }
 
@@ -520,13 +514,11 @@ class MarcapasosUci {
                                                     FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
                                                     MarcapasosUci.nuevoRegistro = null;
                                                     MarcapasosUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
                                                 } else {
                                                     MarcapasosUci.editarRegistro();
                                                     FecthUci.actualizarSeccion(MarcapasosUci.nuevoRegistro);
                                                     MarcapasosUci.nuevoRegistro = null;
                                                     MarcapasosUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
 
                                                 }
 
