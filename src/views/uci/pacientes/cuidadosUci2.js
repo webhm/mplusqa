@@ -47,12 +47,12 @@ class CuidadosUci2 {
     }
 
     static agregarRegistro() {
-        if (CuidadosUci2.registros.length == 0) {
+        if (CuidadosUci2.allRegistros.length == 0) {
             CuidadosUci2.nuevoRegistro.nro = 1;
-            CuidadosUci2.registros.push(CuidadosUci2.nuevoRegistro);
+            CuidadosUci2.allRegistros.push(CuidadosUci2.nuevoRegistro);
         } else {
-            CuidadosUci2.nuevoRegistro.nro = (CuidadosUci2.registros[CuidadosUci2.registros.length - 1].nro + 1);
-            CuidadosUci2.registros.push(CuidadosUci2.nuevoRegistro);
+            CuidadosUci2.nuevoRegistro.nro = (CuidadosUci2.allRegistros[CuidadosUci2.allRegistros.length - 1].nro + 1);
+            CuidadosUci2.allRegistros.push(CuidadosUci2.nuevoRegistro);
         }
     }
 
@@ -63,7 +63,7 @@ class CuidadosUci2 {
 
     static editarRegistro() {
         CuidadosUci2.nuevoRegistro.editar = null;
-        CuidadosUci2.registros.map((_v, _i) => {
+        CuidadosUci2.allRegistros.map((_v, _i) => {
             if (_v.nro == CuidadosUci2.nuevoRegistro.nro) {
                 CuidadosUci2.registros[_i] = CuidadosUci2.nuevoRegistro;
             }
@@ -341,13 +341,11 @@ class CuidadosUci2 {
                                                     FecthUci.registrarSeccion(CuidadosUci2.nuevoRegistro);
                                                     CuidadosUci2.nuevoRegistro = null;
                                                     CuidadosUci2.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
                                                 } else {
                                                     CuidadosUci2.editarRegistro();
                                                     FecthUci.actualizarSeccion(CuidadosUci2.nuevoRegistro);
                                                     CuidadosUci2.nuevoRegistro = null;
                                                     CuidadosUci2.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
                                                 }
 
 
@@ -402,13 +400,11 @@ class CuidadosUci2 {
                                                     FecthUci.registrarSeccion(CuidadosUci2.nuevoRegistro);
                                                     CuidadosUci2.nuevoRegistro = null;
                                                     CuidadosUci2.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
                                                 } else {
                                                     CuidadosUci2.editarRegistro();
                                                     FecthUci.actualizarSeccion(CuidadosUci2.nuevoRegistro);
                                                     CuidadosUci2.nuevoRegistro = null;
                                                     CuidadosUci2.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
 
                                                 }
 
@@ -471,13 +467,11 @@ class CuidadosUci2 {
                                                     FecthUci.registrarSeccion(CuidadosUci2.nuevoRegistro);
                                                     CuidadosUci2.nuevoRegistro = null;
                                                     CuidadosUci2.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
                                                 } else {
                                                     CuidadosUci2.editarRegistro();
                                                     FecthUci.actualizarSeccion(CuidadosUci2.nuevoRegistro);
                                                     CuidadosUci2.nuevoRegistro = null;
                                                     CuidadosUci2.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
 
                                                 }
 
