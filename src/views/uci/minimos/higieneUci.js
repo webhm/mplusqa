@@ -426,6 +426,10 @@ class HigieneUci {
                                 class: 'form-control',
                                 oncreate: (el) => {
 
+                                    if (HigieneUci.nuevoRegistro.hora !== null) {
+                                        el.dom.value = HigieneUci.nuevoRegistro.hora;
+                                    }
+
                                     setTimeout(() => {
                                         new Cleave("#" + el.dom.id, {
                                             time: true,
@@ -435,17 +439,14 @@ class HigieneUci {
 
                                 },
                                 oninput: (e) => {
-                                    setTimeout(() => {
-                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
-                                        HigieneUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                        HigieneUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
 
-                                    }, 50);
                                     setTimeout(() => {
                                         try {
                                             HigieneUci.setHora = (e.target.value.length !== 0 ? e.target.value : null);
                                             HigieneUci.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
-                                            HigieneUci.validarRegistroUnicoPorTurno(HigieneUci.nuevoRegistro.tipo);
+                                            if (HigieneUci.nuevoRegistro.editar != true) {
+                                                HigieneUci.validarRegistroUnicoPorTurno(HigieneUci.nuevoRegistro.tipo);
+                                            }
                                         } catch (error) {
                                             HigieneUci.nuevoRegistro = null;
                                             $.alert('No es posible ingresar este valor. Ya existe este registro.');
@@ -473,18 +474,29 @@ class HigieneUci {
                                         HigieneUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                         HigieneUci.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + HigieneUci.nuevoRegistro.hora;
 
-                                        if (HigieneUci.nuevoRegistro.editar == null) {
-                                            HigieneUci.agregarRegistro();
-                                            HigieneUci.nuevoRegistro.id = HigieneUci.nuevoRegistro.nro + 'Higiene';
-                                            FecthUci.registrarSeccion(HigieneUci.nuevoRegistro);
-                                            HigieneUci.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-higiene', HigieneUci.getRegistros());
+                                        if (HigieneUci.nuevoRegistro.tipo == null || HigieneUci.nuevoRegistro.tipo.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
+                                        } else if (moment(HigieneUci.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
+                                            $.alert(HigieneUci.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
+                                        } else if (HigieneUci.nuevoRegistro.valor == null || HigieneUci.nuevoRegistro.valor.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
                                         } else {
-                                            HigieneUci.editarRegistro();
-                                            FecthUci.actualizarSeccion(HigieneUci.nuevoRegistro);
-                                            HigieneUci.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-higiene', HigieneUci.getRegistros());
+                                            if (HigieneUci.nuevoRegistro.editar == null) {
+                                                HigieneUci.agregarRegistro();
+                                                HigieneUci.nuevoRegistro.id = HigieneUci.nuevoRegistro.nro + 'Higiene';
+                                                FecthUci.registrarSeccion(HigieneUci.nuevoRegistro);
+                                                HigieneUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-higiene', HigieneUci.getRegistros());
+                                            } else {
+                                                HigieneUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(HigieneUci.nuevoRegistro);
+                                                HigieneUci.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-higiene', HigieneUci.getRegistros());
+                                            }
                                         }
+
+
+
                                     }
                                 },
                                 class: "custom-select",

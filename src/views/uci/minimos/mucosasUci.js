@@ -437,6 +437,10 @@ class MucosasUciNeo {
                                 class: 'form-control',
                                 oncreate: (el) => {
 
+                                    if (MucosasUciNeo.nuevoRegistro.hora !== null) {
+                                        el.dom.value = MucosasUciNeo.nuevoRegistro.hora;
+                                    }
+
                                     setTimeout(() => {
                                         new Cleave("#" + el.dom.id, {
                                             time: true,
@@ -451,7 +455,10 @@ class MucosasUciNeo {
                                         try {
                                             MucosasUciNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
                                             MucosasUciNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
-                                            MucosasUciNeo.validarRegistroUnicoPorTurno(MucosasUciNeo.nuevoRegistro.tipo);
+                                            if (MucosasUciNeo.nuevoRegistro.editar != true) {
+                                                MucosasUciNeo.validarRegistroUnicoPorTurno(MucosasUciNeo.nuevoRegistro.tipo);
+
+                                            }
                                         } catch (error) {
                                             MucosasUciNeo.nuevoRegistro = null;
                                             $.alert('No es posible ingresar este valor. Ya existe este registro.');
@@ -478,18 +485,27 @@ class MucosasUciNeo {
                                         MucosasUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                         MucosasUciNeo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + MucosasUciNeo.nuevoRegistro.hora;
 
-                                        if (MucosasUciNeo.nuevoRegistro.editar == null) {
-                                            MucosasUciNeo.agregarRegistro();
-                                            MucosasUciNeo.nuevoRegistro.id = MucosasUciNeo.nuevoRegistro.nro + 'PielMucosas';
-                                            FecthUci.registrarSeccion(MucosasUciNeo.nuevoRegistro);
-                                            MucosasUciNeo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-pielmucosas', MucosasUciNeo.getRegistros());
+                                        if (MucosasUciNeo.nuevoRegistro.tipo == null || MucosasUciNeo.nuevoRegistro.tipo.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
+                                        } else if (moment(MucosasUciNeo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
+                                            $.alert(MucosasUciNeo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
+                                        } else if (MucosasUciNeo.nuevoRegistro.valor == null || MucosasUciNeo.nuevoRegistro.valor.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
                                         } else {
-                                            MucosasUciNeo.editarRegistro();
-                                            FecthUci.actualizarSeccion(MucosasUciNeo.nuevoRegistro);
-                                            MucosasUciNeo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-pielmucosas', MucosasUciNeo.getRegistros());
+                                            if (MucosasUciNeo.nuevoRegistro.editar == null) {
+                                                MucosasUciNeo.agregarRegistro();
+                                                MucosasUciNeo.nuevoRegistro.id = MucosasUciNeo.nuevoRegistro.nro + 'PielMucosas';
+                                                FecthUci.registrarSeccion(MucosasUciNeo.nuevoRegistro);
+                                                MucosasUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-pielmucosas', MucosasUciNeo.getRegistros());
+                                            } else {
+                                                MucosasUciNeo.editarRegistro();
+                                                FecthUci.actualizarSeccion(MucosasUciNeo.nuevoRegistro);
+                                                MucosasUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-pielmucosas', MucosasUciNeo.getRegistros());
+                                            }
                                         }
+
                                     }
                                 },
                                 class: "custom-select",

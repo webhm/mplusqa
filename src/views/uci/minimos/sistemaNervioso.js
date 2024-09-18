@@ -432,6 +432,10 @@ class SistemaNervioso {
                                 class: 'form-control',
                                 oncreate: (el) => {
 
+                                    if (SistemaNervioso.nuevoRegistro.hora !== null) {
+                                        el.dom.value = SistemaNervioso.nuevoRegistro.hora;
+                                    }
+
                                     setTimeout(() => {
                                         new Cleave("#" + el.dom.id, {
                                             time: true,
@@ -445,7 +449,9 @@ class SistemaNervioso {
                                         try {
                                             SistemaNervioso.setHora = (e.target.value.length !== 0 ? e.target.value : null);
                                             SistemaNervioso.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
-                                            SistemaNervioso.validarRegistroUnicoPorTurno(SistemaNervioso.nuevoRegistro.tipo);
+                                            if (SistemaNervioso.nuevoRegistro.editar != true) {
+                                                SistemaNervioso.validarRegistroUnicoPorTurno(SistemaNervioso.nuevoRegistro.tipo);
+                                            }
                                         } catch (error) {
                                             SistemaNervioso.nuevoRegistro = null;
                                             $.alert('No es posible ingresar este valor. Ya existe este registro.');
@@ -472,18 +478,27 @@ class SistemaNervioso {
                                         SistemaNervioso.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                         SistemaNervioso.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + SistemaNervioso.nuevoRegistro.hora;
 
-                                        if (SistemaNervioso.nuevoRegistro.editar == null) {
-                                            SistemaNervioso.agregarRegistro();
-                                            SistemaNervioso.nuevoRegistro.id = SistemaNervioso.nuevoRegistro.nro + 'SistemaNervioso';
-                                            FecthUci.registrarSeccion(SistemaNervioso.nuevoRegistro);
-                                            SistemaNervioso.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-sistemanervioso', SistemaNervioso.getRegistros());
+                                        if (SistemaNervioso.nuevoRegistro.tipo == null || SistemaNervioso.nuevoRegistro.tipo.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
+                                        } else if (moment(SistemaNervioso.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
+                                            $.alert(SistemaNervioso.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
+                                        } else if (SistemaNervioso.nuevoRegistro.valor == null || SistemaNervioso.nuevoRegistro.valor.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
                                         } else {
-                                            SistemaNervioso.editarRegistro();
-                                            FecthUci.actualizarSeccion(SistemaNervioso.nuevoRegistro);
-                                            SistemaNervioso.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-sistemanervioso', SistemaNervioso.getRegistros());
+                                            if (SistemaNervioso.nuevoRegistro.editar == null) {
+                                                SistemaNervioso.agregarRegistro();
+                                                SistemaNervioso.nuevoRegistro.id = SistemaNervioso.nuevoRegistro.nro + 'SistemaNervioso';
+                                                FecthUci.registrarSeccion(SistemaNervioso.nuevoRegistro);
+                                                SistemaNervioso.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-sistemanervioso', SistemaNervioso.getRegistros());
+                                            } else {
+                                                SistemaNervioso.editarRegistro();
+                                                FecthUci.actualizarSeccion(SistemaNervioso.nuevoRegistro);
+                                                SistemaNervioso.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-sistemanervioso', SistemaNervioso.getRegistros());
+                                            }
                                         }
+
                                     }
                                 },
                                 class: "custom-select",
