@@ -262,7 +262,8 @@ class PacientesUCI extends App {
 
         result = res.sort((a, b) => b.nro - a.nro);
 
-        CateterUci.allRegistros = result;
+        CateterUci.allRegistros = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -289,7 +290,8 @@ class PacientesUCI extends App {
 
         result = res.sort((a, b) => b.nro - a.nro);
 
-        VentilacionUci.allRegistros = result;
+        VentilacionUci.allRegistros = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -335,7 +337,8 @@ class PacientesUCI extends App {
 
         result = res.sort((a, b) => b.nro - a.nro);
 
-        HemodialisisUci.allRegistros = result;
+        HemodialisisUci.allRegistros = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -364,7 +367,7 @@ class PacientesUCI extends App {
 
         result = res.sort((a, b) => b.nro - a.nro);
 
-        MarcapasosUci.allRegistros = result;
+        MarcapasosUci.allRegistros = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
 
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
@@ -394,7 +397,8 @@ class PacientesUCI extends App {
 
         result = res.sort((a, b) => b.nro - a.nro);
 
-        OxigenacionUci.allRegistros = result;
+        OxigenacionUci.allRegistros = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -4403,7 +4407,7 @@ class PacientesUCI extends App {
 
         result = res.sort((a, b) => b.nro - a.nro);
 
-        CuidadosUci2.allRegistros = result;
+        CuidadosUci2.allRegistros = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
 
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
