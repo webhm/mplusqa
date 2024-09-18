@@ -357,9 +357,11 @@ class PacientesUCI extends App {
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.nro - b.nro);
 
+        MarcapasosUci.registros = _arr;
+
         PacientesUCI.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
 
-        return _arr;
+
     }
 
     static parseSeccionOxigenacion(options) {
@@ -4620,9 +4622,10 @@ class PacientesUCI extends App {
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.nro - b.nro);
 
+        CuidadosUci2.registros = _arr;
+
         PacientesUCI.setTurnoSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options))
 
-        return _arr;
     }
 
     static parseAllSeccion(idSeccion) {
@@ -4716,10 +4719,10 @@ class PacientesUCI extends App {
                 }
             });
 
-
-
-            FecthUci.registrarAllSeccion(res);
+            CuidadosUci2.filterRegistros();
             PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
+            FecthUci.registrarAllSeccion(res);
+
 
         }
 
@@ -4908,18 +4911,22 @@ class PacientesUCI extends App {
                 }
             });
 
-            MarcapasosUci.registros.push.apply(MarcapasosUci.registros, res);
+            MarcapasosUci.allRegistros.push.apply(CuidadosUci2.allRegistros, res);
 
-            // Asignar Nro
-            MarcapasosUci.registros.map((_v, _i) => {
-                MarcapasosUci.registros[_i].nro = (_i + 1);
+
+            MarcapasosUci.allRegistros.map((_v, _i) => {
+                if (_v.nro == null) {
+                    MarcapasosUci.allRegistros[_i].nro = (_i + 1);
+                    if (_v.id == res.id) {
+                        res.nro = MarcapasosUci.allRegistros[_i].nro;
+                    }
+                }
             });
 
-            console.log(88, MarcapasosUci.registros)
 
-            FecthUci.registrarAllSeccion(MarcapasosUci.registros);
-
-
+            MarcapasosUci.filterRegistros();
+            PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+            FecthUci.registrarAllSeccion(res);
 
         }
 
@@ -5539,7 +5546,7 @@ class PacientesUCI extends App {
                                                 oData.iniciarGestion();
                                                 PacientesUCI.fechaHoraTurno = oData.fechaTurno + ' ' + oData.horaTurno;
 
-                                                CuidadosUci2.registros = PacientesUCI.parseSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options));
+                                                PacientesUCI.parseSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options));
 
 
                                                 // CateterUci.registros = PacientesUCI.parseSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
@@ -5551,7 +5558,7 @@ class PacientesUCI extends App {
                                                 // HemodialisisUci.registros = PacientesUCI.parseSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
                                                 // PacientesUCI.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
 
-                                                MarcapasosUci.registros = PacientesUCI.parseSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
+                                                PacientesUCI.parseSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
 
                                                 //  VentilatoriosUci.allRegistros = PacientesUCI.parseSeccionVentilatorios_AllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
                                                 //  PacientesUCI.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
