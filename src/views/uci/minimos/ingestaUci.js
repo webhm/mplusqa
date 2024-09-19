@@ -469,6 +469,10 @@ class IngestaUciNeo {
                                 class: 'form-control',
                                 oncreate: (el) => {
 
+                                    if (IngestaUciNeo.nuevoRegistro.hora !== null) {
+                                        el.dom.value = IngestaUciNeo.nuevoRegistro.hora;
+                                    }
+
                                     setTimeout(() => {
                                         new Cleave("#" + el.dom.id, {
                                             time: true,
@@ -483,7 +487,10 @@ class IngestaUciNeo {
                                         try {
                                             IngestaUciNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
                                             IngestaUciNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
-                                            IngestaUciNeo.validarRegistroUnicoPorTurno(IngestaUciNeo.nuevoRegistro.tipo);
+                                            if (IngestaUciNeo.nuevoRegistro.editar != true) {
+                                                IngestaUciNeo.validarRegistroUnicoPorTurno(IngestaUciNeo.nuevoRegistro.tipo);
+                                            }
+
                                         } catch (error) {
                                             IngestaUciNeo.nuevoRegistro = null;
                                             $.alert('No es posible ingresar este valor. Ya existe este registro.');
@@ -512,9 +519,11 @@ class IngestaUciNeo {
                                         IngestaUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                         IngestaUciNeo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + IngestaUciNeo.nuevoRegistro.hora;
 
-                                        console.log(777, IngestaUciNeo.nuevoRegistro.valor.indexOf("FORMULA"))
-
-                                        if (IngestaUciNeo.nuevoRegistro.tipo == 'Seno Materno' && IngestaUciNeo.nuevoRegistro.valor.indexOf("FORMULA") == 0) {
+                                        if (IngestaUciNeo.nuevoRegistro.tipo == null || IngestaUciNeo.nuevoRegistro.tipo.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
+                                        } else if (IngestaUciNeo.nuevoRegistro.valor == null || IngestaUciNeo.nuevoRegistro.valor.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
+                                        } else if (IngestaUciNeo.nuevoRegistro.tipo == 'Seno Materno' && IngestaUciNeo.nuevoRegistro.valor.indexOf("FORMULA") == 0) {
                                             $.alert('Solo se puede seleccionar Sí o No');
                                         } else if (IngestaUciNeo.nuevoRegistro.tipo == 'Fórmula' && (IngestaUciNeo.nuevoRegistro.valor == 'Sí (X)' || IngestaUciNeo.nuevoRegistro.valor == 'No (-)')) {
                                             $.alert('Solo se puede seleccionar un tipo de Fórmula');

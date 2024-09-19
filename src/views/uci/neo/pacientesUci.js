@@ -352,6 +352,9 @@ class PacientesUCI extends App {
         });
 
         result = res.sort((a, b) => b.nro - a.nro);
+
+        MarcapasosUci.allRegistros = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -4612,9 +4615,7 @@ class PacientesUCI extends App {
 
         result = res.sort((a, b) => b.nro - a.nro);
 
-        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
-
-        CuidadosUci2.allRegistros = result;
+        CuidadosUci2.allRegistros = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
 
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
@@ -4911,7 +4912,7 @@ class PacientesUCI extends App {
                 }
             });
 
-            MarcapasosUci.allRegistros.push.apply(CuidadosUci2.allRegistros, res);
+            MarcapasosUci.allRegistros.push.apply(MarcapasosUci.allRegistros, res);
 
 
             MarcapasosUci.allRegistros.map((_v, _i) => {
