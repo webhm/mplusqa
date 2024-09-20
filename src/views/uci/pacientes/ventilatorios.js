@@ -174,6 +174,7 @@ class VentilatoriosUci {
         let RelacionInspiracionEspiracion = 0;
         let ResistenciaInspiratoria = 0;
         let ComplianceEstatica = 0;
+        let ComplianceDinamica = 0;
         let FRPT = 0;
         let FRV = 0;
         let VolumenMinutoEspiradoPaciente = 0;
@@ -181,6 +182,7 @@ class VentilatoriosUci {
         let VolumenTidalEspiradoPaciente = 0;
         let VolumenTidalEspiradoMaquina = 0;
         let PresionSoporte = 0;
+        let PorcentajeVolumenMinuto = 0;
         let AutoPeep = 0;
         let PEEP = 0;
         let PresionMedia = 0;
@@ -237,6 +239,9 @@ class VentilatoriosUci {
             if (col.id == 'ResistenciaInspiratoria') {
                 ResistenciaInspiratoria++;
             }
+            if (col.id == 'ComplianceDinamica') {
+                ComplianceDinamica++;
+            }
             if (col.id == 'ComplianceEstatica') {
                 ComplianceEstatica++;
             }
@@ -261,6 +266,9 @@ class VentilatoriosUci {
             if (col.id == 'PresionSoporte') {
                 PresionSoporte++;
             }
+            if (col.id == 'PorcentajeVolumenMinuto') {
+                PorcentajeVolumenMinuto++;
+            }
             if (col.id == 'AutoPeep') {
                 AutoPeep++;
             }
@@ -275,7 +283,7 @@ class VentilatoriosUci {
             }
         });
 
-        columnas = [VolumenAltaFrecuencia, ModoVentilatorio, PresionInspiratoria, DCO2, AmplitudDO2, Flujo, PresionMediaVia, Hercios, PresionBalonTuboOrotraqueal, NivelTuboOrotraqueal, VolumenFugas, FIO2, TiempoInspiratorio, RelacionInspiracionEspiracion, ResistenciaInspiratoria, ComplianceEstatica, FRPT, FRV, VolumenMinutoEspiradoPaciente, VolumenMinutoEspiradoMaquina, VolumenTidalEspiradoPaciente, VolumenTidalEspiradoMaquina, PresionSoporte, AutoPeep, PEEP, PresionMedia, PresionPico];
+        columnas = [VolumenAltaFrecuencia, ModoVentilatorio, PresionInspiratoria, DCO2, AmplitudDO2, Flujo, PresionMediaVia, Hercios, PresionBalonTuboOrotraqueal, NivelTuboOrotraqueal, VolumenFugas, FIO2, TiempoInspiratorio, RelacionInspiracionEspiracion, ResistenciaInspiratoria, ComplianceEstatica, ComplianceDinamica, FRPT, FRV, VolumenMinutoEspiradoPaciente, VolumenMinutoEspiradoMaquina, VolumenTidalEspiradoPaciente, VolumenTidalEspiradoMaquina, PresionSoporte, PorcentajeVolumenMinuto, AutoPeep, PEEP, PresionMedia, PresionPico];
 
         resultNro.map((col, i) => {
             let fila = {};
@@ -614,7 +622,30 @@ class VentilatoriosUci {
                     });
                 }
             }
+            
             if (col.id == 'ComplianceEstatica') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'ComplianceDinamica') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -769,6 +800,28 @@ class VentilatoriosUci {
                 }
             }
             if (col.id == 'PresionSoporte') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'PorcentajeVolumenMinuto') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -1647,98 +1700,107 @@ class VentilatoriosUci {
                                 label: "PRESIÓN SOPORTE"
                             }, {
                                 orden: 8,
+                                id: "PorcentajeVolumenMinuto",
+                                label: "PORCENTAJE VOLUMEN MINUTO"
+                            }, {
+                                orden: 9,
                                 id: "VolumenTidalEspiradoMaquina",
                                 label: "VOLUMEN TIDAL ESPIRADO MÁQUINA"
                             }, {
-                                orden: 9,
+                                orden: 10,
                                 id: "VolumenTidalEspiradoPaciente",
                                 label: "VOLUMEN TIDAL ESPIRADO PACIENTE"
                             }, {
-                                orden: 10,
+                                orden: 11,
                                 id: "VolumenMinutoEspiradoMaquina",
                                 label: "VOLUMEN MINUTO ESPIRADO MÁQUINA"
                             }, {
-                                orden: 11,
+                                orden: 12,
                                 id: "VolumenMinutoEspiradoPaciente",
                                 label: "VOLUMEN MINUTO ESPIRADO PACIENTE"
                             },
                             {
-                                orden: 12,
+                                orden: 13,
                                 id: "FRV",
                                 label: "FRECUENCIA RESPIRATORIA MÁQUINA"
                             },
                             {
-                                orden: 13,
+                                orden: 14,
                                 id: "FRPT",
                                 label: "FRECUENCIA RESPIRATORIA ESPONTÁNEA"
                             },
                             {
-                                orden: 14,
+                                orden: 15,
                                 id: "ComplianceEstatica",
                                 label: "COMPLIANCE ESTÁTICA"
                             },
                             {
-                                orden: 15,
+                                orden: 16,
+                                id: "ComplianceDinamica",
+                                label: "COMPLIANCE DINÁMICA"
+                            },
+                            {
+                                orden: 17,
                                 id: "ResistenciaInspiratoria",
                                 label: "RESISTENCIA INSPIRATORIA"
                             },
                             {
-                                orden: 16,
+                                orden: 18,
                                 id: "RelacionInspiracionEspiracion",
                                 label: "RELACIÓN INSPIRACION - ESPIRACION"
                             },
                             {
-                                orden: 17,
+                                orden: 19,
                                 id: "TiempoInspiratorio",
                                 label: "TIEMPO INSPIRATORIO"
                             },
                             {
-                                orden: 18,
+                                orden: 20,
                                 id: "FIO2",
                                 label: "FIO2"
                             },
                             {
-                                orden: 19,
+                                orden: 21,
                                 id: "VolumenFugas",
                                 label: "VOLUMEN FUGAS"
                             },
                             {
-                                orden: 20,
+                                orden: 22,
                                 id: "NivelTuboOrotraqueal",
                                 label: "NIVEL TUBO OROTRAQUEAL"
                             },
                             {
-                                orden: 21,
+                                orden: 23,
                                 id: "PresionBalonTuboOrotraqueal",
                                 label: "PRESIÓN BALÓN TUBO OROTRAQUEAL"
                             },
                             {
-                                orden: 22,
+                                orden: 24,
                                 id: "Hercios",
                                 label: "HERCIOS"
                             },
                             {
-                                orden: 23,
+                                orden: 25,
                                 id: "PresionMediaVia",
                                 label: "PRESION MEDIA-VIA"
                             },
                             {
-                                orden: 24,
+                                orden: 26,
                                 id: "Flujo",
                                 label: "FLUJO"
                             },
                             {
-                                orden: 25,
+                                orden: 27,
                                 id: "AmplitudDO2",
                                 label: "AMPLITUD / DO2"
                             },
                             {
-                                orden: 26,
+                                orden: 28,
                                 id: "DCO2",
                                 label: "DCO2"
                             },
                             {
-                                orden: 27,
+                                orden: 29,
                                 id: "VolumenAltaFrecuencia",
                                 label: "VOLUMEN ALTA FRECUENCIA"
                             },

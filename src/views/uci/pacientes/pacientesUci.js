@@ -1520,7 +1520,7 @@ class PacientesUCI extends App {
         let PresionVenosaCentral = 0;
         let PresionVenosaCentralAuricula = 0;
         let Biss = 0;
-        let ETCO2 = 0;
+        let Contrapulsacion = 0;
 
         resultNro.map((col, i) => {
             if (col.id == 'GastoCardiaco') {
@@ -1574,12 +1574,12 @@ class PacientesUCI extends App {
             if (col.id == 'Biss') {
                 Biss++;
             }
-            if (col.id == 'ETCO2') {
-                ETCO2++;
+            if (col.id == 'Contrapulsacion') {
+                Contrapulsacion++;
             }
         });
 
-        columnas = [GastoCardiaco, IndiceCardiaco, VolumenSistolico, PresionCapilarPulmonar, IndiceResistenciaVascularSistemicaIndexada, ResistenciaVascularSistemica, IndiceResistenciaVascularPulmonarIndexada, PresionCuna, PresionArteriaPulmonar, TransporteArterialOxigeno, ConcentracionOxigeno, PresionPerfusionCerebral, PresionIntraCraneal, PresionIntraAbdominal, PresionVenosaCentral, PresionVenosaCentralAuricula, Biss, ETCO2];
+        columnas = [GastoCardiaco, IndiceCardiaco, VolumenSistolico, PresionCapilarPulmonar, IndiceResistenciaVascularSistemicaIndexada, ResistenciaVascularSistemica, IndiceResistenciaVascularPulmonarIndexada, PresionCuna, PresionArteriaPulmonar, TransporteArterialOxigeno, ConcentracionOxigeno, PresionPerfusionCerebral, PresionIntraCraneal, PresionIntraAbdominal, PresionVenosaCentral, PresionVenosaCentralAuricula, Biss, Contrapulsacion];
 
         resultNro.map((col, i) => {
             let fila = {};
@@ -1961,7 +1961,7 @@ class PacientesUCI extends App {
                     });
                 }
             }
-            if (col.id == 'ETCO2') {
+            if (col.id == 'Contrapulsacion') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
