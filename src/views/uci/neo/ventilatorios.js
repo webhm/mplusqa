@@ -577,6 +577,8 @@ class VentilatoriosNeo {
                                             $.alert(VentilatoriosNeo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
                                         } else if (VentilatoriosNeo.nuevoRegistro.valor == null || VentilatoriosNeo.nuevoRegistro.valor.length == 0) {
                                             $.alert('El campo Tipo o Valor no puede ser vacio.');
+                                        } else if (VentilatoriosNeo.nuevoRegistro.tipo == null || VentilatoriosNeo.nuevoRegistro.tipo.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
                                         } else {
                                             if (VentilatoriosNeo.nuevoRegistro.editar == null) {
                                                 VentilatoriosNeo.agregarRegistro();
