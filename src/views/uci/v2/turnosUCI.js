@@ -52,6 +52,7 @@ class Turno {
     iniciarGestion() {
 
         try {
+
             if (this.usuarioTurno != this.usuarioActual) {
                 throw 'asumir';
             }
@@ -59,11 +60,12 @@ class Turno {
             if (this.gestion == 0) {
                 this.gestion = 1;
             }
+            
 
         } catch (error) {
 
             if (error == 'asumir') {
-                $.alert('Aes necesario asumir nates de ocntinar')
+                $.alert('Es necesario asumir antes de continuar.')
             }
 
         }
@@ -117,7 +119,7 @@ class TurnosUCI {
     turnos = []; // Lista de Turnos
 
     constructor() {
-
+      
     }
 
     oninit(_data) {
@@ -141,14 +143,14 @@ class TurnosUCI {
 
     setNuevoTurno() {
         if (this.turnos.length > 0) {
-            $.alert('Noe sposible abri run nuevo turno')
+            $.alert('No es posible abrir un nuevo Turno.')
         }
 
     }
 
     validarHorarioTurnos(turnos, usuarioTurno) {
         // Validar turnos dentro de las 24 horas
-        turnos.map((_v, _i) => {
+        turnos.reverse().map((_v, _i) => {
             if (_i < 2) {
                 this.turnos.push(this.setTurno(_v, usuarioTurno));
             }
@@ -187,7 +189,7 @@ class TurnosUCI {
 
     vSys() {
         return [
-            m('div.pd-10', [
+            m('div.pd-20', [
                 m(Loader)
             ])
         ]
@@ -466,6 +468,7 @@ class TurnosUCI {
 
                                         onclick: () => {
 
+                                          
                                             oData.iniciarGestion()
 
 

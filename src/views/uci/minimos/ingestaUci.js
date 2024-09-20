@@ -525,7 +525,7 @@ class IngestaUciNeo {
                                             $.alert('El campo Tipo o Valor no puede ser vacio.');
                                         } else if (moment(IngestaUciNeo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
                                             $.alert(IngestaUciNeo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
-                                        }  else if (IngestaUciNeo.nuevoRegistro.tipo == 'Seno Materno' && IngestaUciNeo.nuevoRegistro.valor.indexOf("FORMULA") == 0) {
+                                        } else if (IngestaUciNeo.nuevoRegistro.tipo == 'Seno Materno' && IngestaUciNeo.nuevoRegistro.valor.indexOf("FORMULA") == 0) {
                                             $.alert('Solo se puede seleccionar Sí o No');
                                         } else if (IngestaUciNeo.nuevoRegistro.tipo == 'Fórmula' && (IngestaUciNeo.nuevoRegistro.valor == 'Sí (X)' || IngestaUciNeo.nuevoRegistro.valor == 'No (-)')) {
                                             $.alert('Solo se puede seleccionar un tipo de Fórmula');
