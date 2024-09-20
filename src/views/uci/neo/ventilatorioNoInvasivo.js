@@ -505,9 +505,11 @@ class VentilatorioNoInvasivo {
 
                                         if (moment(VentilatorioNoInvasivo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
                                             $.alert(VentilatorioNoInvasivo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
-                                        } else if (VentilatorioNoInvasivo.nuevoRegistro.valor == null || VentilatorioNoInvasivo.nuevoRegistro.valor.length == 0) {
+                                        } else if (VentilatorioNoInvasivo.nuevoRegistro.tipo == null || VentilatorioNoInvasivo.nuevoRegistro.tipo.length == 0) {
                                             $.alert('El campo Tipo o Valor no puede ser vacio.');
-                                        } else {
+                                        }  else if (VentilatorioNoInvasivo.nuevoRegistro.valor == null || VentilatorioNoInvasivo.nuevoRegistro.valor.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
+                                        }  else {
                                             if (VentilatorioNoInvasivo.nuevoRegistro.editar == null) {
                                                 VentilatorioNoInvasivo.agregarRegistro();
                                                 FecthUci.registrarSeccion(VentilatorioNoInvasivo.nuevoRegistro);

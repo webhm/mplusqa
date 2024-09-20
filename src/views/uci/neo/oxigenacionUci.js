@@ -459,21 +459,28 @@ class OxigenacionUci {
                                                 OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                 console.log(99, OxigenacionUci.nuevoRegistro)
 
-                                                // throw 'AA';
-                                                if (OxigenacionUci.nuevoRegistro.editar == null) {
-                                                    OxigenacionUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
-                                                    OxigenacionUci.nuevoRegistro = null;
-                                                    OxigenacionUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
-                                                } else {
-                                                    OxigenacionUci.editarRegistro();
-                                                    FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
-                                                    OxigenacionUci.nuevoRegistro = null;
-                                                    OxigenacionUci.filterRegistros();
-                                                    PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
-
+                                                if (moment(OxigenacionUci.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
+                                                    $.alert(OxigenacionUci.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
+                                                } else if (OxigenacionUci.nuevoRegistro.valor == null || OxigenacionUci.nuevoRegistro.valor.length == 0) {
+                                                    $.alert('El campo Tipo o Valor no puede ser vacio.');
+                                                }else{
+                                                    if (OxigenacionUci.nuevoRegistro.editar == null) {
+                                                        OxigenacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+                                                    } else {
+                                                        OxigenacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+                                                        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+    
+                                                    }
                                                 }
+
+                                               
 
 
                                             }
@@ -776,19 +783,26 @@ class OxigenacionUci {
                                     if (e.keyCode == 13) {
                                         OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                        if (OxigenacionUci.nuevoRegistro.editar == null) {
-                                            OxigenacionUci.agregarRegistro();
-                                            FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
-                                            OxigenacionUci.nuevoRegistro = null;
-                                            OxigenacionUci.filterRegistros();
-                                            PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
-                                        } else {
-                                            OxigenacionUci.editarRegistro();
-                                            FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
-                                            OxigenacionUci.nuevoRegistro = null;
-                                            OxigenacionUci.filterRegistros();
-                                            PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+                                        if (moment(OxigenacionUci.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
+                                            $.alert(OxigenacionUci.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
+                                        } else if (OxigenacionUci.nuevoRegistro.valor == null || OxigenacionUci.nuevoRegistro.valor.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
+                                        }else{
+                                            if (OxigenacionUci.nuevoRegistro.editar == null) {
+                                                OxigenacionUci.agregarRegistro();
+                                                FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
+                                                OxigenacionUci.nuevoRegistro = null;
+                                                OxigenacionUci.filterRegistros();
+                                                PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+                                            } else {
+                                                OxigenacionUci.editarRegistro();
+                                                FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
+                                                OxigenacionUci.nuevoRegistro = null;
+                                                OxigenacionUci.filterRegistros();
+                                                PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+                                            }
                                         }
+                                       
                                     }
                                 },
                                 oninput: (e) => {
