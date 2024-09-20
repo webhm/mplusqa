@@ -544,7 +544,7 @@ class MarcapasosUci {
                                             MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                             MarcapasosUci.agregarRegistro();
-                                           //s FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
+                                            FecthUci.registrarSeccion(MarcapasosUci.nuevoRegistro);
                                             MarcapasosUci.nuevoRegistro = null;
                                             MarcapasosUci.filterRegistros();
                                             PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
