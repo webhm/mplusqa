@@ -533,6 +533,8 @@ class ComburTestNeo {
                                             $.alert(ComburTestNeo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
                                         } else if (ComburTestNeo.nuevoRegistro.valor == null || ComburTestNeo.nuevoRegistro.valor.length == 0) {
                                             $.alert('El campo Tipo o Valor no puede ser vacio.');
+                                        } else if (ComburTestNeo.nuevoRegistro.tipo == null || ComburTestNeo.nuevoRegistro.tipo.length == 0) {
+                                            $.alert('El campo Tipo o Valor no puede ser vacio.');
                                         } else {
                                             if (ComburTestNeo.nuevoRegistro.editar == null) {
                                                 ComburTestNeo.agregarRegistro();
