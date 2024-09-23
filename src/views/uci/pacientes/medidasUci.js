@@ -1644,7 +1644,7 @@ class MedidasUci {
                             {
                                 orden: 18,
                                 id: "Contrapulsacion",
-                                label: "Relación Balón Contrapulsación",
+                                label: "RELACIÓN BALÓN CONTRAPULSACIÓN",
                                 rango: "",
                                 intrumento: ""
                             }
