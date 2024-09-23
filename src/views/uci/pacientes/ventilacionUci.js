@@ -625,12 +625,8 @@ class VentilacionUci {
                 m("tr.tx-uppercase", {
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
-                        if (VentilacionUci.show) {
-                            VentilacionUci.destroyTable();
-                        }
                         VentilacionUci.show = !VentilacionUci.show;
                     }
-
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
                         "MANEJO DE VENTILACIÓN"
@@ -848,7 +844,10 @@ class VentilacionUci {
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12']",
-                        (VentilacionUci.show != false ? [PacientesUCI.vTable('table-ventilacion', VentilacionUci.getRegistros(), VentilacionUci.arqTable())] : [])
+                        {
+                            class: (VentilacionUci.show ? '' : 'd-none'),
+                        },
+                        (VentilacionUci.registros.length != 0 ? [PacientesUCI.vTable('table-ventilacion', VentilacionUci.getRegistros(), VentilacionUci.arqTable())] : [])
                     ),
                 ]),
             ]),

@@ -1135,132 +1135,141 @@ class VentilatoriosUci {
                             },
                             class: "custom-select",
                             value: (VentilatoriosUci.nuevoRegistro !== null ? VentilatoriosUci.nuevoRegistro.ventilatorio : 0),
-                        }, m("option[value='0']", 'Seleccione...'), [{
-                            orden: 1,
-                            id: "ModoVentilatorio",
-                            label: "MODO VENTILARIO"
-                        }, {
-                            orden: 2,
-                            id: "PresionInspiratoria",
-                            label: "PRESIÓN INSPIRATORIA"
-                        }, {
-                            orden: 3,
-                            id: "PresionPico",
-                            label: "PRESIÓN PICO"
-                        }, {
-                            orden: 4,
-                            id: "PresionMedia",
-                            label: "PRESIÓN MEDIA"
-                        }, {
-                            orden: 5,
-                            id: "PEEP",
-                            label: "PEEP"
-                        }, {
-                            orden: 6,
-                            id: "AutoPeep",
-                            label: "AUTO PEEP"
-                        }, {
-                            orden: 7,
-                            id: "PresionSoporte",
-                            label: "PRESIÓN SOPORTE"
-                        }, {
-                            orden: 8,
-                            id: "VolumenTidalEspiradoMaquina",
-                            label: "VOLUMEN TIDAL ESPIRADO MÁQUINA"
-                        }, {
-                            orden: 9,
-                            id: "VolumenTidalEspiradoPaciente",
-                            label: "VOLUMEN TIDAL ESPIRADO PACIENTE"
-                        }, {
-                            orden: 10,
-                            id: "VolumenMinutoEspiradoMaquina",
-                            label: "VOLUMEN MINUTO ESPIRADO MÁQUINA"
-                        }, {
-                            orden: 11,
-                            id: "VolumenMinutoEspiradoPaciente",
-                            label: "VOLUMEN MINUTO ESPIRADO PACIENTE"
-                        },
-                        {
-                            orden: 12,
-                            id: "FRV",
-                            label: "FRECUENCIA RESPIRATORIA MÁQUINA"
-                        },
-                        {
-                            orden: 13,
-                            id: "FRPT",
-                            label: "FRECUENCIA RESPIRATORIA ESPONTÁNEA"
-                        },
-                        {
-                            orden: 14,
-                            id: "ComplianceEstatica",
-                            label: "COMPLIANCE ESTÁTICA"
-                        },
-                        {
-                            orden: 15,
-                            id: "ResistenciaInspiratoria",
-                            label: "RESISTENCIA INSPIRATORIA"
-                        },
-                        {
-                            orden: 16,
-                            id: "RelacionInspiracionEspiracion",
-                            label: "RELACIÓN INSPIRACION - ESPIRACION"
-                        },
-                        {
-                            orden: 17,
-                            id: "TiempoInspiratorio",
-                            label: "TIEMPO INSPIRATORIO"
-                        },
-                        {
-                            orden: 18,
-                            id: "FIO2",
-                            label: "FIO2"
-                        },
-
-                        {
-                            orden: 20,
-                            id: "VolumenFugas",
-                            label: "VOLUMEN FUGAS"
-                        },
-                        {
-                            orden: 21,
-                            id: "NivelTuboOrotraqueal",
-                            label: "NIVEL TUBO OROTRAQUEAL"
-                        },
-                        {
-                            orden: 22,
-                            id: "PresionBalonTuboOrotraqueal",
-                            label: "PRESIÓN BALÓN TUBO OROTRAQUEAL"
-                        },
-                        {
-                            orden: 23,
-                            id: "Hercios",
-                            label: "HERCIOS"
-                        },
-                        {
-                            orden: 24,
-                            id: "PresionMediaVia",
-                            label: "PRESION MEDIA-VIA"
-                        },
-                        {
-                            orden: 25,
-                            id: "Flujo",
-                            label: "FLUJO"
-                        },
-                        {
-                            orden: 26,
-                            id: "AmplitudDO2",
-                            label: "AMPLITUD / DO2"
-                        },
-                        {
-                            orden: 27,
-                            id: "DCO2",
-                            label: "DCO2"
-                        },
-                        {
-                            orden: 28,
-                            id: "VolumenAltaFrecuencia",
-                            label: "VOLUMEN ALTA FRECUENCIA"
-                        },
+                        }, m("option[value='0']", 'Seleccione...'), [
+                            {
+                                orden: 1,
+                                id: "ModoVentilatorio",
+                                label: "MODO VENTILATORIO"
+                            }, {
+                                orden: 2,
+                                id: "PresionInspiratoria",
+                                label: "PRESIÓN INSPIRATORIA"
+                            }, {
+                                orden: 3,
+                                id: "PresionPico",
+                                label: "PRESIÓN PICO"
+                            }, {
+                                orden: 4,
+                                id: "PresionMedia",
+                                label: "PRESIÓN MEDIA"
+                            }, {
+                                orden: 5,
+                                id: "PEEP",
+                                label: "PEEP"
+                            }, {
+                                orden: 6,
+                                id: "AutoPeep",
+                                label: "AUTO PEEP"
+                            }, {
+                                orden: 7,
+                                id: "PresionSoporte",
+                                label: "PRESIÓN SOPORTE"
+                            }, {
+                                orden: 8,
+                                id: "PorcentajeVolumenMinuto",
+                                label: "PORCENTAJE VOLUMEN MINUTO"
+                            }, {
+                                orden: 9,
+                                id: "VolumenTidalEspiradoMaquina",
+                                label: "VOLUMEN TIDAL ESPIRADO MÁQUINA"
+                            }, {
+                                orden: 10,
+                                id: "VolumenTidalEspiradoPaciente",
+                                label: "VOLUMEN TIDAL ESPIRADO PACIENTE"
+                            }, {
+                                orden: 11,
+                                id: "VolumenMinutoEspiradoMaquina",
+                                label: "VOLUMEN MINUTO ESPIRADO MÁQUINA"
+                            }, {
+                                orden: 12,
+                                id: "VolumenMinutoEspiradoPaciente",
+                                label: "VOLUMEN MINUTO ESPIRADO PACIENTE"
+                            },
+                            {
+                                orden: 13,
+                                id: "FRV",
+                                label: "FRECUENCIA RESPIRATORIA MÁQUINA"
+                            },
+                            {
+                                orden: 14,
+                                id: "FRPT",
+                                label: "FRECUENCIA RESPIRATORIA ESPONTÁNEA"
+                            },
+                            {
+                                orden: 15,
+                                id: "ComplianceEstatica",
+                                label: "COMPLIANCE ESTÁTICA"
+                            },
+                            {
+                                orden: 16,
+                                id: "ComplianceDinamica",
+                                label: "COMPLIANCE DINÁMICA"
+                            },
+                            {
+                                orden: 17,
+                                id: "ResistenciaInspiratoria",
+                                label: "RESISTENCIA INSPIRATORIA"
+                            },
+                            {
+                                orden: 18,
+                                id: "RelacionInspiracionEspiracion",
+                                label: "RELACIÓN INSPIRACION - ESPIRACION"
+                            },
+                            {
+                                orden: 19,
+                                id: "TiempoInspiratorio",
+                                label: "TIEMPO INSPIRATORIO"
+                            },
+                            {
+                                orden: 20,
+                                id: "FIO2",
+                                label: "FIO2"
+                            },
+                            {
+                                orden: 21,
+                                id: "VolumenFugas",
+                                label: "VOLUMEN FUGAS"
+                            },
+                            {
+                                orden: 22,
+                                id: "NivelTuboOrotraqueal",
+                                label: "NIVEL TUBO OROTRAQUEAL"
+                            },
+                            {
+                                orden: 23,
+                                id: "PresionBalonTuboOrotraqueal",
+                                label: "PRESIÓN BALÓN TUBO OROTRAQUEAL"
+                            },
+                            {
+                                orden: 24,
+                                id: "Hercios",
+                                label: "HERCIOS"
+                            },
+                            {
+                                orden: 25,
+                                id: "PresionMediaVia",
+                                label: "PRESION MEDIA-VIA"
+                            },
+                            {
+                                orden: 26,
+                                id: "Flujo",
+                                label: "FLUJO"
+                            },
+                            {
+                                orden: 27,
+                                id: "AmplitudDO2",
+                                label: "AMPLITUD / DO2"
+                            },
+                            {
+                                orden: 28,
+                                id: "DCO2",
+                                label: "DCO2"
+                            },
+                            {
+                                orden: 29,
+                                id: "VolumenAltaFrecuencia",
+                                label: "VOLUMEN ALTA FRECUENCIA"
+                            },
                         ].map(x =>
                             m('option[id="' + x.id + '"][orden="' + x.orden + '"]', x.label)
                         ))

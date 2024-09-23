@@ -623,9 +623,6 @@ class OxigenacionUci {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
-                        if (OxigenacionUci.show) {
-                            OxigenacionUci.destroyTable();
-                        }
                         OxigenacionUci.show = !OxigenacionUci.show;
                     }
 
@@ -840,7 +837,10 @@ class OxigenacionUci {
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12']",
-                        (OxigenacionUci.show != false ? [PacientesUCI.vTable('table-oxigenacion', OxigenacionUci.getRegistros(), OxigenacionUci.arqTable())] : [])
+                        {
+                            class: (OxigenacionUci.show ? '' : 'd-none'),
+                        },
+                        (OxigenacionUci.registros.length != 0 ? [PacientesUCI.vTable('table-oxigenacion', OxigenacionUci.getRegistros(), OxigenacionUci.arqTable())] : [])
                     ),
                 ]),
             ]),

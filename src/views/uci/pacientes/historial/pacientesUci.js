@@ -625,725 +625,779 @@ class PacientesUCIHistorial extends App {
         _arr = resultId.sort((a, b) => a.orden - b.orden);
 
 
-        // Establecer Columnas
-        let VolumenAltaFrecuencia = 0;
-        let ModoVentilatorio = 0;
-        let PresionInspiratoria = 0;
-        let DCO2 = 0;
-        let AmplitudDO2 = 0;
-        let Flujo = 0;
-        let PresionMediaVia = 0;
-        let Hercios = 0;
-        let PresionBalonTuboOrotraqueal = 0;
-        let NivelTuboOrotraqueal = 0;
-        let VolumenFugas = 0;
-        let FIO2 = 0;
-        let TiempoInspiratorio = 0;
-        let RelacionInspiracionEspiracion = 0;
-        let ResistenciaInspiratoria = 0;
-        let ComplianceEstatica = 0;
-        let FRPT = 0;
-        let FRV = 0;
-        let VolumenMinutoEspiradoPaciente = 0;
-        let VolumenMinutoEspiradoMaquina = 0;
-        let VolumenTidalEspiradoPaciente = 0;
-        let VolumenTidalEspiradoMaquina = 0;
-        let PresionSoporte = 0;
-        let AutoPeep = 0;
-        let PEEP = 0;
-        let PresionMedia = 0;
-        let PresionPico = 0;
-
-        resultNro.map((col, i) => {
-            if (col.id == 'VolumenAltaFrecuencia') {
-                VolumenAltaFrecuencia++;
-            }
-            if (col.id == 'ModoVentilatorio') {
-                ModoVentilatorio++;
-            }
-            if (col.id == 'PresionInspiratoria') {
-                PresionInspiratoria++;
-            }
-            if (col.id == 'DCO2') {
-                DCO2++;
-            }
-            if (col.id == 'AmplitudDO2') {
-                AmplitudDO2++;
-            }
-            if (col.id == 'Flujo') {
-                Flujo++;
-            }
-            if (col.id == 'PresionMediaVia') {
-                PresionMediaVia++;
-            }
-            if (col.id == 'Hercios') {
-                Hercios++;
-            }
-            if (col.id == 'PresionBalonTuboOrotraqueal') {
-                PresionBalonTuboOrotraqueal++;
-            }
-            if (col.id == 'NivelTuboOrotraqueal') {
-                NivelTuboOrotraqueal++;
-            }
-            if (col.id == 'VolumenFugas') {
-                VolumenFugas++;
-            }
-
-            if (col.id == 'FIO2') {
-                FIO2++;
-            }
-            if (col.id == 'TiempoInspiratorio') {
-                TiempoInspiratorio++;
-            }
-            if (col.id == 'RelacionInspiracionEspiracion') {
-                RelacionInspiracionEspiracion++;
-            }
-            if (col.id == 'ResistenciaInspiratoria') {
-                ResistenciaInspiratoria++;
-            }
-            if (col.id == 'ComplianceEstatica') {
-                ComplianceEstatica++;
-            }
-            if (col.id == 'FRPT') {
-                FRPT++;
-            }
-            if (col.id == 'FRV') {
-                FRV++;
-            }
-            if (col.id == 'VolumenMinutoEspiradoPaciente') {
-                VolumenMinutoEspiradoPaciente++;
-            }
-            if (col.id == 'VolumenMinutoEspiradoMaquina') {
-                VolumenMinutoEspiradoMaquina++;
-            }
-            if (col.id == 'VolumenTidalEspiradoPaciente') {
-                VolumenTidalEspiradoPaciente++;
-            }
-            if (col.id == 'VolumenTidalEspiradoMaquina') {
-                VolumenTidalEspiradoMaquina++;
-            }
-            if (col.id == 'PresionSoporte') {
-                PresionSoporte++;
-            }
-            if (col.id == 'AutoPeep') {
-                AutoPeep++;
-            }
-            if (col.id == 'PEEP') {
-                PEEP++;
-            }
-            if (col.id == 'PresionMedia') {
-                PresionMedia++;
-            }
-            if (col.id == 'PresionPico') {
-                PresionPico++;
-            }
-        });
-
-        columnas = [VolumenAltaFrecuencia, ModoVentilatorio, PresionInspiratoria, DCO2, AmplitudDO2, Flujo, PresionMediaVia, Hercios, PresionBalonTuboOrotraqueal, NivelTuboOrotraqueal, VolumenFugas, FIO2, TiempoInspiratorio, RelacionInspiracionEspiracion, ResistenciaInspiratoria, ComplianceEstatica, FRPT, FRV, VolumenMinutoEspiradoPaciente, VolumenMinutoEspiradoMaquina, VolumenTidalEspiradoPaciente, VolumenTidalEspiradoMaquina, PresionSoporte, AutoPeep, PEEP, PresionMedia, PresionPico];
-
-        resultNro.map((col, i) => {
-            let fila = {};
-            if (col.id == 'ModoVentilatorio') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-
-
-            }
-            if (col.id == 'PresionInspiratoria') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-
-
-            }
-            if (col.id == 'VolumenAltaFrecuencia') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'DCO2') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'AmplitudDO2') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'Flujo') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'PresionMediaVia') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'Hercios') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'PresionBalonTuboOrotraqueal') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'NivelTuboOrotraqueal') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'VolumenFugas') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-
-            if (col.id == 'FIO2') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'TiempoInspiratorio') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'RelacionInspiracionEspiracion') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'ResistenciaInspiratoria') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'ComplianceEstatica') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'FRPT') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'FRV') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'VolumenMinutoEspiradoPaciente') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'VolumenMinutoEspiradoMaquina') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'VolumenTidalEspiradoPaciente') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'VolumenTidalEspiradoMaquina') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'PresionSoporte') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'AutoPeep') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'PEEP') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'PresionMedia') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-            if (col.id == 'PresionPico') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
-
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
-
-        });
+       // Establecer Columnas
+       let VolumenAltaFrecuencia = 0;
+       let ModoVentilatorio = 0;
+       let PresionInspiratoria = 0;
+       let DCO2 = 0;
+       let AmplitudDO2 = 0;
+       let Flujo = 0;
+       let PresionMediaVia = 0;
+       let Hercios = 0;
+       let PresionBalonTuboOrotraqueal = 0;
+       let NivelTuboOrotraqueal = 0;
+       let VolumenFugas = 0;
+
+       let FIO2 = 0;
+       let TiempoInspiratorio = 0;
+       let RelacionInspiracionEspiracion = 0;
+       let ResistenciaInspiratoria = 0;
+       let ComplianceEstatica = 0;
+       let ComplianceDinamica = 0;
+       let FRPT = 0;
+       let FRV = 0;
+       let VolumenMinutoEspiradoPaciente = 0;
+       let VolumenMinutoEspiradoMaquina = 0;
+       let VolumenTidalEspiradoPaciente = 0;
+       let VolumenTidalEspiradoMaquina = 0;
+       let PresionSoporte = 0;
+       let PorcentajeVolumenMinuto = 0;
+       let AutoPeep = 0;
+       let PEEP = 0;
+       let PresionMedia = 0;
+       let PresionPico = 0;
+
+       resultNro.map((col, i) => {
+           if (col.id == 'VolumenAltaFrecuencia') {
+               VolumenAltaFrecuencia++;
+           }
+           if (col.id == 'ModoVentilatorio') {
+               ModoVentilatorio++;
+           }
+           if (col.id == 'PresionInspiratoria') {
+               PresionInspiratoria++;
+           }
+           if (col.id == 'DCO2') {
+               DCO2++;
+           }
+           if (col.id == 'AmplitudDO2') {
+               AmplitudDO2++;
+           }
+           if (col.id == 'Flujo') {
+               Flujo++;
+           }
+           if (col.id == 'PresionMediaVia') {
+               PresionMediaVia++;
+           }
+           if (col.id == 'Hercios') {
+               Hercios++;
+           }
+           if (col.id == 'PresionBalonTuboOrotraqueal') {
+               PresionBalonTuboOrotraqueal++;
+           }
+           if (col.id == 'NivelTuboOrotraqueal') {
+               NivelTuboOrotraqueal++;
+           }
+           if (col.id == 'VolumenFugas') {
+               VolumenFugas++;
+           }
+
+           if (col.id == 'FIO2') {
+               FIO2++;
+           }
+           if (col.id == 'TiempoInspiratorio') {
+               TiempoInspiratorio++;
+           }
+           if (col.id == 'RelacionInspiracionEspiracion') {
+               RelacionInspiracionEspiracion++;
+           }
+           if (col.id == 'ResistenciaInspiratoria') {
+               ResistenciaInspiratoria++;
+           }
+           if (col.id == 'ComplianceDinamica') {
+               ComplianceDinamica++;
+           }
+           if (col.id == 'ComplianceEstatica') {
+               ComplianceEstatica++;
+           }
+           if (col.id == 'FRPT') {
+               FRPT++;
+           }
+           if (col.id == 'FRV') {
+               FRV++;
+           }
+           if (col.id == 'VolumenMinutoEspiradoPaciente') {
+               VolumenMinutoEspiradoPaciente++;
+           }
+           if (col.id == 'VolumenMinutoEspiradoMaquina') {
+               VolumenMinutoEspiradoMaquina++;
+           }
+           if (col.id == 'VolumenTidalEspiradoPaciente') {
+               VolumenTidalEspiradoPaciente++;
+           }
+           if (col.id == 'VolumenTidalEspiradoMaquina') {
+               VolumenTidalEspiradoMaquina++;
+           }
+           if (col.id == 'PresionSoporte') {
+               PresionSoporte++;
+           }
+           if (col.id == 'PorcentajeVolumenMinuto') {
+               PorcentajeVolumenMinuto++;
+           }
+           if (col.id == 'AutoPeep') {
+               AutoPeep++;
+           }
+           if (col.id == 'PEEP') {
+               PEEP++;
+           }
+           if (col.id == 'PresionMedia') {
+               PresionMedia++;
+           }
+           if (col.id == 'PresionPico') {
+               PresionPico++;
+           }
+       });
+
+       columnas = [VolumenAltaFrecuencia, ModoVentilatorio, PresionInspiratoria, DCO2, AmplitudDO2, Flujo, PresionMediaVia, Hercios, PresionBalonTuboOrotraqueal, NivelTuboOrotraqueal, VolumenFugas, FIO2, TiempoInspiratorio, RelacionInspiracionEspiracion, ResistenciaInspiratoria, ComplianceEstatica, ComplianceDinamica, FRPT, FRV, VolumenMinutoEspiradoPaciente, VolumenMinutoEspiradoMaquina, VolumenTidalEspiradoPaciente, VolumenTidalEspiradoMaquina, PresionSoporte, PorcentajeVolumenMinuto, AutoPeep, PEEP, PresionMedia, PresionPico];
+
+       resultNro.map((col, i) => {
+           let fila = {};
+           if (col.id == 'ModoVentilatorio') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+
+
+           }
+           if (col.id == 'PresionInspiratoria') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+
+
+           }
+           if (col.id == 'VolumenAltaFrecuencia') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'DCO2') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'AmplitudDO2') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'Flujo') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'PresionMediaVia') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'Hercios') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'PresionBalonTuboOrotraqueal') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'NivelTuboOrotraqueal') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'VolumenFugas') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+
+           if (col.id == 'FIO2') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'TiempoInspiratorio') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'RelacionInspiracionEspiracion') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'ResistenciaInspiratoria') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           
+           if (col.id == 'ComplianceEstatica') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'ComplianceDinamica') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'FRPT') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'FRV') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'VolumenMinutoEspiradoPaciente') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'VolumenMinutoEspiradoMaquina') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'VolumenTidalEspiradoPaciente') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'VolumenTidalEspiradoMaquina') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'PresionSoporte') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'PorcentajeVolumenMinuto') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'AutoPeep') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'PEEP') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'PresionMedia') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+           if (col.id == 'PresionPico') {
+               fila.id = col.id;
+               fila.idObj = [];
+               fila.idObj.push(i);
+
+               // Verificar si existe
+               let f = [];
+               f = filas.filter(v => v.id == col.id);
+
+               if (f.length == 0) {
+                   filas.push(fila);
+                   valores.push(fila);
+               }
+
+               if (f.length > 0) {
+                   valores.map((v, _i) => {
+                       if (v.id == col.id) {
+                           valores[_i]['idObj'].push(i);
+                       }
+                   });
+               }
+           }
+
+       });
 
 
 
@@ -2219,7 +2273,7 @@ class PacientesUCIHistorial extends App {
         let PresionVenosaCentral = 0;
         let PresionVenosaCentralAuricula = 0;
         let Biss = 0;
-        let ETCO2 = 0;
+        let Contrapulsacion = 0;
 
 
         resultNro.map((col, i) => {
@@ -2274,12 +2328,12 @@ class PacientesUCIHistorial extends App {
             if (col.id == 'Biss') {
                 Biss++;
             }
-            if (col.id == 'ETCO2') {
-                ETCO2++;
+            if (col.id == 'Contrapulsacion') {
+                Contrapulsacion++;
             }
         });
 
-        columnas = [GastoCardiaco, IndiceCardiaco, VolumenSistolico, PresionCapilarPulmonar, IndiceResistenciaVascularSistemicaIndexada, ResistenciaVascularSistemica, IndiceResistenciaVascularPulmonarIndexada, PresionCuna, PresionArteriaPulmonar, TransporteArterialOxigeno, ConcentracionOxigeno, PresionPerfusionCerebral, PresionIntraCraneal, PresionIntraAbdominal, PresionVenosaCentral, PresionVenosaCentralAuricula, Biss, ETCO2];
+        columnas = [GastoCardiaco, IndiceCardiaco, VolumenSistolico, PresionCapilarPulmonar, IndiceResistenciaVascularSistemicaIndexada, ResistenciaVascularSistemica, IndiceResistenciaVascularPulmonarIndexada, PresionCuna, PresionArteriaPulmonar, TransporteArterialOxigeno, ConcentracionOxigeno, PresionPerfusionCerebral, PresionIntraCraneal, PresionIntraAbdominal, PresionVenosaCentral, PresionVenosaCentralAuricula, Biss, Contrapulsacion];
 
         resultNro.map((col, i) => {
             let fila = {};
@@ -2661,7 +2715,7 @@ class PacientesUCIHistorial extends App {
                     });
                 }
             }
-            if (col.id == 'ETCO2') {
+            if (col.id == 'Contrapulsacion') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);

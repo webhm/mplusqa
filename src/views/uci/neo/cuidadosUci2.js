@@ -681,7 +681,7 @@ class CuidadosUci2 {
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
                         if (CuidadosUci2.show) {
-                            CuidadosUci2.destroyTable();
+                           CuidadosUci2.destroyTable();
                         }
                         CuidadosUci2.show = !CuidadosUci2.show;
                     }

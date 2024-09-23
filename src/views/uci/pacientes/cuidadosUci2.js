@@ -681,9 +681,7 @@ class CuidadosUci2 {
                 m("tr.tx-uppercase", {
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
-                        if (CuidadosUci2.show) {
-                            CuidadosUci2.destroyTable();
-                        }
+                       
                         CuidadosUci2.show = !CuidadosUci2.show;
                     }
 
@@ -959,7 +957,11 @@ class CuidadosUci2 {
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12']",
-                        (CuidadosUci2.show != false ? [PacientesUCI.vTable('table-cuidados', CuidadosUci2.getRegistros(), CuidadosUci2.arqTable())] : [])
+                        {
+                            class: (CuidadosUci2.show ? '' : 'd-none'),
+        
+                        },
+                        (CuidadosUci2.registros.length != 0 ? [PacientesUCI.vTable('table-cuidados', CuidadosUci2.getRegistros(), CuidadosUci2.arqTable())] : [])
                     ),
                 ]),
                 m('br')

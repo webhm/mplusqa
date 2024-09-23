@@ -623,9 +623,7 @@ class HemodialisisUci {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
-                        if (HemodialisisUci.show) {
-                            HemodialisisUci.destroyTable();
-                        }
+                        
                         HemodialisisUci.show = !HemodialisisUci.show;
                     }
 
@@ -839,7 +837,10 @@ class HemodialisisUci {
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12']",
-                        (HemodialisisUci.show != false ? [PacientesUCI.vTable('table-hemodialisis', HemodialisisUci.getRegistros(), HemodialisisUci.arqTable())] : [])
+                        {
+                            class: (HemodialisisUci.show ? '' : 'd-none'),
+                        },
+                        (HemodialisisUci.registros.length != 0 ? [PacientesUCI.vTable('table-hemodialisis', HemodialisisUci.getRegistros(), HemodialisisUci.arqTable())] : [])
 
                     ),
                 ]),

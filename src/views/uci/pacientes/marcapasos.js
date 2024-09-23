@@ -625,9 +625,7 @@ class MarcapasosUci {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
-                        if (MarcapasosUci.show) {
-                            MarcapasosUci.destroyTable();
-                        }
+                       
                         MarcapasosUci.show = !MarcapasosUci.show;
                     }
 
@@ -846,7 +844,10 @@ class MarcapasosUci {
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12']",
-                        (MarcapasosUci.show != false ? [PacientesUCI.vTable('table-marcapasos', MarcapasosUci.getRegistros(), MarcapasosUci.arqTable())] : [])
+                        {
+                            class: (MarcapasosUci.show ? '' : 'd-none'),
+                        },
+                        (MarcapasosUci.registros.length != 0 ? [PacientesUCI.vTable('table-marcapasos', MarcapasosUci.getRegistros(), MarcapasosUci.arqTable())] : [])
                     ),
                 ]),
             ]),

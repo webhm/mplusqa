@@ -630,9 +630,7 @@ class CateterUci {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
-                        if (CateterUci.show) {
-                            CateterUci.destroyTable();
-                        }
+                       
                         CateterUci.show = !CateterUci.show;
                     }
 
@@ -847,7 +845,10 @@ class CateterUci {
                 ]),
                 m("tr.tx-uppercase.mg-t-20", [
                     m("td[colspan='12']",
-                        (CateterUci.show != false ? [PacientesUCI.vTable('table-cateter', CateterUci.getRegistros(), CateterUci.arqTable())] : [])
+                        {
+                            class: (CateterUci.show ? '' : 'd-none'),
+                        },
+                        (CateterUci.registros.length != 0 ? [PacientesUCI.vTable('table-cateter', CateterUci.getRegistros(), CateterUci.arqTable())] : [])
 
                     ),
                 ]),
