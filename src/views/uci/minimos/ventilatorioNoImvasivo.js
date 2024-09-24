@@ -477,6 +477,11 @@ class VentilatorioNoInvasivo {
                             m("input[type='text'][placeholder='Cantidad']", {
                                 id: 'cantidadValorVentilatorioNoInvasivo',
                                 class: 'form-control',
+                                oncreate: (el) => {
+                                    if (VentilatorioNoInvasivo.nuevoRegistro.cantidad !== null) {
+                                        el.dom.value = VentilatorioNoInvasivo.nuevoRegistro.cantidad;
+                                    } 
+                                },
                                 oninput: (e) => {
                                     setTimeout(() => {
                                         //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;

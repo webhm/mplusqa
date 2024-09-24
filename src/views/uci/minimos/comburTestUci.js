@@ -474,6 +474,8 @@ class ComburTestNeo {
                                         el.dom.value = ComburTestNeo.nuevoRegistro.hora;
                                     }
 
+                                    
+
                                     setTimeout(() => {
                                         new Cleave("#" + el.dom.id, {
                                             time: true,
@@ -507,9 +509,13 @@ class ComburTestNeo {
                             m("input[type='text'][placeholder='Cantidad']", {
                                 id: 'cantidadValorComburTestNeo',
                                 class: 'form-control',
+                                oncreate: (el) => {
+                                    if (ComburTestNeo.nuevoRegistro.valor !== null) {
+                                        el.dom.value = ComburTestNeo.nuevoRegistro.valor;
+                                    } 
+                                },
                                 oninput: (e) => {
                                     setTimeout(() => {
-                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
                                         ComburTestNeo.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
 
                                     }, 50);

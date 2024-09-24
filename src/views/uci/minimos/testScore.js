@@ -466,6 +466,13 @@ class TestScoreUciNeo {
                         (TestScoreUciNeo.nuevoRegistro !== null ? [
                             m('select.tx-semibold', {
                                 id: 'valorTestScore',
+                                oncreate: (el) => {
+
+                                    if (TestScoreUciNeo.nuevoRegistro.valor !== null) {
+                                        el.dom.value = TestScoreUciNeo.nuevoRegistro.valor;
+                                    }
+
+                                },
                                 onchange: (e) => {
                                     let _id = e.target.options[e.target.selectedIndex].id;
                                     let _value = e.target.options[e.target.selectedIndex].value;

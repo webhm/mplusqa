@@ -505,14 +505,17 @@ class ComburTestNeo {
                     ),
                     m("td.tx-normal[colspan='4']",
                         (ComburTestNeo.nuevoRegistro !== null ? [
-                            m("input[type='text'][placeholder='Cantidad']", {
+                            m("input[type='text'][placeholder='Valor']", {
                                 id: 'cantidadValorComburTestNeo',
                                 class: 'form-control',
+                                oncreate: (el) => {
+                                    if (ComburTestNeo.nuevoRegistro.valor !== null) {
+                                        el.dom.value = ComburTestNeo.nuevoRegistro.valor;
+                                    } 
+                                },
                                 oninput: (e) => {
                                     setTimeout(() => {
-                                        //GasesUci.nuevoRegistro.hora = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + e.target.value;
                                         ComburTestNeo.nuevoRegistro.valor = (e.target.value.length !== 0 ? e.target.value : null);
-
                                     }, 50);
                                 },
                                 onkeypress: (e) => {
@@ -520,7 +523,7 @@ class ComburTestNeo {
                                         ComburTestNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         ComburTestNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                         ComburTestNeo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + ComburTestNeo.nuevoRegistro.hora;
-                                        // vALIDAR AJUSTE DE CAMBIOS
+                                        // VALIDAR AJUSTE DE CAMBIOS
                                         if (ComburTestNeo.nuevoRegistro.tipo == null || ComburTestNeo.nuevoRegistro.tipo.length == 0) {
                                             $.alert('El campo Tipo o Valor no puede ser vacio.');
                                         } else if (moment(ComburTestNeo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {

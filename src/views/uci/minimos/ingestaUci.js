@@ -285,14 +285,29 @@ class IngestaUciNeo {
                                     m("button.btn.btn-xs.btn-dark[type='button']", {
                                         class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
                                         onclick: () => {
-                                            IngestaUciNeo.iniciarRegistro();
-                                            IngestaUciNeo.nuevoRegistro.id = oData.id;
-                                            IngestaUciNeo.nuevoRegistro.tipo = oData.tipo;
-                                            IngestaUciNeo.nuevoRegistro.valor = oData.valor;
-                                            IngestaUciNeo.nuevoRegistro.hora = oData.hora;
-                                            IngestaUciNeo.nuevoRegistro.medida = oData.medida;
-                                            IngestaUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            IngestaUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+
+                                            IngestaUciNeo.nuevoRegistro = null;
+                                            if (oData.valor.indexOf("FORMULA") == 0) {
+                                                IngestaUciNeo.iniciarRegistro();
+                                                IngestaUciNeo.nuevoRegistro.id = oData.id;
+                                                IngestaUciNeo.nuevoRegistro.tipo = oData.tipo;
+                                                IngestaUciNeo.nuevoRegistro.valor = oData.valor;
+                                                IngestaUciNeo.nuevoRegistro.hora = oData.hora;
+                                                IngestaUciNeo.nuevoRegistro.medida = oData.medida;
+                                                IngestaUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                IngestaUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            } else {
+                                                IngestaUciNeo.iniciarRegistro();
+                                                IngestaUciNeo.nuevoRegistro.id = oData.id;
+                                                IngestaUciNeo.nuevoRegistro.tipo = oData.tipo;
+                                                IngestaUciNeo.nuevoRegistro.valor = oData.valor;
+                                                IngestaUciNeo.nuevoRegistro.hora = oData.hora;
+                                                IngestaUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                IngestaUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                            }
+
+
+
 
                                         },
                                     },
@@ -450,6 +465,16 @@ class IngestaUciNeo {
                             m("input[type='text'][placeholder='Cantidad']", {
                                 id: 'medidaValor',
                                 class: 'form-control',
+                                oncreate: (el) => {
+
+                                    if (IngestaUciNeo.nuevoRegistro.medida !== null) {
+                                        el.dom.value = IngestaUciNeo.nuevoRegistro.medida;
+                                    } else {
+                                        el.dom.disabled = true;
+                                    }
+
+
+                                },
 
                                 oninput: (e) => {
                                     setTimeout(() => {
