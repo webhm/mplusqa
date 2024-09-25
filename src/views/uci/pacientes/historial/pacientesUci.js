@@ -20,6 +20,7 @@ import GasesMedUci from "./gasesMedUci";
 import ComburTestUci from "./comburTestUci";
 import UlcerasUciPed from "./ulcerasUciPed";
 import PrescripcionesUci from "./prescripcionesUci";
+import TurnosUciHistorial from "./turnosUci";
 
 
 // Pacientes UCI
@@ -34,7 +35,9 @@ class PacientesUCIHistorial extends App {
     static fechaHoraTurno = null;
     static idFiltro = 1;
     static fechaHasta = null;
+    static horaHasta = null;
     static fechaDesde = null;
+    static horaDesde = null;
     static fechaBusqueda = null;
 
     constructor(_data) {
@@ -58,7 +61,9 @@ class PacientesUCIHistorial extends App {
 
     static validarAtencion() {
 
-        FecthUci.validarAtencionHistorial();
+        // FecthUci.validarAtencionHistorial();
+
+
     }
 
     static extraerFechaHoraTurnoVigente() {
@@ -191,6 +196,273 @@ class PacientesUCIHistorial extends App {
 
     }
 
+    static arqTableTurnos() {
+        return {
+            data: null,
+            dom: 'ltp',
+            language: {
+                searchPlaceholder: "Buscar...",
+                sSearch: "",
+                lengthMenu: "Mostrar _MENU_ registros por página",
+                sProcessing: "Procesando...",
+                sZeroRecords: "Todavía no tienes resultados disponibles.",
+                sEmptyTable: "Ningún dato disponible en esta tabla",
+                sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+                sInfoPostFix: "",
+                sUrl: "",
+                sInfoThousands: ",",
+                sLoadingRecords: "Cargando...",
+                oPaginate: {
+                    sFirst: "Primero",
+                    sLast: "Último",
+                    sNext: "Siguiente",
+                    sPrevious: "Anterior",
+                },
+                oAria: {
+                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+                    sSortDescending: ": Activar para ordenar la columna de manera descendente",
+                },
+            },
+            cache: false,
+            orden: false,
+            destroy: true,
+            // pageLength: 3,
+            columns: [{
+                title: "Tipo: ",
+            },
+            {
+                title: "Fecha:",
+            },
+            {
+                title: "Hora:",
+            },
+            {
+                title: "Usuario:",
+            },
+            {
+                title: "Paciente:",
+            },
+
+            {
+                title: "Especialidad:",
+            },
+            {
+                title: "Status:",
+            },
+
+            {
+                title: "Asume:",
+            },
+            {
+                title: "Cancela:",
+            },
+
+            ],
+            aoColumnDefs: [{
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+
+
+
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center', [
+                                    m("button.btn-xs.btn-block.tx-semibold.tx-15[type='button']", {
+                                        class: (PacientesUCIHistorial.fechaHoraTurno == oData.fechaHoraTurno && oData.gestion == 1 ? 'bg-warning' : 'bg-light')
+                                    },
+                                        (oData.numeroTurno == 1 ? 'AM' : ''),
+                                        (oData.numeroTurno == 2 ? 'PM' : ''),
+                                        (oData.numeroTurno == 3 ? 'HS' : ''),
+                                    ),
+                                ])
+
+                            ]
+                        }
+                    });
+                },
+                width: '5%',
+                visible: true,
+                aTargets: [0],
+                orderable: false,
+            },
+            {
+
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m("input.form-control.tx-13.tx-semibold[type='text'][placeholder='DD/MM/YYYY']", {
+                                    id: 'fechaTurno',
+                                    disabled: true,
+                                    oncreate: (el) => {
+                                        if (oData.fechaTurno !== undefined) {
+                                            el.dom.value = moment(oData.fechaTurno, 'DD-MM-YYYY').format('DD/MM/YYYY');
+                                        }
+
+                                    },
+                                }),
+                            ]
+                        }
+                    });
+                },
+                width: '15%',
+                visible: true,
+                aTargets: [1],
+                orderable: false,
+
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+
+
+                    let _d = true;
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+
+                                m("div.input-group", [
+                                    m("input.form-control.tx-13.tx-semibold[type='text'][placeholder='HH:mm]", {
+                                        id: 'horaTurno',
+                                        disabled: 'disabled',
+                                        oncreate: (el) => {
+                                            if (oData.horaTurno !== undefined) {
+                                                el.dom.value = oData.horaTurno;
+                                            }
+
+                                        },
+
+                                    }),
+
+                                ])
+
+                            ]
+                        }
+                    });
+                },
+                width: '15%',
+                visible: true,
+                aTargets: [2],
+                orderable: false,
+
+            },
+            {
+
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m("input.form-control.tx-13.tx-semibold[type='text']", {
+                                    disabled: 'disabled',
+                                    oncreate: (el) => {
+                                        if (oData.usuarioTurno !== undefined) {
+                                            el.dom.value = oData.usuarioTurno;
+                                        }
+                                    },
+                                }),
+                            ]
+                        }
+                    });
+                },
+                width: '15%',
+                visible: true,
+                aTargets: [3],
+                orderable: false,
+
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.paciente;
+                },
+                visible: false,
+                aTargets: [4],
+                orderable: false,
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.especialidad;
+                },
+                visible: false,
+                aTargets: [5],
+                orderable: false,
+
+
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center', [
+                                    m("button.btn-xs.btn-block.tx-semibold.tx-13[type='button']", {
+                                        class: (oData.status == 1 || oData.status == 4 ? 'bg-warning' : 'bg-success'),
+                                    },
+                                        (oData.status == 1 ? 'Turno Abierto' : ''),
+                                        (oData.status == 2 ? 'Turno Cerrado' : ''),
+                                        (oData.status == 4 ? 'Turno Abierto' : ''),
+                                    ),
+
+                                ])
+
+                            ]
+                        }
+                    });
+                },
+                width: '10%',
+                visible: true,
+                aTargets: [6],
+                orderable: false,
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.tx-12', [
+                                    m('div.d-inline', m.trust(oData.asume))
+
+                                ])
+
+                            ]
+                        }
+                    });
+                },
+                width: '10%',
+                visible: true,
+                aTargets: [7],
+                orderable: false,
+            },
+            {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.tx-12', [
+                                    m('div.d-inline', m.trust(oData.cancela))
+
+                                ])
+
+                            ]
+                        }
+                    });
+                },
+                width: '10%',
+                visible: true,
+                aTargets: [8],
+                orderable: false,
+            },
+
+
+            ],
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+
+            },
+        };
+    }
 
     static parseAllSeccion(idSeccion) {
         let res = [];
@@ -232,7 +504,7 @@ class PacientesUCIHistorial extends App {
                                 style: { "background-color": "#CCCCFF", }
                             }, [
                                 m("th[scope='col'][colspan='12']",
-                                    "Registro de Turnos:"
+                                    "Historial de Turnos:"
                                 ),
 
                             ])
@@ -244,17 +516,21 @@ class PacientesUCIHistorial extends App {
                             m("tr.bd.bd-2.text-right", {
                                 style: { "border-color": "#5173a1" }
                             }, [
-                                m("td.wd-10p[colspan='6']"),
 
-                                m("td[colspan='6']",
-                                    m("input.form-control.d-inline.tx-semibold.tx-14.mg-r-2.wd-15p[type='text'][placeholder='DD/MM/YYYY']", {
-                                        id: "fechaBusqueda",
+                                m("td.d-flex.justify-content-end[colspan='12']",
+                                    m("span.mg-5", 'Desde:'),
+                                    m("input.form-control.d-inline.tx-semibold.tx-14.mg-r-2.wd-5p[type='text'][placeholder='DD/MM/YYYY']", {
+                                        id: "fechaDesde",
                                         class: "form-control tx-semibold tx-14 wd-15p",
-                                        type: "text",
+
                                         oncreate: (el) => {
 
+                                            el.dom.value = moment().format('DD-MM-YYYY');
+                                            PacientesUCIHistorial.fechaDesde = el.dom.value;
+
+
                                             setTimeout(() => {
-                                                new Cleave("#fechaBusqueda", {
+                                                new Cleave("#fechaDesde", {
                                                     date: true,
                                                     datePattern: ["d", "m", "Y"]
                                                 });
@@ -262,19 +538,113 @@ class PacientesUCIHistorial extends App {
                                         },
                                         oninput: (e) => {
                                             setTimeout(() => {
-                                                PacientesUCIHistorial.fechaBusqueda = (e.target.value.length !== 0 ? e.target.value : null);
-                                                console.log(77, PacientesUCIHistorial.fechaBusqueda)
+                                                PacientesUCIHistorial.fechaDesde = (e.target.value.length !== 0 ? e.target.value : null);
                                             }, 50);
                                         },
+                                    }),
+                                    m("input.form-control.tx-13.tx-semibold.wd-10p[type='text'][placeholder='HH:mm']", {
+                                        id: 'horaDesde',
+                                        disabled: 'disabled',
+
+                                        oncreate: (el) => {
+
+                                            el.dom.value = '08:00';
+
+                                            PacientesUCIHistorial.horaDesde = el.dom.value;
+
+                                            setTimeout(() => {
+                                                new Cleave("#horaDesde", {
+                                                    time: true,
+                                                    timePattern: ['h', 'm']
+                                                });
+                                            }, 50);
+                                        },
+                                        oninput: (e) => {
+                                            setTimeout(() => {
+                                                PacientesUCIHistorial.horaDesde = (e.target.value.length !== 0 ? e.target.value : null);
+                                            }, 50);
+                                        },
+
+                                    }),
+                                    m("span.mg-5", 'Hasta:'),
+                                    m("input.form-control.d-inline.tx-semibold.tx-14.mg-r-2.wd-10p[type='text'][placeholder='DD/MM/YYYY']", {
+                                        id: "fechaHasta",
+                                        class: "form-control tx-semibold tx-14 wd-15p",
+
+                                        oncreate: (el) => {
+
+                                            el.dom.value = moment().add(1, 'days').format('DD-MM-YYYY');
+                                            PacientesUCIHistorial.fechaHasta = el.dom.value;
+
+                                            setTimeout(() => {
+                                                new Cleave("#fechaHasta", {
+                                                    date: true,
+                                                    datePattern: ["d", "m", "Y"]
+                                                });
+                                            }, 50);
+                                        },
+                                        oninput: (e) => {
+                                            setTimeout(() => {
+
+                                                PacientesUCIHistorial.fechaHasta = (e.target.value.length !== 0 ? e.target.value : null);
+
+
+
+                                            }, 50);
+                                        },
+
+                                    }),
+                                    m("input.form-control.tx-13.tx-semibold.wd-10p[type='text'][placeholder='HH:mm']", {
+                                        id: 'horaHasta',
+                                        disabled: 'disabled',
+
+                                        oncreate: (el) => {
+
+                                            el.dom.value = '07:59';
+
+                                            PacientesUCIHistorial.horaHasta = el.dom.value;
+
+
+                                            setTimeout(() => {
+                                                new Cleave("#horaHasta", {
+                                                    time: true,
+                                                    timePattern: ['h', 'm']
+                                                });
+                                            }, 50);
+                                        },
+                                        oninput: (e) => {
+                                            setTimeout(() => {
+
+
+
+                                                PacientesUCIHistorial.horaHasta = (e.target.value.length !== 0 ? e.target.value : null);
+                                            }, 50);
+                                        },
+
                                     }),
                                     m("button.btn.btn-xs.btn-light.tx-semibold.tx-14.mg-r-2.wd-10p[type='button']", {
                                         onclick: () => {
 
-                                            if (PacientesUCIHistorial.fechaBusqueda !== null) {
-                                                let fecha = moment(PacientesUCIHistorial.fechaBusqueda, 'DD/MM/YYYY').format('DD-MM-YYYY');
-                                                console.log(666, fecha)
-                                                FecthUci.loadSeccionesHistorial(fecha)
+
+                                            let start = moment(PacientesUCIHistorial.fechaDesde, "DD-MM-YYYY");
+                                            let end = moment(PacientesUCIHistorial.fechaHasta, "DD-MM-YYYY");
+
+                                            //Difference in number of days
+                                            console.log(99, moment.duration(start.diff(end)).asDays())
+
+                                            if (moment.duration(start.diff(end)).asDays() != -1) {
+                                                $.alert('Error de formato o no se puede seleccionar más de 24 horas.');
+                                            } else {
+                                                if (PacientesUCIHistorial.fechaDesde !== null) {
+                                                    let fechaDesde = moment(PacientesUCIHistorial.fechaDesde, 'DD/MM/YYYY').format('DD-MM-YYYY');
+                                                    let fechaHasta = moment(PacientesUCIHistorial.fechaHasta, 'DD/MM/YYYY').format('DD-MM-YYYY');
+                                                    PacientesUCIHistorial.fechaDesde = fechaDesde;
+                                                    PacientesUCIHistorial.fechaHasta = fechaHasta;
+                                                    FecthUci.validarAtencionHistorial();
+                                                }
+
                                             }
+
 
 
 
@@ -299,9 +669,17 @@ class PacientesUCIHistorial extends App {
 
                             ]),
 
-                            m('br')
+                            m("tr", [
+                                m("td[colspan='12']", [
+                                    (TurnosUciHistorial.getTurnos().length != 0 ? [PacientesUCIHistorial.vTable('table-turnos', TurnosUciHistorial.getTurnos(), PacientesUCIHistorial.arqTableTurnos())] : [])
+
+                                ])
+                            ]),
+                            m('br'),
+
 
                         ]),
+
                         // Cuidados Generales
                         m(CuidadosUci2),
                         // Vias
@@ -334,6 +712,9 @@ class PacientesUCIHistorial extends App {
                         m(UlcerasUciPed),
                         // Prescripciones Uci
                         m(PrescripcionesUci),
+
+
+
 
                     ])
                 ])
@@ -625,779 +1006,779 @@ class PacientesUCIHistorial extends App {
         _arr = resultId.sort((a, b) => a.orden - b.orden);
 
 
-       // Establecer Columnas
-       let VolumenAltaFrecuencia = 0;
-       let ModoVentilatorio = 0;
-       let PresionInspiratoria = 0;
-       let DCO2 = 0;
-       let AmplitudDO2 = 0;
-       let Flujo = 0;
-       let PresionMediaVia = 0;
-       let Hercios = 0;
-       let PresionBalonTuboOrotraqueal = 0;
-       let NivelTuboOrotraqueal = 0;
-       let VolumenFugas = 0;
-
-       let FIO2 = 0;
-       let TiempoInspiratorio = 0;
-       let RelacionInspiracionEspiracion = 0;
-       let ResistenciaInspiratoria = 0;
-       let ComplianceEstatica = 0;
-       let ComplianceDinamica = 0;
-       let FRPT = 0;
-       let FRV = 0;
-       let VolumenMinutoEspiradoPaciente = 0;
-       let VolumenMinutoEspiradoMaquina = 0;
-       let VolumenTidalEspiradoPaciente = 0;
-       let VolumenTidalEspiradoMaquina = 0;
-       let PresionSoporte = 0;
-       let PorcentajeVolumenMinuto = 0;
-       let AutoPeep = 0;
-       let PEEP = 0;
-       let PresionMedia = 0;
-       let PresionPico = 0;
-
-       resultNro.map((col, i) => {
-           if (col.id == 'VolumenAltaFrecuencia') {
-               VolumenAltaFrecuencia++;
-           }
-           if (col.id == 'ModoVentilatorio') {
-               ModoVentilatorio++;
-           }
-           if (col.id == 'PresionInspiratoria') {
-               PresionInspiratoria++;
-           }
-           if (col.id == 'DCO2') {
-               DCO2++;
-           }
-           if (col.id == 'AmplitudDO2') {
-               AmplitudDO2++;
-           }
-           if (col.id == 'Flujo') {
-               Flujo++;
-           }
-           if (col.id == 'PresionMediaVia') {
-               PresionMediaVia++;
-           }
-           if (col.id == 'Hercios') {
-               Hercios++;
-           }
-           if (col.id == 'PresionBalonTuboOrotraqueal') {
-               PresionBalonTuboOrotraqueal++;
-           }
-           if (col.id == 'NivelTuboOrotraqueal') {
-               NivelTuboOrotraqueal++;
-           }
-           if (col.id == 'VolumenFugas') {
-               VolumenFugas++;
-           }
-
-           if (col.id == 'FIO2') {
-               FIO2++;
-           }
-           if (col.id == 'TiempoInspiratorio') {
-               TiempoInspiratorio++;
-           }
-           if (col.id == 'RelacionInspiracionEspiracion') {
-               RelacionInspiracionEspiracion++;
-           }
-           if (col.id == 'ResistenciaInspiratoria') {
-               ResistenciaInspiratoria++;
-           }
-           if (col.id == 'ComplianceDinamica') {
-               ComplianceDinamica++;
-           }
-           if (col.id == 'ComplianceEstatica') {
-               ComplianceEstatica++;
-           }
-           if (col.id == 'FRPT') {
-               FRPT++;
-           }
-           if (col.id == 'FRV') {
-               FRV++;
-           }
-           if (col.id == 'VolumenMinutoEspiradoPaciente') {
-               VolumenMinutoEspiradoPaciente++;
-           }
-           if (col.id == 'VolumenMinutoEspiradoMaquina') {
-               VolumenMinutoEspiradoMaquina++;
-           }
-           if (col.id == 'VolumenTidalEspiradoPaciente') {
-               VolumenTidalEspiradoPaciente++;
-           }
-           if (col.id == 'VolumenTidalEspiradoMaquina') {
-               VolumenTidalEspiradoMaquina++;
-           }
-           if (col.id == 'PresionSoporte') {
-               PresionSoporte++;
-           }
-           if (col.id == 'PorcentajeVolumenMinuto') {
-               PorcentajeVolumenMinuto++;
-           }
-           if (col.id == 'AutoPeep') {
-               AutoPeep++;
-           }
-           if (col.id == 'PEEP') {
-               PEEP++;
-           }
-           if (col.id == 'PresionMedia') {
-               PresionMedia++;
-           }
-           if (col.id == 'PresionPico') {
-               PresionPico++;
-           }
-       });
-
-       columnas = [VolumenAltaFrecuencia, ModoVentilatorio, PresionInspiratoria, DCO2, AmplitudDO2, Flujo, PresionMediaVia, Hercios, PresionBalonTuboOrotraqueal, NivelTuboOrotraqueal, VolumenFugas, FIO2, TiempoInspiratorio, RelacionInspiracionEspiracion, ResistenciaInspiratoria, ComplianceEstatica, ComplianceDinamica, FRPT, FRV, VolumenMinutoEspiradoPaciente, VolumenMinutoEspiradoMaquina, VolumenTidalEspiradoPaciente, VolumenTidalEspiradoMaquina, PresionSoporte, PorcentajeVolumenMinuto, AutoPeep, PEEP, PresionMedia, PresionPico];
-
-       resultNro.map((col, i) => {
-           let fila = {};
-           if (col.id == 'ModoVentilatorio') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-
-
-           }
-           if (col.id == 'PresionInspiratoria') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-
-
-           }
-           if (col.id == 'VolumenAltaFrecuencia') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'DCO2') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'AmplitudDO2') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'Flujo') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'PresionMediaVia') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'Hercios') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'PresionBalonTuboOrotraqueal') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'NivelTuboOrotraqueal') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'VolumenFugas') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-
-           if (col.id == 'FIO2') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'TiempoInspiratorio') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'RelacionInspiracionEspiracion') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'ResistenciaInspiratoria') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           
-           if (col.id == 'ComplianceEstatica') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'ComplianceDinamica') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'FRPT') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'FRV') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'VolumenMinutoEspiradoPaciente') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'VolumenMinutoEspiradoMaquina') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'VolumenTidalEspiradoPaciente') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'VolumenTidalEspiradoMaquina') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'PresionSoporte') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'PorcentajeVolumenMinuto') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'AutoPeep') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'PEEP') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'PresionMedia') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-           if (col.id == 'PresionPico') {
-               fila.id = col.id;
-               fila.idObj = [];
-               fila.idObj.push(i);
-
-               // Verificar si existe
-               let f = [];
-               f = filas.filter(v => v.id == col.id);
-
-               if (f.length == 0) {
-                   filas.push(fila);
-                   valores.push(fila);
-               }
-
-               if (f.length > 0) {
-                   valores.map((v, _i) => {
-                       if (v.id == col.id) {
-                           valores[_i]['idObj'].push(i);
-                       }
-                   });
-               }
-           }
-
-       });
+        // Establecer Columnas
+        let VolumenAltaFrecuencia = 0;
+        let ModoVentilatorio = 0;
+        let PresionInspiratoria = 0;
+        let DCO2 = 0;
+        let AmplitudDO2 = 0;
+        let Flujo = 0;
+        let PresionMediaVia = 0;
+        let Hercios = 0;
+        let PresionBalonTuboOrotraqueal = 0;
+        let NivelTuboOrotraqueal = 0;
+        let VolumenFugas = 0;
+
+        let FIO2 = 0;
+        let TiempoInspiratorio = 0;
+        let RelacionInspiracionEspiracion = 0;
+        let ResistenciaInspiratoria = 0;
+        let ComplianceEstatica = 0;
+        let ComplianceDinamica = 0;
+        let FRPT = 0;
+        let FRV = 0;
+        let VolumenMinutoEspiradoPaciente = 0;
+        let VolumenMinutoEspiradoMaquina = 0;
+        let VolumenTidalEspiradoPaciente = 0;
+        let VolumenTidalEspiradoMaquina = 0;
+        let PresionSoporte = 0;
+        let PorcentajeVolumenMinuto = 0;
+        let AutoPeep = 0;
+        let PEEP = 0;
+        let PresionMedia = 0;
+        let PresionPico = 0;
+
+        resultNro.map((col, i) => {
+            if (col.id == 'VolumenAltaFrecuencia') {
+                VolumenAltaFrecuencia++;
+            }
+            if (col.id == 'ModoVentilatorio') {
+                ModoVentilatorio++;
+            }
+            if (col.id == 'PresionInspiratoria') {
+                PresionInspiratoria++;
+            }
+            if (col.id == 'DCO2') {
+                DCO2++;
+            }
+            if (col.id == 'AmplitudDO2') {
+                AmplitudDO2++;
+            }
+            if (col.id == 'Flujo') {
+                Flujo++;
+            }
+            if (col.id == 'PresionMediaVia') {
+                PresionMediaVia++;
+            }
+            if (col.id == 'Hercios') {
+                Hercios++;
+            }
+            if (col.id == 'PresionBalonTuboOrotraqueal') {
+                PresionBalonTuboOrotraqueal++;
+            }
+            if (col.id == 'NivelTuboOrotraqueal') {
+                NivelTuboOrotraqueal++;
+            }
+            if (col.id == 'VolumenFugas') {
+                VolumenFugas++;
+            }
+
+            if (col.id == 'FIO2') {
+                FIO2++;
+            }
+            if (col.id == 'TiempoInspiratorio') {
+                TiempoInspiratorio++;
+            }
+            if (col.id == 'RelacionInspiracionEspiracion') {
+                RelacionInspiracionEspiracion++;
+            }
+            if (col.id == 'ResistenciaInspiratoria') {
+                ResistenciaInspiratoria++;
+            }
+            if (col.id == 'ComplianceDinamica') {
+                ComplianceDinamica++;
+            }
+            if (col.id == 'ComplianceEstatica') {
+                ComplianceEstatica++;
+            }
+            if (col.id == 'FRPT') {
+                FRPT++;
+            }
+            if (col.id == 'FRV') {
+                FRV++;
+            }
+            if (col.id == 'VolumenMinutoEspiradoPaciente') {
+                VolumenMinutoEspiradoPaciente++;
+            }
+            if (col.id == 'VolumenMinutoEspiradoMaquina') {
+                VolumenMinutoEspiradoMaquina++;
+            }
+            if (col.id == 'VolumenTidalEspiradoPaciente') {
+                VolumenTidalEspiradoPaciente++;
+            }
+            if (col.id == 'VolumenTidalEspiradoMaquina') {
+                VolumenTidalEspiradoMaquina++;
+            }
+            if (col.id == 'PresionSoporte') {
+                PresionSoporte++;
+            }
+            if (col.id == 'PorcentajeVolumenMinuto') {
+                PorcentajeVolumenMinuto++;
+            }
+            if (col.id == 'AutoPeep') {
+                AutoPeep++;
+            }
+            if (col.id == 'PEEP') {
+                PEEP++;
+            }
+            if (col.id == 'PresionMedia') {
+                PresionMedia++;
+            }
+            if (col.id == 'PresionPico') {
+                PresionPico++;
+            }
+        });
+
+        columnas = [VolumenAltaFrecuencia, ModoVentilatorio, PresionInspiratoria, DCO2, AmplitudDO2, Flujo, PresionMediaVia, Hercios, PresionBalonTuboOrotraqueal, NivelTuboOrotraqueal, VolumenFugas, FIO2, TiempoInspiratorio, RelacionInspiracionEspiracion, ResistenciaInspiratoria, ComplianceEstatica, ComplianceDinamica, FRPT, FRV, VolumenMinutoEspiradoPaciente, VolumenMinutoEspiradoMaquina, VolumenTidalEspiradoPaciente, VolumenTidalEspiradoMaquina, PresionSoporte, PorcentajeVolumenMinuto, AutoPeep, PEEP, PresionMedia, PresionPico];
+
+        resultNro.map((col, i) => {
+            let fila = {};
+            if (col.id == 'ModoVentilatorio') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+
+
+            }
+            if (col.id == 'PresionInspiratoria') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+
+
+            }
+            if (col.id == 'VolumenAltaFrecuencia') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'DCO2') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'AmplitudDO2') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'Flujo') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'PresionMediaVia') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'Hercios') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'PresionBalonTuboOrotraqueal') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'NivelTuboOrotraqueal') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'VolumenFugas') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+
+            if (col.id == 'FIO2') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'TiempoInspiratorio') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'RelacionInspiracionEspiracion') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'ResistenciaInspiratoria') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+
+            if (col.id == 'ComplianceEstatica') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'ComplianceDinamica') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'FRPT') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'FRV') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'VolumenMinutoEspiradoPaciente') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'VolumenMinutoEspiradoMaquina') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'VolumenTidalEspiradoPaciente') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'VolumenTidalEspiradoMaquina') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'PresionSoporte') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'PorcentajeVolumenMinuto') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'AutoPeep') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'PEEP') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'PresionMedia') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'PresionPico') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+
+        });
 
 
 

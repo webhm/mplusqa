@@ -515,7 +515,7 @@ class VentilatoriosNeo {
                                 class: 'form-control',
                                 oncreate: (el) => {
 
-                                    if (VentilatoriosNeo.nuevoRegistro !== null && VentilatoriosNeo.nuevoRegistro.hora !== null) {
+                                    if (VentilatoriosNeo.nuevoRegistro.hora !== null) {
                                         el.dom.value = VentilatoriosNeo.nuevoRegistro.hora;
                                     }
 
@@ -553,7 +553,7 @@ class VentilatoriosNeo {
                                 class: 'form-control',
                                 oncreate: (el) => {
 
-                                    if (VentilatoriosNeo.nuevoRegistro !== null && VentilatoriosNeo.nuevoRegistro.valor !== null) {
+                                    if (VentilatoriosNeo.nuevoRegistro.valor !== null) {
                                         el.dom.value = VentilatoriosNeo.nuevoRegistro.valor;
                                     }
 

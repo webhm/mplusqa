@@ -1353,6 +1353,8 @@ class MedidasUci {
         return [
             m("thead.bd.bd-2", {
                     style: { "border-color": "#5173a1" },
+                    class: (FecthUci.dataHistorial.length !== 0 ? '' : 'd-none'),
+
 
                 },
                 m("tr.tx-uppercase", {

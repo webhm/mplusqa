@@ -156,129 +156,129 @@ class CuidadosUci2 {
 
             ],
             columns: [{
-                    title: "Order N°:",
-                }, {
-                    title: "Turno:",
-                },
-                {
-                    title: "Turno:",
-                },
+                title: "Order N°:",
+            }, {
+                title: "Turno:",
+            },
+            {
+                title: "Turno:",
+            },
 
-                {
-                    title: "Cuidado:",
-                },
-                {
-                    title: "Frecuencia:",
-                },
-                {
-                    title: "AM:",
-                },
+            {
+                title: "Cuidado:",
+            },
+            {
+                title: "Frecuencia:",
+            },
+            {
+                title: "AM:",
+            },
 
-                {
-                    title: "PM:",
-                },
-                {
-                    title: "HS:",
-                },
+            {
+                title: "PM:",
+            },
+            {
+                title: "HS:",
+            },
 
 
 
             ],
             aoColumnDefs: [{
-                    mRender: function(data, type, full) {
-                        return full.fechaHoraTurno;
-                    },
-                    visible: false,
-                    aTargets: [0],
-                    orderable: true,
-                }, {
-                    mRender: function(data, type, full) {
-                        return full.nro;
-                    },
-                    visible: false,
-                    aTargets: [1],
-                    orderable: true,
+                mRender: function (data, type, full) {
+                    return full.fechaHoraTurno;
                 },
-                {
-
-                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-
-                        return m.mount(nTd, {
-                            view: () => {
-                                return [
-                                    m('div.text-center.pd-5', [
-                                        m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                                class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                            },
-                                            (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                            (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                            (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        ),
-
-                                    ])
-
-                                ]
-                            }
-                        });
-                    },
-                    width: '12%',
-                    visible: true,
-                    aTargets: [2],
-                    orderable: true,
-
+                visible: false,
+                aTargets: [0],
+                orderable: true,
+            }, {
+                mRender: function (data, type, full) {
+                    return full.nro;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return full.cuidado;
-                    },
-                    width: '19%',
-                    visible: true,
-                    aTargets: [3],
-                    orderable: true,
+                visible: false,
+                aTargets: [1],
+                orderable: true,
+            },
+            {
 
-                },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.frecuencia != null ? full.frecuencia : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [4],
-                    orderable: true,
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
 
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center.pd-5', [
+                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                        class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                    },
+                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    ),
+
+                                ])
+
+                            ]
+                        }
+                    });
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.am != null ? full.am : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [5],
-                    orderable: true,
+                width: '12%',
+                visible: true,
+                aTargets: [2],
+                orderable: true,
+
+            },
+            {
+                mRender: function (data, type, full) {
+                    return full.cuidado;
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.pm != null ? full.pm : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [6],
-                    orderable: true,
+                width: '19%',
+                visible: true,
+                aTargets: [3],
+                orderable: true,
+
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.frecuencia != null ? full.frecuencia : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                 },
-                {
-                    mRender: function(data, type, full) {
-                        return (full.hs != null ? full.hs : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
-                    },
-                    width: '10%',
-                    visible: true,
-                    aTargets: [7],
-                    orderable: true,
+                width: '10%',
+                visible: true,
+                aTargets: [4],
+                orderable: true,
+
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.am != null ? full.am : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                 },
+                width: '10%',
+                visible: true,
+                aTargets: [5],
+                orderable: true,
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.pm != null ? full.pm : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                },
+                width: '10%',
+                visible: true,
+                aTargets: [6],
+                orderable: true,
+            },
+            {
+                mRender: function (data, type, full) {
+                    return (full.hs != null ? full.hs : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
+                },
+                width: '10%',
+                visible: true,
+                aTargets: [7],
+                orderable: true,
+            },
 
 
 
             ],
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
             },
         };
@@ -287,10 +287,9 @@ class CuidadosUci2 {
     view() {
         return [
             m("thead.bd.bd-2", {
-                    style: { "border-color": "#5173a1" },
-
-
-                },
+                style: { "border-color": "#5173a1" },
+                class: (FecthUci.dataHistorial.length !== 0 ? '' : 'd-none'),
+            },
 
                 m("tr.tx-uppercase", {
                     style: { "background-color": "#CCCCFF" },
@@ -371,97 +370,97 @@ class CuidadosUci2 {
                             class: "custom-select",
                             value: (CuidadosUci2.nuevoRegistro !== null ? CuidadosUci2.nuevoRegistro.cuidado : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                id: "Posicion",
-                                label: "POSICIÓN"
-                            },
-                            {
-                                id: "ReposoRelativo",
-                                label: "REPOSO RELATIVO"
-                            },
-                            {
-                                id: "Levantar",
-                                label: "LEVANTAR"
-                            },
-                            {
-                                id: "CuidadoOjos",
-                                label: "CUIDADO DE OJOS"
-                            },
-                            {
-                                id: "Aislamiento",
-                                label: "AISLAMIENTO"
-                            },
-                            {
-                                id: "CambiosPosicion",
-                                label: "CAMBIOS DE POSICIÓN"
-                            },
-                            {
-                                id: "Bano",
-                                label: "BAÑO"
-                            },
-                            {
-                                id: "CuidadosPiel",
-                                label: "CUIDADOS DE PIEL"
-                            },
-                            {
-                                id: "AseoPerianal",
-                                label: "ASEO PERIANAL"
-                            },
-                            {
-                                id: "HigieneOral",
-                                label: "HIGIENE ORAL"
-                            },
-                            {
-                                id: "TerapiaRespiratoria",
-                                label: "TERAPIA RESPIRATORIA"
-                            },
-                            {
-                                id: "CuidadosTuboTraqueal",
-                                label: "CUIDADOS DE TUBO TRAQUEAL"
-                            },
-                            {
-                                id: "ControlTemperaturaMediosFisicos",
-                                label: "CONTROL FIEBRE MEDIOS FISICOS"
-                            },
-                            {
-                                id: "ControlMarcapasos",
-                                label: "CONTROL DE MARCAPASOS"
-                            },
-                            {
-                                id: "ControlDrenajes",
-                                label: "CONTROL DE DRENAJES"
-                            },
-                            {
-                                id: "ControlSangrado",
-                                label: "CONTROL DE SANGRADO"
-                            },
-                            {
-                                id: "ControlNeurologico",
-                                label: "CONTROL NEUROLÓGICO"
-                            },
-                            {
-                                id: "ControlPresionVenosaCentral",
-                                label: "CONTROL DE PRESION VENOSA CENTRAL"
-                            },
-                            {
-                                id: "EsquemaInsulima",
-                                label: "ESQUEMA DE INSULINA"
-                            },
-                            {
-                                id: "RehabilitacionMotora",
-                                label: "REHABILITACIÓN MOTORA"
-                            },
-                            {
-                                id: "EnemaEvacuante",
-                                label: "ENEMA EVACUANTE"
-                            },
-                            {
-                                id: "RiesgoTromboembolismo",
-                                label: "RIESGO DE TROMBOEMBOLISMO"
-                            },
-                            {
-                                id: "VisitaFamiliar",
-                                label: "VISITA FAMILIAR"
-                            }
+                            id: "Posicion",
+                            label: "POSICIÓN"
+                        },
+                        {
+                            id: "ReposoRelativo",
+                            label: "REPOSO RELATIVO"
+                        },
+                        {
+                            id: "Levantar",
+                            label: "LEVANTAR"
+                        },
+                        {
+                            id: "CuidadoOjos",
+                            label: "CUIDADO DE OJOS"
+                        },
+                        {
+                            id: "Aislamiento",
+                            label: "AISLAMIENTO"
+                        },
+                        {
+                            id: "CambiosPosicion",
+                            label: "CAMBIOS DE POSICIÓN"
+                        },
+                        {
+                            id: "Bano",
+                            label: "BAÑO"
+                        },
+                        {
+                            id: "CuidadosPiel",
+                            label: "CUIDADOS DE PIEL"
+                        },
+                        {
+                            id: "AseoPerianal",
+                            label: "ASEO PERIANAL"
+                        },
+                        {
+                            id: "HigieneOral",
+                            label: "HIGIENE ORAL"
+                        },
+                        {
+                            id: "TerapiaRespiratoria",
+                            label: "TERAPIA RESPIRATORIA"
+                        },
+                        {
+                            id: "CuidadosTuboTraqueal",
+                            label: "CUIDADOS DE TUBO TRAQUEAL"
+                        },
+                        {
+                            id: "ControlTemperaturaMediosFisicos",
+                            label: "CONTROL FIEBRE MEDIOS FISICOS"
+                        },
+                        {
+                            id: "ControlMarcapasos",
+                            label: "CONTROL DE MARCAPASOS"
+                        },
+                        {
+                            id: "ControlDrenajes",
+                            label: "CONTROL DE DRENAJES"
+                        },
+                        {
+                            id: "ControlSangrado",
+                            label: "CONTROL DE SANGRADO"
+                        },
+                        {
+                            id: "ControlNeurologico",
+                            label: "CONTROL NEUROLÓGICO"
+                        },
+                        {
+                            id: "ControlPresionVenosaCentral",
+                            label: "CONTROL DE PRESION VENOSA CENTRAL"
+                        },
+                        {
+                            id: "EsquemaInsulima",
+                            label: "ESQUEMA DE INSULINA"
+                        },
+                        {
+                            id: "RehabilitacionMotora",
+                            label: "REHABILITACIÓN MOTORA"
+                        },
+                        {
+                            id: "EnemaEvacuante",
+                            label: "ENEMA EVACUANTE"
+                        },
+                        {
+                            id: "RiesgoTromboembolismo",
+                            label: "RIESGO DE TROMBOEMBOLISMO"
+                        },
+                        {
+                            id: "VisitaFamiliar",
+                            label: "VISITA FAMILIAR"
+                        }
                         ].map(x =>
                             m('option[id="' + x.id + '"]', x.label)
                         ))

@@ -25,12 +25,15 @@ class FecthUci {
                 paciente: 'PACIENTE PRUEBA MV',
                 especialidad: 'MEDICINA INTERNA',
                 status: parseInt(_v.STATUS),
+                asume: 'Usuario: '+  _v.USUARIO_ASUME + '<br/>Fecha:'+ _v.FECHA_ASUME+ '<br/>Comentario:'+ _v.COMENTARIO,
+                cancela: 'Usuario: '+  _v.USUARIO_CANCELA + '<br/>Fecha:'+ _v.FECHA_CANCELA+ '<br/>Comentario:'+ _v.COMENTARIO_CANCELA,
+                cancela: '',
                 gestion: 0,
             });
             TurnosUciHistorial.turnos.push(TurnosUciHistorial.nuevoTurno);
         });
 
-        return TurnosUciHistorial.turnos;
+        return TurnosUciHistorial.turnos.sort((a, b) => a.numeroTurno - b.numeroTurno);
 
     }
 
@@ -331,12 +334,20 @@ class FecthUci {
                     numeroTurno: res.data.numeroTurno
                 });
 
-                if (res.data.dataTurnos.length > 0) {
-                    TurnosUciHistorial.turnos = FecthUci.setTurnos(res.data.dataTurnos);
-                    //PacientesUCIHistorial.vReloadTable('table-turnos', TurnosUciHistorial.getTurnos());
+                let turnos = res.data.dataTurnos.filter(v =>
+                    moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() >= moment(PacientesUCIHistorial.fechaDesde + ' ' + PacientesUCIHistorial.horaDesde, 'DD-MM-YYYY HH:mm').unix()
+                    && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() <= moment(PacientesUCIHistorial.fechaHasta + ' ' + PacientesUCIHistorial.horaHasta, 'DD-MM-YYYY HH:mm').unix()
+                    && v.TIPO_BIT == 'UCIADULTO');
+
+                console.log(88, moment(PacientesUCIHistorial.fechaDesde + ' ' + PacientesUCIHistorial.horaDesde, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'))
+
+
+                if (turnos.length > 0) {
+                    TurnosUciHistorial.turnos = FecthUci.setTurnos(turnos);
+                    PacientesUCIHistorial.vReloadTable('table-turnos', TurnosUciHistorial.getTurnos().sort((a, b) => a.numeroTurno - b.numeroTurno));
                 }
 
-                //  FecthUci.loadSeccionesHistorial();
+                FecthUci.loadSeccionesHistorial(PacientesUCIHistorial.fechaDesde, PacientesUCIHistorial.horaHasta, PacientesUCIHistorial.fechaHasta, PacientesUCIHistorial.horaHasta);
 
             }
 
@@ -376,7 +387,8 @@ class FecthUci {
         });
     }
 
-    static loadSeccionesHistorial(fechaBusqueda) {
+    static loadSeccionesHistorial(fechaDesde, horaDesde, fechaHasta, horaHasta) {
+
 
         PacientesUCIHistorial.resetSecs();
 
@@ -392,7 +404,7 @@ class FecthUci {
             url: _url + "/detalle-all-secciones",
             params: {
                 numeroAtencion: PacientesUCIHistorial.numeroAtencion,
-                fechaBusqueda: fechaBusqueda,
+                fechaBusqueda: fechaDesde,
             },
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
@@ -400,15 +412,28 @@ class FecthUci {
         }).then(function (res) {
 
             if (res.data.length == 0) {
-                alert('No existe información en la fecha ingresada.');
+                $.alert('No existe información en la fecha ingresada.');
             } else {
 
-                let _f2 = moment(fechaBusqueda, 'DD-MM-YYYY').add(1, 'days').format('DD-MM-YYYY');
-                let seccionesHoy = res.data.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(moment(fechaBusqueda, 'DD-MM-YYYY').format('DD-MM-YYYY') + ' 07:59', 'DD-MM-YYYY HH:mm').unix() && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment(_f2, 'DD-MM-YYYY').format('DD-MM-YYYY') + ' 08:00', 'DD-MM-YYYY HH:mm').unix() && JSON.parse(v.DATASECCION).tipoBit == undefined);
-                console.log('seccionesHoy', seccionesHoy)
-                FecthUci.dataHistorial = seccionesHoy;
-                PacientesUCIHistorial.loadSecs();
+                let seccionesHoy = res.data.filter(v =>
+                    moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() >= moment(fechaDesde + ' ' + horaDesde, 'DD-MM-YYYY HH:mm').unix()
+                    && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() <= moment(fechaHasta + ' ' + horaHasta, 'DD-MM-YYYY HH:mm').unix()
+                    && JSON.parse(v.DATASECCION).tipoBit == undefined);
 
+                let _res = TurnosUciHistorial.turnos.map(turno =>
+                    seccionesHoy.filter(seccion => (turno.fechaHoraTurno === seccion.FECHA) && (turno.fechaHoraTurno === seccion.FECHA))
+                );
+
+                let t = [];
+
+                _res.map((_v, _i) => {
+                    _v.map((a, b) => {
+                        t.push(a);
+                    });
+                });
+
+                FecthUci.dataHistorial = t;
+                PacientesUCIHistorial.loadSecs();
 
             }
 

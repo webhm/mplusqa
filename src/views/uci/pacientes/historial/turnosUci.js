@@ -12,6 +12,8 @@ class Turno {
     usuarioTurno = null;
     paciente = null;
     especialidad = null;
+    asume = null;
+    cancela = null;
     status = 0; // [1 => Turno Abierto, 2 Turno Cerrado]
     gestion = 0;
     constructor() {
@@ -22,6 +24,9 @@ class Turno {
         this.usuarioTurno = this.usuarioTurno;
         this.paciente = this.paciente;
         this.especialidad = this.especialidad;
+        this.asume = this.asume;
+        this.cancela = this.cancela;
+        this.status = this.status;
         this.gestion = this.gestion;
     }
     abrirTurno() {
