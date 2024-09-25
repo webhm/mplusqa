@@ -422,8 +422,7 @@ class PacientesUCIHistorial extends App {
                         view: () => {
                             return [
                                 m('div.tx-12', [
-                                    m('div.d-inline', m.trust(oData.asume))
-
+                                    m('div.d-inline', (oData.cancela != null ? '' : m.trust(oData.asume)))
                                 ])
 
                             ]

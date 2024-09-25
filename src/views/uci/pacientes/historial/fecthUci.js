@@ -186,7 +186,7 @@ class FecthUci {
 
     }
 
-    static actualizarSeccion(_dataSeccion) {
+    static  actualizarSeccion(_dataSeccion) {
 
         let _url = '';
         if (window.location.hostname == 'testmplus.hospitalmetropolitano.org') {
