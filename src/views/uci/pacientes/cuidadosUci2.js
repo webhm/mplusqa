@@ -311,7 +311,7 @@ class CuidadosUci2 {
                                 m('div.pd-5', {
                                     class: (oData.editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        CuidadosUci2.nuevoRegistro = null
+                                        CuidadosUci2.nuevoRegistro = null;
                                         CuidadosUci2.verRegistro(oData);
                                     },
                                 }, (oData.frecuencia !== null ? oData.frecuencia : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
@@ -323,7 +323,7 @@ class CuidadosUci2 {
                                         placeholder: "...",
                                         ondblclick: (e) => {
                                             oData.editar = null;
-                                            CuidadosUci2.nuevoRegistro = null
+                                            CuidadosUci2.nuevoRegistro = null;
                                         },
                                         oninput: (e) => {
                                             CuidadosUci2.nuevoRegistro.frecuencia = (e.target.value.length !== 0 ? e.target.value : null);
@@ -374,7 +374,7 @@ class CuidadosUci2 {
                                 m('div.pd-10', {
                                     class: (oData.editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        CuidadosUci2.nuevoRegistro = null
+                                        CuidadosUci2.nuevoRegistro = null;
                                         CuidadosUci2.verRegistro(oData);
                                     },
                                 }, (oData.am !== null ? oData.am : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
@@ -386,7 +386,7 @@ class CuidadosUci2 {
                                         placeholder: "...",
                                         ondblclick: (e) => {
                                             oData.editar = null;
-                                            CuidadosUci2.nuevoRegistro = null
+                                            CuidadosUci2.nuevoRegistro = null;
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
@@ -452,7 +452,7 @@ class CuidadosUci2 {
                                         placeholder: "...",
                                         ondblclick: (e) => {
                                             oData.editar = null;
-                                            CuidadosUci2.nuevoRegistro = null
+                                            CuidadosUci2.nuevoRegistro = null;
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
@@ -544,7 +544,7 @@ class CuidadosUci2 {
                                         },
                                         ondblclick: (e) => {
                                             oData.editar = null;
-                                            CuidadosUci2.nuevoRegistro = null
+                                            CuidadosUci2.nuevoRegistro = null;
                                         },
                                         oninput: (e) => {
                                             if (PacientesUCI.numeroTurno == 3) {
