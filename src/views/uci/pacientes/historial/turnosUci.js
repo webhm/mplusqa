@@ -63,6 +63,8 @@ class TurnosUciHistorial {
         TurnosUciHistorial.nuevoTurno.fechaTurno = t.fechaHoraTurno.split(' ')[0];
         TurnosUciHistorial.nuevoTurno.horaTurno = t.fechaHoraTurno.split(' ')[1];
         TurnosUciHistorial.nuevoTurno.usuarioTurno = t.usuarioTurno;
+        TurnosUciHistorial.nuevoTurno.asume = t.asume;
+        TurnosUciHistorial.nuevoTurno.cancela = t.cancela;
         TurnosUciHistorial.nuevoTurno.status = t.status;
         TurnosUciHistorial.nuevoTurno.gestion = 0;
     }

@@ -25,9 +25,8 @@ class FecthUci {
                 paciente: 'PACIENTE PRUEBA MV',
                 especialidad: 'MEDICINA INTERNA',
                 status: parseInt(_v.STATUS),
-                asume: 'Usuario: '+  _v.USUARIO_ASUME + '<br/>Fecha:'+ _v.FECHA_ASUME+ '<br/>Comentario:'+ _v.COMENTARIO,
-                cancela: 'Usuario: '+  _v.USUARIO_CANCELA + '<br/>Fecha:'+ _v.FECHA_CANCELA+ '<br/>Comentario:'+ _v.COMENTARIO_CANCELA,
-                cancela: '',
+                asume: (_v.USUARIO_ASUME != null ? 'Usuario: ' + _v.USUARIO_ASUME + '<br/>Fecha: ' + _v.FECHA_ASUME + '<br/>Comentario: ' + _v.COMENTARIO : ''),
+                cancela: (_v.USUARIO_CANCELA != null ? 'Usuario: ' + _v.USUARIO_CANCELA + '<br/>Fecha: ' + _v.FECHA_CANCELA + '<br/>Comentario: ' + _v.COMENTARIO_CANCELA : '') ,
                 gestion: 0,
             });
             TurnosUciHistorial.turnos.push(TurnosUciHistorial.nuevoTurno);
@@ -311,7 +310,7 @@ class FecthUci {
 
         return m.request({
             method: "GET",
-            url: _url + "/turnos-abiertos",
+            url: _url + "/turnos-historial",
             params: {
                 numeroHistoriaClinica: PacientesUCIHistorial.numeroHistoriaClinica,
                 numeroAtencion: PacientesUCIHistorial.numeroAtencion,
@@ -338,8 +337,6 @@ class FecthUci {
                     moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() >= moment(PacientesUCIHistorial.fechaDesde + ' ' + PacientesUCIHistorial.horaDesde, 'DD-MM-YYYY HH:mm').unix()
                     && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() <= moment(PacientesUCIHistorial.fechaHasta + ' ' + PacientesUCIHistorial.horaHasta, 'DD-MM-YYYY HH:mm').unix()
                     && v.TIPO_BIT == 'UCIADULTO');
-
-                console.log(88, moment(PacientesUCIHistorial.fechaDesde + ' ' + PacientesUCIHistorial.horaDesde, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'))
 
 
                 if (turnos.length > 0) {

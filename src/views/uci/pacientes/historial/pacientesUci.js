@@ -397,11 +397,11 @@ class PacientesUCIHistorial extends App {
                             return [
                                 m('div.text-center', [
                                     m("button.btn-xs.btn-block.tx-semibold.tx-13[type='button']", {
-                                        class: (oData.status == 1 || oData.status == 4 ? 'bg-warning' : 'bg-success'),
+                                        class: (oData.status == 1 ? 'bg-warning' : (oData.status == 3 ? 'bg-light' : 'bg-success')),
                                     },
                                         (oData.status == 1 ? 'Turno Abierto' : ''),
                                         (oData.status == 2 ? 'Turno Cerrado' : ''),
-                                        (oData.status == 4 ? 'Turno Abierto' : ''),
+                                        (oData.status == 3 ? 'Turno Cancelado' : ''),
                                     ),
 
                                 ])
