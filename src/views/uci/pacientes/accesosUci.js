@@ -593,9 +593,10 @@ class AccesosUci {
                                 placeholder: "...",
                                 onkeypress: (e) => {
                                     if (e.keyCode == 13) {
-                                        AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                        AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                      
                                         if (AccesosUci.nuevoRegistro.editar == null) {
+                                            AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                             AccesosUci.agregarRegistro();
                                             FecthUci.registrarSeccion(AccesosUci.nuevoRegistro);
                                             PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
@@ -667,9 +668,10 @@ class AccesosUci {
                                     },
                                     onkeypress: (e) => {
                                         if (e.keyCode == 13) {
-                                            AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                           
                                             if (AccesosUci.nuevoRegistro.editar == null) {
+                                                AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                 AccesosUci.agregarRegistro();
                                                 FecthUci.registrarSeccion(AccesosUci.nuevoRegistro);
                                                 PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
@@ -709,9 +711,10 @@ class AccesosUci {
                                     },
                                     onkeypress: (e) => {
                                         if (e.keyCode == 13) {
-                                            AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                           
                                             if (AccesosUci.nuevoRegistro.editar == null) {
+                                                AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                 AccesosUci.agregarRegistro();
                                                 FecthUci.registrarSeccion(AccesosUci.nuevoRegistro);
                                                 PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
@@ -757,9 +760,10 @@ class AccesosUci {
                                     },
                                     onkeypress: (e) => {
                                         if (e.keyCode == 13) {
-                                            AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                           
                                             if (AccesosUci.nuevoRegistro.editar == null) {
+                                                AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                 AccesosUci.agregarRegistro();
                                                 FecthUci.registrarSeccion(AccesosUci.nuevoRegistro);
                                                 PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
@@ -806,9 +810,10 @@ class AccesosUci {
                                     },
                                     onkeypress: (e) => {
                                         if (e.keyCode == 13) {
-                                            AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                          
                                             if (AccesosUci.nuevoRegistro.editar == null) {
+                                                AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                                 AccesosUci.agregarRegistro();
                                                 FecthUci.registrarSeccion(AccesosUci.nuevoRegistro);
                                                 PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
@@ -862,9 +867,10 @@ class AccesosUci {
                                 },
                                 onkeypress: (e) => {
                                     if (e.keyCode == 13) {
-                                        AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                        AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                       
                                         if (AccesosUci.nuevoRegistro.editar == null) {
+                                            AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                             AccesosUci.agregarRegistro();
                                             FecthUci.registrarSeccion(AccesosUci.nuevoRegistro);
                                             PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
@@ -892,9 +898,10 @@ class AccesosUci {
                                 value: AccesosUci.nuevoRegistro.observacion,
                                 onkeypress: (e) => {
                                     if (e.keyCode == 13) {
-                                        AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                        AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                      
                                         if (AccesosUci.nuevoRegistro.editar == null) {
+                                            AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                             AccesosUci.agregarRegistro();
                                             FecthUci.registrarSeccion(AccesosUci.nuevoRegistro);
                                             PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());
@@ -912,9 +919,10 @@ class AccesosUci {
                                 },
                                 onkeypress: (e) => {
                                     if (e.keyCode == 13) {
-                                        AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                        AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                      
                                         if (AccesosUci.nuevoRegistro.editar == null) {
+                                            AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                            AccesosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
                                             AccesosUci.agregarRegistro();
                                             FecthUci.registrarSeccion(AccesosUci.nuevoRegistro);
                                             PacientesUCI.vReloadTable('table-accesos', AccesosUci.getRegistros());

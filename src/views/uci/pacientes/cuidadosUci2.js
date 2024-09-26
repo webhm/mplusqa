@@ -187,9 +187,9 @@ class CuidadosUci2 {
 
 
 
-        if (id == 'Posicion') {
+        if (id == 'Posicion' && CuidadosUci2.registros[0].id == id) {
             return CuidadosUci2.registros[0];
-        } else if (id == 'ReposoRelativo') {
+        } else if (id == 'ReposoRelativo' && CuidadosUci2.registros[1].id == id) {
             return CuidadosUci2.registros[1];
         } else if (id == 'Levantar') {
             return CuidadosUci2.registros[2];
@@ -235,29 +235,11 @@ class CuidadosUci2 {
             return CuidadosUci2.registros[22];
         } else {
             return {
-                editar: 0
+                editar: null
             };
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
 
 
     }
@@ -280,6 +262,8 @@ class CuidadosUci2 {
         CuidadosUci2.editarAll = false;
         CuidadosUci2.cancelarTodo();
         CuidadosUci2.filterRegistros();
+
+        m.redraw();
 
         CuidadosUci2.registros.map((v, i) => {
             v.numeroTurno = PacientesUCI.numeroTurno;
@@ -419,6 +403,7 @@ class CuidadosUci2 {
                                 m('div.pd-5', {
                                     class: (oData.editar == true || CuidadosUci2.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
+                                        console.log(55, oData)
                                         CuidadosUci2.nuevoRegistro = null
                                         CuidadosUci2.verRegistro(oData);
                                     },
@@ -1177,6 +1162,7 @@ class CuidadosUci2 {
                 m("tr.tx-uppercase", [
                     m("td[colspan='12'][align='right']", [
                         m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
+                            class: (CuidadosUci2.editarAll == true ? '' : 'd-none'),
 
                             onclick: () => {
 
