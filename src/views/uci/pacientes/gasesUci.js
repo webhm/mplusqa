@@ -994,41 +994,48 @@ class GasesUci {
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
-                                                GasesUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                GasesUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                if (GasesUci.nuevoRegistro.editar == null) {
-
-                                                    setTimeout(() => {
-                                                        GasesUci.agregarRegistro();
-                                                        FecthUci.registrarSeccion(GasesUci.nuevoRegistro);
-                                                        GasesUci.nuevoRegistro = null;
-                                                        GasesUci.destroyTable();
-                                                        GasesUci.filterRegistros();
-                                                        GasesUci.show = false;
-                                                        m.redraw();
-                                                        setTimeout(() => {
-                                                            GasesUci.show = true;
-                                                            m.redraw();
-                                                        }, 100);
-                                                    }, 100);
-
+                                              
+                                                if (moment(GasesUci.nuevoRegistro.hora, "HH:mm", true).isValid() == false) {
+                                                    $.alert(GasesUci.nuevoRegistro.hora + ' no tiene el formato HH:mm necesario.');
                                                 } else {
 
-                                                    setTimeout(() => {
-                                                        GasesUci.editarRegistro();
-                                                        FecthUci.actualizarSeccion(GasesUci.nuevoRegistro);
-                                                        GasesUci.nuevoRegistro = null;
-                                                        GasesUci.destroyTable();
-                                                        GasesUci.filterRegistros();
-                                                        GasesUci.show = false;
-                                                        m.redraw();
+                                                    if (GasesUci.nuevoRegistro.editar == null) {
+
                                                         setTimeout(() => {
-                                                            GasesUci.show = true;
+                                                            GasesUci.agregarRegistro();
+                                                            FecthUci.registrarSeccion(GasesUci.nuevoRegistro);
+                                                            GasesUci.nuevoRegistro = null;
+                                                            GasesUci.destroyTable();
+                                                            GasesUci.filterRegistros();
+                                                            GasesUci.show = false;
                                                             m.redraw();
+                                                            setTimeout(() => {
+                                                                GasesUci.show = true;
+                                                                m.redraw();
+                                                            }, 100);
                                                         }, 100);
-                                                    }, 100);
+
+                                                    } else {
+
+                                                        setTimeout(() => {
+                                                            GasesUci.editarRegistro();
+                                                            FecthUci.actualizarSeccion(GasesUci.nuevoRegistro);
+                                                            GasesUci.nuevoRegistro = null;
+                                                            GasesUci.destroyTable();
+                                                            GasesUci.filterRegistros();
+                                                            GasesUci.show = false;
+                                                            m.redraw();
+                                                            setTimeout(() => {
+                                                                GasesUci.show = true;
+                                                                m.redraw();
+                                                            }, 100);
+                                                        }, 100);
+
+                                                    }
+
 
                                                 }
+
 
 
                                                 let tt = $('#Gases_' + oData.id).offset().top;

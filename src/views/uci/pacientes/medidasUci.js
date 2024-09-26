@@ -225,7 +225,7 @@ class MedidasUci {
             return valor;
         }
 
-       
+
 
 
     }
@@ -800,17 +800,17 @@ class MedidasUci {
 
         MedidasUci.sColumns = [];
         MedidasUci.sColumns = [{
-                title: "Turno: ",
-            },
-            {
-                title: "Order Nro : ",
-            },
-            {
-                title: "Turno: ",
-            },
-            {
-                title: "Nombre y Unidad de Medida:",
-            },
+            title: "Turno: ",
+        },
+        {
+            title: "Order Nro : ",
+        },
+        {
+            title: "Turno: ",
+        },
+        {
+            title: "Nombre y Unidad de Medida:",
+        },
 
         ];
 
@@ -836,75 +836,75 @@ class MedidasUci {
 
         MedidasUci.sRows = [];
         MedidasUci.sRows = [{
-                mRender: function(data, type, full) {
-                    return full.fechaHoraTurno;
-                },
-                visible: false,
-                aTargets: [0],
-                orderable: true,
+            mRender: function (data, type, full) {
+                return full.fechaHoraTurno;
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.orden;
-                },
-                visible: false,
-                aTargets: [1],
-                orderable: true,
-
+            visible: false,
+            aTargets: [0],
+            orderable: true,
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.orden;
             },
-            {
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                        },
-                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                    ),
-                                ])
+            visible: false,
+            aTargets: [1],
+            orderable: true,
 
-                            ]
-                        }
-                    });
-                },
-                width: '15%',
-                visible: false,
-                aTargets: [2],
-                orderable: false,
+        },
+        {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div.text-center.pd-5', [
+                                m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                    class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                },
+                                    (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                ),
+                            ])
 
+                        ]
+                    }
+                });
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.medida;
-                },
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-                                    id: 'MedidasUci_' + oData.id,
-                                }, [oData.medida]),
+            width: '15%',
+            visible: false,
+            aTargets: [2],
+            orderable: false,
 
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: [3],
-                orderable: true,
-
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.medida;
             },
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div', {
+                                id: 'MedidasUci_' + oData.id,
+                            }, [oData.medida]),
+
+                        ]
+                    }
+                });
+            },
+            visible: true,
+            aTargets: [3],
+            orderable: true,
+
+        },
         ];
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
 
             MedidasUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -939,10 +939,10 @@ class MedidasUci {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -950,10 +950,10 @@ class MedidasUci {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosMedidasUci').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1104,7 +1104,7 @@ class MedidasUci {
                 orderable: true,
             });
             MedidasUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -1143,10 +1143,10 @@ class MedidasUci {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1154,10 +1154,10 @@ class MedidasUci {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosMedidasUci').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1287,46 +1287,50 @@ class MedidasUci {
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
-                                                MedidasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                MedidasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                if (MedidasUci.nuevoRegistro.editar == null) {
-                                                    setTimeout(() => {
-                                                        MedidasUci.agregarRegistro();
-                                                        FecthUci.registrarSeccion(MedidasUci.nuevoRegistro);
-                                                        MedidasUci.nuevoRegistro = null;
-                                                        MedidasUci.destroyTable();
-                                                        MedidasUci.filterRegistros();
-                                                        MedidasUci.show = false;
-                                                        m.redraw();
-                                                        setTimeout(() => {
-                                                            MedidasUci.show = true;
-                                                            m.redraw();
-                                                        }, 100);
-                                                    }, 100);
+                                            
+                                                if (moment(MedidasUci.nuevoRegistro.hora, "HH:mm", true).isValid() == false) {
+                                                    $.alert(MedidasUci.nuevoRegistro.hora + ' no tiene el formato HH:mm necesario.');
                                                 } else {
-                                                    setTimeout(() => {
-                                                        MedidasUci.editarRegistro();
-                                                        FecthUci.actualizarSeccion(MedidasUci.nuevoRegistro);
-                                                        MedidasUci.nuevoRegistro = null;
-                                                        MedidasUci.destroyTable();
-                                                        MedidasUci.filterRegistros();
-                                                        MedidasUci.show = false;
-                                                        m.redraw();
+                                                    if (MedidasUci.nuevoRegistro.editar == null) {
                                                         setTimeout(() => {
-                                                            MedidasUci.show = true;
+                                                            MedidasUci.agregarRegistro();
+                                                            FecthUci.registrarSeccion(MedidasUci.nuevoRegistro);
+                                                            MedidasUci.nuevoRegistro = null;
+                                                            MedidasUci.destroyTable();
+                                                            MedidasUci.filterRegistros();
+                                                            MedidasUci.show = false;
                                                             m.redraw();
+                                                            setTimeout(() => {
+                                                                MedidasUci.show = true;
+                                                                m.redraw();
+                                                            }, 100);
                                                         }, 100);
-                                                    }, 100);
+                                                    } else {
+                                                        setTimeout(() => {
+                                                            MedidasUci.editarRegistro();
+                                                            FecthUci.actualizarSeccion(MedidasUci.nuevoRegistro);
+                                                            MedidasUci.nuevoRegistro = null;
+                                                            MedidasUci.destroyTable();
+                                                            MedidasUci.filterRegistros();
+                                                            MedidasUci.show = false;
+                                                            m.redraw();
+                                                            setTimeout(() => {
+                                                                MedidasUci.show = true;
+                                                                m.redraw();
+                                                            }, 100);
+                                                        }, 100);
+                                                    }
                                                 }
+
 
                                                 let tt = $('#MedidasUci_' + oData.id).offset().top;
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1334,10 +1338,10 @@ class MedidasUci {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosMedidasUci').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1360,27 +1364,27 @@ class MedidasUci {
         }
 
         MedidasUci.sRows.push({
-            fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                 return m.mount(nTd, {
                     view: () => {
                         return [
                             m("div.btn-block.btn-group.wd-100p.pd-5", [
 
                                 m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                        class: (MedidasUci.nuevoRegistro !== null && MedidasUci.nuevoRegistro.editar && MedidasUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
-                                        onclick: () => {
-                                            oData.editar = null;
-                                            document.getElementById('medidasValor' + MedidasUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
-                                            document.getElementById('txtMedidasValor' + MedidasUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
-                                            document.getElementById('medidasHora' + MedidasUci.nuevoRegistro.nro).className = "form-control d-none";
-                                            document.getElementById('txtMedidasHora' + MedidasUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
-                                            if (document.getElementById('btn' + MedidasUci.nuevoRegistro.nro) != null) {
-                                                document.getElementById('btn' + MedidasUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
-                                            }
+                                    class: (MedidasUci.nuevoRegistro !== null && MedidasUci.nuevoRegistro.editar && MedidasUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
+                                    onclick: () => {
+                                        oData.editar = null;
+                                        document.getElementById('medidasValor' + MedidasUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
+                                        document.getElementById('txtMedidasValor' + MedidasUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                        document.getElementById('medidasHora' + MedidasUci.nuevoRegistro.nro).className = "form-control d-none";
+                                        document.getElementById('txtMedidasHora' + MedidasUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                        if (document.getElementById('btn' + MedidasUci.nuevoRegistro.nro) != null) {
+                                            document.getElementById('btn' + MedidasUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
+                                        }
 
-                                            MedidasUci.nuevoRegistro = null;
-                                        },
+                                        MedidasUci.nuevoRegistro = null;
                                     },
+                                },
                                     'Cancelar Edición',
                                 ),
 
@@ -1448,7 +1452,7 @@ class MedidasUci {
             pageLength: 100,
             columns: MedidasUci.sColumns,
             aoColumnDefs: MedidasUci.sRows,
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
             },
         };
@@ -1456,10 +1460,10 @@ class MedidasUci {
     view() {
         return [
             m("thead.bd.bd-2", {
-                    style: { "border-color": "#5173a1" },
-                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+                style: { "border-color": "#5173a1" },
+                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
-                },
+            },
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
@@ -1533,121 +1537,121 @@ class MedidasUci {
                             class: "custom-select",
                             value: (MedidasUci.nuevoRegistro !== null ? MedidasUci.nuevoRegistro.medida : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                orden: 1,
-                                id: "GastoCardiaco",
-                                label: "GASTO CARDIACO (LITRO/MINUTO/M2)",
-                                rango: "3 a 4 Litro/minuto/m2",
-                                instrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 2,
-                                id: "IndiceCardiaco",
-                                label: "INDICE CARDIACO (LITRO/MINUTO/M2)",
-                                rango: "3 a 5 Litro/minuto/m2",
-                                instrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 3,
-                                id: "VolumenSistolico",
-                                label: "VOLUMEN SISTOLICO (MILILITROS)",
-                                rango: "50 a 100 ml",
-                                intrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 4,
-                                id: "PresionCapilarPulmonar",
-                                label: "PRESION CAPILAR PULMONAR (MILILITROS DE MERCURIO)",
-                                rango: "6 a 12 mmHg",
-                                intrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 5,
-                                id: "IndiceResistenciaVascularSistemicaIndexada",
-                                label: "INDICE DE RESISTENCIA VASCULAR SISTEMICA INDEXADAS (DINAS)",
-                                rango: "1200 - 2500 Dinas",
-                                intrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 6,
-                                id: "ResistenciaVascularSistemica",
-                                label: "RESISTENCIA VASCULAR SISTEMICA (DINAS)",
-                                rango: "800 – 1200 Dinas",
-                                intrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 7,
-                                id: "IndiceResistenciaVascularPulmonarIndexada",
-                                label: "INDICE DE RESISTENCIA VASCULAR PULMONAR INDEXADAS (DINAS)",
-                                rango: "80 – 240 Dinas",
-                                intrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 8,
-                                id: "PresionCuna",
-                                label: "PRESION EN CUÑA (MILILITROS DE MERCURIO)",
-                                rango: "2 – 12 mmHg",
-                                intrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 9,
-                                id: "PresionArteriaPulmonar",
-                                label: "PRESION DE ARTERIA PULMONAR (MILILITROS DE MERCURIO)",
-                                rango: "8 - 15 mmHg",
-                                intrumento: "Monitor multiparámetros"
-                            }, {
-                                orden: 10,
-                                id: "TransporteArterialOxigeno",
-                                label: "TRANSPORTE ARTERIAL DE OXIGENO (MILILITRO/MINUTO)",
-                                rango: "850 - 1050 ml/min",
-                                intrumento: "Manual"
-                            }, {
-                                orden: 11,
-                                id: "ConcentracionOxigeno",
-                                label: "CONCENTRACION DE OXIGENO (LITROS)",
-                                rango: "50 - 80 Litros",
-                                intrumento: "Manual"
-                            },
-                            {
-                                orden: 12,
-                                id: "PresionPerfusionCerebral",
-                                label: "PRESION DE PERFUSION CEREBRAL (MILILITROS DE MERCURIO)",
-                                rango: "65 - 75 mmHg",
-                                intrumento: "Manual"
-                            },
-                            {
-                                orden: 13,
-                                id: "PresionIntraCraneal",
-                                label: "PRESIÓN INTRA CRANEAL (MILIMETROS DE AGUA)",
-                                rango: "5 - 15 mm",
-                                intrumento: "Manual"
-                            },
-                            {
-                                orden: 14,
-                                id: "PresionIntraAbdominal",
-                                label: "PRESIÓN INTRA ABDOMINAL (MILIMETROS DE AGUA)",
-                                rango: "5 - 10 mm",
-                                intrumento: "Manual"
-                            },
-                            {
-                                orden: 15,
-                                id: "PresionVenosaCentral",
-                                label: "PRESIÓN VENOSA CENTRAL (MILIMETROS DE AGUA)",
-                                rango: "6 - 12 mm",
-                                intrumento: "Manual"
-                            },
-                            {
-                                orden: 16,
-                                id: "PresionVenosaCentralAuricula",
-                                label: "PRESIÓN VENOSA CENTRAL EN AURICULA (MILIMETROS DE MERCURIO)",
-                                rango: "2 - 6 mm",
-                                intrumento: "Manual"
-                            },
-                            {
-                                orden: 17,
-                                id: "Biss",
-                                label: "BISS (MONITOR)",
-                                rango: "40 - 60",
-                                intrumento: "Monitor"
-                            },
-                            {
-                                orden: 18,
-                                id: "Contrapulsacion",
-                                label: "RELACIÓN BALÓN CONTRAPULSACIÓN",
-                                rango: "",
-                                intrumento: ""
-                            }
+                            orden: 1,
+                            id: "GastoCardiaco",
+                            label: "GASTO CARDIACO (LITRO/MINUTO/M2)",
+                            rango: "3 a 4 Litro/minuto/m2",
+                            instrumento: "Monitor multiparámetros"
+                        }, {
+                            orden: 2,
+                            id: "IndiceCardiaco",
+                            label: "INDICE CARDIACO (LITRO/MINUTO/M2)",
+                            rango: "3 a 5 Litro/minuto/m2",
+                            instrumento: "Monitor multiparámetros"
+                        }, {
+                            orden: 3,
+                            id: "VolumenSistolico",
+                            label: "VOLUMEN SISTOLICO (MILILITROS)",
+                            rango: "50 a 100 ml",
+                            intrumento: "Monitor multiparámetros"
+                        }, {
+                            orden: 4,
+                            id: "PresionCapilarPulmonar",
+                            label: "PRESION CAPILAR PULMONAR (MILILITROS DE MERCURIO)",
+                            rango: "6 a 12 mmHg",
+                            intrumento: "Monitor multiparámetros"
+                        }, {
+                            orden: 5,
+                            id: "IndiceResistenciaVascularSistemicaIndexada",
+                            label: "INDICE DE RESISTENCIA VASCULAR SISTEMICA INDEXADAS (DINAS)",
+                            rango: "1200 - 2500 Dinas",
+                            intrumento: "Monitor multiparámetros"
+                        }, {
+                            orden: 6,
+                            id: "ResistenciaVascularSistemica",
+                            label: "RESISTENCIA VASCULAR SISTEMICA (DINAS)",
+                            rango: "800 – 1200 Dinas",
+                            intrumento: "Monitor multiparámetros"
+                        }, {
+                            orden: 7,
+                            id: "IndiceResistenciaVascularPulmonarIndexada",
+                            label: "INDICE DE RESISTENCIA VASCULAR PULMONAR INDEXADAS (DINAS)",
+                            rango: "80 – 240 Dinas",
+                            intrumento: "Monitor multiparámetros"
+                        }, {
+                            orden: 8,
+                            id: "PresionCuna",
+                            label: "PRESION EN CUÑA (MILILITROS DE MERCURIO)",
+                            rango: "2 – 12 mmHg",
+                            intrumento: "Monitor multiparámetros"
+                        }, {
+                            orden: 9,
+                            id: "PresionArteriaPulmonar",
+                            label: "PRESION DE ARTERIA PULMONAR (MILILITROS DE MERCURIO)",
+                            rango: "8 - 15 mmHg",
+                            intrumento: "Monitor multiparámetros"
+                        }, {
+                            orden: 10,
+                            id: "TransporteArterialOxigeno",
+                            label: "TRANSPORTE ARTERIAL DE OXIGENO (MILILITRO/MINUTO)",
+                            rango: "850 - 1050 ml/min",
+                            intrumento: "Manual"
+                        }, {
+                            orden: 11,
+                            id: "ConcentracionOxigeno",
+                            label: "CONCENTRACION DE OXIGENO (LITROS)",
+                            rango: "50 - 80 Litros",
+                            intrumento: "Manual"
+                        },
+                        {
+                            orden: 12,
+                            id: "PresionPerfusionCerebral",
+                            label: "PRESION DE PERFUSION CEREBRAL (MILILITROS DE MERCURIO)",
+                            rango: "65 - 75 mmHg",
+                            intrumento: "Manual"
+                        },
+                        {
+                            orden: 13,
+                            id: "PresionIntraCraneal",
+                            label: "PRESIÓN INTRA CRANEAL (MILIMETROS DE AGUA)",
+                            rango: "5 - 15 mm",
+                            intrumento: "Manual"
+                        },
+                        {
+                            orden: 14,
+                            id: "PresionIntraAbdominal",
+                            label: "PRESIÓN INTRA ABDOMINAL (MILIMETROS DE AGUA)",
+                            rango: "5 - 10 mm",
+                            intrumento: "Manual"
+                        },
+                        {
+                            orden: 15,
+                            id: "PresionVenosaCentral",
+                            label: "PRESIÓN VENOSA CENTRAL (MILIMETROS DE AGUA)",
+                            rango: "6 - 12 mm",
+                            intrumento: "Manual"
+                        },
+                        {
+                            orden: 16,
+                            id: "PresionVenosaCentralAuricula",
+                            label: "PRESIÓN VENOSA CENTRAL EN AURICULA (MILIMETROS DE MERCURIO)",
+                            rango: "2 - 6 mm",
+                            intrumento: "Manual"
+                        },
+                        {
+                            orden: 17,
+                            id: "Biss",
+                            label: "BISS (MONITOR)",
+                            rango: "40 - 60",
+                            intrumento: "Monitor"
+                        },
+                        {
+                            orden: 18,
+                            id: "Contrapulsacion",
+                            label: "RELACIÓN BALÓN CONTRAPULSACIÓN",
+                            rango: "",
+                            intrumento: ""
+                        }
                         ].map(x =>
                             m('option[id="' + x.id + '"][orden="' + x.orden + '"][rango="' + x.rango + '"][intrumento="' + x.intrumento + '"]', x.label)
                         ))
@@ -1700,33 +1704,38 @@ class MedidasUci {
                                     },
                                     onkeypress: (e) => {
                                         if (e.keyCode == 13) {
-                                            MedidasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            MedidasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                            if (MedidasUci.nuevoRegistro.editar == null) {
-                                                MedidasUci.agregarRegistro();
-                                                FecthUci.registrarSeccion(MedidasUci.nuevoRegistro);
-                                                MedidasUci.nuevoRegistro = null;
-                                                MedidasUci.destroyTable();
-                                                MedidasUci.filterRegistros();
-                                                MedidasUci.show = false;
-                                                m.redraw();
-                                                setTimeout(() => {
-                                                    MedidasUci.show = true;
+                                          
+                                            if (moment(MedidasUci.nuevoRegistro.hora, "HH:mm", true).isValid() == false) {
+                                                $.alert(MedidasUci.nuevoRegistro.hora + ' no tiene el formato HH:mm necesario.');
+                                            }else{
+                                                if (MedidasUci.nuevoRegistro.editar == null) {
+                                                    MedidasUci.agregarRegistro();
+                                                    FecthUci.registrarSeccion(MedidasUci.nuevoRegistro);
+                                                    MedidasUci.nuevoRegistro = null;
+                                                    MedidasUci.destroyTable();
+                                                    MedidasUci.filterRegistros();
+                                                    MedidasUci.show = false;
                                                     m.redraw();
-                                                }, 100);
-                                            } else {
-                                                MedidasUci.editarRegistro();
-                                                FecthUci.actualizarSeccion(MedidasUci.nuevoRegistro);
-                                                MedidasUci.nuevoRegistro = null;
-                                                MedidasUci.destroyTable();
-                                                MedidasUci.filterRegistros();
-                                                MedidasUci.show = false;
-                                                m.redraw();
-                                                setTimeout(() => {
-                                                    MedidasUci.show = true;
+                                                    setTimeout(() => {
+                                                        MedidasUci.show = true;
+                                                        m.redraw();
+                                                    }, 100);
+                                                } else {
+                                                    MedidasUci.editarRegistro();
+                                                    FecthUci.actualizarSeccion(MedidasUci.nuevoRegistro);
+                                                    MedidasUci.nuevoRegistro = null;
+                                                    MedidasUci.destroyTable();
+                                                    MedidasUci.filterRegistros();
+                                                    MedidasUci.show = false;
                                                     m.redraw();
-                                                }, 100);
+                                                    setTimeout(() => {
+                                                        MedidasUci.show = true;
+                                                        m.redraw();
+                                                    }, 100);
+                                                }
                                             }
+
+                                           
                                         }
                                     },
                                 }),
@@ -1747,9 +1756,31 @@ class MedidasUci {
                 m("tr.tx-uppercase", [
                     m("td[colspan='12'][align='right']", [
                         m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
-                                onclick: () => {
+                            onclick: () => {
 
-                                    MedidasUci.copyAllRegistros(Array.from(document.getElementById('sec_Medidas').options));
+                                MedidasUci.copyAllRegistros(Array.from(document.getElementById('sec_Medidas').options));
+                                setTimeout(() => {
+                                    MedidasUci.destroyTable();
+                                    MedidasUci.filterRegistros();
+                                    MedidasUci.show = false;
+                                    m.redraw();
+                                    setTimeout(() => {
+                                        MedidasUci.show = true;
+                                        m.redraw();
+                                    }, 100);
+                                }, 100);
+
+
+                            },
+                        },
+                            'Copiar',
+                        ),
+                        m("button.btn.btn-xs.btn-danger.mg-1[type='button']", {
+                            onclick: (el) => {
+
+
+                                if (MedidasUci.allRegistros.length > 0) {
+                                    MedidasUci.eliminarAllRegistros();
                                     setTimeout(() => {
                                         MedidasUci.destroyTable();
                                         MedidasUci.filterRegistros();
@@ -1760,38 +1791,16 @@ class MedidasUci {
                                             m.redraw();
                                         }, 100);
                                     }, 100);
+                                } else {
+                                    $.alert('No existen registros para eliminar.');
+                                }
 
 
-                                },
+
+
+
                             },
-                            'Copiar',
-                        ),
-                        m("button.btn.btn-xs.btn-danger.mg-1[type='button']", {
-                                onclick: (el) => {
-
-
-                                    if (MedidasUci.allRegistros.length > 0) {
-                                        MedidasUci.eliminarAllRegistros();
-                                        setTimeout(() => {
-                                            MedidasUci.destroyTable();
-                                            MedidasUci.filterRegistros();
-                                            MedidasUci.show = false;
-                                            m.redraw();
-                                            setTimeout(() => {
-                                                MedidasUci.show = true;
-                                                m.redraw();
-                                            }, 100);
-                                        }, 100);
-                                    } else {
-                                        $.alert('No existen registros para eliminar.');
-                                    }
-
-
-
-
-
-                                },
-                            },
+                        },
                             'Eliminar',
                         ),
                     ]),
