@@ -622,7 +622,7 @@ class VentilatoriosUci {
                     });
                 }
             }
-            
+
             if (col.id == 'ComplianceEstatica') {
                 fila.id = col.id;
                 fila.idObj = [];
@@ -936,17 +936,17 @@ class VentilatoriosUci {
 
         VentilatoriosUci.sColumns = [];
         VentilatoriosUci.sColumns = [{
-                title: "Turno: ",
-            },
-            {
-                title: "Order Nro : ",
-            },
-            {
-                title: "Turno: ",
-            },
-            {
-                title: "Ventilatorio:",
-            },
+            title: "Turno: ",
+        },
+        {
+            title: "Order Nro : ",
+        },
+        {
+            title: "Turno: ",
+        },
+        {
+            title: "Ventilatorio:",
+        },
 
         ];
 
@@ -972,74 +972,74 @@ class VentilatoriosUci {
 
         VentilatoriosUci.sRows = [];
         VentilatoriosUci.sRows = [{
-                mRender: function(data, type, full) {
-                    return full.fechaHoraTurno;
-                },
-                visible: false,
-                aTargets: [0],
-                orderable: true,
+            mRender: function (data, type, full) {
+                return full.fechaHoraTurno;
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.orden;
-                },
-                visible: false,
-                aTargets: [1],
-                orderable: true,
-
+            visible: false,
+            aTargets: [0],
+            orderable: true,
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.orden;
             },
-            {
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
-                                        },
-                                        (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                        (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
-                                    ),
-                                ])
+            visible: false,
+            aTargets: [1],
+            orderable: true,
 
-                            ]
-                        }
-                    });
-                },
-                width: '15%',
-                visible: false,
-                aTargets: [2],
-                orderable: false,
+        },
+        {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div.text-center.pd-5', [
+                                m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                    class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                },
+                                    (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                    (oData.numeroTurno == 3 ? 'HS' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
+                                ),
+                            ])
 
+                        ]
+                    }
+                });
             },
-            {
-                mRender: function(data, type, full) {
-                    return full.ventilatorio;
-                },
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-                                    id: 'Ventilatorios_' + oData.id,
-                                }, [oData.ventilatorio]),
+            width: '15%',
+            visible: false,
+            aTargets: [2],
+            orderable: false,
 
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: [3],
-                orderable: true,
-
+        },
+        {
+            mRender: function (data, type, full) {
+                return full.ventilatorio;
             },
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                return m.mount(nTd, {
+                    view: () => {
+                        return [
+                            m('div', {
+                                id: 'Ventilatorios_' + oData.id,
+                            }, [oData.ventilatorio]),
+
+                        ]
+                    }
+                });
+            },
+            visible: true,
+            aTargets: [3],
+            orderable: true,
+
+        },
         ];
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
             VentilatoriosUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -1049,14 +1049,21 @@ class VentilatoriosUci {
                                         valores.filter((v, i) => {
 
                                             if (v.id == oData.id) {
+
                                                 let _i = v.idObj[index];
+
                                                 VentilatoriosUci.verRegistro(resultNro[_i]);
+
+
+
                                                 document.getElementById('condicion' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
                                                 document.getElementById('txtCondicion' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
                                                 document.getElementById('horaVentilatorio' + resultNro[_i].nro).className = "form-control";
                                                 document.getElementById('txtHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
                                                 if (document.getElementById('btn' + resultNro[_i].nro) != null) {
                                                     document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
+
+
                                                     setTimeout(() => {
                                                         new Cleave("#horaVentilatorio" + resultNro[_i].nro, {
                                                             time: true,
@@ -1070,10 +1077,10 @@ class VentilatoriosUci {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1081,10 +1088,10 @@ class VentilatoriosUci {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosVentilatorios').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1133,6 +1140,7 @@ class VentilatoriosUci {
                                                             el.dom.className = "form-control d-none";
 
 
+
                                                             setTimeout(() => {
                                                                 new Cleave("#" + el.dom.id, {
                                                                     time: true,
@@ -1151,13 +1159,6 @@ class VentilatoriosUci {
                                                 }
                                             })
 
-
-                                            if (VentilatoriosUci.nuevoRegistro !== null && VentilatoriosUci.nuevoRegistro.hora == null) {
-                                                if (VentilatoriosUci.setHora != undefined) {
-                                                    VentilatoriosUci.nuevoRegistro.hora = VentilatoriosUci.setHora;
-                                                    el.dom.value = VentilatoriosUci.setHora;
-                                                }
-                                            }
 
 
 
@@ -1183,7 +1184,7 @@ class VentilatoriosUci {
                 orderable: true,
             });
             VentilatoriosUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
                             return [
@@ -1197,6 +1198,15 @@ class VentilatoriosUci {
 
                                                 console.log(88, _i)
                                                 VentilatoriosUci.verRegistro(resultNro[_i]);
+
+                                                if (VentilatoriosUci.nuevoRegistro !== null && VentilatoriosUci.nuevoRegistro.hora == null) {
+                                                    if (VentilatoriosUci.setHora != undefined) {
+                                                        VentilatoriosUci.nuevoRegistro.hora = VentilatoriosUci.setHora;
+                                                        document.getElementById('horaVentilatorio' + resultNro[_i].nro).value = VentilatoriosUci.setHora;
+                                                    }
+
+                                                }
+
                                                 document.getElementById('condicion' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
                                                 document.getElementById('txtCondicion' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
                                                 document.getElementById('horaVentilatorio' + resultNro[_i].nro).className = "form-control";
@@ -1215,10 +1225,10 @@ class VentilatoriosUci {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1226,10 +1236,10 @@ class VentilatoriosUci {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosVentilatorios').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1396,10 +1406,10 @@ class VentilatoriosUci {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('html,body').animate({
-                                                            scrollTop: tt
-                                                        },
+                                                        scrollTop: tt
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1407,10 +1417,10 @@ class VentilatoriosUci {
                                                 setTimeout(() => {
                                                     let isAnimating = true;
                                                     $('#registrosVentilatorios').animate({
-                                                            scrollLeft: '+=460'
-                                                        },
+                                                        scrollLeft: '+=460'
+                                                    },
                                                         700, "easeInOutSine",
-                                                        function() {
+                                                        function () {
                                                             isAnimating = false;
                                                         })
                                                 }, 250);
@@ -1434,27 +1444,27 @@ class VentilatoriosUci {
         }
 
         VentilatoriosUci.sRows.push({
-            fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                 return m.mount(nTd, {
                     view: () => {
                         return [
                             m("div.btn-block.btn-group.wd-100p.pd-5", [
 
                                 m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                        class: (VentilatoriosUci.nuevoRegistro !== null && VentilatoriosUci.nuevoRegistro.editar && VentilatoriosUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
-                                        onclick: () => {
-                                            oData.editar = null;
-                                            document.getElementById('condicion' + VentilatoriosUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
-                                            document.getElementById('txtCondicion' + VentilatoriosUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
-                                            document.getElementById('horaVentilatorio' + VentilatoriosUci.nuevoRegistro.nro).className = "form-control d-none";
-                                            document.getElementById('txtHora' + VentilatoriosUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
-                                            if (document.getElementById('btn' + VentilatoriosUci.nuevoRegistro.nro) != null) {
-                                                document.getElementById('btn' + VentilatoriosUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
-                                            }
+                                    class: (VentilatoriosUci.nuevoRegistro !== null && VentilatoriosUci.nuevoRegistro.editar && VentilatoriosUci.nuevoRegistro.id == oData.id ? '' : 'd-none'),
+                                    onclick: () => {
+                                        oData.editar = null;
+                                        document.getElementById('condicion' + VentilatoriosUci.nuevoRegistro.nro).className = "form-control tx-semibold tx-14 d-none";
+                                        document.getElementById('txtCondicion' + VentilatoriosUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                        document.getElementById('horaVentilatorio' + VentilatoriosUci.nuevoRegistro.nro).className = "form-control d-none";
+                                        document.getElementById('txtHora' + VentilatoriosUci.nuevoRegistro.nro).className = "text-center pd-l-0 pd-r-0";
+                                        if (document.getElementById('btn' + VentilatoriosUci.nuevoRegistro.nro) != null) {
+                                            document.getElementById('btn' + VentilatoriosUci.nuevoRegistro.nro).className = "btn btn-xs btn-success btn-block tx-12";
+                                        }
 
-                                            VentilatoriosUci.nuevoRegistro = null;
-                                        },
+                                        VentilatoriosUci.nuevoRegistro = null;
                                     },
+                                },
                                     'Cancelar Edición',
                                 ),
 
@@ -1585,7 +1595,7 @@ class VentilatoriosUci {
             pageLength: 100,
             columns: VentilatoriosUci.sColumns,
             aoColumnDefs: VentilatoriosUci.sRows,
-            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 
             },
         };
@@ -1594,10 +1604,10 @@ class VentilatoriosUci {
     view() {
         return [
             m("thead.bd.bd-2", {
-                    style: { "border-color": "#5173a1" },
-                    class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
+                style: { "border-color": "#5173a1" },
+                class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
 
-                },
+            },
                 m("tr.tx-uppercase", {
 
                     style: { "background-color": "#CCCCFF" },
@@ -1671,139 +1681,139 @@ class VentilatoriosUci {
                             class: "custom-select",
                             value: (VentilatoriosUci.nuevoRegistro !== null ? VentilatoriosUci.nuevoRegistro.ventilatorio : 0),
                         }, m("option[value='0']", 'Seleccione...'), [{
-                                orden: 1,
-                                id: "ModoVentilatorio",
-                                label: "MODO VENTILATORIO"
-                            }, {
-                                orden: 2,
-                                id: "PresionInspiratoria",
-                                label: "PRESIÓN INSPIRATORIA"
-                            }, {
-                                orden: 3,
-                                id: "PresionPico",
-                                label: "PRESIÓN PICO"
-                            }, {
-                                orden: 4,
-                                id: "PresionMedia",
-                                label: "PRESIÓN MEDIA"
-                            }, {
-                                orden: 5,
-                                id: "PEEP",
-                                label: "PEEP"
-                            }, {
-                                orden: 6,
-                                id: "AutoPeep",
-                                label: "AUTO PEEP"
-                            }, {
-                                orden: 7,
-                                id: "PresionSoporte",
-                                label: "PRESIÓN SOPORTE"
-                            }, {
-                                orden: 8,
-                                id: "PorcentajeVolumenMinuto",
-                                label: "PORCENTAJE VOLUMEN MINUTO"
-                            }, {
-                                orden: 9,
-                                id: "VolumenTidalEspiradoMaquina",
-                                label: "VOLUMEN TIDAL ESPIRADO MÁQUINA"
-                            }, {
-                                orden: 10,
-                                id: "VolumenTidalEspiradoPaciente",
-                                label: "VOLUMEN TIDAL ESPIRADO PACIENTE"
-                            }, {
-                                orden: 11,
-                                id: "VolumenMinutoEspiradoMaquina",
-                                label: "VOLUMEN MINUTO ESPIRADO MÁQUINA"
-                            }, {
-                                orden: 12,
-                                id: "VolumenMinutoEspiradoPaciente",
-                                label: "VOLUMEN MINUTO ESPIRADO PACIENTE"
-                            },
-                            {
-                                orden: 13,
-                                id: "FRV",
-                                label: "FRECUENCIA RESPIRATORIA MÁQUINA"
-                            },
-                            {
-                                orden: 14,
-                                id: "FRPT",
-                                label: "FRECUENCIA RESPIRATORIA ESPONTÁNEA"
-                            },
-                            {
-                                orden: 15,
-                                id: "ComplianceEstatica",
-                                label: "COMPLIANCE ESTÁTICA"
-                            },
-                            {
-                                orden: 16,
-                                id: "ComplianceDinamica",
-                                label: "COMPLIANCE DINÁMICA"
-                            },
-                            {
-                                orden: 17,
-                                id: "ResistenciaInspiratoria",
-                                label: "RESISTENCIA INSPIRATORIA"
-                            },
-                            {
-                                orden: 18,
-                                id: "RelacionInspiracionEspiracion",
-                                label: "RELACIÓN INSPIRACION - ESPIRACION"
-                            },
-                            {
-                                orden: 19,
-                                id: "TiempoInspiratorio",
-                                label: "TIEMPO INSPIRATORIO"
-                            },
-                            {
-                                orden: 20,
-                                id: "FIO2",
-                                label: "FIO2"
-                            },
-                            {
-                                orden: 21,
-                                id: "VolumenFugas",
-                                label: "VOLUMEN FUGAS"
-                            },
-                            {
-                                orden: 22,
-                                id: "NivelTuboOrotraqueal",
-                                label: "NIVEL TUBO OROTRAQUEAL"
-                            },
-                            {
-                                orden: 23,
-                                id: "PresionBalonTuboOrotraqueal",
-                                label: "PRESIÓN BALÓN TUBO OROTRAQUEAL"
-                            },
-                            {
-                                orden: 24,
-                                id: "Hercios",
-                                label: "HERCIOS"
-                            },
-                            {
-                                orden: 25,
-                                id: "PresionMediaVia",
-                                label: "PRESION MEDIA-VIA"
-                            },
-                            {
-                                orden: 26,
-                                id: "Flujo",
-                                label: "FLUJO"
-                            },
-                            {
-                                orden: 27,
-                                id: "AmplitudDO2",
-                                label: "AMPLITUD / DO2"
-                            },
-                            {
-                                orden: 28,
-                                id: "DCO2",
-                                label: "DCO2"
-                            },
-                            {
-                                orden: 29,
-                                id: "VolumenAltaFrecuencia",
-                                label: "VOLUMEN ALTA FRECUENCIA"
-                            },
+                            orden: 1,
+                            id: "ModoVentilatorio",
+                            label: "MODO VENTILATORIO"
+                        }, {
+                            orden: 2,
+                            id: "PresionInspiratoria",
+                            label: "PRESIÓN INSPIRATORIA"
+                        }, {
+                            orden: 3,
+                            id: "PresionPico",
+                            label: "PRESIÓN PICO"
+                        }, {
+                            orden: 4,
+                            id: "PresionMedia",
+                            label: "PRESIÓN MEDIA"
+                        }, {
+                            orden: 5,
+                            id: "PEEP",
+                            label: "PEEP"
+                        }, {
+                            orden: 6,
+                            id: "AutoPeep",
+                            label: "AUTO PEEP"
+                        }, {
+                            orden: 7,
+                            id: "PresionSoporte",
+                            label: "PRESIÓN SOPORTE"
+                        }, {
+                            orden: 8,
+                            id: "PorcentajeVolumenMinuto",
+                            label: "PORCENTAJE VOLUMEN MINUTO"
+                        }, {
+                            orden: 9,
+                            id: "VolumenTidalEspiradoMaquina",
+                            label: "VOLUMEN TIDAL ESPIRADO MÁQUINA"
+                        }, {
+                            orden: 10,
+                            id: "VolumenTidalEspiradoPaciente",
+                            label: "VOLUMEN TIDAL ESPIRADO PACIENTE"
+                        }, {
+                            orden: 11,
+                            id: "VolumenMinutoEspiradoMaquina",
+                            label: "VOLUMEN MINUTO ESPIRADO MÁQUINA"
+                        }, {
+                            orden: 12,
+                            id: "VolumenMinutoEspiradoPaciente",
+                            label: "VOLUMEN MINUTO ESPIRADO PACIENTE"
+                        },
+                        {
+                            orden: 13,
+                            id: "FRV",
+                            label: "FRECUENCIA RESPIRATORIA MÁQUINA"
+                        },
+                        {
+                            orden: 14,
+                            id: "FRPT",
+                            label: "FRECUENCIA RESPIRATORIA ESPONTÁNEA"
+                        },
+                        {
+                            orden: 15,
+                            id: "ComplianceEstatica",
+                            label: "COMPLIANCE ESTÁTICA"
+                        },
+                        {
+                            orden: 16,
+                            id: "ComplianceDinamica",
+                            label: "COMPLIANCE DINÁMICA"
+                        },
+                        {
+                            orden: 17,
+                            id: "ResistenciaInspiratoria",
+                            label: "RESISTENCIA INSPIRATORIA"
+                        },
+                        {
+                            orden: 18,
+                            id: "RelacionInspiracionEspiracion",
+                            label: "RELACIÓN INSPIRACION - ESPIRACION"
+                        },
+                        {
+                            orden: 19,
+                            id: "TiempoInspiratorio",
+                            label: "TIEMPO INSPIRATORIO"
+                        },
+                        {
+                            orden: 20,
+                            id: "FIO2",
+                            label: "FIO2"
+                        },
+                        {
+                            orden: 21,
+                            id: "VolumenFugas",
+                            label: "VOLUMEN FUGAS"
+                        },
+                        {
+                            orden: 22,
+                            id: "NivelTuboOrotraqueal",
+                            label: "NIVEL TUBO OROTRAQUEAL"
+                        },
+                        {
+                            orden: 23,
+                            id: "PresionBalonTuboOrotraqueal",
+                            label: "PRESIÓN BALÓN TUBO OROTRAQUEAL"
+                        },
+                        {
+                            orden: 24,
+                            id: "Hercios",
+                            label: "HERCIOS"
+                        },
+                        {
+                            orden: 25,
+                            id: "PresionMediaVia",
+                            label: "PRESION MEDIA-VIA"
+                        },
+                        {
+                            orden: 26,
+                            id: "Flujo",
+                            label: "FLUJO"
+                        },
+                        {
+                            orden: 27,
+                            id: "AmplitudDO2",
+                            label: "AMPLITUD / DO2"
+                        },
+                        {
+                            orden: 28,
+                            id: "DCO2",
+                            label: "DCO2"
+                        },
+                        {
+                            orden: 29,
+                            id: "VolumenAltaFrecuencia",
+                            label: "VOLUMEN ALTA FRECUENCIA"
+                        },
                         ].map(x =>
                             m('option[id="' + x.id + '"][orden="' + x.orden + '"]', x.label)
                         ))
@@ -1914,22 +1924,22 @@ class VentilatoriosUci {
                 m("tr.tx-uppercase", [
                     m("td[colspan='12'][align='right']", [
                         m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
-                                onclick: (el) => {
+                            onclick: (el) => {
 
-                                    VentilatoriosUci.copyAllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
+                                VentilatoriosUci.copyAllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
+                                setTimeout(() => {
+                                    VentilatoriosUci.destroyTable();
+                                    VentilatoriosUci.filterRegistros();
+                                    VentilatoriosUci.show = false;
+                                    m.redraw();
                                     setTimeout(() => {
-                                        VentilatoriosUci.destroyTable();
-                                        VentilatoriosUci.filterRegistros();
-                                        VentilatoriosUci.show = false;
+                                        VentilatoriosUci.show = true;
                                         m.redraw();
-                                        setTimeout(() => {
-                                            VentilatoriosUci.show = true;
-                                            m.redraw();
-                                        }, 100);
                                     }, 100);
+                                }, 100);
 
 
-                                    /*
+                                /*
 if (oData.condicion == null) {
 alert('No se permite copiar. Ya existe un registro disponible.');
 throw 'No se permite copiar. Ya existe un registro disponible.'
@@ -1983,33 +1993,33 @@ isAnimating = false;
 */
 
 
-                                },
                             },
+                        },
                             'Copiar',
                         ),
                         m("button.btn.btn-xs.btn-danger.mg-1[type='button']", {
-                                onclick: (el) => {
+                            onclick: (el) => {
 
-                                    if (VentilatoriosUci.allRegistros.length > 0) {
-                                        VentilatoriosUci.eliminarAllRegistros();
+                                if (VentilatoriosUci.allRegistros.length > 0) {
+                                    VentilatoriosUci.eliminarAllRegistros();
+                                    setTimeout(() => {
+                                        VentilatoriosUci.destroyTable();
+                                        VentilatoriosUci.filterRegistros();
+                                        VentilatoriosUci.show = false;
+                                        m.redraw();
                                         setTimeout(() => {
-                                            VentilatoriosUci.destroyTable();
-                                            VentilatoriosUci.filterRegistros();
-                                            VentilatoriosUci.show = false;
+                                            VentilatoriosUci.show = true;
                                             m.redraw();
-                                            setTimeout(() => {
-                                                VentilatoriosUci.show = true;
-                                                m.redraw();
-                                            }, 100);
                                         }, 100);
-                                    } else {
-                                        $.alert('No existen registros para eliminar.');
-                                    }
+                                    }, 100);
+                                } else {
+                                    $.alert('No existen registros para eliminar.');
+                                }
 
 
 
-                                },
                             },
+                        },
                             'Eliminar',
                         ),
                     ]),
