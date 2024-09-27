@@ -2031,6 +2031,7 @@ class PacientesUCIHistorial extends App {
         _arr = resultId.sort((a, b) => a.orden - b.orden);
 
         // Establecer Columnas
+        let GasometriaVenosa = 0;
         let PH = 0;
         let PaCO2 = 0;
         let PaO2 = 0;
@@ -2047,6 +2048,9 @@ class PacientesUCIHistorial extends App {
 
 
         resultNro.map((col, i) => {
+            if (col.id == 'GasometriaVenosa') {
+                GasometriaVenosa++;
+            }
             if (col.id == 'PH') {
                 PH++;
             }
@@ -2092,10 +2096,34 @@ class PacientesUCIHistorial extends App {
 
         });
 
-        columnas = [PH, PaCO2, PaO2, HCO3, TC02, ExcesoBase, FiO2, PaO2FiO2, SaO2, IndiceOxigenacion, Lactato, Na, K];
+        columnas = [GasometriaVenosa, PH, PaCO2, PaO2, HCO3, TC02, ExcesoBase, FiO2, PaO2FiO2, SaO2, IndiceOxigenacion, Lactato, Na, K];
 
         resultNro.map((col, i) => {
             let fila = {};
+            if (col.id == 'GasometriaVenosa') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+
+
+            }
             if (col.id == 'PH') {
                 fila.id = col.id;
                 fila.idObj = [];
