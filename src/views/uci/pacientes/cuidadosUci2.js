@@ -410,9 +410,14 @@ class CuidadosUci2 {
                                 m('div.pd-5', {
                                     class: (oData.editar == true || CuidadosUci2.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        console.log(55, oData)
-                                        CuidadosUci2.nuevoRegistro = null
-                                        CuidadosUci2.verRegistro(oData);
+                                        if (CuidadosUci2.editarAll == true) {
+                                            $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                        } else {
+                                            console.log(55, oData)
+                                            CuidadosUci2.nuevoRegistro = null
+                                            CuidadosUci2.verRegistro(oData);
+                                        }
+
                                     },
                                 }, (oData.frecuencia !== null ? oData.frecuencia : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
                                 (CuidadosUci2.nuevoRegistro !== null || (CuidadosUci2.getRegistro(oData.id).editar == true) ? [
@@ -424,11 +429,11 @@ class CuidadosUci2 {
                                         ondblclick: (e) => {
                                             if (CuidadosUci2.editarAll == true) {
                                                 $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
-                                            }else{
+                                            } else {
                                                 oData.editar = null;
                                                 CuidadosUci2.nuevoRegistro = null
                                             }
-                                           
+
                                         },
                                         oninput: (e) => {
                                             CuidadosUci2.getRegistro(oData.id).frecuencia = (e.target.value.length !== 0 ? e.target.value : null);
@@ -490,7 +495,7 @@ class CuidadosUci2 {
                                     ondblclick: (e) => {
                                         if (CuidadosUci2.editarAll == true) {
                                             $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
-                                        }else{
+                                        } else {
                                             oData.editar = null;
                                             CuidadosUci2.nuevoRegistro = null
                                         }
@@ -503,8 +508,12 @@ class CuidadosUci2 {
                                         type: "text",
                                         placeholder: "...",
                                         ondblclick: (e) => {
-                                            oData.editar = null;
-                                            CuidadosUci2.nuevoRegistro = null;
+                                            if (CuidadosUci2.editarAll == true) {
+                                                $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                            } else {
+                                                oData.editar = null;
+                                                CuidadosUci2.nuevoRegistro = null;
+                                            }
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
@@ -569,7 +578,7 @@ class CuidadosUci2 {
                                     ondblclick: (e) => {
                                         if (CuidadosUci2.editarAll == true) {
                                             $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
-                                        }else{
+                                        } else {
                                             oData.editar = null;
                                             CuidadosUci2.nuevoRegistro = null
                                         }
@@ -582,8 +591,12 @@ class CuidadosUci2 {
                                         type: "text",
                                         placeholder: "...",
                                         ondblclick: (e) => {
-                                            oData.editar = null;
-                                            CuidadosUci2.nuevoRegistro = null;
+                                            if (CuidadosUci2.editarAll == true) {
+                                                $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                            } else {
+                                                oData.editar = null;
+                                                CuidadosUci2.nuevoRegistro = null;
+                                            }
                                         },
                                         onkeypress: (e) => {
 
@@ -649,7 +662,7 @@ class CuidadosUci2 {
                                     ondblclick: (e) => {
                                         if (CuidadosUci2.editarAll == true) {
                                             $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
-                                        }else{
+                                        } else {
                                             oData.editar = null;
                                             CuidadosUci2.nuevoRegistro = null
                                         }
@@ -695,8 +708,13 @@ class CuidadosUci2 {
 
                                         },
                                         ondblclick: (e) => {
-                                            oData.editar = null;
-                                            CuidadosUci2.nuevoRegistro = null;
+                                            if (CuidadosUci2.editarAll == true) {
+                                                $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                            } else {
+                                                oData.editar = null;
+                                                CuidadosUci2.nuevoRegistro = null;
+                                            }
+
                                         },
                                         oninput: (e) => {
                                             if (PacientesUCI.numeroTurno == 3) {
@@ -1114,7 +1132,7 @@ class CuidadosUci2 {
                 m("tr.tx-uppercase", [
                     m("td[colspan='12'][align='right']", [
                         m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
-                            class: (CuidadosUci2.editarAll == false ? '' : 'd-none'),
+                            class: (CuidadosUci2.editarAll == false ? (CuidadosUci2.loaderRows == true ? 'd-none' : '') : 'd-none'),
                             onclick: () => {
 
                                 CuidadosUci2.editarAll = true;
@@ -1124,7 +1142,7 @@ class CuidadosUci2 {
 
 
                                 /*
-
+    
                                 CuidadosUci2.copyAllRegistros(Array.from(document.getElementById('sec_Gases').options));
                                 setTimeout(() => {
                                     CuidadosUci2.destroyTable();
@@ -1136,7 +1154,7 @@ class CuidadosUci2 {
                                         m.redraw();
                                     }, 100);
                                 }, 100);
-
+    
                                 */
 
                             },
@@ -1153,7 +1171,7 @@ class CuidadosUci2 {
 
 
                                 /*
-
+                
                                 if (CuidadosUci2.allRegistros.length > 0) {
                                     CuidadosUci2.eliminarAllRegistros();
                                     setTimeout(() => {
@@ -1169,7 +1187,7 @@ class CuidadosUci2 {
                                 } else {
                                     $.alert('No existen registros para eliminar.');
                                 }
-
+                
                                 */
 
                             },
@@ -1181,12 +1199,12 @@ class CuidadosUci2 {
                 m("tr.tx-uppercase.mg-t-20", {
                     class: (CuidadosUci2.loaderRows == true ? '' : 'd-none'),
                 }, [
-                    m("td[colspan='12']",[
+                    m("td[colspan='12']", [
                         m('div.pd-20', [
-                            m(Loader) 
+                            m(Loader)
                         ])
-                       
-                    ]) 
+
+                    ])
                 ]),
                 m("tr.tx-uppercase.mg-t-20", {
                     class: (CuidadosUci2.loaderRows == false ? '' : 'd-none'),
@@ -1213,7 +1231,7 @@ class CuidadosUci2 {
 
 
                                 /*
-
+            
                                 CuidadosUci2.copyAllRegistros(Array.from(document.getElementById('sec_Gases').options));
                                 setTimeout(() => {
                                     CuidadosUci2.destroyTable();
@@ -1225,7 +1243,7 @@ class CuidadosUci2 {
                                         m.redraw();
                                     }, 100);
                                 }, 100);
-
+            
                                 */
 
                             },
