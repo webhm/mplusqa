@@ -2,6 +2,7 @@ import m from "mithril";
 import PacientesUCI from "./pacientesUci";
 import FecthUci from "./fecthUci";
 import TurnosUci from "./turnosUci";
+import Loader from "../../utils/loader";
 
 class Cuidado {
     id = null;
@@ -38,6 +39,7 @@ class CuidadosUci2 {
     static nuevoRegistro = null;
     static show = false;
     static editarAll = false;
+    static loaderRows = false;
 
     static validarRegistro() {
 
@@ -239,7 +241,7 @@ class CuidadosUci2 {
             };
         }
 
-  
+
 
 
     }
@@ -257,21 +259,26 @@ class CuidadosUci2 {
 
     }
 
-    static guardarTodo() {
+    static async guardarTodo() {
 
         CuidadosUci2.editarAll = false;
         CuidadosUci2.cancelarTodo();
+
+        Promise.all(
+            CuidadosUci2.registros.map(async (v) => {
+                await FecthUci.actualizarSeccion(v);
+            }),
+        ).then(() => {
+            CuidadosUci2.loaderRows = false;
+            console.log(66)
+        });
+
+
         CuidadosUci2.filterRegistros();
 
         m.redraw();
 
-        CuidadosUci2.registros.map((v, i) => {
-            v.numeroTurno = PacientesUCI.numeroTurno;
-            v.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-            FecthUci.actualizarSeccion(v);
-        });
 
-        console.log(44, CuidadosUci2.registros)
     }
 
     static arqTable() {
@@ -415,8 +422,13 @@ class CuidadosUci2 {
                                         type: "text",
                                         placeholder: "...",
                                         ondblclick: (e) => {
-                                            oData.editar = null;
-                                            CuidadosUci2.nuevoRegistro = null
+                                            if (CuidadosUci2.editarAll == true) {
+                                                $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                            }else{
+                                                oData.editar = null;
+                                                CuidadosUci2.nuevoRegistro = null
+                                            }
+                                           
                                         },
                                         oninput: (e) => {
                                             CuidadosUci2.getRegistro(oData.id).frecuencia = (e.target.value.length !== 0 ? e.target.value : null);
@@ -428,12 +440,13 @@ class CuidadosUci2 {
                                                 if (CuidadosUci2.editarAll == true) {
                                                     $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
                                                 } else {
-                                                    CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    console.log(99, CuidadosUci2.nuevoRegistro)
+
 
                                                     // throw 'AA';
                                                     if (CuidadosUci2.nuevoRegistro.editar == null) {
+                                                        CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        console.log(99, CuidadosUci2.nuevoRegistro)
                                                         CuidadosUci2.agregarRegistro();
                                                         FecthUci.registrarSeccion(CuidadosUci2.nuevoRegistro);
                                                         CuidadosUci2.nuevoRegistro = null;
@@ -475,8 +488,12 @@ class CuidadosUci2 {
                                 m('div.pd-10', {
                                     class: (oData.editar == true || CuidadosUci2.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        CuidadosUci2.nuevoRegistro = null
-                                        CuidadosUci2.verRegistro(oData);
+                                        if (CuidadosUci2.editarAll == true) {
+                                            $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                        }else{
+                                            oData.editar = null;
+                                            CuidadosUci2.nuevoRegistro = null
+                                        }
                                     },
                                 }, (oData.am !== null ? oData.am : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
                                 (CuidadosUci2.nuevoRegistro !== null || (CuidadosUci2.getRegistro(oData.id).editar == true) ? [
@@ -496,11 +513,12 @@ class CuidadosUci2 {
                                                     $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
                                                 } else {
 
-                                                    CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    console.log(99, CuidadosUci2.nuevoRegistro)
-                                                    // throw 'AA';
+
                                                     if (CuidadosUci2.nuevoRegistro.editar == null) {
+                                                        CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        console.log(99, CuidadosUci2.nuevoRegistro)
+                                                        // throw 'AA';
                                                         CuidadosUci2.agregarRegistro();
                                                         FecthUci.registrarSeccion(CuidadosUci2.nuevoRegistro);
                                                         CuidadosUci2.nuevoRegistro = null;
@@ -549,8 +567,12 @@ class CuidadosUci2 {
                                 m('div.pd-10', {
                                     class: (oData.editar == true || CuidadosUci2.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        CuidadosUci2.nuevoRegistro = null;
-                                        CuidadosUci2.verRegistro(oData);
+                                        if (CuidadosUci2.editarAll == true) {
+                                            $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                        }else{
+                                            oData.editar = null;
+                                            CuidadosUci2.nuevoRegistro = null
+                                        }
                                     },
                                 }, (oData.pm !== null ? oData.pm : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
                                 (CuidadosUci2.nuevoRegistro !== null || (CuidadosUci2.getRegistro(oData.id).editar == true) ? [
@@ -571,12 +593,13 @@ class CuidadosUci2 {
                                                     $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
                                                 } else {
 
-                                                    CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    console.log(99, CuidadosUci2.nuevoRegistro)
+
 
                                                     // throw 'AA';
                                                     if (CuidadosUci2.nuevoRegistro.editar == null) {
+                                                        CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        console.log(99, CuidadosUci2.nuevoRegistro)
                                                         CuidadosUci2.agregarRegistro();
                                                         FecthUci.registrarSeccion(CuidadosUci2.nuevoRegistro);
                                                         CuidadosUci2.nuevoRegistro = null;
@@ -624,8 +647,12 @@ class CuidadosUci2 {
                                 m('div.pd-10', {
                                     class: (oData.editar == true || CuidadosUci2.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        CuidadosUci2.nuevoRegistro = null
-                                        CuidadosUci2.verRegistro(oData);
+                                        if (CuidadosUci2.editarAll == true) {
+                                            $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                        }else{
+                                            oData.editar = null;
+                                            CuidadosUci2.nuevoRegistro = null
+                                        }
                                     },
                                 }, (oData.hs !== null ? oData.hs : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
                                 (CuidadosUci2.nuevoRegistro !== null || (CuidadosUci2.getRegistro(oData.id).editar == true) ? [
@@ -641,12 +668,13 @@ class CuidadosUci2 {
                                                 if (CuidadosUci2.editarAll == true) {
                                                     $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
                                                 } else {
-                                                    CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                    CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                    console.log(99, CuidadosUci2.nuevoRegistro)
 
                                                     // throw 'AA';
                                                     if (CuidadosUci2.nuevoRegistro.editar == null) {
+                                                        CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        console.log(99, CuidadosUci2.nuevoRegistro)
+
                                                         CuidadosUci2.agregarRegistro();
                                                         FecthUci.registrarSeccion(CuidadosUci2.nuevoRegistro);
                                                         CuidadosUci2.nuevoRegistro = null;
@@ -1150,7 +1178,19 @@ class CuidadosUci2 {
                         ),
                     ]),
                 ]),
-                m("tr.tx-uppercase.mg-t-20", [
+                m("tr.tx-uppercase.mg-t-20", {
+                    class: (CuidadosUci2.loaderRows == true ? '' : 'd-none'),
+                }, [
+                    m("td[colspan='12']",[
+                        m('div.pd-20', [
+                            m(Loader) 
+                        ])
+                       
+                    ]) 
+                ]),
+                m("tr.tx-uppercase.mg-t-20", {
+                    class: (CuidadosUci2.loaderRows == false ? '' : 'd-none'),
+                }, [
                     m("td[colspan='12']",
                         {
                             class: (CuidadosUci2.show ? '' : 'd-none'),
@@ -1166,6 +1206,7 @@ class CuidadosUci2 {
 
                             onclick: () => {
 
+                                CuidadosUci2.loaderRows = true;
                                 CuidadosUci2.guardarTodo();
                                 console.log(88, CuidadosUci2.registros)
 

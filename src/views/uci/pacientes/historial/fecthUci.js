@@ -209,6 +209,7 @@ class FecthUci {
             }
         }).then(function (res) {
             // El resultado
+            return 1;
 
         }).catch(function (e) {
 
