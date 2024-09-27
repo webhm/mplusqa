@@ -37,6 +37,9 @@ class HemodialisisUci {
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
+    static editarAll = false;
+    static loaderRows = false;
+
     static validarRegistro() {
 
     }
@@ -252,8 +255,8 @@ class HemodialisisUci {
                     return m.mount(nTd, {
                         view: () => {
                             return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                m("div.text-center.pd-5[tabindex='-1']", [
+                                    m("button.btn-xs.btn-block.tx-semibold[type='button'][tabindex='-1']", {
                                         class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
                                     },
                                         (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
@@ -288,54 +291,63 @@ class HemodialisisUci {
                         view: () => {
                             return [
                                 m('div.pd-10', {
-                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    class: (oData.editar == true || HemodialisisUci.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        HemodialisisUci.nuevoRegistro = null
-                                        HemodialisisUci.verRegistro(oData);
+                                        if (HemodialisisUci.editarAll == true) {
+                                            $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                        } else {
+                                            HemodialisisUci.nuevoRegistro = null
+                                            HemodialisisUci.verRegistro(oData);
+                                        }
                                     },
                                 }, (oData.am !== null ? oData.am : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                (HemodialisisUci.nuevoRegistro !== null ? [
+                                (HemodialisisUci.nuevoRegistro !== null || (HemodialisisUci.getRegistro(oData.id).editar == true) ? [
                                     m("input", {
-                                        id: "am" + HemodialisisUci.nuevoRegistro.id,
-                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        id: "am" + HemodialisisUci.getRegistro(oData.id).id,
+                                        class: "form-control tx-semibold tx-14 " + (HemodialisisUci.getRegistro(oData.id).editar == true ? '' : 'd-none'),
                                         type: "text",
                                         placeholder: "...",
                                         ondblclick: (e) => {
-                                            oData.editar = null;
-                                            HemodialisisUci.nuevoRegistro = null
+                                            if (HemodialisisUci.editarAll == true) {
+                                                $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                            } else {
+                                                oData.editar = null;
+                                                HemodialisisUci.nuevoRegistro = null;
+                                            }
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
 
-                                                HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                console.log(99, HemodialisisUci.nuevoRegistro)
-
-                                                // throw 'AA';
-                                                if (HemodialisisUci.nuevoRegistro.editar == null) {
-                                                    HemodialisisUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
-                                                    HemodialisisUci.nuevoRegistro = null;
-                                                    HemodialisisUci.filterRegistros();
+                                                if (HemodialisisUci.editarAll == true) {
+                                                    $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
                                                 } else {
-                                                    HemodialisisUci.editarRegistro();
-                                                    FecthUci.actualizarSeccion(HemodialisisUci.nuevoRegistro);
-                                                    HemodialisisUci.nuevoRegistro = null;
-                                                    HemodialisisUci.filterRegistros();
+                                                    if (HemodialisisUci.nuevoRegistro.editar == null) {
+                                                        HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        HemodialisisUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
+                                                        HemodialisisUci.nuevoRegistro = null;
+                                                        HemodialisisUci.filterRegistros();
+                                                    } else {
+                                                        HemodialisisUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(HemodialisisUci.nuevoRegistro);
+                                                        HemodialisisUci.nuevoRegistro = null;
+                                                        HemodialisisUci.filterRegistros();
+
+                                                    }
 
                                                 }
-
 
                                             }
                                         },
                                         oninput: (e) => {
                                             if (PacientesUCI.numeroTurno == 1) {
-                                                HemodialisisUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
+                                                HemodialisisUci.getRegistro(oData.id).am = (e.target.value.length !== 0 ? e.target.value : null);
                                             } else {
                                                 e.preventDefault();
                                             }
                                         },
-                                        value: (HemodialisisUci.nuevoRegistro.am !== null ? HemodialisisUci.nuevoRegistro.am : '')
+                                        value: (HemodialisisUci.getRegistro(oData.id).am !== null ? HemodialisisUci.getRegistro(oData.id).am : '')
                                     })
                                 ] : [])
 
@@ -354,54 +366,64 @@ class HemodialisisUci {
                         view: () => {
                             return [
                                 m('div.pd-10', {
-                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    class: (oData.editar == true || HemodialisisUci.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        HemodialisisUci.nuevoRegistro = null
-                                        HemodialisisUci.verRegistro(oData);
+                                        if (HemodialisisUci.editarAll == true) {
+                                            $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                        } else {
+                                            HemodialisisUci.nuevoRegistro = null
+                                            HemodialisisUci.verRegistro(oData);
+                                        }
                                     },
                                 }, (oData.pm !== null ? oData.pm : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                (HemodialisisUci.nuevoRegistro !== null ? [
+                                (HemodialisisUci.nuevoRegistro !== null || (HemodialisisUci.getRegistro(oData.id).editar == true) ? [
                                     m("input", {
-                                        id: "pm" + HemodialisisUci.nuevoRegistro.id,
-                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        id: "pm" + HemodialisisUci.getRegistro(oData.id).id,
+                                        class: "form-control tx-semibold tx-14 " + (HemodialisisUci.getRegistro(oData.id).editar == true ? '' : 'd-none'),
                                         type: "text",
                                         placeholder: "...",
                                         ondblclick: (e) => {
-                                            oData.editar = null;
-                                            HemodialisisUci.nuevoRegistro = null
+                                            if (HemodialisisUci.editarAll == true) {
+                                                $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                            } else {
+                                                oData.editar = null;
+                                                HemodialisisUci.nuevoRegistro = null;
+                                            }
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
 
-                                                HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                console.log(99, HemodialisisUci.nuevoRegistro)
-
-                                                // throw 'AA';
-                                                if (HemodialisisUci.nuevoRegistro.editar == null) {
-                                                    HemodialisisUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
-                                                    HemodialisisUci.nuevoRegistro = null;
-                                                    HemodialisisUci.filterRegistros();
+                                                if (HemodialisisUci.editarAll == true) {
+                                                    $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
                                                 } else {
-                                                    HemodialisisUci.editarRegistro();
-                                                    FecthUci.actualizarSeccion(HemodialisisUci.nuevoRegistro);
-                                                    HemodialisisUci.nuevoRegistro = null;
-                                                    HemodialisisUci.filterRegistros();
+
+                                                    if (HemodialisisUci.nuevoRegistro.editar == null) {
+                                                        HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        HemodialisisUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
+                                                        HemodialisisUci.nuevoRegistro = null;
+                                                        HemodialisisUci.filterRegistros();
+                                                    } else {
+                                                        HemodialisisUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(HemodialisisUci.nuevoRegistro);
+                                                        HemodialisisUci.nuevoRegistro = null;
+                                                        HemodialisisUci.filterRegistros();
+
+                                                    }
 
                                                 }
-
 
                                             }
                                         },
                                         oninput: (e) => {
                                             if (PacientesUCI.numeroTurno == 2) {
-                                                HemodialisisUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
+                                                HemodialisisUci.getRegistro(oData.id).pm = (e.target.value.length !== 0 ? e.target.value : null);
                                             } else {
                                                 e.preventDefault();
                                             }
                                         },
-                                        value: (HemodialisisUci.nuevoRegistro.pm !== null ? HemodialisisUci.nuevoRegistro.pm : '')
+                                        value: (HemodialisisUci.getRegistro(oData.id).pm !== null ? HemodialisisUci.getRegistro(oData.id).pm : '')
                                     })
                                 ] : [])
 
@@ -419,54 +441,64 @@ class HemodialisisUci {
                         view: () => {
                             return [
                                 m('div.pd-10', {
-                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    class: (oData.editar == true || HemodialisisUci.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        HemodialisisUci.nuevoRegistro = null
-                                        HemodialisisUci.verRegistro(oData);
+                                        if (HemodialisisUci.editarAll == true) {
+                                            $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                        } else {
+                                            HemodialisisUci.nuevoRegistro = null
+                                            HemodialisisUci.verRegistro(oData);
+                                        }
                                     },
                                 }, (oData.hs !== null ? oData.hs : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                (HemodialisisUci.nuevoRegistro !== null ? [
+                                (HemodialisisUci.nuevoRegistro !== null || (HemodialisisUci.getRegistro(oData.id).editar == true) ? [
                                     m("input", {
-                                        id: "hs" + HemodialisisUci.nuevoRegistro.id,
-                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        id: "hs" + HemodialisisUci.getRegistro(oData.id).id,
+                                        class: "form-control tx-semibold tx-14 " + (HemodialisisUci.getRegistro(oData.id).editar == true ? '' : 'd-none'),
                                         type: "text",
                                         placeholder: "...",
                                         ondblclick: (e) => {
-                                            oData.editar = null;
-                                            HemodialisisUci.nuevoRegistro = null
+                                            if (HemodialisisUci.editarAll == true) {
+                                                $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                            } else {
+                                                oData.editar = null;
+                                                HemodialisisUci.nuevoRegistro = null;
+                                            }
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
 
-                                                HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                console.log(99, HemodialisisUci.nuevoRegistro)
-
-                                                // throw 'AA';
-                                                if (HemodialisisUci.nuevoRegistro.editar == null) {
-                                                    HemodialisisUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
-                                                    HemodialisisUci.nuevoRegistro = null;
-                                                    HemodialisisUci.filterRegistros();
+                                                if (HemodialisisUci.editarAll == true) {
+                                                    $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
                                                 } else {
-                                                    HemodialisisUci.editarRegistro();
-                                                    FecthUci.actualizarSeccion(HemodialisisUci.nuevoRegistro);
-                                                    HemodialisisUci.nuevoRegistro = null;
-                                                    HemodialisisUci.filterRegistros();
+
+                                                    if (HemodialisisUci.nuevoRegistro.editar == null) {
+                                                        HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        HemodialisisUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
+                                                        HemodialisisUci.nuevoRegistro = null;
+                                                        HemodialisisUci.filterRegistros();
+                                                    } else {
+                                                        HemodialisisUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(HemodialisisUci.nuevoRegistro);
+                                                        HemodialisisUci.nuevoRegistro = null;
+                                                        HemodialisisUci.filterRegistros();
+
+                                                    }
 
                                                 }
-
 
                                             }
                                         },
                                         oninput: (e) => {
                                             if (PacientesUCI.numeroTurno == 3) {
-                                                HemodialisisUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
+                                                HemodialisisUci.getRegistro(oData.id).hs = (e.target.value.length !== 0 ? e.target.value : null);
                                             } else {
                                                 e.preventDefault();
                                             }
                                         },
-                                        value: (HemodialisisUci.nuevoRegistro.hs !== null ? HemodialisisUci.nuevoRegistro.hs : '')
+                                        value: (HemodialisisUci.getRegistro(oData.id).hs !== null ? HemodialisisUci.getRegistro(oData.id).hs : '')
 
                                     })
                                 ] : [])
@@ -487,50 +519,58 @@ class HemodialisisUci {
                         view: () => {
                             return [
                                 m('div.pd-10', {
-                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    class: (oData.editar == true || HemodialisisUci.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        HemodialisisUci.nuevoRegistro = null
-                                        HemodialisisUci.verRegistro(oData);
+                                        if (HemodialisisUci.editarAll == true) {
+                                            $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                        } else {
+                                            HemodialisisUci.nuevoRegistro = null
+                                            HemodialisisUci.verRegistro(oData);
+                                        }
                                     },
                                 }, (oData.observacion !== null ? oData.observacion : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                (HemodialisisUci.nuevoRegistro !== null ? [
+                                (HemodialisisUci.nuevoRegistro !== null || (HemodialisisUci.getRegistro(oData.id).editar == true) ? [
                                     m("input", {
-                                        id: "observacion" + HemodialisisUci.nuevoRegistro.id,
-                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        id: "observacion" + HemodialisisUci.getRegistro(oData.id).id,
+                                        class: "form-control tx-semibold tx-14 " + (HemodialisisUci.getRegistro(oData.id).editar == true ? '' : 'd-none'),
                                         type: "text",
                                         placeholder: "...",
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
-
-                                                HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                console.log(99, HemodialisisUci.nuevoRegistro)
-
-                                                // throw 'AA';
-                                                if (HemodialisisUci.nuevoRegistro.editar == null) {
-                                                    HemodialisisUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
-                                                    HemodialisisUci.nuevoRegistro = null;
-                                                    HemodialisisUci.filterRegistros();
+                                                if (HemodialisisUci.editarAll == true) {
+                                                    $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
                                                 } else {
-                                                    HemodialisisUci.editarRegistro();
-                                                    FecthUci.actualizarSeccion(HemodialisisUci.nuevoRegistro);
-                                                    HemodialisisUci.nuevoRegistro = null;
-                                                    HemodialisisUci.filterRegistros();
+
+                                                    if (HemodialisisUci.nuevoRegistro.editar == null) {
+                                                        HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        HemodialisisUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(HemodialisisUci.nuevoRegistro);
+                                                        HemodialisisUci.nuevoRegistro = null;
+                                                        HemodialisisUci.filterRegistros();
+                                                    } else {
+                                                        HemodialisisUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(HemodialisisUci.nuevoRegistro);
+                                                        HemodialisisUci.nuevoRegistro = null;
+                                                        HemodialisisUci.filterRegistros();
+
+                                                    }
 
                                                 }
-
-
                                             }
                                         },
                                         ondblclick: (e) => {
-                                            oData.editar = null;
-                                            HemodialisisUci.nuevoRegistro = null
+                                            if (HemodialisisUci.editarAll == true) {
+                                                $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                            } else {
+                                                oData.editar = null;
+                                                HemodialisisUci.nuevoRegistro = null;
+                                            }
                                         },
                                         oninput: (e) => {
-                                            HemodialisisUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
+                                            HemodialisisUci.getRegistro(oData.id).observacion = (e.target.value.length !== 0 ? e.target.value : null);
                                         },
-                                        value: (HemodialisisUci.nuevoRegistro.observacion !== null ? HemodialisisUci.nuevoRegistro.observacion : '')
+                                        value: (HemodialisisUci.getRegistro(oData.id).observacion !== null ? HemodialisisUci.getRegistro(oData.id).observacion : '')
 
                                     })
                                 ] : [])
@@ -562,7 +602,7 @@ class HemodialisisUci {
                                         'Editar',
                                     ),
                                     m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                        class: (oData.editar ? '' : 'd-none'),
+                                        class: (oData.editar && HemodialisisUci.editarAll == false ? '' : 'd-none'),
                                         disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
                                         onclick: () => {
                                             oData.editar = null;
@@ -612,6 +652,60 @@ class HemodialisisUci {
         }
     }
 
+    static getRegistro(id) {
+
+        if (id == 'ParcheLimpioSeco' && HemodialisisUci.registros[0].id == id) {
+            return HemodialisisUci.registros[0];
+        } else if (id == 'FechaCuracionParche' && HemodialisisUci.registros[1].id == id) {
+            return HemodialisisUci.registros[1];
+        } else if (id == 'TodosAccesosTapados' && HemodialisisUci.registros[2].id == id) {
+            return HemodialisisUci.registros[2];
+        } else if (id == 'RegistroNumerosDias' && HemodialisisUci.registros[3].id == id) {
+            return HemodialisisUci.registros[3];
+        } else if (id == 'RegistroCambioEquipo' && HemodialisisUci.registros[4].id == id) {
+            return HemodialisisUci.registros[4];
+        } else {
+            return {
+                editar: null
+            };
+        }
+
+    }
+
+    static editarTodo() {
+        return HemodialisisUci.registros.map((v, i) => {
+            HemodialisisUci.registros[i].editar = true;
+        });
+    }
+
+    static cancelarTodo() {
+        return HemodialisisUci.registros.map((v, i) => {
+            delete HemodialisisUci.registros[i].editar;
+        });
+
+    }
+
+    static async guardarTodo() {
+
+        HemodialisisUci.editarAll = false;
+        HemodialisisUci.cancelarTodo();
+
+        Promise.all(
+            HemodialisisUci.registros.map(async (v) => {
+                await FecthUci.actualizarSeccion(v);
+            }),
+        ).then(() => {
+            HemodialisisUci.loaderRows = false;
+        });
+
+
+        HemodialisisUci.filterRegistros();
+
+        m.redraw();
+
+
+    }
+
     view() {
         return [
             m("thead.bd.bd-2", {
@@ -623,7 +717,7 @@ class HemodialisisUci {
 
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
-                        
+
                         HemodialisisUci.show = !HemodialisisUci.show;
                     }
 
@@ -835,7 +929,48 @@ class HemodialisisUci {
                         "Registros: "
                     ),
                 ]),
-                m("tr.tx-uppercase.mg-t-20", [
+                m("tr.tx-uppercase", [
+                    m("td[colspan='12'][align='right']", [
+                        m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
+                            class: (HemodialisisUci.editarAll == false ? (HemodialisisUci.loaderRows == true ? 'd-none' : '') : 'd-none'),
+                            onclick: () => {
+
+                                HemodialisisUci.editarAll = true;
+                                HemodialisisUci.editarTodo();
+                                console.log('ll', HemodialisisUci.registros)
+
+
+                            },
+                        },
+                            'Editar Todo',
+                        ),
+                        m("button.btn.btn-xs.btn-danger.mg-1[type='button']", {
+                            class: (HemodialisisUci.editarAll == true ? '' : 'd-none'),
+                            onclick: (el) => {
+
+                                HemodialisisUci.editarAll = false;
+                                HemodialisisUci.cancelarTodo();
+                                console.log('ll', HemodialisisUci.registros)
+
+                            },
+                        },
+                            'Cancelar',
+                        ),
+                    ]),
+                ]),
+                m("tr.tx-uppercase.mg-t-20", {
+                    class: (HemodialisisUci.loaderRows == true ? '' : 'd-none'),
+                }, [
+                    m("td[colspan='12']", [
+                        m('div.pd-20', [
+                            m(Loader)
+                        ])
+
+                    ])
+                ]),
+                m("tr.tx-uppercase.mg-t-20", {
+                    class: (HemodialisisUci.loaderRows == false ? '' : 'd-none'),
+                }, [
                     m("td[colspan='12']",
                         {
                             class: (HemodialisisUci.show ? '' : 'd-none'),
@@ -844,6 +979,24 @@ class HemodialisisUci {
 
                     ),
                 ]),
+                m("tr.tx-uppercase", [
+                    m("td[colspan='12'][align='right']", [
+                        m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
+                            class: (HemodialisisUci.editarAll == true ? '' : 'd-none'),
+
+                            onclick: () => {
+
+                                HemodialisisUci.loaderRows = true;
+                                HemodialisisUci.guardarTodo();
+
+                            },
+                        },
+                            'Guardar Todo',
+                        ),
+
+                    ]),
+                ]),
+                m('br')
             ]),
         ]
     }

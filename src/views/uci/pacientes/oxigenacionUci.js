@@ -37,6 +37,10 @@ class OxigenacionUci {
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
+    static editarAll = false;
+    static loaderRows = false;
+
+
     static validarRegistro() {
 
     }
@@ -251,8 +255,8 @@ class OxigenacionUci {
                     return m.mount(nTd, {
                         view: () => {
                             return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                m("div.text-center.pd-5[tabindex='-1']", [
+                                    m("button.btn-xs.btn-block.tx-semibold[type='button'][tabindex='-1']", {
                                         class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
                                     },
                                         (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
@@ -287,54 +291,63 @@ class OxigenacionUci {
                         view: () => {
                             return [
                                 m('div.pd-10', {
-                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    class: (oData.editar == true || OxigenacionUci.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        OxigenacionUci.nuevoRegistro = null
-                                        OxigenacionUci.verRegistro(oData);
+                                        if (OxigenacionUci.editarAll == true) {
+                                            $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                        } else {
+                                            OxigenacionUci.nuevoRegistro = null
+                                            OxigenacionUci.verRegistro(oData);
+                                        }
                                     },
                                 }, (oData.am !== null ? oData.am : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                (OxigenacionUci.nuevoRegistro !== null ? [
+                                (OxigenacionUci.nuevoRegistro !== null || (OxigenacionUci.getRegistro(oData.id).editar == true) ? [
                                     m("input", {
-                                        id: "am" + OxigenacionUci.nuevoRegistro.id,
+                                        id: "am" + OxigenacionUci.getRegistro(oData.id).id,
                                         class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
                                         type: "text",
                                         placeholder: "...",
                                         ondblclick: (e) => {
-                                            oData.editar = null;
-                                            OxigenacionUci.nuevoRegistro = null
+                                            if (OxigenacionUci.editarAll == true) {
+                                                $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                            } else {
+                                                oData.editar = null;
+                                                OxigenacionUci.nuevoRegistro = null;
+                                            }
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
 
-                                                OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                console.log(99, OxigenacionUci.nuevoRegistro)
-
-                                                // throw 'AA';
-                                                if (OxigenacionUci.nuevoRegistro.editar == null) {
-                                                    OxigenacionUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
-                                                    OxigenacionUci.nuevoRegistro = null;
-                                                    OxigenacionUci.filterRegistros();
+                                                if (OxigenacionUci.editarAll == true) {
+                                                    $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
                                                 } else {
-                                                    OxigenacionUci.editarRegistro();
-                                                    FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
-                                                    OxigenacionUci.nuevoRegistro = null;
-                                                    OxigenacionUci.filterRegistros();
+                                                    if (OxigenacionUci.nuevoRegistro.editar == null) {
+                                                        OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        OxigenacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+                                                    } else {
+                                                        OxigenacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+
+                                                    }
 
                                                 }
-
 
                                             }
                                         },
                                         oninput: (e) => {
                                             if (PacientesUCI.numeroTurno == 1) {
-                                                OxigenacionUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
+                                                OxigenacionUci.getRegistro(oData.id).am = (e.target.value.length !== 0 ? e.target.value : null);
                                             } else {
                                                 e.preventDefault();
                                             }
                                         },
-                                        value: (OxigenacionUci.nuevoRegistro.am !== null ? OxigenacionUci.nuevoRegistro.am : '')
+                                        value: (OxigenacionUci.getRegistro(oData.id).am !== null ? OxigenacionUci.getRegistro(oData.id).am : '')
                                     })
                                 ] : [])
 
@@ -353,54 +366,64 @@ class OxigenacionUci {
                         view: () => {
                             return [
                                 m('div.pd-10', {
-                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    class: (oData.editar == true || OxigenacionUci.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        OxigenacionUci.nuevoRegistro = null
-                                        OxigenacionUci.verRegistro(oData);
+                                        if (OxigenacionUci.editarAll == true) {
+                                            $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                        } else {
+                                            OxigenacionUci.nuevoRegistro = null
+                                            OxigenacionUci.verRegistro(oData);
+                                        }
                                     },
                                 }, (oData.pm !== null ? oData.pm : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                (OxigenacionUci.nuevoRegistro !== null ? [
+                                (OxigenacionUci.nuevoRegistro !== null || (OxigenacionUci.getRegistro(oData.id).editar == true) ? [
                                     m("input", {
-                                        id: "pm" + OxigenacionUci.nuevoRegistro.id,
-                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        id: "pm" + OxigenacionUci.getRegistro(oData.id).id,
+                                        class: "form-control tx-semibold tx-14 " + (OxigenacionUci.getRegistro(oData.id).editar == true ? '' : 'd-none'),
                                         type: "text",
                                         placeholder: "...",
                                         ondblclick: (e) => {
-                                            oData.editar = null;
-                                            OxigenacionUci.nuevoRegistro = null
+                                            if (OxigenacionUci.editarAll == true) {
+                                                $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                            } else {
+                                                oData.editar = null;
+                                                OxigenacionUci.nuevoRegistro = null;
+                                            }
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
 
-                                                OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                console.log(99, OxigenacionUci.nuevoRegistro)
-
-                                                // throw 'AA';
-                                                if (OxigenacionUci.nuevoRegistro.editar == null) {
-                                                    OxigenacionUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
-                                                    OxigenacionUci.nuevoRegistro = null;
-                                                    OxigenacionUci.filterRegistros();
+                                                if (OxigenacionUci.editarAll == true) {
+                                                    $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
                                                 } else {
-                                                    OxigenacionUci.editarRegistro();
-                                                    FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
-                                                    OxigenacionUci.nuevoRegistro = null;
-                                                    OxigenacionUci.filterRegistros();
+
+                                                    if (OxigenacionUci.nuevoRegistro.editar == null) {
+                                                        OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        OxigenacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+                                                    } else {
+                                                        OxigenacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+
+                                                    }
 
                                                 }
-
 
                                             }
                                         },
                                         oninput: (e) => {
                                             if (PacientesUCI.numeroTurno == 2) {
-                                                OxigenacionUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
+                                                OxigenacionUci.getRegistro(oData.id).pm = (e.target.value.length !== 0 ? e.target.value : null);
                                             } else {
                                                 e.preventDefault();
                                             }
                                         },
-                                        value: (OxigenacionUci.nuevoRegistro.pm !== null ? OxigenacionUci.nuevoRegistro.pm : '')
+                                        value: (OxigenacionUci.getRegistro(oData.id).pm !== null ? OxigenacionUci.getRegistro(oData.id).pm : '')
                                     })
                                 ] : [])
 
@@ -418,55 +441,64 @@ class OxigenacionUci {
                         view: () => {
                             return [
                                 m('div.pd-10', {
-                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    class: (oData.editar == true || OxigenacionUci.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        OxigenacionUci.nuevoRegistro = null
-                                        OxigenacionUci.verRegistro(oData);
+                                        if (OxigenacionUci.editarAll == true) {
+                                            $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                        } else {
+                                            OxigenacionUci.nuevoRegistro = null
+                                            OxigenacionUci.verRegistro(oData);
+                                        }
                                     },
                                 }, (oData.hs !== null ? oData.hs : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                (OxigenacionUci.nuevoRegistro !== null ? [
+                                (OxigenacionUci.nuevoRegistro !== null || (OxigenacionUci.getRegistro(oData.id).editar == true) ? [
                                     m("input", {
-                                        id: "hs" + OxigenacionUci.nuevoRegistro.id,
-                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        id: "hs" + OxigenacionUci.getRegistro(oData.id).id,
+                                        class: "form-control tx-semibold tx-14 " + (OxigenacionUci.getRegistro(oData.id).editar == true ? '' : 'd-none'),
                                         type: "text",
                                         placeholder: "...",
                                         ondblclick: (e) => {
-                                            oData.editar = null;
-                                            OxigenacionUci.nuevoRegistro = null
+                                            if (OxigenacionUci.editarAll == true) {
+                                                $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                            } else {
+                                                oData.editar = null;
+                                                OxigenacionUci.nuevoRegistro = null;
+                                            }
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
 
-                                                OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                console.log(99, OxigenacionUci.nuevoRegistro)
-
-                                                // throw 'AA';
-                                                if (OxigenacionUci.nuevoRegistro.editar == null) {
-                                                    OxigenacionUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
-                                                    OxigenacionUci.nuevoRegistro = null;
-                                                    OxigenacionUci.filterRegistros();
+                                                if (OxigenacionUci.editarAll == true) {
+                                                    $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
                                                 } else {
-                                                    OxigenacionUci.editarRegistro();
-                                                    FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
-                                                    OxigenacionUci.nuevoRegistro = null;
-                                                    OxigenacionUci.filterRegistros();
+
+                                                    if (OxigenacionUci.nuevoRegistro.editar == null) {
+                                                        OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        OxigenacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+                                                    } else {
+                                                        OxigenacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+
+                                                    }
 
                                                 }
 
-
                                             }
                                         },
-
                                         oninput: (e) => {
                                             if (PacientesUCI.numeroTurno == 3) {
-                                                OxigenacionUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
+                                                OxigenacionUci.getRegistro(oData.id).hs = (e.target.value.length !== 0 ? e.target.value : null);
                                             } else {
                                                 e.preventDefault();
                                             }
                                         },
-                                        value: (OxigenacionUci.nuevoRegistro.hs !== null ? OxigenacionUci.nuevoRegistro.hs : '')
+                                        value: (OxigenacionUci.getRegistro(oData.id).hs !== null ? OxigenacionUci.getRegistro(oData.id).hs : '')
 
                                     })
                                 ] : [])
@@ -487,50 +519,58 @@ class OxigenacionUci {
                         view: () => {
                             return [
                                 m('div.pd-10', {
-                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    class: (oData.editar == true || OxigenacionUci.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        OxigenacionUci.nuevoRegistro = null
-                                        OxigenacionUci.verRegistro(oData);
+                                        if (OxigenacionUci.editarAll == true) {
+                                            $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                        } else {
+                                            OxigenacionUci.nuevoRegistro = null
+                                            OxigenacionUci.verRegistro(oData);
+                                        }
                                     },
                                 }, (oData.observacion !== null ? oData.observacion : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                (OxigenacionUci.nuevoRegistro !== null ? [
+                                (OxigenacionUci.nuevoRegistro !== null || (OxigenacionUci.getRegistro(oData.id).editar == true) ? [
                                     m("input", {
-                                        id: "observacion" + OxigenacionUci.nuevoRegistro.id,
-                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        id: "observacion" +  OxigenacionUci.getRegistro(oData.id).id,
+                                        class: "form-control tx-semibold tx-14 " + (OxigenacionUci.getRegistro(oData.id).editar == true ? '' : 'd-none'),
                                         type: "text",
                                         placeholder: "...",
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
-
-                                                OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                console.log(99, OxigenacionUci.nuevoRegistro)
-
-                                                // throw 'AA';
-                                                if (OxigenacionUci.nuevoRegistro.editar == null) {
-                                                    OxigenacionUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
-                                                    OxigenacionUci.nuevoRegistro = null;
-                                                    OxigenacionUci.filterRegistros();
+                                                if (OxigenacionUci.editarAll == true) {
+                                                    $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
                                                 } else {
-                                                    OxigenacionUci.editarRegistro();
-                                                    FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
-                                                    OxigenacionUci.nuevoRegistro = null;
-                                                    OxigenacionUci.filterRegistros();
+
+                                                    if (OxigenacionUci.nuevoRegistro.editar == null) {
+                                                        OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        OxigenacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+                                                    } else {
+                                                        OxigenacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(OxigenacionUci.nuevoRegistro);
+                                                        OxigenacionUci.nuevoRegistro = null;
+                                                        OxigenacionUci.filterRegistros();
+
+                                                    }
 
                                                 }
-
-
                                             }
                                         },
                                         ondblclick: (e) => {
-                                            oData.editar = null;
-                                            OxigenacionUci.nuevoRegistro = null
+                                            if (OxigenacionUci.editarAll == true) {
+                                                $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                            } else {
+                                                oData.editar = null;
+                                                OxigenacionUci.nuevoRegistro = null;
+                                            }
                                         },
                                         oninput: (e) => {
-                                            OxigenacionUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
+                                            OxigenacionUci.getRegistro(oData.id).observacion = (e.target.value.length !== 0 ? e.target.value : null);
                                         },
-                                        value: (OxigenacionUci.nuevoRegistro.observacion !== null ? OxigenacionUci.nuevoRegistro.observacion : '')
+                                        value: (OxigenacionUci.getRegistro(oData.id).observacion !== null ? OxigenacionUci.getRegistro(oData.id).observacion : '')
 
                                     })
                                 ] : [])
@@ -562,7 +602,7 @@ class OxigenacionUci {
                                         'Editar',
                                     ),
                                     m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                        class: (oData.editar ? '' : 'd-none'),
+                                        class: (oData.editar && OxigenacionUci.editarAll == false ? '' : 'd-none'),
                                         disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
 
                                         onclick: () => {
@@ -609,6 +649,61 @@ class OxigenacionUci {
         if (table != null) {
             $('#table-oxigenacion').DataTable().clear().destroy();
         }
+    }
+
+    static getRegistro(id) {
+
+
+        if (id == 'AireAmbiente' && OxigenacionUci.registros[0].id == id) {
+            return OxigenacionUci.registros[0];
+        } else if (id == 'CateterNasal' && OxigenacionUci.registros[1].id == id) {
+            return OxigenacionUci.registros[1];
+        } else if (id == 'Mascarilla' && OxigenacionUci.registros[2].id == id) {
+            return OxigenacionUci.registros[2];
+        } else if (id == 'TuboenT' && OxigenacionUci.registros[3].id == id) {
+            return OxigenacionUci.registros[3];
+        } else if (id == 'AltoFlujo' && OxigenacionUci.registros[4].id == id) {
+            return OxigenacionUci.registros[4];
+        } else {
+            return {
+                editar: null
+            };
+        }
+
+    }
+
+    static editarTodo() {
+        return OxigenacionUci.registros.map((v, i) => {
+            OxigenacionUci.registros[i].editar = true;
+        });
+    }
+
+    static cancelarTodo() {
+        return OxigenacionUci.registros.map((v, i) => {
+            delete OxigenacionUci.registros[i].editar;
+        });
+
+    }
+
+    static async guardarTodo() {
+
+        OxigenacionUci.editarAll = false;
+        OxigenacionUci.cancelarTodo();
+
+        Promise.all(
+            OxigenacionUci.registros.map(async (v) => {
+                await FecthUci.actualizarSeccion(v);
+            }),
+        ).then(() => {
+            OxigenacionUci.loaderRows = false;
+        });
+
+
+        OxigenacionUci.filterRegistros();
+
+        m.redraw();
+
+
     }
 
     view() {
@@ -835,7 +930,48 @@ class OxigenacionUci {
                         "Registros: "
                     ),
                 ]),
-                m("tr.tx-uppercase.mg-t-20", [
+                m("tr.tx-uppercase", [
+                    m("td[colspan='12'][align='right']", [
+                        m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
+                            class: (OxigenacionUci.editarAll == false ? (OxigenacionUci.loaderRows == true ? 'd-none' : '') : 'd-none'),
+                            onclick: () => {
+
+                                OxigenacionUci.editarAll = true;
+                                OxigenacionUci.editarTodo();
+                                console.log('ll', OxigenacionUci.registros)
+
+
+                            },
+                        },
+                            'Editar Todo',
+                        ),
+                        m("button.btn.btn-xs.btn-danger.mg-1[type='button']", {
+                            class: (OxigenacionUci.editarAll == true ? '' : 'd-none'),
+                            onclick: (el) => {
+
+                                OxigenacionUci.editarAll = false;
+                                OxigenacionUci.cancelarTodo();
+                                console.log('ll', OxigenacionUci.registros)
+
+                            },
+                        },
+                            'Cancelar',
+                        ),
+                    ]),
+                ]),
+                m("tr.tx-uppercase.mg-t-20", {
+                    class: (OxigenacionUci.loaderRows == true ? '' : 'd-none'),
+                }, [
+                    m("td[colspan='12']", [
+                        m('div.pd-20', [
+                            m(Loader)
+                        ])
+
+                    ])
+                ]),
+                m("tr.tx-uppercase.mg-t-20", {
+                    class: (OxigenacionUci.loaderRows == false ? '' : 'd-none'),
+                }, [
                     m("td[colspan='12']",
                         {
                             class: (OxigenacionUci.show ? '' : 'd-none'),
@@ -843,6 +979,24 @@ class OxigenacionUci {
                         (OxigenacionUci.registros.length != 0 ? [PacientesUCI.vTable('table-oxigenacion', OxigenacionUci.getRegistros(), OxigenacionUci.arqTable())] : [])
                     ),
                 ]),
+                m("tr.tx-uppercase", [
+                    m("td[colspan='12'][align='right']", [
+                        m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
+                            class: (OxigenacionUci.editarAll == true ? '' : 'd-none'),
+
+                            onclick: () => {
+
+                                OxigenacionUci.loaderRows = true;
+                                OxigenacionUci.guardarTodo();
+
+                            },
+                        },
+                            'Guardar Todo',
+                        ),
+
+                    ]),
+                ]),
+                m('br')
             ]),
         ]
 

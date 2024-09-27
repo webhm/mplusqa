@@ -370,8 +370,8 @@ class CuidadosUci2 {
                     return m.mount(nTd, {
                         view: () => {
                             return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                m("div.text-center.pd-5[tabindex='-1']", [
+                                    m("button.btn-xs.btn-block.tx-semibold[type='button'][tabindex='-1']", {
                                         class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
                                     },
                                         (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),

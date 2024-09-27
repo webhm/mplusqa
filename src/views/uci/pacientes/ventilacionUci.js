@@ -2,6 +2,7 @@ import m from "mithril";
 import PacientesUCI from "./pacientesUci";
 import TurnosUci from "./turnosUci";
 import FecthUci from "./fecthUci";
+import Loader from "../../utils/loader";
 
 class Ventilacion {
     id = null;
@@ -34,6 +35,10 @@ class VentilacionUci {
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
+    static loaderRows = false;
+    static editarAll = false;
+
+
     static validarRegistro() {
 
     }
@@ -250,8 +255,8 @@ class VentilacionUci {
                     return m.mount(nTd, {
                         view: () => {
                             return [
-                                m('div.text-center.pd-5', [
-                                    m("button.btn-xs.btn-block.tx-semibold[type='button']", {
+                                m("div.text-center.pd-5[tabindex='-1']", [
+                                    m("button.btn-xs.btn-block.tx-semibold[type='button'][tabindex='-1']", {
                                         class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
                                     },
                                         (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
@@ -286,54 +291,63 @@ class VentilacionUci {
                         view: () => {
                             return [
                                 m('div.pd-10', {
-                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    class: (oData.editar == true || VentilacionUci.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        VentilacionUci.nuevoRegistro = null
-                                        VentilacionUci.verRegistro(oData);
+                                        if (VentilacionUci.editarAll == true) {
+                                            $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                        } else {
+                                            VentilacionUci.nuevoRegistro = null
+                                            VentilacionUci.verRegistro(oData);
+                                        }
                                     },
                                 }, (oData.am !== null ? oData.am : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                (VentilacionUci.nuevoRegistro !== null ? [
+                                (VentilacionUci.nuevoRegistro !== null || (VentilacionUci.getRegistro(oData.id).editar == true) ? [
                                     m("input", {
-                                        id: "am" + VentilacionUci.nuevoRegistro.id,
-                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        id: "am" + VentilacionUci.getRegistro(oData.id).id,
+                                        class: "form-control tx-semibold tx-14 " + (VentilacionUci.getRegistro(oData.id).editar == true ? '' : 'd-none'),
                                         type: "text",
                                         placeholder: "...",
                                         ondblclick: (e) => {
-                                            oData.editar = null;
-                                            VentilacionUci.nuevoRegistro = null
+                                            if (VentilacionUci.editarAll == true) {
+                                                $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                            } else {
+                                                oData.editar = null;
+                                                VentilacionUci.nuevoRegistro = null;
+                                            }
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
 
-                                                VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                console.log(99, VentilacionUci.nuevoRegistro)
-
-                                                // throw 'AA';
-                                                if (VentilacionUci.nuevoRegistro.editar == null) {
-                                                    VentilacionUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
-                                                    VentilacionUci.nuevoRegistro = null;
-                                                    VentilacionUci.filterRegistros();
+                                                if (VentilacionUci.editarAll == true) {
+                                                    $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
                                                 } else {
-                                                    VentilacionUci.editarRegistro();
-                                                    FecthUci.actualizarSeccion(VentilacionUci.nuevoRegistro);
-                                                    VentilacionUci.nuevoRegistro = null;
-                                                    VentilacionUci.filterRegistros();
+                                                    if (VentilacionUci.nuevoRegistro.editar == null) {
+                                                        VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        VentilacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
+                                                        VentilacionUci.nuevoRegistro = null;
+                                                        VentilacionUci.filterRegistros();
+                                                    } else {
+                                                        VentilacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(VentilacionUci.nuevoRegistro);
+                                                        VentilacionUci.nuevoRegistro = null;
+                                                        VentilacionUci.filterRegistros();
+
+                                                    }
 
                                                 }
-
 
                                             }
                                         },
                                         oninput: (e) => {
                                             if (PacientesUCI.numeroTurno == 1) {
-                                                VentilacionUci.nuevoRegistro.am = (e.target.value.length !== 0 ? e.target.value : null);
+                                                VentilacionUci.getRegistro(oData.id).am = (e.target.value.length !== 0 ? e.target.value : null);
                                             } else {
                                                 e.preventDefault();
                                             }
                                         },
-                                        value: (VentilacionUci.nuevoRegistro.am !== null ? VentilacionUci.nuevoRegistro.am : '')
+                                        value: (VentilacionUci.getRegistro(oData.id).am !== null ? VentilacionUci.getRegistro(oData.id).am : '')
                                     })
                                 ] : [])
 
@@ -352,54 +366,64 @@ class VentilacionUci {
                         view: () => {
                             return [
                                 m('div.pd-10', {
-                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    class: (oData.editar == true || VentilacionUci.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        VentilacionUci.nuevoRegistro = null
-                                        VentilacionUci.verRegistro(oData);
+                                        if (VentilacionUci.editarAll == true) {
+                                            $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                        } else {
+                                            VentilacionUci.nuevoRegistro = null
+                                            VentilacionUci.verRegistro(oData);
+                                        }
                                     },
                                 }, (oData.pm !== null ? oData.pm : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                (VentilacionUci.nuevoRegistro !== null ? [
+                                (VentilacionUci.nuevoRegistro !== null || (VentilacionUci.getRegistro(oData.id).editar == true) ? [
                                     m("input", {
-                                        id: "pm" + VentilacionUci.nuevoRegistro.id,
-                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        id: "pm" + VentilacionUci.getRegistro(oData.id).id,
+                                        class: "form-control tx-semibold tx-14 " + (VentilacionUci.getRegistro(oData.id).editar == true ? '' : 'd-none'),
                                         type: "text",
                                         placeholder: "...",
                                         ondblclick: (e) => {
-                                            oData.editar = null;
-                                            VentilacionUci.nuevoRegistro = null
+                                            if (VentilacionUci.editarAll == true) {
+                                                $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                            } else {
+                                                oData.editar = null;
+                                                VentilacionUci.nuevoRegistro = null;
+                                            }
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
 
-                                                VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                console.log(99, VentilacionUci.nuevoRegistro)
-
-                                                // throw 'AA';
-                                                if (VentilacionUci.nuevoRegistro.editar == null) {
-                                                    VentilacionUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
-                                                    VentilacionUci.nuevoRegistro = null;
-                                                    VentilacionUci.filterRegistros();
+                                                if (VentilacionUci.editarAll == true) {
+                                                    $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
                                                 } else {
-                                                    VentilacionUci.editarRegistro();
-                                                    FecthUci.actualizarSeccion(VentilacionUci.nuevoRegistro);
-                                                    VentilacionUci.nuevoRegistro = null;
-                                                    VentilacionUci.filterRegistros();
+
+                                                    if (VentilacionUci.nuevoRegistro.editar == null) {
+                                                        VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        VentilacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
+                                                        VentilacionUci.nuevoRegistro = null;
+                                                        VentilacionUci.filterRegistros();
+                                                    } else {
+                                                        VentilacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(VentilacionUci.nuevoRegistro);
+                                                        VentilacionUci.nuevoRegistro = null;
+                                                        VentilacionUci.filterRegistros();
+
+                                                    }
 
                                                 }
-
 
                                             }
                                         },
                                         oninput: (e) => {
                                             if (PacientesUCI.numeroTurno == 2) {
-                                                VentilacionUci.nuevoRegistro.pm = (e.target.value.length !== 0 ? e.target.value : null);
+                                                VentilacionUci.getRegistro(oData.id).pm = (e.target.value.length !== 0 ? e.target.value : null);
                                             } else {
                                                 e.preventDefault();
                                             }
                                         },
-                                        value: (VentilacionUci.nuevoRegistro.pm !== null ? VentilacionUci.nuevoRegistro.pm : '')
+                                        value: (VentilacionUci.getRegistro(oData.id).pm !== null ? VentilacionUci.getRegistro(oData.id).pm : '')
                                     })
                                 ] : [])
 
@@ -417,54 +441,64 @@ class VentilacionUci {
                         view: () => {
                             return [
                                 m('div.pd-10', {
-                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    class: (oData.editar == true || VentilacionUci.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        VentilacionUci.nuevoRegistro = null
-                                        VentilacionUci.verRegistro(oData);
+                                        if (VentilacionUci.editarAll == true) {
+                                            $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                        } else {
+                                            VentilacionUci.nuevoRegistro = null
+                                            VentilacionUci.verRegistro(oData);
+                                        }
                                     },
                                 }, (oData.hs !== null ? oData.hs : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                (VentilacionUci.nuevoRegistro !== null ? [
+                                (VentilacionUci.nuevoRegistro !== null || (VentilacionUci.getRegistro(oData.id).editar == true) ? [
                                     m("input", {
-                                        id: "hs" + VentilacionUci.nuevoRegistro.id,
-                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        id: "hs" + VentilacionUci.getRegistro(oData.id).id,
+                                        class: "form-control tx-semibold tx-14 " + (VentilacionUci.getRegistro(oData.id).editar == true ? '' : 'd-none'),
                                         type: "text",
                                         placeholder: "...",
                                         ondblclick: (e) => {
-                                            oData.editar = null;
-                                            VentilacionUci.nuevoRegistro = null
+                                            if (VentilacionUci.editarAll == true) {
+                                                $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                            } else {
+                                                oData.editar = null;
+                                                VentilacionUci.nuevoRegistro = null;
+                                            }
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
 
-                                                VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                console.log(99, VentilacionUci.nuevoRegistro)
-
-                                                // throw 'AA';
-                                                if (VentilacionUci.nuevoRegistro.editar == null) {
-                                                    VentilacionUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
-                                                    VentilacionUci.nuevoRegistro = null;
-                                                    VentilacionUci.filterRegistros();
+                                                if (VentilacionUci.editarAll == true) {
+                                                    $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
                                                 } else {
-                                                    VentilacionUci.editarRegistro();
-                                                    FecthUci.actualizarSeccion(VentilacionUci.nuevoRegistro);
-                                                    VentilacionUci.nuevoRegistro = null;
-                                                    VentilacionUci.filterRegistros();
+
+                                                    if (VentilacionUci.nuevoRegistro.editar == null) {
+                                                        VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        VentilacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
+                                                        VentilacionUci.nuevoRegistro = null;
+                                                        VentilacionUci.filterRegistros();
+                                                    } else {
+                                                        VentilacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(VentilacionUci.nuevoRegistro);
+                                                        VentilacionUci.nuevoRegistro = null;
+                                                        VentilacionUci.filterRegistros();
+
+                                                    }
 
                                                 }
-
 
                                             }
                                         },
                                         oninput: (e) => {
                                             if (PacientesUCI.numeroTurno == 3) {
-                                                VentilacionUci.nuevoRegistro.hs = (e.target.value.length !== 0 ? e.target.value : null);
+                                                VentilacionUci.getRegistro(oData.id).hs = (e.target.value.length !== 0 ? e.target.value : null);
                                             } else {
                                                 e.preventDefault();
                                             }
                                         },
-                                        value: (VentilacionUci.nuevoRegistro.hs !== null ? VentilacionUci.nuevoRegistro.hs : '')
+                                        value: (VentilacionUci.getRegistro(oData.id).hs !== null ? VentilacionUci.getRegistro(oData.id).hs : '')
 
                                     })
                                 ] : [])
@@ -485,50 +519,60 @@ class VentilacionUci {
                         view: () => {
                             return [
                                 m('div.pd-10', {
-                                    class: (oData.editar == true ? 'd-none' : ''),
+                                    class: (oData.editar == true || VentilacionUci.getRegistro(oData.id).editar == true ? 'd-none' : ''),
                                     ondblclick: (e) => {
-                                        VentilacionUci.nuevoRegistro = null
-                                        VentilacionUci.verRegistro(oData);
+                                        if (VentilacionUci.editarAll == true) {
+                                            $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                        } else {
+                                            VentilacionUci.nuevoRegistro = null
+                                            VentilacionUci.verRegistro(oData);
+                                        }
                                     },
                                 }, (oData.observacion !== null ? oData.observacion : m.trust('<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>'))),
-                                (VentilacionUci.nuevoRegistro !== null ? [
+                                (VentilacionUci.nuevoRegistro !== null || (VentilacionUci.getRegistro(oData.id).editar == true) ? [
                                     m("input", {
-                                        id: "observacion" + VentilacionUci.nuevoRegistro.id,
-                                        class: "form-control tx-semibold tx-14 " + (oData.editar == true ? '' : 'd-none'),
+                                        id: "observacion" + VentilacionUci.getRegistro(oData.id).id,
+                                        class: "form-control tx-semibold tx-14 " + (VentilacionUci.getRegistro(oData.id).editar == true ? '' : 'd-none'),
                                         type: "text",
                                         placeholder: "...",
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
 
-                                                VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                                VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                                console.log(99, VentilacionUci.nuevoRegistro)
-
-                                                // throw 'AA';
-                                                if (VentilacionUci.nuevoRegistro.editar == null) {
-                                                    VentilacionUci.agregarRegistro();
-                                                    FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
-                                                    VentilacionUci.nuevoRegistro = null;
-                                                    VentilacionUci.filterRegistros();
+                                                if (VentilacionUci.editarAll == true) {
+                                                    $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
                                                 } else {
-                                                    VentilacionUci.editarRegistro();
-                                                    FecthUci.actualizarSeccion(VentilacionUci.nuevoRegistro);
-                                                    VentilacionUci.nuevoRegistro = null;
-                                                    VentilacionUci.filterRegistros();
+
+                                                    if (VentilacionUci.nuevoRegistro.editar == null) {
+                                                        VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                                        VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                                        VentilacionUci.agregarRegistro();
+                                                        FecthUci.registrarSeccion(VentilacionUci.nuevoRegistro);
+                                                        VentilacionUci.nuevoRegistro = null;
+                                                        VentilacionUci.filterRegistros();
+                                                    } else {
+                                                        VentilacionUci.editarRegistro();
+                                                        FecthUci.actualizarSeccion(VentilacionUci.nuevoRegistro);
+                                                        VentilacionUci.nuevoRegistro = null;
+                                                        VentilacionUci.filterRegistros();
+
+                                                    }
 
                                                 }
-
 
                                             }
                                         },
                                         ondblclick: (e) => {
-                                            oData.editar = null;
-                                            VentilacionUci.nuevoRegistro = null
+                                            if (VentilacionUci.editarAll == true) {
+                                                $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
+                                            } else {
+                                                oData.editar = null;
+                                                VentilacionUci.nuevoRegistro = null;
+                                            }
                                         },
                                         oninput: (e) => {
-                                            VentilacionUci.nuevoRegistro.observacion = (e.target.value.length !== 0 ? e.target.value : null);
+                                            VentilacionUci.getRegistro(oData.id).observacion = (e.target.value.length !== 0 ? e.target.value : null);
                                         },
-                                        value: (VentilacionUci.nuevoRegistro.observacion !== null ? VentilacionUci.nuevoRegistro.observacion : '')
+                                        value: (VentilacionUci.getRegistro(oData.id).observacion !== null ? VentilacionUci.getRegistro(oData.id).observacion : '')
 
                                     })
                                 ] : [])
@@ -560,7 +604,7 @@ class VentilacionUci {
                                         'Editar',
                                     ),
                                     m("button.btn.btn-xs.btn-block.btn-danger[type='button']", {
-                                        class: (oData.editar ? '' : 'd-none'),
+                                        class: (oData.editar && VentilacionUci.editarAll == false ? '' : 'd-none'),
                                         disabled: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : ''),
 
                                         onclick: () => {
@@ -610,8 +654,68 @@ class VentilacionUci {
         // clear first
         if (table != null) {
             $('#table-ventilacion').DataTable().clear().destroy();
-
         }
+    }
+
+
+    static getRegistro(id) {
+
+        if (id == 'PosicionSemifowler' && VentilacionUci.registros[0].id == id) {
+            return VentilacionUci.registros[0];
+        } else if (id == 'BolsaReanimacion' && VentilacionUci.registros[1].id == id) {
+            return VentilacionUci.registros[1];
+        } else if (id == 'CorrugadoSinVaporCondesado' && VentilacionUci.registros[2].id == id) {
+            return VentilacionUci.registros[2];
+        } else if (id == 'FiltroFinalRespiratorio' && VentilacionUci.registros[3].id == id) {
+            return VentilacionUci.registros[3];
+        } else if (id == 'RegistroRotacionTetHoras' && VentilacionUci.registros[4].id == id) {
+            return VentilacionUci.registros[4];
+        } else if (id == 'RegistroCambioCircuito' && VentilacionUci.registros[5].id == id) {
+            return VentilacionUci.registros[5];
+        } else if (id == 'CambioFiltroHoras' && VentilacionUci.registros[6].id == id) {
+            return VentilacionUci.registros[6];
+        } else if (id == 'RegistroDiasEnfermeria' && VentilacionUci.registros[7].id == id) {
+            return VentilacionUci.registros[7];
+        } else {
+            return {
+                editar: null
+            };
+        }
+
+    }
+
+    static editarTodo() {
+        return VentilacionUci.registros.map((v, i) => {
+            VentilacionUci.registros[i].editar = true;
+        });
+    }
+
+    static cancelarTodo() {
+        return VentilacionUci.registros.map((v, i) => {
+            delete VentilacionUci.registros[i].editar;
+        });
+
+    }
+
+    static async guardarTodo() {
+
+        VentilacionUci.editarAll = false;
+        VentilacionUci.cancelarTodo();
+
+        Promise.all(
+            VentilacionUci.registros.map(async (v) => {
+                await FecthUci.actualizarSeccion(v);
+            }),
+        ).then(() => {
+            VentilacionUci.loaderRows = false;
+        });
+
+
+        VentilacionUci.filterRegistros();
+
+        m.redraw();
+
+
     }
 
     view() {
@@ -842,7 +946,48 @@ class VentilacionUci {
                         "Registros: "
                     ),
                 ]),
-                m("tr.tx-uppercase.mg-t-20", [
+                m("tr.tx-uppercase", [
+                    m("td[colspan='12'][align='right']", [
+                        m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
+                            class: (VentilacionUci.editarAll == false ? (VentilacionUci.loaderRows == true ? 'd-none' : '') : 'd-none'),
+                            onclick: () => {
+
+                                VentilacionUci.editarAll = true;
+                                VentilacionUci.editarTodo();
+                                console.log('ll', VentilacionUci.registros)
+
+
+                            },
+                        },
+                            'Editar Todo',
+                        ),
+                        m("button.btn.btn-xs.btn-danger.mg-1[type='button']", {
+                            class: (VentilacionUci.editarAll == true ? '' : 'd-none'),
+                            onclick: (el) => {
+
+                                VentilacionUci.editarAll = false;
+                                VentilacionUci.cancelarTodo();
+                                console.log('ll', VentilacionUci.registros)
+
+                            },
+                        },
+                            'Cancelar',
+                        ),
+                    ]),
+                ]),
+                m("tr.tx-uppercase.mg-t-20", {
+                    class: (VentilacionUci.loaderRows == true ? '' : 'd-none'),
+                }, [
+                    m("td[colspan='12']", [
+                        m('div.pd-20', [
+                            m(Loader)
+                        ])
+
+                    ])
+                ]),
+                m("tr.tx-uppercase.mg-t-20",{
+                    class: (VentilacionUci.loaderRows == false ? '' : 'd-none'),
+                }, [
                     m("td[colspan='12']",
                         {
                             class: (VentilacionUci.show ? '' : 'd-none'),
@@ -850,6 +995,24 @@ class VentilacionUci {
                         (VentilacionUci.registros.length != 0 ? [PacientesUCI.vTable('table-ventilacion', VentilacionUci.getRegistros(), VentilacionUci.arqTable())] : [])
                     ),
                 ]),
+                m("tr.tx-uppercase", [
+                    m("td[colspan='12'][align='right']", [
+                        m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
+                            class: (VentilacionUci.editarAll == true ? '' : 'd-none'),
+
+                            onclick: () => {
+
+                                VentilacionUci.loaderRows = true;
+                                VentilacionUci.guardarTodo();
+
+                            },
+                        },
+                            'Guardar Todo',
+                        ),
+
+                    ]),
+                ]),
+                m('br')
             ]),
         ];
     }
