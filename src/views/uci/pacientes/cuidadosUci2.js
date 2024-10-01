@@ -181,7 +181,7 @@ class CuidadosUci2 {
         // clear first
         if (table != null) {
             $('#table-cuidados').DataTable().clear().destroy();
-
+            // Table
         }
     }
 
@@ -254,7 +254,7 @@ class CuidadosUci2 {
 
     static cancelarTodo() {
         return CuidadosUci2.registros.map((v, i) => {
-            delete CuidadosUci2.registros[i].editar;
+            CuidadosUci2.registros[i].editar = false;
         });
 
     }
@@ -275,6 +275,8 @@ class CuidadosUci2 {
 
 
         CuidadosUci2.filterRegistros();
+
+
 
         m.redraw();
 

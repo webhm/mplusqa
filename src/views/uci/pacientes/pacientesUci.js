@@ -264,12 +264,12 @@ class PacientesUCI extends App {
 
         CateterUci.allRegistros = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
 
-        // Quitar duplicados
-        resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
-        // Ordenar desc
-        _arr = resultId.sort((a, b) => a.nro - b.nro);
+        CateterUci.filterRegistros();
 
-        return _arr;
+        if (CateterUci.allRegistros.length == 0) {
+            PacientesUCI.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
+        }
+
     }
 
     static parseSeccionVentilacion(options) {
@@ -292,12 +292,11 @@ class PacientesUCI extends App {
 
         VentilacionUci.allRegistros = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
 
-        // Quitar duplicados
-        resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
-        // Ordenar desc
-        _arr = resultId.sort((a, b) => a.nro - b.nro);
+        VentilacionUci.filterRegistros();
 
-        return _arr;
+        if (VentilacionUci.allRegistros.length == 0) {
+            PacientesUCI.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
+        }
     }
 
     static parseSeccionHemodialisis_Histoial(options) {
@@ -339,12 +338,11 @@ class PacientesUCI extends App {
 
         HemodialisisUci.allRegistros = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
 
-        // Quitar duplicados
-        resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
-        // Ordenar desc
-        _arr = resultId.sort((a, b) => a.nro - b.nro);
+        HemodialisisUci.filterRegistros();
 
-        return _arr;
+        if (HemodialisisUci.allRegistros.length == 0) {
+            PacientesUCI.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
+        }
 
 
     }
@@ -369,14 +367,11 @@ class PacientesUCI extends App {
 
         MarcapasosUci.allRegistros = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
 
-        // Quitar duplicados
-        resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
-        // Ordenar desc
-        _arr = resultId.sort((a, b) => a.nro - b.nro);
+        MarcapasosUci.filterRegistros();
 
-        console.log(88, _arr)
-
-        return _arr;
+        if (MarcapasosUci.allRegistros.length == 0) {
+            PacientesUCI.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
+        }
     }
 
     static parseSeccionOxigenacion(options) {
@@ -399,12 +394,11 @@ class PacientesUCI extends App {
 
         OxigenacionUci.allRegistros = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
 
-        // Quitar duplicados
-        resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
-        // Ordenar desc
-        _arr = resultId.sort((a, b) => a.nro - b.nro);
+        OxigenacionUci.filterRegistros();
 
-        return _arr;
+        if (OxigenacionUci.allRegistros.length == 0) {
+            PacientesUCI.setTurnoSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
+        }
     }
 
     static parseSeccionVentilatorios_AllRegistros(options) {
@@ -4437,12 +4431,13 @@ class PacientesUCI extends App {
 
         CuidadosUci2.allRegistros = result.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
 
-        // Quitar duplicados
-        resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
-        // Ordenar desc
-        _arr = resultId.sort((a, b) => a.nro - b.nro);
+        CuidadosUci2.filterRegistros();
 
-        return _arr;
+        if (CuidadosUci2.allRegistros.length == 0) {
+            PacientesUCI.setTurnoSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options))
+        }
+
+
     }
 
     static parseAllSeccion(idSeccion) {
@@ -4524,12 +4519,22 @@ class PacientesUCI extends App {
                 }
             });
 
-            CuidadosUci2.registros.push.apply(CuidadosUci2.registros, res);
+            CuidadosUci2.allRegistros.push.apply(CuidadosUci2.allRegistros, res);
             // Asignar Nro
-            CuidadosUci2.registros.map((_v, _i) => {
-                CuidadosUci2.registros[_i].nro = (_i + 1);
+            CuidadosUci2.allRegistros.map((_v, _i) => {
+                if (_v.nro == null) {
+                    CuidadosUci2.allRegistros[_i].nro = (_i + 1);
+                    if (_v.id == res.id) {
+                        res.nro = CuidadosUci2.allRegistros[_i].nro;
+                    }
+                }
             });
-            FecthUci.registrarAllSeccion(CuidadosUci2.registros);
+
+            console.log(77, res)
+
+            CuidadosUci2.filterRegistros();
+            FecthUci.registrarAllSeccion(res);
+            PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
 
         }
 
@@ -4570,16 +4575,23 @@ class PacientesUCI extends App {
                 }
             });
 
-            CateterUci.registros.push.apply(CateterUci.registros, res);
 
+            CateterUci.allRegistros.push.apply(CateterUci.allRegistros, res);
             // Asignar Nro
-            CateterUci.registros.map((_v, _i) => {
-                CateterUci.registros[_i].nro = (_i + 1);
+            CateterUci.allRegistros.map((_v, _i) => {
+                if (_v.nro == null) {
+                    CateterUci.allRegistros[_i].nro = (_i + 1);
+                    if (_v.id == res.id) {
+                        res.nro = CateterUci.allRegistros[_i].nro;
+                    }
+                }
             });
 
-            console.log(88, CateterUci.registros)
+            console.log(77, res)
 
-            FecthUci.registrarAllSeccion(CateterUci.registros);
+            CateterUci.filterRegistros();
+            FecthUci.registrarAllSeccion(res);
+            PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
 
 
 
@@ -4620,16 +4632,23 @@ class PacientesUCI extends App {
                 }
             });
 
-            VentilacionUci.registros.push.apply(VentilacionUci.registros, res);
 
+            VentilacionUci.allRegistros.push.apply(VentilacionUci.allRegistros, res);
             // Asignar Nro
-            VentilacionUci.registros.map((_v, _i) => {
-                VentilacionUci.registros[_i].nro = (_i + 1);
+            VentilacionUci.allRegistros.map((_v, _i) => {
+                if (_v.nro == null) {
+                    VentilacionUci.allRegistros[_i].nro = (_i + 1);
+                    if (_v.id == res.id) {
+                        res.nro = VentilacionUci.allRegistros[_i].nro;
+                    }
+                }
             });
 
-            console.log(88, VentilacionUci.registros)
+            console.log(77, res)
 
-            FecthUci.registrarAllSeccion(VentilacionUci.registros);
+            VentilacionUci.filterRegistros();
+            FecthUci.registrarAllSeccion(res);
+            PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
 
 
 
@@ -4670,17 +4689,22 @@ class PacientesUCI extends App {
                 }
             });
 
-            HemodialisisUci.registros.push.apply(HemodialisisUci.registros, res);
-
+            HemodialisisUci.allRegistros.push.apply(HemodialisisUci.allRegistros, res);
             // Asignar Nro
-            HemodialisisUci.registros.map((_v, _i) => {
-                HemodialisisUci.registros[_i].nro = (_i + 1);
+            HemodialisisUci.allRegistros.map((_v, _i) => {
+                if (_v.nro == null) {
+                    HemodialisisUci.allRegistros[_i].nro = (_i + 1);
+                    if (_v.id == res.id) {
+                        res.nro = HemodialisisUci.allRegistros[_i].nro;
+                    }
+                }
             });
 
-            console.log(88, HemodialisisUci.registros)
+            console.log(77, res)
 
-            FecthUci.registrarAllSeccion(HemodialisisUci.registros);
-
+            HemodialisisUci.filterRegistros();
+            FecthUci.registrarAllSeccion(res);
+            PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
 
 
         }
@@ -4719,16 +4743,23 @@ class PacientesUCI extends App {
                 }
             });
 
-            MarcapasosUci.registros.push.apply(MarcapasosUci.registros, res);
-
+            MarcapasosUci.allRegistros.push.apply(MarcapasosUci.allRegistros, res);
             // Asignar Nro
-            MarcapasosUci.registros.map((_v, _i) => {
-                MarcapasosUci.registros[_i].nro = (_i + 1);
+            MarcapasosUci.allRegistros.map((_v, _i) => {
+                if (_v.nro == null) {
+                    MarcapasosUci.allRegistros[_i].nro = (_i + 1);
+                    if (_v.id == res.id) {
+                        res.nro = MarcapasosUci.allRegistros[_i].nro;
+                    }
+                }
             });
 
-            console.log(88, MarcapasosUci.registros)
+            console.log(77, res)
 
-            FecthUci.registrarAllSeccion(MarcapasosUci.registros);
+            MarcapasosUci.filterRegistros();
+            FecthUci.registrarAllSeccion(res);
+            PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+
 
 
 
@@ -4769,16 +4800,23 @@ class PacientesUCI extends App {
                 }
             });
 
-            OxigenacionUci.registros.push.apply(OxigenacionUci.registros, res);
+            OxigenacionUci.allRegistros.push.apply(OxigenacionUci.allRegistros, res);
 
             // Asignar Nro
-            OxigenacionUci.registros.map((_v, _i) => {
-                OxigenacionUci.registros[_i].nro = (_i + 1);
+            OxigenacionUci.allRegistros.map((_v, _i) => {
+                if (_v.nro == null) {
+                    OxigenacionUci.allRegistros[_i].nro = (_i + 1);
+                    if (_v.id == res.id) {
+                        res.nro = OxigenacionUci.allRegistros[_i].nro;
+                    }
+                }
             });
 
-            console.log(88, OxigenacionUci.registros)
+            console.log(77, res)
 
-            FecthUci.registrarAllSeccion(OxigenacionUci.registros);
+            OxigenacionUci.filterRegistros();
+            FecthUci.registrarAllSeccion(res);
+            PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
 
 
 
@@ -5303,73 +5341,53 @@ class PacientesUCI extends App {
 
                                             if (oData.usuarioTurno != PacientesUCI.usuarioTurno) {
                                                 $.alert('Es necesario asumir antes de continuar.');
-                                            } else{
-                                                
+                                            } else {
+
                                                 oData.iniciarGestion();
                                                 oData.statusHora = 2;
                                                 console.log(55, oData)
                                                 TurnosUci.nuevoTurno = oData;
-                                               
+
 
                                                 PacientesUCI.fechaHoraTurno = oData.fechaTurno + ' ' + oData.horaTurno;
-                                                CuidadosUci2.registros = PacientesUCI.parseSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options));
-                                                setTimeout(() => {
-                                                    PacientesUCI.setTurnoSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options))
-                                                }, 100)
-    
-                                                CateterUci.registros = PacientesUCI.parseSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
-                                                setTimeout(() => {
-                                                    PacientesUCI.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
-                                                }, 100)
-    
-                                                VentilacionUci.registros = PacientesUCI.parseSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
-                                                setTimeout(() => {
-                                                    PacientesUCI.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
-                                                }, 100)
-    
-                                                HemodialisisUci.registros = PacientesUCI.parseSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
-                                                setTimeout(() => {
-                                                    PacientesUCI.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
-                                                }, 100)
-    
-                                                MarcapasosUci.registros = PacientesUCI.parseSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
-                                                setTimeout(() => {
-                                                    PacientesUCI.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
-                                                }, 100)
-    
-                                                OxigenacionUci.registros = PacientesUCI.parseSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
-                                                setTimeout(() => {
-                                                    PacientesUCI.setTurnoSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
-                                                }, 100)
-    
+
+
+                                                PacientesUCI.parseSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options));
+                                                PacientesUCI.parseSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
+                                                PacientesUCI.parseSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
+                                                PacientesUCI.parseSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
+                                                PacientesUCI.parseSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
+                                                PacientesUCI.parseSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
+                                              
+
                                                 VentilatoriosUci.allRegistros = PacientesUCI.parseSeccionVentilatorios_AllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
                                                 // PacientesUCI.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
                                                 VentilatoriosUci.registros = PacientesUCI.parseSeccionVentilatorios_v2(Array.from(document.getElementById('sec_Ventilatorios').options));
-    
+
                                                 GasesUci.allRegistros = PacientesUCI.parseSeccionGases_AllRegistros(Array.from(document.getElementById('sec_Gases').options));
                                                 // PacientesUCI.setTurnoSeccionGases(Array.from(document.getElementById('sec_Gases').options));
                                                 GasesUci.registros = PacientesUCI.parseSeccionGases_v2(Array.from(document.getElementById('sec_Gases').options));
-    
+
                                                 MedidasUci.allRegistros = PacientesUCI.parseSeccionMedidas_AllRegistros(Array.from(document.getElementById('sec_Medidas').options));
                                                 // PacientesUCI.setTurnoSeccionMedidas(Array.from(document.getElementById('sec_Medidas').options));
                                                 MedidasUci.registros = PacientesUCI.parseSeccionMedidas_v2(Array.from(document.getElementById('sec_Medidas').options));
-    
+
                                                 ComburTestUci.allRegistros = PacientesUCI.parseSeccionComburTest_AllRegistros(Array.from(document.getElementById('sec_ComburTest').options));
                                                 // PacientesUCI.setTurnoSeccionComburTest(Array.from(document.getElementById('sec_ComburTest').options));
                                                 ComburTestUci.registros = PacientesUCI.parseSeccionComburTest_v2(Array.from(document.getElementById('sec_ComburTest').options));
-    
+
                                                 GasesMedUci.allRegistros = PacientesUCI.parseSeccionGasesMed_AllRegistros(Array.from(document.getElementById('sec_GasesMed').options));
                                                 // PacientesUCI.setTurnoSeccionGasesMed(Array.from(document.getElementById('sec_GasesMed').options));
                                                 GasesMedUci.registros = PacientesUCI.parseSeccionGasesMed_v2(Array.from(document.getElementById('sec_GasesMed').options));
-    
+
                                                 PrescripcionesUci.allRegistros = PacientesUCI.parseSeccionPrescripcionesUci_AllRegistros(Array.from(document.getElementById('sec_PrescripcionesUci').options));
                                                 PrescripcionesUci.registros = PacientesUCI.parseSeccionPrescripcionesUci_v2(Array.from(document.getElementById('sec_PrescripcionesUci').options));
-    
+
                                                 PacientesUCI.showSecciones();
 
                                             }
 
-                                         
+
                                         },
                                     },
                                         'Gestionar',

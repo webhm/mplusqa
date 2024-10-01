@@ -233,6 +233,10 @@ class FecthUci {
 
     static actualizarSeccion(_dataSeccion) {
 
+        if(_dataSeccion.editar != undefined){
+            delete _dataSeccion.editar;
+        }
+
         let _url = '';
         if (window.location.hostname == 'testmplus.hospitalmetropolitano.org') {
             _url = 'https://api.hospitalmetropolitano.org/v2/metroplus/uci/trn';
