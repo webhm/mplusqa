@@ -2,6 +2,7 @@ import m from "mithril";
 import PacientesUCI from "./pacientesUci";
 import TurnosUci from "./turnosUci";
 import FecthUci from "./fecthUci";
+import Loader from "../../utils/loader";
 
 class Medida {
     id = null;
@@ -42,6 +43,7 @@ class MedidasUci {
     static sRowsHeaders = [];
     static sColumns = [];
     static sRows = [];
+    static loaderRows = false;
 
     static validarRegistro() {
 
@@ -230,7 +232,7 @@ class MedidasUci {
 
     }
 
-    static copyAllRegistros(_options) {
+    static async copyAllRegistros(_options) {
 
         let res = [];
         let hash = {};
@@ -262,11 +264,26 @@ class MedidasUci {
 
         });
 
-        FecthUci.registrarAllSeccion(res);
+
+        FecthUci.registrarAllSeccion(res).then(() => {
+            setTimeout(() => {
+                MedidasUci.destroyTable();
+                MedidasUci.filterRegistros();
+                MedidasUci.show = false;
+                m.redraw();
+                setTimeout(() => {
+                    MedidasUci.show = true;
+                    MedidasUci.loaderRows = false;
+                    m.redraw();
+                }, 100);
+            }, 100);
+        });
+
+
 
     }
 
-    static eliminarAllRegistros() {
+    static async eliminarAllRegistros() {
 
 
         let res = [];
@@ -280,10 +297,29 @@ class MedidasUci {
         // Quitar duplicados
         resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
 
-        resultNro.map((_v, _i) => {
-            MedidasUci.eliminarRegistro(_v);
-            FecthUci.eliminarSeccion(_v);
+
+        Promise.all(
+            resultNro.map(async (_v, _i) => {
+                MedidasUci.eliminarRegistro(_v);
+                await FecthUci.eliminarSeccion(_v);
+            })
+        ).then(() => {
+            setTimeout(() => {
+                MedidasUci.destroyTable();
+                MedidasUci.filterRegistros();
+                MedidasUci.show = false;
+                m.redraw();
+                setTimeout(() => {
+                    MedidasUci.show = true;
+                    MedidasUci.loaderRows = false;
+                    m.redraw();
+                }, 100);
+            }, 100);
+
         });
+
+
+
 
 
     }
@@ -1287,7 +1323,7 @@ class MedidasUci {
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
-                                            
+
                                                 if (moment(MedidasUci.nuevoRegistro.hora, "HH:mm", true).isValid() == false) {
                                                     $.alert(MedidasUci.nuevoRegistro.hora + ' no tiene el formato HH:mm necesario.');
                                                 } else {
@@ -1704,10 +1740,10 @@ class MedidasUci {
                                     },
                                     onkeypress: (e) => {
                                         if (e.keyCode == 13) {
-                                          
+
                                             if (moment(MedidasUci.nuevoRegistro.hora, "HH:mm", true).isValid() == false) {
                                                 $.alert(MedidasUci.nuevoRegistro.hora + ' no tiene el formato HH:mm necesario.');
-                                            }else{
+                                            } else {
                                                 if (MedidasUci.nuevoRegistro.editar == null) {
                                                     MedidasUci.agregarRegistro();
                                                     FecthUci.registrarSeccion(MedidasUci.nuevoRegistro);
@@ -1735,7 +1771,7 @@ class MedidasUci {
                                                 }
                                             }
 
-                                           
+
                                         }
                                     },
                                 }),
@@ -1753,22 +1789,16 @@ class MedidasUci {
                         "Registros: "
                     ),
                 ]),
-                m("tr.tx-uppercase", [
+                m("tr.tx-uppercase", {
+                    class: (MedidasUci.loaderRows == false ? '' : 'd-none'),
+                }, [
                     m("td[colspan='12'][align='right']", [
                         m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
                             onclick: () => {
 
+                                MedidasUci.loaderRows = true;
                                 MedidasUci.copyAllRegistros(Array.from(document.getElementById('sec_Medidas').options));
-                                setTimeout(() => {
-                                    MedidasUci.destroyTable();
-                                    MedidasUci.filterRegistros();
-                                    MedidasUci.show = false;
-                                    m.redraw();
-                                    setTimeout(() => {
-                                        MedidasUci.show = true;
-                                        m.redraw();
-                                    }, 100);
-                                }, 100);
+
 
 
                             },
@@ -1780,17 +1810,9 @@ class MedidasUci {
 
 
                                 if (MedidasUci.allRegistros.length > 0) {
+                                    MedidasUci.loaderRows = true;
                                     MedidasUci.eliminarAllRegistros();
-                                    setTimeout(() => {
-                                        MedidasUci.destroyTable();
-                                        MedidasUci.filterRegistros();
-                                        MedidasUci.show = false;
-                                        m.redraw();
-                                        setTimeout(() => {
-                                            MedidasUci.show = true;
-                                            m.redraw();
-                                        }, 100);
-                                    }, 100);
+
                                 } else {
                                     $.alert('No existen registros para eliminar.');
                                 }
@@ -1805,7 +1827,19 @@ class MedidasUci {
                         ),
                     ]),
                 ]),
-                m("tr.tx-uppercase.mg-t-20", [
+                m("tr.tx-uppercase.mg-t-20", {
+                    class: (MedidasUci.loaderRows == true ? '' : 'd-none'),
+                }, [
+                    m("td[colspan='12']", [
+                        m('div.pd-20', [
+                            m(Loader)
+                        ])
+
+                    ])
+                ]),
+                m("tr.tx-uppercase.mg-t-20", {
+                    class: (MedidasUci.loaderRows == false ? '' : 'd-none'),
+                }, [
                     m("td[colspan='12'][id='registrosMedidasUci']", { style: "max-width: 150px;overflow: auto;" },
                         (MedidasUci.show != false ? [PacientesUCI.vTable('table-medidas', MedidasUci.getRegistros(), MedidasUci.arqTable())] : [])
                     ),

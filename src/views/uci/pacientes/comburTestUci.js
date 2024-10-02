@@ -2,6 +2,7 @@ import m from "mithril";
 import PacientesUCI from "./pacientesUci";
 import TurnosUci from "./turnosUci";
 import FecthUci from "./fecthUci";
+import Loader from "../../utils/loader";
 
 class Medida {
     id = null;
@@ -38,6 +39,7 @@ class ComburTestUci {
     static sRowsHeaders = [];
     static sColumns = [];
     static sRows = [];
+    static loaderRows = false;
 
     static validarRegistro() {
 
@@ -183,7 +185,7 @@ class ComburTestUci {
 
     }
 
-    static copyAllRegistros(_options) {
+    static async copyAllRegistros(_options) {
 
         let res = [];
         let hash = {};
@@ -215,12 +217,28 @@ class ComburTestUci {
 
         });
 
-        FecthUci.registrarAllSeccion(res);
+
+        FecthUci.registrarAllSeccion(res).then(() => {
+
+            setTimeout(() => {
+                ComburTestUci.destroyTable();
+                ComburTestUci.filterRegistros();
+                ComburTestUci.show = false;
+                m.redraw();
+                setTimeout(() => {
+                    ComburTestUci.show = true;
+                    ComburTestUci.loaderRows = false;
+                    m.redraw();
+                }, 100);
+            }, 100);
+        });
+
+     
 
     }
 
 
-    static eliminarAllRegistros() {
+    static async eliminarAllRegistros() {
 
 
         let res = [];
@@ -234,10 +252,28 @@ class ComburTestUci {
         // Quitar duplicados
         resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
 
-        resultNro.map((_v, _i) => {
-            ComburTestUci.eliminarRegistro(_v);
-            FecthUci.eliminarSeccion(_v);
+    
+        Promise.all(
+            resultNro.map(async (_v, _i) => {
+                ComburTestUci.eliminarRegistro(_v);
+                await FecthUci.eliminarSeccion(_v);
+            })
+        ).then(() => {
+            setTimeout(() => {
+                ComburTestUci.destroyTable();
+                ComburTestUci.filterRegistros();
+                ComburTestUci.show = false;
+                m.redraw();
+                setTimeout(() => {
+                    ComburTestUci.show = true;
+                    ComburTestUci.loaderRows = false;
+                    m.redraw();
+                }, 100);
+            }, 100);
+
         });
+
+       
 
 
     }
@@ -1418,23 +1454,15 @@ class ComburTestUci {
                         "Registros: "
                     ),
                 ]),
-                m("tr.tx-uppercase", [
+                m("tr.tx-uppercase",{
+                    class: (ComburTestUci.loaderRows == false ? '' : 'd-none'),
+                }, [
                     m("td[colspan='12'][align='right']", [
                         m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
                             onclick: () => {
-
+                                ComburTestUci.loaderRows = true;
                                 ComburTestUci.copyAllRegistros(Array.from(document.getElementById('sec_ComburTest').options));
-                                setTimeout(() => {
-                                    ComburTestUci.destroyTable();
-                                    ComburTestUci.filterRegistros();
-                                    ComburTestUci.show = false;
-                                    m.redraw();
-                                    setTimeout(() => {
-                                        ComburTestUci.show = true;
-                                        m.redraw();
-                                    }, 100);
-                                }, 100);
-
+                               
                             },
                         },
                             'Copiar',
@@ -1443,17 +1471,9 @@ class ComburTestUci {
                             onclick: (el) => {
 
                                 if (ComburTestUci.allRegistros.length > 0) {
+                                    ComburTestUci.loaderRows = true;
                                     ComburTestUci.eliminarAllRegistros();
-                                    setTimeout(() => {
-                                        ComburTestUci.destroyTable();
-                                        ComburTestUci.filterRegistros();
-                                        ComburTestUci.show = false;
-                                        m.redraw();
-                                        setTimeout(() => {
-                                            ComburTestUci.show = true;
-                                            m.redraw();
-                                        }, 100);
-                                    }, 100);
+                                    
                                 } else {
                                     $.alert('No existen registros para eliminar.');
                                 }
@@ -1464,7 +1484,19 @@ class ComburTestUci {
                         ),
                     ]),
                 ]),
-                m("tr.tx-uppercase.mg-t-20", [
+                m("tr.tx-uppercase.mg-t-20", {
+                    class: (ComburTestUci.loaderRows == true ? '' : 'd-none'),
+                }, [
+                    m("td[colspan='12']", [
+                        m('div.pd-20', [
+                            m(Loader)
+                        ])
+
+                    ])
+                ]),
+                m("tr.tx-uppercase.mg-t-20", {
+                    class: (ComburTestUci.loaderRows == false ? '' : 'd-none'),
+                }, [
                     m("td[colspan='12'][id='registrosComburTest']", { style: "max-width: 150px;overflow: auto;" },
                         (ComburTestUci.show != false ? [PacientesUCI.vTable('table-comburtest', ComburTestUci.getRegistros(), ComburTestUci.arqTable())] : [])
                     ),

@@ -1969,7 +1969,9 @@ class VentilatoriosUci {
                     ),
                 ]),
               
-                m("tr.tx-uppercase", [
+                m("tr.tx-uppercase",{
+                    class: (VentilatoriosUci.loaderRows == false ? '' : 'd-none'),
+                }, [
                     m("td[colspan='12'][align='right']", [
                         m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
                             onclick: (el) => {

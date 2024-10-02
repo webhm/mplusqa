@@ -2,6 +2,7 @@ import m from "mithril";
 import PacientesUCI from "./pacientesUci";
 import TurnosUci from "./turnosUci";
 import FecthUci from "./fecthUci";
+import Loader from "../../utils/loader";
 
 class Medida {
     id = null;
@@ -38,6 +39,8 @@ class GasesMedUci {
     static sRowsHeaders = [];
     static sColumns = [];
     static sRows = [];
+    static loaderRows = false;
+
 
     static validarRegistro() {
 
@@ -183,7 +186,7 @@ class GasesMedUci {
 
     }
 
-    static copyAllRegistros(_options) {
+    static async copyAllRegistros(_options) {
 
         let res = [];
         let hash = {};
@@ -213,11 +216,26 @@ class GasesMedUci {
             }
         });
 
-        FecthUci.registrarAllSeccion(res);
+        FecthUci.registrarAllSeccion(res).then(() => {
+            setTimeout(() => {
+                GasesMedUci.destroyTable();
+                GasesMedUci.filterRegistros();
+                GasesMedUci.show = false;
+                m.redraw();
+                setTimeout(() => {
+                    GasesMedUci.show = true;
+                    GasesMedUci.loaderRows = false;
+                    m.redraw();
+                }, 100);
+            }, 100);
+
+
+        });
+
 
     }
 
-    static eliminarAllRegistros() {
+    static async eliminarAllRegistros() {
 
 
         let res = [];
@@ -231,10 +249,30 @@ class GasesMedUci {
         // Quitar duplicados
         resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
 
-        resultNro.map((_v, _i) => {
-            GasesMedUci.eliminarRegistro(_v);
-            FecthUci.eliminarSeccion(_v);
+        Promise.all(
+            resultNro.map(async (_v, _i) => {
+                GasesMedUci.eliminarRegistro(_v);
+                await FecthUci.eliminarSeccion(_v);
+            })
+        ).then(() => {
+            setTimeout(() => {
+                GasesMedUci.destroyTable();
+                GasesMedUci.filterRegistros();
+                GasesMedUci.show = false;
+                m.redraw();
+                setTimeout(() => {
+                    GasesMedUci.show = true;
+                    GasesMedUci.loaderRows = false;
+                    m.redraw();
+                }, 100);
+            }, 100);
+
+
         });
+
+
+
+
 
 
     }
@@ -1155,10 +1193,10 @@ class GasesMedUci {
                                     },
                                     onkeypress: (e) => {
                                         if (e.keyCode == 13) {
-                                          
+
                                             if (moment(GasesMedUci.nuevoRegistro.hora, "HH:mm", true).isValid() == false) {
                                                 $.alert(GasesMedUci.nuevoRegistro.hora + ' no tiene el formato HH:mm necesario.');
-                                            }else{
+                                            } else {
                                                 if (GasesMedUci.nuevoRegistro.editar == null) {
                                                     GasesMedUci.agregarRegistro();
                                                     FecthUci.registrarSeccion(GasesMedUci.nuevoRegistro);
@@ -1185,7 +1223,7 @@ class GasesMedUci {
                                                     }, 100);
                                                 }
                                             }
-                                           
+
                                         }
                                     },
                                 }),
@@ -1204,22 +1242,15 @@ class GasesMedUci {
                     ),
                 ]),
 
-                m("tr.tx-uppercase", [
+                m("tr.tx-uppercase", {
+                    class: (GasesMedUci.loaderRows == false ? '' : 'd-none'),
+                }, [
                     m("td[colspan='12'][align='right']", [
                         m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
                             onclick: () => {
-
+                                GasesMedUci.loaderRows = true;
                                 GasesMedUci.copyAllRegistros(Array.from(document.getElementById('sec_GasesMed').options));
-                                setTimeout(() => {
-                                    GasesMedUci.destroyTable();
-                                    GasesMedUci.filterRegistros();
-                                    GasesMedUci.show = false;
-                                    m.redraw();
-                                    setTimeout(() => {
-                                        GasesMedUci.show = true;
-                                        m.redraw();
-                                    }, 100);
-                                }, 100);
+
 
                             },
                         },
@@ -1229,21 +1260,16 @@ class GasesMedUci {
 
                             onclick: (el) => {
 
+
                                 if (GasesMedUci.allRegistros.length > 0) {
+                                    GasesMedUci.loaderRows = true;
                                     GasesMedUci.eliminarAllRegistros();
-                                    setTimeout(() => {
-                                        GasesMedUci.destroyTable();
-                                        GasesMedUci.filterRegistros();
-                                        GasesMedUci.show = false;
-                                        m.redraw();
-                                        setTimeout(() => {
-                                            GasesMedUci.show = true;
-                                            m.redraw();
-                                        }, 100);
-                                    }, 100);
+
                                 } else {
                                     $.alert('No existen registros para eliminar.');
                                 }
+
+
 
 
                             },
@@ -1252,7 +1278,19 @@ class GasesMedUci {
                         ),
                     ]),
                 ]),
-                m("tr.tx-uppercase.mg-t-20", [
+                m("tr.tx-uppercase.mg-t-20", {
+                    class: (GasesMedUci.loaderRows == true ? '' : 'd-none'),
+                }, [
+                    m("td[colspan='12']", [
+                        m('div.pd-20', [
+                            m(Loader)
+                        ])
+
+                    ])
+                ]),
+                m("tr.tx-uppercase.mg-t-20", {
+                    class: (GasesMedUci.loaderRows == false ? '' : 'd-none'),
+                }, [
                     m("td[colspan='12'][id='registrosGasesMedUci']", { style: "max-width: 150px;overflow: auto;" },
                         (GasesMedUci.show != false ? [PacientesUCI.vTable('table-gasesmed', GasesMedUci.getRegistros(), GasesMedUci.arqTable())] : [])
                     ),
