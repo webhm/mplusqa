@@ -39,6 +39,7 @@ class PacientesUCIHistorial extends App {
     static fechaDesde = null;
     static horaDesde = null;
     static fechaBusqueda = null;
+    static busquedaHecha = false;
 
     constructor(_data) {
 
@@ -624,25 +625,33 @@ class PacientesUCIHistorial extends App {
                                     m("button.btn.btn-xs.btn-light.tx-semibold.tx-14.mg-r-2.wd-10p[type='button']", {
                                         onclick: () => {
 
+                                            if (PacientesUCIHistorial.busquedaHecha == false) {
+                                                let start = moment(PacientesUCIHistorial.fechaDesde, "DD-MM-YYYY");
+                                                let end = moment(PacientesUCIHistorial.fechaHasta, "DD-MM-YYYY");
 
-                                            let start = moment(PacientesUCIHistorial.fechaDesde, "DD-MM-YYYY");
-                                            let end = moment(PacientesUCIHistorial.fechaHasta, "DD-MM-YYYY");
+                                                //Difference in number of days
+                                                console.log(99, moment.duration(start.diff(end)).asDays())
 
-                                            //Difference in number of days
-                                            console.log(99, moment.duration(start.diff(end)).asDays())
+                                                if (moment.duration(start.diff(end)).asDays() != -1) {
+                                                    $.alert('Error de formato o no se puede seleccionar más de 24 horas.');
+                                                } else {
+                                                    if (PacientesUCIHistorial.fechaDesde !== null) {
+                                                        let fechaDesde = moment(PacientesUCIHistorial.fechaDesde, 'DD/MM/YYYY').format('DD-MM-YYYY');
+                                                        let fechaHasta = moment(PacientesUCIHistorial.fechaHasta, 'DD/MM/YYYY').format('DD-MM-YYYY');
+                                                        PacientesUCIHistorial.fechaDesde = fechaDesde;
+                                                        PacientesUCIHistorial.fechaHasta = fechaHasta;
+                                                        PacientesUCIHistorial.busquedaHecha = true;
+                                                        FecthUci.validarAtencionHistorial();
+                                                    }
 
-                                            if (moment.duration(start.diff(end)).asDays() != -1) {
-                                                $.alert('Error de formato o no se puede seleccionar más de 24 horas.');
-                                            } else {
-                                                if (PacientesUCIHistorial.fechaDesde !== null) {
-                                                    let fechaDesde = moment(PacientesUCIHistorial.fechaDesde, 'DD/MM/YYYY').format('DD-MM-YYYY');
-                                                    let fechaHasta = moment(PacientesUCIHistorial.fechaHasta, 'DD/MM/YYYY').format('DD-MM-YYYY');
-                                                    PacientesUCIHistorial.fechaDesde = fechaDesde;
-                                                    PacientesUCIHistorial.fechaHasta = fechaHasta;
-                                                    FecthUci.validarAtencionHistorial();
                                                 }
-
+                                            } else {
+                                                alert('Recargue esta página para una nueva consulta.');
+                                                window.location.reload();
                                             }
+
+
+
 
 
 
@@ -1004,7 +1013,7 @@ class PacientesUCIHistorial extends App {
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.orden - b.orden);
 
-        console.log(335566, _arr    )
+        console.log(335566, _arr)
 
 
         // Establecer Columnas
