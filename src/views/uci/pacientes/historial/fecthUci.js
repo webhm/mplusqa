@@ -26,7 +26,7 @@ class FecthUci {
                 especialidad: 'MEDICINA INTERNA',
                 status: parseInt(_v.STATUS),
                 asume: (_v.USUARIO_ASUME != null ? 'Usuario: ' + _v.USUARIO_ASUME + '<br/>Fecha: ' + _v.FECHA_ASUME + '<br/>Comentario: ' + _v.COMENTARIO : ''),
-                cancela: (_v.USUARIO_CANCELA != null ? 'Usuario: ' + _v.USUARIO_CANCELA + '<br/>Fecha: ' + _v.FECHA_CANCELA + '<br/>Comentario: ' + _v.COMENTARIO_CANCELA : '') ,
+                cancela: (_v.USUARIO_CANCELA != null ? 'Usuario: ' + _v.USUARIO_CANCELA + '<br/>Fecha: ' + _v.FECHA_CANCELA + '<br/>Comentario: ' + _v.COMENTARIO_CANCELA : ''),
                 gestion: 0,
             });
             TurnosUciHistorial.turnos.push(TurnosUciHistorial.nuevoTurno);
@@ -186,7 +186,7 @@ class FecthUci {
 
     }
 
-    static  actualizarSeccion(_dataSeccion) {
+    static actualizarSeccion(_dataSeccion) {
 
         let _url = '';
         if (window.location.hostname == 'testmplus.hospitalmetropolitano.org') {
@@ -424,9 +424,13 @@ class FecthUci {
 
                 let t = [];
 
+
                 _res.map((_v, _i) => {
                     _v.map((a, b) => {
-                        t.push(a);
+                        if (a.ATENCION == PacientesUCIHistorial.numeroAtencion) {
+                            t.push(a);
+                        }
+                       
                     });
                 });
 

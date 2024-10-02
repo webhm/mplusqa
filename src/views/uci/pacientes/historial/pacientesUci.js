@@ -884,7 +884,7 @@ class PacientesUCIHistorial extends App {
         options.map((option) => {
             FecthUci.dataHistorial.filter((obj) => {
                 let _obj = JSON.parse(obj.DATASECCION);
-                if (_obj.id === option.id) {
+                if (_obj.id === option.id && _obj.tipoBit == undefined) {
                     res.push(_obj);
                 }
             });
@@ -1003,6 +1003,8 @@ class PacientesUCIHistorial extends App {
         resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.orden - b.orden);
+
+        console.log(335566, _arr    )
 
 
         // Establecer Columnas
