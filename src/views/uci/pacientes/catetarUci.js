@@ -632,10 +632,10 @@ class CateterUci {
 
                                     m("button.btn.btn-xs.btn-dark[type='button'][id='copyAll']", {
                                         class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'RecoletcorVejiga' ? '' : 'd-none'),
-                                        onclick: () => {
+                                        onclick: (el) => {
                                             CateterUci.loaderRows = true;
                                             CateterUci.copyAllRegistros();
-                                            document.getElementById('copyAll').remove();
+                                            el.target.classList.add('d-none');
 
                                         },
                                     },

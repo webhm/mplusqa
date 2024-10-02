@@ -807,26 +807,7 @@ class CuidadosUci2 {
                                             CuidadosUci2.copyAllRegistros();
                                             el.target.classList.add('d-none');
 
-                                            /*
-                                            CuidadosUci2.iniciarRegistro();
-                                            CuidadosUci2.nuevoRegistro.id = oData.id;
-                                            CuidadosUci2.nuevoRegistro.cuidado = oData.cuidado;
-                                            if (PacientesUCI.numeroTurno != 1) {
-                                                CuidadosUci2.nuevoRegistro.frecuencia = oData.frecuencia;
-                                                CuidadosUci2.nuevoRegistro.am = oData.am;
-                                                CuidadosUci2.nuevoRegistro.pm = oData.pm;
-                                                CuidadosUci2.nuevoRegistro.hs = oData.hs;
-                                            }
-                                            console.log(66, CuidadosUci2.nuevoRegistro)
-                                            CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                            CuidadosUci2.agregarRegistro();
-                                            FecthUci.registrarSeccion(CuidadosUci2.nuevoRegistro);
-                                            CuidadosUci2.nuevoRegistro = null;
-                                            CuidadosUci2.filterRegistros();
-                                            PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
-
-                                            */
+                                          
                                         },
                                     },
                                         'Copiar',

@@ -629,7 +629,6 @@ class HemodialisisUci {
                                             HemodialisisUci.copyAllRegistros();
                                             el.target.classList.add('d-none');
 
-
                                         },
                                     },
                                         'Copiar',

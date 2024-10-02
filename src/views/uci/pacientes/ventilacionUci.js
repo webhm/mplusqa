@@ -629,7 +629,7 @@ class VentilacionUci {
 
                                             VentilacionUci.loaderRows = true;
                                             VentilacionUci.copyAllRegistros();
-                                            document.getElementById('copyAll').remove();
+                                            el.target.classList.add('d-none');
 
 
                                         },
