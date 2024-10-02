@@ -159,10 +159,18 @@ class OxigenacionUci {
 
 
         console.log(7788, res)
-
-        OxigenacionUci.filterRegistros();
-        PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
-        FecthUci.registrarAllSeccion(res);
+        
+        FecthUci.registrarAllSeccion(res).then(() => {
+            setTimeout(() => {
+                OxigenacionUci.filterRegistros();
+                m.redraw();
+                setTimeout(() => {
+                    OxigenacionUci.loaderRows = false;
+                    PacientesUCI.vReloadTable('table-oxigenacion', OxigenacionUci.getRegistros());
+                    m.redraw();
+                }, 100);
+            }, 100);
+        });
 
     }
 
@@ -614,7 +622,10 @@ class OxigenacionUci {
                                     ),
                                     m("button.btn.btn-xs.btn-dark[type='button']", {
                                         class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'AireAmbiente' ? '' : 'd-none'),
-                                        onclick: () => {
+                                        onclick: (el) => {
+                                                   
+                                            el.target.classList.add('d-none');
+                                            OxigenacionUci.loaderRows = true;
                                             OxigenacionUci.copyAllRegistros();
 
                                         },

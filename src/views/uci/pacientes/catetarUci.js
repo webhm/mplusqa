@@ -161,11 +161,19 @@ class CateterUci {
 
         console.log(7788, res)
 
-        CateterUci.filterRegistros();
-
-        FecthUci.registrarAllSeccion(res);
-
-        PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
+     
+        
+        FecthUci.registrarAllSeccion(res).then(() => {
+            setTimeout(() => {
+                CateterUci.filterRegistros();
+                m.redraw();
+                setTimeout(() => {
+                    CateterUci.loaderRows = false;
+                    PacientesUCI.vReloadTable('table-cateter', CateterUci.getRegistros());
+                    m.redraw();
+                }, 100);
+            }, 100);
+        });
 
 
 
@@ -625,7 +633,7 @@ class CateterUci {
                                     m("button.btn.btn-xs.btn-dark[type='button'][id='copyAll']", {
                                         class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'RecoletcorVejiga' ? '' : 'd-none'),
                                         onclick: () => {
-
+                                            CateterUci.loaderRows = true;
                                             CateterUci.copyAllRegistros();
                                             document.getElementById('copyAll').remove();
 

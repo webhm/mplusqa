@@ -142,10 +142,18 @@ class MarcapasosUci {
 
 
         console.log(7788, res)
-
-        MarcapasosUci.filterRegistros();
-        PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
-        FecthUci.registrarAllSeccion(res);
+        
+        FecthUci.registrarAllSeccion(res).then(() => {
+            setTimeout(() => {
+                MarcapasosUci.filterRegistros();
+                m.redraw();
+                setTimeout(() => {
+                    MarcapasosUci.loaderRows = false;
+                    PacientesUCI.vReloadTable('table-marcapasos', MarcapasosUci.getRegistros());
+                    m.redraw();
+                }, 100);
+            }, 100);
+        });
 
 
 
@@ -616,7 +624,10 @@ class MarcapasosUci {
                                     ),
                                     m("button.btn.btn-xs.btn-dark[type='button']", {
                                         class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'Frecuencia' ? '' : 'd-none'),
-                                        onclick: () => {
+                                        onclick: (el) => {
+                                            
+                                            el.target.classList.add('d-none');
+                                            MarcapasosUci.loaderRows = true;
                                             MarcapasosUci.copyAllRegistros();
 
                                         },

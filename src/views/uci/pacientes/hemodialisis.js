@@ -159,9 +159,20 @@ class HemodialisisUci {
             }
         });
 
-        HemodialisisUci.filterRegistros();
-        FecthUci.registrarAllSeccion(res);
-        PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
+    
+        
+        FecthUci.registrarAllSeccion(res).then(() => {
+            setTimeout(() => {
+                HemodialisisUci.filterRegistros();
+                m.redraw();
+                setTimeout(() => {
+                    HemodialisisUci.loaderRows = false;
+                    PacientesUCI.vReloadTable('table-hemodialisis', HemodialisisUci.getRegistros());
+                    m.redraw();
+                }, 100);
+            }, 100);
+        });
+
 
 
     }
@@ -614,8 +625,9 @@ class HemodialisisUci {
                                     m("button.btn.btn-xs.btn-dark[type='button']", {
                                         class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'ParcheLimpioSeco' ? '' : 'd-none'),
                                         onclick: (el) => {
-                                            el.target.classList.add('d-none');
+                                            HemodialisisUci.loaderRows = true;
                                             HemodialisisUci.copyAllRegistros();
+                                            el.target.classList.add('d-none');
 
 
                                         },

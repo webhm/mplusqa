@@ -159,9 +159,18 @@ class VentilacionUci {
 
         });
 
-        VentilacionUci.filterRegistros();
-        FecthUci.registrarAllSeccion(res);
-        PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
+    
+        FecthUci.registrarAllSeccion(res).then(() => {
+            setTimeout(() => {
+                VentilacionUci.filterRegistros();
+                m.redraw();
+                setTimeout(() => {
+                    VentilacionUci.loaderRows = false;
+                    PacientesUCI.vReloadTable('table-ventilacion', VentilacionUci.getRegistros());
+                    m.redraw();
+                }, 100);
+            }, 100);
+        });
 
 
     }
@@ -618,8 +627,8 @@ class VentilacionUci {
                                         class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'PosicionSemifowler' ? '' : 'd-none'),
                                         onclick: (el) => {
 
+                                            VentilacionUci.loaderRows = true;
                                             VentilacionUci.copyAllRegistros();
-
                                             document.getElementById('copyAll').remove();
 
 

@@ -146,9 +146,18 @@ class CuidadosUci2 {
             }
         });
 
-        CuidadosUci2.filterRegistros();
-        FecthUci.registrarAllSeccion(res);
-        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
+     
+        FecthUci.registrarAllSeccion(res).then(() => {
+            setTimeout(() => {
+                CuidadosUci2.filterRegistros();
+                m.redraw();
+                setTimeout(() => {
+                    CuidadosUci2.loaderRows = false;
+                    PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
+                    m.redraw();
+                }, 100);
+            }, 100);
+        });
 
 
 
@@ -793,9 +802,10 @@ class CuidadosUci2 {
                                         class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'Posicion' ? '' : 'd-none'),
                                         onclick: (el) => {
 
-                                            el.target.classList.add('d-none');
-
+                                            
+                                            CuidadosUci2.loaderRows = true;
                                             CuidadosUci2.copyAllRegistros();
+                                            el.target.classList.add('d-none');
 
                                             /*
                                             CuidadosUci2.iniciarRegistro();
