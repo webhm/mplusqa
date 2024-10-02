@@ -2,6 +2,7 @@ import m from "mithril";
 import PacientesUCI from "./pacientesUci";
 import FecthUci from "./fecthUci";
 import TurnosUci from "./turnosUci";
+import Loader from "../../utils/loader";
 
 class Cuidado {
     id = null;
@@ -39,6 +40,7 @@ class CuidadosUci2 {
     static registros = [];
     static nuevoRegistro = null;
     static show = false;
+    static loaderRows = false;
 
     static validarRegistro() {
 
@@ -155,9 +157,17 @@ class CuidadosUci2 {
             }
         });
 
-        CuidadosUci2.filterRegistros();
-        FecthUci.registrarAllSeccion(res);
-        PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
+        FecthUci.registrarAllSeccion(res).then(() => {
+            setTimeout(() => {
+                CuidadosUci2.filterRegistros();
+                m.redraw();
+                setTimeout(() => {
+                    CuidadosUci2.loaderRows = false;
+                    PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
+                    m.redraw();
+                }, 100);
+            }, 100);
+        });
 
 
 
@@ -623,31 +633,8 @@ class CuidadosUci2 {
                                         onclick: (el) => {
 
                                             el.target.classList.add('d-none');
+                                            CuidadosUci2.loaderRows = false;
                                             CuidadosUci2.copyAllRegistros();
-
-                                            /*
-
-
-                                            CuidadosUci2.iniciarRegistro();
-                                            CuidadosUci2.nuevoRegistro.id = oData.id;
-                                            CuidadosUci2.nuevoRegistro.cuidado = oData.cuidado;
-
-                                            if (PacientesUCI.numeroTurno != 1) {
-                                                CuidadosUci2.nuevoRegistro.frecuencia = oData.frecuencia;
-                                                CuidadosUci2.nuevoRegistro.am = oData.am;
-                                                CuidadosUci2.nuevoRegistro.pm = oData.pm;
-                                                CuidadosUci2.nuevoRegistro.hs = oData.hs;
-                                            }
-                                            CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-                                            CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                            CuidadosUci2.agregarRegistro();
-                                            console.log(77, CuidadosUci2.allRegistros)
-                                            FecthUci.registrarSeccion(CuidadosUci2.nuevoRegistro);
-                                            CuidadosUci2.nuevoRegistro = null;
-                                            CuidadosUci2.filterRegistros();
-                                            PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
-                                            */
-
 
                                         },
                                     },
@@ -686,7 +673,7 @@ class CuidadosUci2 {
                     style: { "background-color": "#CCCCFF" },
                     onclick: () => {
                         if (CuidadosUci2.show) {
-                           CuidadosUci2.destroyTable();
+                            CuidadosUci2.destroyTable();
                         }
                         CuidadosUci2.show = !CuidadosUci2.show;
                     }
@@ -943,7 +930,19 @@ class CuidadosUci2 {
                         "Registros: "
                     ),
                 ]),
-                m("tr.tx-uppercase.mg-t-20", [
+                m("tr.tx-uppercase.mg-t-20", {
+                    class: (CuidadosUci2.loaderRows == true ? '' : 'd-none'),
+                }, [
+                    m("td[colspan='12']", [
+                        m('div.pd-20', [
+                            m(Loader)
+                        ])
+
+                    ])
+                ]),
+                m("tr.tx-uppercase.mg-t-20", {
+                    class: (CuidadosUci2.loaderRows == false ? '' : 'd-none'),
+                }, [
                     m("td[colspan='12']",
                         (CuidadosUci2.show != false ? [PacientesUCI.vTable('table-cuidados', CuidadosUci2.getRegistros(), CuidadosUci2.arqTable())] : [])
                     ),
