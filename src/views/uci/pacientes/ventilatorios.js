@@ -3,6 +3,7 @@ import m from "mithril";
 import PacientesUCI from "./pacientesUci";
 import TurnosUci from "./turnosUci";
 import FecthUci from "./fecthUci";
+import Loader from "../../utils/loader";
 
 class Ventilatorio {
     id = null;
@@ -39,6 +40,7 @@ class VentilatoriosUci {
     static sRowsHeaders = [];
     static sColumns = [];
     static sRows = [];
+    static loaderRows = false;
 
     static validarRegistro() {
 
@@ -95,7 +97,7 @@ class VentilatoriosUci {
 
     }
 
-    static copyAllRegistros(_options) {
+    static async copyAllRegistros(_options) {
 
         let res = [];
         let hash = {};
@@ -128,11 +130,27 @@ class VentilatoriosUci {
 
         });
 
-        FecthUci.registrarAllSeccion(res);
+
+        FecthUci.registrarAllSeccion(res).then(() => {
+
+            setTimeout(() => {
+                VentilatoriosUci.destroyTable();
+                VentilatoriosUci.filterRegistros();
+                VentilatoriosUci.show = false;
+                m.redraw();
+                setTimeout(() => {
+                    VentilatoriosUci.show = true;
+                    VentilatoriosUci.loaderRows = false;
+                    m.redraw();
+                }, 100);
+            }, 100);
+        });
 
     }
 
-    static eliminarAllRegistros() {
+
+
+    static async eliminarAllRegistros() {
 
 
         let res = [];
@@ -146,10 +164,27 @@ class VentilatoriosUci {
         // Quitar duplicados
         resultNro = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
 
-        resultNro.map((_v, _i) => {
-            VentilatoriosUci.eliminarRegistro(_v);
-            FecthUci.eliminarSeccion(_v);
+
+        Promise.all(
+            resultNro.map(async (_v, _i) => {
+                VentilatoriosUci.eliminarRegistro(_v);
+                await FecthUci.eliminarSeccion(_v);
+            })
+        ).then(() => {
+            setTimeout(() => {
+                VentilatoriosUci.destroyTable();
+                VentilatoriosUci.filterRegistros();
+                VentilatoriosUci.show = false;
+                m.redraw();
+                setTimeout(() => {
+                    VentilatoriosUci.show = true;
+                    VentilatoriosUci.loaderRows = false;
+                    m.redraw();
+                }, 100);
+            }, 100);
         });
+
+
 
 
     }
@@ -1047,14 +1082,16 @@ class VentilatoriosUci {
                                     ondblclick: (e) => {
                                         VentilatoriosUci.nuevoRegistro = null
                                         valores.filter((v, i) => {
-
                                             if (v.id == oData.id) {
-
                                                 let _i = v.idObj[index];
-
                                                 VentilatoriosUci.verRegistro(resultNro[_i]);
 
-
+                                                if (VentilatoriosUci.nuevoRegistro !== null && VentilatoriosUci.nuevoRegistro.hora == null) {
+                                                    if (VentilatoriosUci.setHora != undefined) {
+                                                        VentilatoriosUci.nuevoRegistro.hora = VentilatoriosUci.setHora;
+                                                        document.getElementById('horaVentilatorio' + resultNro[_i].nro).value = VentilatoriosUci.setHora;
+                                                    }
+                                                }
 
                                                 document.getElementById('condicion' + resultNro[_i].nro).className = "form-control tx-semibold tx-14";
                                                 document.getElementById('txtCondicion' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
@@ -1062,7 +1099,6 @@ class VentilatoriosUci {
                                                 document.getElementById('txtHora' + resultNro[_i].nro).className = "text-center pd-l-0 pd-r-0 d-none";
                                                 if (document.getElementById('btn' + resultNro[_i].nro) != null) {
                                                     document.getElementById('btn' + resultNro[_i].nro).className = "btn btn-xs btn-success btn-block tx-12 d-none";
-
 
                                                     setTimeout(() => {
                                                         new Cleave("#horaVentilatorio" + resultNro[_i].nro, {
@@ -1188,7 +1224,7 @@ class VentilatoriosUci {
                     return m.mount(nTd, {
                         view: () => {
                             return [
-                                m('div', {
+                                m('div.pd-20', {
                                     ondblclick: (e) => {
                                         VentilatoriosUci.nuevoRegistro = null;
                                         valores.filter((v, i) => {
@@ -1367,7 +1403,7 @@ class VentilatoriosUci {
                                         },
                                         onkeypress: (e) => {
                                             if (e.keyCode == 13) {
-                                              
+
                                                 if (moment(VentilatoriosUci.nuevoRegistro.hora, "HH:mm", true).isValid() == false) {
                                                     $.alert(VentilatoriosUci.nuevoRegistro.hora + ' no tiene el formato HH:mm necesario.');
                                                 } else {
@@ -1913,8 +1949,8 @@ class VentilatoriosUci {
                                                     }, 100);
                                                 }
                                             }
-                                          
-                                           
+
+
                                         }
                                     },
                                 }),
@@ -1932,77 +1968,17 @@ class VentilatoriosUci {
                         "Registros: "
                     ),
                 ]),
-
+              
                 m("tr.tx-uppercase", [
                     m("td[colspan='12'][align='right']", [
                         m("button.btn.btn-xs.btn-dark.mg-1[type='button']", {
                             onclick: (el) => {
 
+                                VentilatoriosUci.loaderRows = true;
+
                                 VentilatoriosUci.copyAllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
-                                setTimeout(() => {
-                                    VentilatoriosUci.destroyTable();
-                                    VentilatoriosUci.filterRegistros();
-                                    VentilatoriosUci.show = false;
-                                    m.redraw();
-                                    setTimeout(() => {
-                                        VentilatoriosUci.show = true;
-                                        m.redraw();
-                                    }, 100);
-                                }, 100);
 
 
-                                /*
-if (oData.condicion == null) {
-alert('No se permite copiar. Ya existe un registro disponible.');
-throw 'No se permite copiar. Ya existe un registro disponible.'
-}
- 
-VentilatoriosUci.iniciarRegistro();
-VentilatoriosUci.nuevoRegistro.id = oData.id;
-VentilatoriosUci.nuevoRegistro.ventilatorio = oData.ventilatorio;
-VentilatoriosUci.nuevoRegistro.orden = oData.orden;
-VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
-VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
- 
-setTimeout(() => {
-VentilatoriosUci.agregarRegistro();
-FecthUci.registrarSeccion(VentilatoriosUci.nuevoRegistro);
-VentilatoriosUci.nuevoRegistro = null;
-VentilatoriosUci.destroyTable();
-VentilatoriosUci.filterRegistros();
-VentilatoriosUci.show = false;
-m.redraw();
-setTimeout(() => {
-VentilatoriosUci.show = true;
-m.redraw();
-}, 100);
-}, 100);
- 
- 
-let tt = $('#Ventilatorios_' + oData.id).offset().top;
-setTimeout(() => {
-let isAnimating = true;
-$('html,body').animate({
-scrollTop: tt
-},
-700, "easeInOutSine",
-function() {
-isAnimating = false;
-})
-}, 250);
- 
-setTimeout(() => {
-let isAnimating = true;
-$('#registrosVentilatorios').animate({
-scrollLeft: '+=460'
-},
-700, "easeInOutSine",
-function() {
-isAnimating = false;
-})
-}, 250);
- 
-*/
 
 
                             },
@@ -2013,17 +1989,9 @@ isAnimating = false;
                             onclick: (el) => {
 
                                 if (VentilatoriosUci.allRegistros.length > 0) {
+                                    VentilatoriosUci.loaderRows = true;
                                     VentilatoriosUci.eliminarAllRegistros();
-                                    setTimeout(() => {
-                                        VentilatoriosUci.destroyTable();
-                                        VentilatoriosUci.filterRegistros();
-                                        VentilatoriosUci.show = false;
-                                        m.redraw();
-                                        setTimeout(() => {
-                                            VentilatoriosUci.show = true;
-                                            m.redraw();
-                                        }, 100);
-                                    }, 100);
+
                                 } else {
                                     $.alert('No existen registros para eliminar.');
                                 }
@@ -2036,7 +2004,19 @@ isAnimating = false;
                         ),
                     ]),
                 ]),
-                m("tr.tx-uppercase.mg-t-20", [
+                m("tr.tx-uppercase.mg-t-20", {
+                    class: (VentilatoriosUci.loaderRows == true ? '' : 'd-none'),
+                }, [
+                    m("td[colspan='12']", [
+                        m('div.pd-20', [
+                            m(Loader)
+                        ])
+
+                    ])
+                ]),
+                m("tr.tx-uppercase.mg-t-20",  {
+                    class: (VentilatoriosUci.loaderRows == false ? '' : 'd-none'),
+                }, [
                     m("td[colspan='12'][id='registrosVentilatorios']", { style: "max-width: 150px;overflow: auto;" },
                         (VentilatoriosUci.show != false ? [PacientesUCI.vTable('table-ventilatorios', VentilatoriosUci.getRegistros(), VentilatoriosUci.arqTable())] : [])
                     ),

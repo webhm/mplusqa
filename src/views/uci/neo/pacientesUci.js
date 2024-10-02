@@ -4721,8 +4721,9 @@ class PacientesUCI extends App {
             });
 
             CuidadosUci2.filterRegistros();
-            PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
             FecthUci.registrarAllSeccion(res);
+            PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
+           
 
 
         }

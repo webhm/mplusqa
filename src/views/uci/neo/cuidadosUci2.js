@@ -619,8 +619,13 @@ class CuidadosUci2 {
                                         'Eliminar',
                                     ),
                                     m("button.btn.btn-xs.btn-dark[type='button']", {
-                                        class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
+                                        class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'Bano' ? '' : 'd-none'),
                                         onclick: (el) => {
+
+                                            el.target.classList.add('d-none');
+                                            CuidadosUci2.copyAllRegistros();
+
+                                            /*
 
 
                                             CuidadosUci2.iniciarRegistro();
@@ -641,7 +646,7 @@ class CuidadosUci2 {
                                             CuidadosUci2.nuevoRegistro = null;
                                             CuidadosUci2.filterRegistros();
                                             PacientesUCI.vReloadTable('table-cuidados', CuidadosUci2.getRegistros());
-
+                                            */
 
 
                                         },

@@ -5514,7 +5514,7 @@ class PacientesUCI extends App {
                             return [
                                 m('div.text-center', [
                                     m("button.btn-xs.btn-block.tx-semibold.tx-13[type='button']", {
-                                        class: (PacientesUCI.fechaHoraTurno == oData.fechaHoraTurno && oData.gestion == 1 ? 'bg-warning' : 'bg-light')
+                                        class: (oData.status == 1 || oData.status == 4 ? 'bg-warning' : 'bg-success'),
                                     },
                                         (oData.status == 1 ? 'Turno Abierto' : ''),
                                         (oData.status == 2 ? 'Turno Cerrado' : ''),
