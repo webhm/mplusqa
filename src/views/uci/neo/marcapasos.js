@@ -123,7 +123,7 @@ class MarcapasosUci {
         resultNro.map((_v, _i) => {
             MarcapasosUci.iniciarRegistro();
             MarcapasosUci.nuevoRegistro.id = _v.id;
-            MarcapasosUci.nuevoRegistro.cuidado = _v.cuidado;
+            MarcapasosUci.nuevoRegistro.hora = _v.hora;
             if (PacientesUCI.numeroTurno != 1) {
                 MarcapasosUci.nuevoRegistro.frecuencia = _v.frecuencia;
                 MarcapasosUci.nuevoRegistro.am = _v.am;
@@ -593,8 +593,8 @@ class MarcapasosUci {
                                         'Cancelar Edición',
                                     ),
                                     m("button.btn.btn-xs.btn-dark[type='button']", {
-                                        class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? '' : 'd-none'),
-                                        onclick: () => {
+                                        class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'Frecuencia' ? '' : 'd-none'),
+                                        onclick: (el) => {
 
                                             el.target.classList.add('d-none');
                                             MarcapasosUci.loaderRows = true;

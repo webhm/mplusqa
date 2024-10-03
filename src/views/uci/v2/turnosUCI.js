@@ -2,6 +2,7 @@ import m from "mithril";
 import FetchUci from "./fetchUci";
 import TableUCI from "../../utils/tableUci";
 import Loader from "../../utils/loader";
+import { UNDERLINE } from "construct-ui/lib/esm/components/icon/generated/IconNames";
 
 class Turno {
 
@@ -51,6 +52,9 @@ class Turno {
     }
     iniciarGestion() {
 
+
+        console.log(33, TurnosUCI.turnos)
+
         try {
 
             if (this.usuarioTurno != this.usuarioActual) {
@@ -60,11 +64,12 @@ class Turno {
             if (this.gestion == 0) {
                 this.gestion = 1;
             }
-            
+
 
         } catch (error) {
 
             if (error == 'asumir') {
+
                 $.alert('Es necesario asumir antes de continuar.')
             }
 
@@ -79,7 +84,7 @@ class Turno {
     view(_data) {
         return [
             m("button.btn.btn-xs.btn-primary.tx-semibold.tx-14.mg-r-2[type='button']", {
-                onclick: () => {
+                onclick: (el) => {
 
 
                     $.confirm({
@@ -118,8 +123,15 @@ class TurnosUCI {
     message = '';
     turnos = []; // Lista de Turnos
 
+
     constructor() {
-      
+
+        this.loader = this.loader;
+        this.error = this.error;
+        this.message = this.message;
+        this.turnos = this.turnos;
+
+
     }
 
     oninit(_data) {
@@ -155,7 +167,12 @@ class TurnosUCI {
                 this.turnos.push(this.setTurno(_v, usuarioTurno));
             }
         });
+
+
     }
+
+
+
 
 
     getTurnos(numeroHistoriaClinica, numeroAtencion, usuarioTurno) {
@@ -205,7 +222,7 @@ class TurnosUCI {
 
 
 
-    arqTableTurnos() {
+    arqTableTurnos(_data) {
         return {
             data: null,
             dom: 'ltp',
@@ -468,7 +485,7 @@ class TurnosUCI {
 
                                         onclick: () => {
 
-                                          
+
                                             oData.iniciarGestion()
 
 

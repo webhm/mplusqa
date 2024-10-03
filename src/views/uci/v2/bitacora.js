@@ -18,6 +18,7 @@ class BitacoraUCI extends App {
     message = '';
     turnos = null;
     nuevoTurno = null;
+    dataTurno = null;
     numeroHistoriaClinica = null;
     numeroAtencion = null;
     numeroTurno = null;
@@ -177,10 +178,9 @@ class BitacoraUCI extends App {
                                             usuarioTurno: this.usuarioTurno,
                                             oncreate: (_data) => {
                                                 this.turnos = _data.state;
-
-
                                             }
-                                        })
+                                        }),
+                                       
                                     ] : [])
                                 ),
 
