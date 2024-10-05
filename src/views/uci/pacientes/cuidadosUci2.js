@@ -565,6 +565,13 @@ class CuidadosUci2 {
                                                 e.preventDefault();
                                             }
                                         },
+                                        oncreate: (el) => {
+                                            if (PacientesUCI.numeroTurno == 1) {
+                                                el.dom.disabled = false;
+                                            } else{
+                                                el.dom.disabled = true;
+                                            }
+                                        },
                                         value: (CuidadosUci2.getRegistro(oData.id).am !== null ? CuidadosUci2.getRegistro(oData.id).am : '')
                                     })
                                 ] : [])
@@ -650,6 +657,13 @@ class CuidadosUci2 {
                                                 e.preventDefault();
                                             }
                                         },
+                                        oncreate: (el) => {
+                                            if (PacientesUCI.numeroTurno == 2) {
+                                                el.dom.disabled = false;
+                                            } else{
+                                                el.dom.disabled = true;
+                                            }
+                                        },
                                         value: (CuidadosUci2.getRegistro(oData.id).pm !== null ? CuidadosUci2.getRegistro(oData.id).pm : '')
                                     })
                                 ] : [])
@@ -732,6 +746,13 @@ class CuidadosUci2 {
                                                 CuidadosUci2.getRegistro(oData.id).hs = (e.target.value.length !== 0 ? e.target.value : null);
                                             } else {
                                                 e.preventDefault();
+                                            }
+                                        },
+                                        oncreate: (el) => {
+                                            if (PacientesUCI.numeroTurno == 3) {
+                                                el.dom.disabled = false;
+                                            } else{
+                                                el.dom.disabled = true;
                                             }
                                         },
                                         value: (CuidadosUci2.getRegistro(oData.id).hs !== null ? CuidadosUci2.getRegistro(oData.id).hs : '')
