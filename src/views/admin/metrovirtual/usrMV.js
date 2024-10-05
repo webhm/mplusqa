@@ -735,9 +735,10 @@ class usrMV extends App {
 
             return m.request({
                 method: "GET",
-                url: "https://api.hospitalmetropolitano.org/v1/lostpass" + _queryString,
+                url: "https://apisoa.hospitalmetropolitano.org/v1/mval/rsecs" + _queryString,
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
+                    'apikey': ApiHTTP.SOAKey
                 },
                 extract: function (xhr) {
                     return {

@@ -162,7 +162,7 @@ class PacientesUCIHistorial extends App {
         ViasUci.registros = PacientesUCIHistorial.parseSeccion(Array.from(document.getElementById('sec_Vias').options));
 
         // AccesosUci.show = true;
-        AccesosUci.registros = PacientesUCIHistorial.parseSeccion(Array.from(document.getElementById('sec_Accesos').options));
+        AccesosUci.registros = PacientesUCIHistorial.parseSeccionAccesos(Array.from(document.getElementById('sec_Accesos').options));
 
         // CateterUci.show = true;
 
@@ -4400,6 +4400,30 @@ class PacientesUCIHistorial extends App {
             FecthUci.dataHistorial.filter((obj) => {
                 let _obj = JSON.parse(obj.DATASECCION);
                 if (_obj.id === option.id) {
+                    res.push(_obj);
+                }
+            });
+        });
+
+        // Quitar duplicados
+        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+
+        // Ordenar desc
+        _arr = result.sort((a, b) => a.nro - b.nro);
+        return _arr;
+    }
+
+    static parseSeccionAccesos(options) {
+        let res = [];
+        let result = [];
+        let _arr = [];
+        let hash = {};
+
+
+        options.map((option) => {
+            FecthUci.dataHistorial.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.seccion == 'Accesos') {
                     res.push(_obj);
                 }
             });
