@@ -288,7 +288,9 @@ class VentilatorioNoInvasivo {
                                             VentilatorioNoInvasivo.iniciarRegistro();
                                             VentilatorioNoInvasivo.nuevoRegistro.id = oData.id;
                                             VentilatorioNoInvasivo.nuevoRegistro.tipo = oData.tipo;
+                                            VentilatorioNoInvasivo.nuevoRegistro.hora = oData.hora;
                                             VentilatorioNoInvasivo.nuevoRegistro.valor = oData.valor;
+                                            VentilatorioNoInvasivo.nuevoRegistro.cantidad = oData.cantidad;
                                             VentilatorioNoInvasivo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                             VentilatorioNoInvasivo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
 

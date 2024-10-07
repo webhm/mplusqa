@@ -352,7 +352,7 @@ class UlcerasUciPed {
                     }
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "LOCALIZACIÓN DE ÚLCERAS:"
+                        "VALORACIÓN FÍSICA:"
                     ),
 
                 ])
