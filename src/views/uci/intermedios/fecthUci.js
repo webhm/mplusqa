@@ -454,7 +454,16 @@ class FecthUci {
 
                     let _ayer = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
 
-                    let turnosHoy = res.data.dataTurnos.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(_ayer + ' 07:59', 'DD-MM-YYYY HH:mm').unix() && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix() && v.TIPO_BIT == 'UCIINTER' && v.FECHA_CANCELA == null);
+                    let turnosHoy = [];
+
+                    let turnosHoy24 = res.data.dataTurnos.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(_ayer + ' 07:59', 'DD-MM-YYYY HH:mm').unix() && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix() && v.TIPO_BIT == 'UCIINTER' && v.FECHA_CANCELA == null);
+
+                    if (turnosHoy24.length > 0) {
+                        turnosHoy = turnosAbiertos24;
+                    } else {
+                        turnosHoy = res.data.dataTurnos.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix() && v.TIPO_BIT == 'UCIINTER' && v.FECHA_CANCELA == null && v.STATUS == '1');
+                    }
+
 
                     if (turnosHoy.length > 0) {
                         TurnosUci.turnos = FecthUci.setTurnos(turnosHoy);
@@ -469,9 +478,17 @@ class FecthUci {
                     // Existen turnos abiertos?
                     let _ayer = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY').subtract(1, 'days').format('DD-MM-YYYY');
 
-                    let turnosAbiertos = res.data.dataTurnos.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix() && v.TIPO_BIT == 'UCIINTER' && v.FECHA_CANCELA == null);
+                    let turnosAbiertos = [];
+                    let ta = [];
+                    let turnosAbiertos24 = res.data.dataTurnos.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() > moment(_ayer + ' 07:59', 'DD-MM-YYYY HH:mm').unix() && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix() && v.TIPO_BIT == 'UCIINTER' && v.FECHA_CANCELA == null);
 
-                    let ta = [turnosAbiertos[turnosAbiertos.length - 1], turnosAbiertos[turnosAbiertos.length - 2], turnosAbiertos[turnosAbiertos.length - 3]];
+                    if (turnosAbiertos24.length > 0) {
+                        turnosAbiertos = turnosAbiertos24;
+                        ta = [turnosAbiertos[turnosAbiertos.length - 1], turnosAbiertos[turnosAbiertos.length - 2], turnosAbiertos[turnosAbiertos.length - 3]];
+                    } else {
+                        turnosAbiertos = res.data.dataTurnos.filter(v => moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() < moment(moment().format('DD-MM-YYYY 07:59'), 'DD-MM-YYYY HH:mm').unix() && v.TIPO_BIT == 'UCIINTER' && v.FECHA_CANCELA == null && v.STATUS == '1');
+                        ta = [turnosAbiertos[turnosAbiertos.length - 1]];
+                    }
 
                     ta = ta.filter(function(element) {
                         return element !== undefined;

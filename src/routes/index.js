@@ -33,6 +33,9 @@ import CalendarioEndo2 from "../views/endoscopia/agenda/calendario2";
 import PedidoFlebotomista from "../views/laboratorio/flebotomista/pedidoFlebo";
 import PacientesUCIHistorial from "../views/uci/pacientes/historial/pacientesUci";
 import BitacoraUCI from "../views/uci/v2/bitacora";
+import CalendarComponent from "../views/uci/pacientes/calendar";
+import UciCalednar from "../views/uci/pacientes/calendar";
+import UciCalendar from "../views/uci/pacientes/calendar";
 
 // Routes here
 const Routes = {
@@ -71,6 +74,8 @@ const Routes = {
     "/endoscopia/agendas/calendario": CalendarioEndo2,
     "/salir": Salir,
     "/sing-out": SingOut,
+    "/cal": UciCalendar,
+
 };
 
 const DefaultRoute = "/";
