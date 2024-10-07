@@ -365,11 +365,8 @@ class BadgeAgendasReagendamiento {
                             if (_agendas.includes(_v.IDCALENDAR)) {
                                 return m("span.badge.badge-success.mg-r-2", {
                                     onclick: (el) => {
-                                        if (Calendario.calendarios.length > 1) {
-                                            Calendario.calendarios.splice(_i, 1);
-                                        } else {
-                                            $.alert('No es posible eliminar más de una agenda.')
-                                        }
+                                        delete Cita.data.calendarios[_v.IDCALENDAR];
+                                        console.log(66, Cita.data)
                                     }
                                 }, _v.CALENDAR);
                             }
@@ -655,6 +652,8 @@ class Calendario extends App {
 
                 let _agendas = Calendario.idCalendar.split(',');
                 Calendario.calendarios.map((_v) => {
+
+
                     if (_v.TIPO == 1 && _agendas.includes(_v.IDCALENDAR)) {
                         resSalas.push(_v.IDCALENDAR);
                     }

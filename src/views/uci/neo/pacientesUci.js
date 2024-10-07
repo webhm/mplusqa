@@ -226,7 +226,7 @@ class PacientesUCI extends App {
                         // ComburTest
                         m(ComburTestNeo),
                         // UlcerasUciPed
-                        m(UlcerasUciPed),
+                        // m(UlcerasUciPed),
                         // ValoracionUciNeo
                         m(ValoracionUciNeo),
 

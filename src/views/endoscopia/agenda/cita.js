@@ -522,6 +522,8 @@ class Cita {
             }
         }
 
+        console.log(33, Cita.data.calendarios)
+
         if (Cita.data.tipo == 1) {
 
             m.request({
