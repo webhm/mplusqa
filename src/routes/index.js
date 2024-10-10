@@ -36,6 +36,7 @@ import BitacoraUCI from "../views/uci/v2/bitacora";
 import CalendarComponent from "../views/uci/pacientes/calendar";
 import UciCalednar from "../views/uci/pacientes/calendar";
 import UciCalendar from "../views/uci/pacientes/calendar";
+import CalendarioEndo5 from "../views/endoscopia/agenda/calendario5";
 
 // Routes here
 const Routes = {
