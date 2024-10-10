@@ -424,15 +424,9 @@ class FecthUci {
 
                 let t = [];
 
+                t = _res.flat(Infinity);
 
-                _res.map((_v, _i) => {
-                    _v.map((a, b) => {
-                        if (a.ATENCION == PacientesUCIHistorial.numeroAtencion) {
-                            t.push(a);
-                        }
-                       
-                    });
-                });
+                console.info(44, t)
 
                 FecthUci.dataHistorial = t;
                 PacientesUCIHistorial.loadSecs();
