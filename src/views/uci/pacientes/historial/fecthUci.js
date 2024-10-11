@@ -413,17 +413,30 @@ class FecthUci {
                 $.alert('No existe información en la fecha ingresada.');
             } else {
 
-                let seccionesHoy = res.data.filter(v =>
-                    v.ATENCION == PacientesUCIHistorial.numeroAtencion
-                    && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() >= moment(fechaDesde + ' ' + horaDesde, 'DD-MM-YYYY HH:mm').unix()
-                    && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() <= moment(fechaHasta + ' ' + horaHasta, 'DD-MM-YYYY HH:mm').unix()
-                    && JSON.parse(v.DATASECCION).tipoBit == undefined);
+                // Filtrar las secciones de hoy
+                let seccionesHoy = res.data.filter(v => {
+                    const fechaSeccion = moment(v.FECHA, 'DD-MM-YYYY HH:mm').unix();
+                    const fechaInicio = moment(`${fechaDesde} ${horaDesde}`, 'DD-MM-YYYY HH:mm').unix();
+                    const fechaFin = moment(`${fechaHasta} ${horaHasta}`, 'DD-MM-YYYY HH:mm').unix();
+                    const tipoBitUndefined = JSON.parse(v.DATASECCION).tipoBit === undefined;
 
-                    console.info(4422, seccionesHoy)
+                    return v.ATENCION === PacientesUCIHistorial.numeroAtencion &&
+                        fechaSeccion >= fechaInicio &&
+                        fechaSeccion <= fechaFin &&
+                        tipoBitUndefined;
+                });
 
-      
+                // Filtrar los turnos que coinciden con las secciones de hoy
+                let _res = TurnosUciHistorial.turnos.flatMap(turno =>
+                    seccionesHoy.filter(seccion => turno.fechaHoraTurno === seccion.FECHA)
+                );
 
-                FecthUci.dataHistorial = seccionesHoy;
+                // Aplanar el array resultante
+                let t = _res;
+
+                console.info('dataHistorial', t)
+
+                FecthUci.dataHistorial = t;
                 PacientesUCIHistorial.loadSecs();
 
             }
