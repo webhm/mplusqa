@@ -24,6 +24,8 @@ import GasesMedUci from "./gasesMedUci";
 import UlcerasUciPed from "./ulcerasUciPed";
 import ValoracionUciNeo from "./valorarionUciNeo";
 import PrescripcionesUci from "./prescripcionesUci";
+import DataTableComponent from "./cb";
+
 
 
 // Pacientes UCI
@@ -198,7 +200,8 @@ class PacientesUCI extends App {
 
                         ]),
 
-
+                        //1
+                        //m(DataTableComponent),
                         // Cuidados Generales
                         m(CuidadosUci2),
                         // Vias
@@ -4349,7 +4352,7 @@ class PacientesUCI extends App {
         options.map((option) => {
             FecthUci.dataSecciones.filter((obj) => {
                 let _obj = JSON.parse(obj.DATASECCION);
-                if (_obj.id === option.id) {
+                if (_obj.id === option.id && _obj.seccion == 'ComburTest') {
                     res.push(_obj);
                 }
             });

@@ -3403,7 +3403,7 @@ class PacientesUCIHistorial extends App {
         options.map((option) => {
             FecthUci.dataHistorial.filter((obj) => {
                 let _obj = JSON.parse(obj.DATASECCION);
-                if (_obj.id === option.id) {
+                if (_obj.id === option.id && obj.SECCION == 'ComburTest') {
                     res.push(_obj);
                 }
             });
@@ -3412,6 +3412,8 @@ class PacientesUCIHistorial extends App {
         if (res.length == 0) {
             res = ComburTestUci.allRegistros;
         }
+
+        console.log(33, ComburTestUci.allRegistros)
 
         result = res.sort((a, b) => b.nro - a.nro);
 
@@ -4302,7 +4304,7 @@ class PacientesUCIHistorial extends App {
         options.map((option) => {
             FecthUci.dataHistorial.filter((obj) => {
                 let _obj = JSON.parse(obj.DATASECCION);
-                if (_obj.id === option.id) {
+                if (_obj.id === option.id && obj.SECCION == 'ComburTest') {
                     res.push(_obj);
                 }
             });
@@ -4364,29 +4366,32 @@ class PacientesUCIHistorial extends App {
     }
 
     static parseSeccionCuidadosGenerales(options) {
-        let res = [];
-        let result = [];
-        let resultId = [];
-        let _arr = [];
         let hash = {};
+        let res2 = [];
+        let res = FecthUci.dataHistorial.filter(obj => obj.SECCION === "CuidadosGenerales");
 
-        options.map((option) => {
-            FecthUci.dataHistorial.filter((obj) => {
-                let _obj = JSON.parse(obj.DATASECCION);
-                if (_obj.id === option.id && obj.SECCION == 'CuidadosGenerales') {
+      
 
-                    res.push(_obj);
-                }
-            });
+        let result = res.sort((a, b) => b.NRO - a.NRO);
+
+       
+
+        // Quitar duplicados
+        let resultId = result.filter(o => hash[o.IDSECCION] ? false : hash[o.IDSECCION] = true);
+
+        // Ordenar desc
+        let _arr = resultId.sort((a, b) => a.NRO - b.NRO);
+
+
+        console.log(3344, _arr)
+
+        _arr.filter((obj) => {
+            let _obj = JSON.parse(obj.DATASECCION);
+            res2.push(_obj);
         });
 
-        result = res.sort((a, b) => b.numeroTurno - a.numeroTurno);
-        // Quitar duplicados
-        resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
-        // Ordenar desc
-        _arr = resultId.sort((a, b) => a.nro - b.nro);
 
-        return _arr;
+        return res2;
     }
 
     static parseSeccion(options) {

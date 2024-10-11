@@ -414,21 +414,16 @@ class FecthUci {
             } else {
 
                 let seccionesHoy = res.data.filter(v =>
-                    moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() >= moment(fechaDesde + ' ' + horaDesde, 'DD-MM-YYYY HH:mm').unix()
+                    v.ATENCION == PacientesUCIHistorial.numeroAtencion
+                    && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() >= moment(fechaDesde + ' ' + horaDesde, 'DD-MM-YYYY HH:mm').unix()
                     && moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() <= moment(fechaHasta + ' ' + horaHasta, 'DD-MM-YYYY HH:mm').unix()
                     && JSON.parse(v.DATASECCION).tipoBit == undefined);
 
-                let _res = TurnosUciHistorial.turnos.map(turno =>
-                    seccionesHoy.filter(seccion => (turno.fechaHoraTurno === seccion.FECHA) && (turno.fechaHoraTurno === seccion.FECHA))
-                );
+                    console.info(4422, seccionesHoy)
 
-                let t = [];
+      
 
-                t = _res.flat(Infinity);
-
-                console.info(44, t)
-
-                FecthUci.dataHistorial = t;
+                FecthUci.dataHistorial = seccionesHoy;
                 PacientesUCIHistorial.loadSecs();
 
             }
