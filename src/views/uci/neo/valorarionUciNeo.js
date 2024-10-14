@@ -143,6 +143,9 @@ class ValoracionUciNeo {
                 title: "Tipo:",
             },
             {
+                title: "Hora:",
+            },
+            {
                 title: "Valor:",
             },
             {
@@ -214,10 +217,20 @@ class ValoracionUciNeo {
             },
             {
                 mRender: function (data, type, full) {
+                    return full.hora != null ? full.hora : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                },
+
+                visible: true,
+                aTargets: [5],
+                orderable: true,
+
+            },
+            {
+                mRender: function (data, type, full) {
                     return (full.valor != null ? full.valor : '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>');
                 },
                 visible: true,
-                aTargets: [5],
+                aTargets: [6],
                 orderable: true,
 
             },
@@ -291,7 +304,7 @@ class ValoracionUciNeo {
                 },
                 width: '10%',
                 visible: true,
-                aTargets: [6],
+                aTargets: [7],
                 orderable: true,
 
             }
@@ -332,7 +345,7 @@ class ValoracionUciNeo {
                     }
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "VALORACIÓN FISICA:"
+                        "VALORACIÓN FISICA:222"
                     ),
 
                 ])
@@ -346,10 +359,13 @@ class ValoracionUciNeo {
                     style: { "background-color": "rgb(238, 249, 200)", "border-color": "#5173a1" },
                     class: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? '' : 'd-none'),
                 }, [
-                    m("th[scope='col'][colspan='6']",
+                    m("th[scope='col'][colspan='4']",
                         "TIPO: "
                     ),
-                    m("th[scope='col'][colspan='6']",
+                    m("th[scope='col'][colspan='4']",
+                        "HORA: "
+                    ),
+                    m("th[scope='col'][colspan='4']",
                         "VALOR: "
                     )
                 ]),
@@ -359,7 +375,7 @@ class ValoracionUciNeo {
 
                 }, [
 
-                    m("td.tx-normal[colspan='6']",
+                    m("td.tx-normal[colspan='4']",
                         m("div.input-group", [
                             m("div.input-group-append",
                                 m("button.btn.btn-xs.btn-light[type='button']", {
@@ -447,7 +463,36 @@ class ValoracionUciNeo {
                             ] : [])
                         ])
                     ),
-                    m("td.tx-normal[colspan='6']",
+                    m("td.tx-normal[colspan='4']",
+                        (ValoracionUciNeo.nuevoRegistro !== null ? [
+                            m("input[type='text'][placeholder='HH:mm']", {
+                                id: 'horaValoracionNeo',
+                                class: 'form-control',
+                                oncreate: (el) => {
+
+                                    if (ValoracionUciNeo.nuevoRegistro !== null && ValoracionUciNeo.nuevoRegistro.hora !== null) {
+                                        el.dom.value = ValoracionUciNeo.nuevoRegistro.hora;
+                                    }
+
+                                    setTimeout(() => {
+                                        new Cleave("#" + el.dom.id, {
+                                            time: true,
+                                            timePattern: ['h', 'm']
+                                        });
+                                    }, 90);
+
+                                },
+                                oninput: (e) => {
+                                    setTimeout(() => {
+                                        ValoracionUciNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                        ValoracionUciNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                    }, 50);
+                                },
+
+                            }),
+                        ] : [])
+                    ),
+                    m("td.tx-normal[colspan='4']",
                         (ValoracionUciNeo.nuevoRegistro !== null ? [
                             m('select.tx-semibold', {
                                 id: 'valorValoracionTONO',
@@ -469,17 +514,22 @@ class ValoracionUciNeo {
                                     if (e.keyCode == 13) {
                                         ValoracionUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         ValoracionUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                        if (ValoracionUciNeo.nuevoRegistro.editar == null) {
-                                            ValoracionUciNeo.agregarRegistro();
-                                            ValoracionUciNeo.nuevoRegistro.id = ValoracionUciNeo.nuevoRegistro.nro + 'ValoracionFisica';
-                                            FecthUci.registrarSeccion(ValoracionUciNeo.nuevoRegistro);
-                                            ValoracionUciNeo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                        ValoracionUciNeo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + ValoracionUciNeo.nuevoRegistro.hora;
+                                        if (moment(ValoracionUciNeo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
+                                            $.alert(ValoracionUciNeo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
                                         } else {
-                                            ValoracionUciNeo.editarRegistro();
-                                            FecthUci.actualizarSeccion(ValoracionUciNeo.nuevoRegistro);
-                                            ValoracionUciNeo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                            if (ValoracionUciNeo.nuevoRegistro.editar == null) {
+                                                ValoracionUciNeo.agregarRegistro();
+                                                ValoracionUciNeo.nuevoRegistro.id = ValoracionUciNeo.nuevoRegistro.nro + 'ValoracionFisica';
+                                                FecthUci.registrarSeccion(ValoracionUciNeo.nuevoRegistro);
+                                                ValoracionUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                            } else {
+                                                ValoracionUciNeo.editarRegistro();
+                                                FecthUci.actualizarSeccion(ValoracionUciNeo.nuevoRegistro);
+                                                ValoracionUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                            }
                                         }
                                     }
                                 },
@@ -523,18 +573,24 @@ class ValoracionUciNeo {
                                     if (e.keyCode == 13) {
                                         ValoracionUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         ValoracionUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                        if (ValoracionUciNeo.nuevoRegistro.editar == null) {
-                                            ValoracionUciNeo.agregarRegistro();
-                                            ValoracionUciNeo.nuevoRegistro.id = ValoracionUciNeo.nuevoRegistro.nro + 'ValoracionFisica';
-                                            FecthUci.registrarSeccion(ValoracionUciNeo.nuevoRegistro);
-                                            ValoracionUciNeo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                        ValoracionUciNeo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + ValoracionUciNeo.nuevoRegistro.hora;
+                                        if (moment(ValoracionUciNeo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
+                                            $.alert(ValoracionUciNeo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
                                         } else {
-                                            ValoracionUciNeo.editarRegistro();
-                                            FecthUci.actualizarSeccion(ValoracionUciNeo.nuevoRegistro);
-                                            ValoracionUciNeo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                            if (ValoracionUciNeo.nuevoRegistro.editar == null) {
+                                                ValoracionUciNeo.agregarRegistro();
+                                                ValoracionUciNeo.nuevoRegistro.id = ValoracionUciNeo.nuevoRegistro.nro + 'ValoracionFisica';
+                                                FecthUci.registrarSeccion(ValoracionUciNeo.nuevoRegistro);
+                                                ValoracionUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                            } else {
+                                                ValoracionUciNeo.editarRegistro();
+                                                FecthUci.actualizarSeccion(ValoracionUciNeo.nuevoRegistro);
+                                                ValoracionUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                            }
                                         }
+
                                     }
                                 },
                                 class: "custom-select",
@@ -577,18 +633,24 @@ class ValoracionUciNeo {
                                     if (e.keyCode == 13) {
                                         ValoracionUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         ValoracionUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                        if (ValoracionUciNeo.nuevoRegistro.editar == null) {
-                                            ValoracionUciNeo.agregarRegistro();
-                                            ValoracionUciNeo.nuevoRegistro.id = ValoracionUciNeo.nuevoRegistro.nro + 'ValoracionFisica';
-                                            FecthUci.registrarSeccion(ValoracionUciNeo.nuevoRegistro);
-                                            ValoracionUciNeo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                        ValoracionUciNeo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + ValoracionUciNeo.nuevoRegistro.hora;
+                                        if (moment(ValoracionUciNeo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
+                                            $.alert(ValoracionUciNeo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
                                         } else {
-                                            ValoracionUciNeo.editarRegistro();
-                                            FecthUci.actualizarSeccion(ValoracionUciNeo.nuevoRegistro);
-                                            ValoracionUciNeo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                            if (ValoracionUciNeo.nuevoRegistro.editar == null) {
+                                                ValoracionUciNeo.agregarRegistro();
+                                                ValoracionUciNeo.nuevoRegistro.id = ValoracionUciNeo.nuevoRegistro.nro + 'ValoracionFisica';
+                                                FecthUci.registrarSeccion(ValoracionUciNeo.nuevoRegistro);
+                                                ValoracionUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                            } else {
+                                                ValoracionUciNeo.editarRegistro();
+                                                FecthUci.actualizarSeccion(ValoracionUciNeo.nuevoRegistro);
+                                                ValoracionUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                            }
                                         }
+
                                     }
                                 },
                                 class: "custom-select",
@@ -631,18 +693,24 @@ class ValoracionUciNeo {
                                     if (e.keyCode == 13) {
                                         ValoracionUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                         ValoracionUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
-                                        if (ValoracionUciNeo.nuevoRegistro.editar == null) {
-                                            ValoracionUciNeo.agregarRegistro();
-                                            ValoracionUciNeo.nuevoRegistro.id = ValoracionUciNeo.nuevoRegistro.nro + 'ValoracionFisica';
-                                            FecthUci.registrarSeccion(ValoracionUciNeo.nuevoRegistro);
-                                            ValoracionUciNeo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
-                                        } else {
-                                            ValoracionUciNeo.editarRegistro();
-                                            FecthUci.actualizarSeccion(ValoracionUciNeo.nuevoRegistro);
-                                            ValoracionUciNeo.nuevoRegistro = null;
-                                            PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                        ValoracionUciNeo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + ValoracionUciNeo.nuevoRegistro.hora;
+                                        if (moment(ValoracionUciNeo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
+                                            $.alert(ValoracionUciNeo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
+                                        }else{
+                                            if (ValoracionUciNeo.nuevoRegistro.editar == null) {
+                                                ValoracionUciNeo.agregarRegistro();
+                                                ValoracionUciNeo.nuevoRegistro.id = ValoracionUciNeo.nuevoRegistro.nro + 'ValoracionFisica';
+                                                FecthUci.registrarSeccion(ValoracionUciNeo.nuevoRegistro);
+                                                ValoracionUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                            } else {
+                                                ValoracionUciNeo.editarRegistro();
+                                                FecthUci.actualizarSeccion(ValoracionUciNeo.nuevoRegistro);
+                                                ValoracionUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                            }
                                         }
+                                        
                                     }
                                 },
                                 class: "custom-select",
