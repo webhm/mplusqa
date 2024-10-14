@@ -345,7 +345,7 @@ class ValoracionUciNeo {
                     }
                 }, [
                     m("th.tx-semibold[scope='col'][colspan='12']",
-                        "VALORACIÓN FISICA:222"
+                        "VALORACIÓN FISICA:"
                     ),
 
                 ])
