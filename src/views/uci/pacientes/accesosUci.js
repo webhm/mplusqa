@@ -304,7 +304,7 @@ class AccesosUci {
                                 m("div.btn-block.btn-group.wd-100p.pd-5", [
                                     m("button.btn.btn-xs.btn-success[type='button']", {
                                         class: (oData.editar ? 'd-none' : ''),
-                                        disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
+                                        //disabled: (TurnosUci.nuevoTurno !== null && TurnosUci.nuevoTurno.gestion == 1 ? (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno ? 'disabled' : '') : 'disabled'),
                                         onclick: () => {
                                             if (oData.id == 'Otros') {
                                                 AccesosUci.showOtros = true;
@@ -685,6 +685,8 @@ class AccesosUci {
                                                 || AccesosUci.nuevoRegistro.inicio == null
                                             ) {
                                                 $.alert('Acceso, ubicación, tipo e inicio son obligatorios.')
+                                            }else if (moment(AccesosUci.nuevoRegistro.inicio, "DD-MM-YYYY", true).isValid() == false) {
+                                                $.alert(AccesosUci.nuevoRegistro.inicio + ' El valor de Hora no tiene el formato necesario.');
                                             } else {
                                                 if (AccesosUci.nuevoRegistro.editar == null) {
                                                     AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;

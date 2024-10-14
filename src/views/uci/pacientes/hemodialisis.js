@@ -358,6 +358,13 @@ class HemodialisisUci {
                                                 e.preventDefault();
                                             }
                                         },
+                                        oncreate: (el) => {
+                                            if (PacientesUCI.numeroTurno == 1) {
+                                                el.dom.disabled = false;
+                                            } else {
+                                                el.dom.disabled = true;
+                                            }
+                                        },
                                         value: (HemodialisisUci.getRegistro(oData.id).am !== null ? HemodialisisUci.getRegistro(oData.id).am : '')
                                     })
                                 ] : [])
@@ -432,6 +439,13 @@ class HemodialisisUci {
                                                 HemodialisisUci.getRegistro(oData.id).pm = (e.target.value.length !== 0 ? e.target.value : null);
                                             } else {
                                                 e.preventDefault();
+                                            }
+                                        },
+                                        oncreate: (el) => {
+                                            if (PacientesUCI.numeroTurno == 2) {
+                                                el.dom.disabled = false;
+                                            } else {
+                                                el.dom.disabled = true;
                                             }
                                         },
                                         value: (HemodialisisUci.getRegistro(oData.id).pm !== null ? HemodialisisUci.getRegistro(oData.id).pm : '')
@@ -509,6 +523,13 @@ class HemodialisisUci {
                                                 e.preventDefault();
                                             }
                                         },
+                                        oncreate: (el) => {
+                                            if (PacientesUCI.numeroTurno == 3) {
+                                                el.dom.disabled = false;
+                                            } else {
+                                                el.dom.disabled = true;
+                                            }
+                                        },
                                         value: (HemodialisisUci.getRegistro(oData.id).hs !== null ? HemodialisisUci.getRegistro(oData.id).hs : '')
 
                                     })
@@ -581,6 +602,7 @@ class HemodialisisUci {
                                         oninput: (e) => {
                                             HemodialisisUci.getRegistro(oData.id).observacion = (e.target.value.length !== 0 ? e.target.value : null);
                                         },
+                                        
                                         value: (HemodialisisUci.getRegistro(oData.id).observacion !== null ? HemodialisisUci.getRegistro(oData.id).observacion : '')
 
                                     })

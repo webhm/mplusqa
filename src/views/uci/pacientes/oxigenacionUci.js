@@ -355,6 +355,13 @@ class OxigenacionUci {
                                                 e.preventDefault();
                                             }
                                         },
+                                        oncreate: (el) => {
+                                            if (PacientesUCI.numeroTurno == 1) {
+                                                el.dom.disabled = false;
+                                            } else {
+                                                el.dom.disabled = true;
+                                            }
+                                        },
                                         value: (OxigenacionUci.getRegistro(oData.id).am !== null ? OxigenacionUci.getRegistro(oData.id).am : '')
                                     })
                                 ] : [])
@@ -431,6 +438,13 @@ class OxigenacionUci {
                                                 e.preventDefault();
                                             }
                                         },
+                                        oncreate: (el) => {
+                                            if (PacientesUCI.numeroTurno == 2) {
+                                                el.dom.disabled = false;
+                                            } else {
+                                                el.dom.disabled = true;
+                                            }
+                                        },
                                         value: (OxigenacionUci.getRegistro(oData.id).pm !== null ? OxigenacionUci.getRegistro(oData.id).pm : '')
                                     })
                                 ] : [])
@@ -504,6 +518,13 @@ class OxigenacionUci {
                                                 OxigenacionUci.getRegistro(oData.id).hs = (e.target.value.length !== 0 ? e.target.value : null);
                                             } else {
                                                 e.preventDefault();
+                                            }
+                                        },
+                                        oncreate: (el) => {
+                                            if (PacientesUCI.numeroTurno == 3) {
+                                                el.dom.disabled = false;
+                                            } else {
+                                                el.dom.disabled = true;
                                             }
                                         },
                                         value: (OxigenacionUci.getRegistro(oData.id).hs !== null ? OxigenacionUci.getRegistro(oData.id).hs : '')

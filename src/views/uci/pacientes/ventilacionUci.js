@@ -356,6 +356,13 @@ class VentilacionUci {
                                                 e.preventDefault();
                                             }
                                         },
+                                        oncreate: (el) => {
+                                            if (PacientesUCI.numeroTurno == 1) {
+                                                el.dom.disabled = false;
+                                            } else {
+                                                el.dom.disabled = true;
+                                            }
+                                        },
                                         value: (VentilacionUci.getRegistro(oData.id).am !== null ? VentilacionUci.getRegistro(oData.id).am : '')
                                     })
                                 ] : [])
@@ -432,6 +439,13 @@ class VentilacionUci {
                                                 e.preventDefault();
                                             }
                                         },
+                                        oncreate: (el) => {
+                                            if (PacientesUCI.numeroTurno == 2) {
+                                                el.dom.disabled = false;
+                                            } else {
+                                                el.dom.disabled = true;
+                                            }
+                                        },
                                         value: (VentilacionUci.getRegistro(oData.id).pm !== null ? VentilacionUci.getRegistro(oData.id).pm : '')
                                     })
                                 ] : [])
@@ -505,6 +519,13 @@ class VentilacionUci {
                                                 VentilacionUci.getRegistro(oData.id).hs = (e.target.value.length !== 0 ? e.target.value : null);
                                             } else {
                                                 e.preventDefault();
+                                            }
+                                        },
+                                        oncreate: (el) => {
+                                            if (PacientesUCI.numeroTurno == 3) {
+                                                el.dom.disabled = false;
+                                            } else {
+                                                el.dom.disabled = true;
                                             }
                                         },
                                         value: (VentilacionUci.getRegistro(oData.id).hs !== null ? VentilacionUci.getRegistro(oData.id).hs : '')

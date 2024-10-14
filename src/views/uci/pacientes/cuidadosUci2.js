@@ -146,7 +146,7 @@ class CuidadosUci2 {
             }
         });
 
-     
+
         FecthUci.registrarAllSeccion(res).then(() => {
             setTimeout(() => {
                 CuidadosUci2.filterRegistros();
@@ -437,6 +437,13 @@ class CuidadosUci2 {
                                         class: "form-control tx-semibold tx-14 " + (CuidadosUci2.getRegistro(oData.id).editar == true ? '' : 'd-none'),
                                         type: "text",
                                         placeholder: "...",
+                                        oncreate: (el) => {
+
+                                            if (PacientesUCI.numeroTurno != 1) {
+                                                el.dom.disabled = 'disabled';
+                                            }
+
+                                        },
                                         ondblclick: (e) => {
                                             if (CuidadosUci2.editarAll == true) {
                                                 $.alert('Ud esta editando toda la sección. Cancele esta operación para reintentar.')
@@ -568,7 +575,7 @@ class CuidadosUci2 {
                                         oncreate: (el) => {
                                             if (PacientesUCI.numeroTurno == 1) {
                                                 el.dom.disabled = false;
-                                            } else{
+                                            } else {
                                                 el.dom.disabled = true;
                                             }
                                         },
@@ -660,7 +667,7 @@ class CuidadosUci2 {
                                         oncreate: (el) => {
                                             if (PacientesUCI.numeroTurno == 2) {
                                                 el.dom.disabled = false;
-                                            } else{
+                                            } else {
                                                 el.dom.disabled = true;
                                             }
                                         },
@@ -751,7 +758,7 @@ class CuidadosUci2 {
                                         oncreate: (el) => {
                                             if (PacientesUCI.numeroTurno == 3) {
                                                 el.dom.disabled = false;
-                                            } else{
+                                            } else {
                                                 el.dom.disabled = true;
                                             }
                                         },
@@ -823,12 +830,12 @@ class CuidadosUci2 {
                                         class: (PacientesUCI.fechaHoraTurno != oData.fechaHoraTurno && oData.id == 'Posicion' ? '' : 'd-none'),
                                         onclick: (el) => {
 
-                                            
+
                                             CuidadosUci2.loaderRows = true;
                                             CuidadosUci2.copyAllRegistros();
                                             el.target.classList.add('d-none');
 
-                                          
+
                                         },
                                     },
                                         'Copiar',
