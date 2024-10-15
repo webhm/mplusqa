@@ -438,10 +438,10 @@ class CuidadosUci2 {
                                         type: "text",
                                         placeholder: "...",
                                         oncreate: (el) => {
-
+                                            /*
                                             if (PacientesUCI.numeroTurno != 1) {
                                                 el.dom.disabled = 'disabled';
-                                            }
+                                            }*/
 
                                         },
                                         ondblclick: (e) => {
