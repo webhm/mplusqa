@@ -67,7 +67,7 @@ class ValoracionUciNeo {
     static validarRegistroUnicoPorTurno(tipo) {
         ValoracionUciNeo.registros.map((_v, _i) => {
             if (_v.tipo == tipo && _v.numeroTurno == PacientesUCI.numeroTurno) {
-                throw 'error';
+               // throw 'error';
             }
         });
 
@@ -431,9 +431,10 @@ class ValoracionUciNeo {
                                             }
 
                                         } catch (error) {
-
+                                            /*
                                             ValoracionUciNeo.nuevoRegistro = null;
                                             $.alert('No es posible ingresar este valor. Solo se registran valores una vez por turno vigente.');
+                                            */
                                         }
 
 
