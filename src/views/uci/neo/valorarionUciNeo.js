@@ -66,8 +66,8 @@ class ValoracionUciNeo {
 
     static validarRegistroUnicoPorTurno(tipo) {
         ValoracionUciNeo.registros.map((_v, _i) => {
-            if (_v.tipo == tipo && _v.numeroTurno == PacientesUCI.numeroTurno) {
-               // throw 'error';
+            if (_v.tipo == tipo && _v.hora == ValoracionUciNeo.nuevoRegistro.hora && _v.numeroTurno == PacientesUCI.numeroTurno) {
+                throw 'error';
             }
         });
 
@@ -402,7 +402,7 @@ class ValoracionUciNeo {
                                             let _id = e.target.options[e.target.selectedIndex].id;
                                             let _value = e.target.options[e.target.selectedIndex].value;
 
-                                            ValoracionUciNeo.validarRegistroUnicoPorTurno(_value);
+                                            //  ValoracionUciNeo.validarRegistroUnicoPorTurno(_value);
 
                                             if (ValoracionUciNeo.nuevoRegistro == null) {
                                                 ValoracionUciNeo.nuevoRegistro.id = _id;
@@ -431,10 +431,11 @@ class ValoracionUciNeo {
                                             }
 
                                         } catch (error) {
-                                            /*
-                                            ValoracionUciNeo.nuevoRegistro = null;
-                                            $.alert('No es posible ingresar este valor. Solo se registran valores una vez por turno vigente.');
-                                            */
+
+                                            // ValoracionUciNeo.nuevoRegistro = null;
+                                            // $.alert('No es posible ingresar este valor. Ya existe este registro.');
+                                            // $.alert('No es posible ingresar este valor. Solo se registran valores una vez por turno vigente.');
+
                                         }
 
 
@@ -485,8 +486,16 @@ class ValoracionUciNeo {
                                 },
                                 oninput: (e) => {
                                     setTimeout(() => {
-                                        ValoracionUciNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
-                                        ValoracionUciNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                        try {
+                                            ValoracionUciNeo.setHora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            ValoracionUciNeo.nuevoRegistro.hora = (e.target.value.length !== 0 ? e.target.value : null);
+                                            if (ValoracionUciNeo.nuevoRegistro.editar != true) {
+                                                ValoracionUciNeo.validarRegistroUnicoPorTurno(ValoracionUciNeo.nuevoRegistro.tipo);
+                                            }
+                                        } catch (error) {
+                                            ValoracionUciNeo.nuevoRegistro = null;
+                                            $.alert('No es posible ingresar este valor. Ya existe este registro.');
+                                        }
                                     }, 50);
                                 },
 
@@ -697,7 +706,7 @@ class ValoracionUciNeo {
                                         ValoracionUciNeo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + ValoracionUciNeo.nuevoRegistro.hora;
                                         if (moment(ValoracionUciNeo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
                                             $.alert(ValoracionUciNeo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
-                                        }else{
+                                        } else {
                                             if (ValoracionUciNeo.nuevoRegistro.editar == null) {
                                                 ValoracionUciNeo.agregarRegistro();
                                                 ValoracionUciNeo.nuevoRegistro.id = ValoracionUciNeo.nuevoRegistro.nro + 'ValoracionFisica';
@@ -711,7 +720,7 @@ class ValoracionUciNeo {
                                                 PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
                                             }
                                         }
-                                        
+
                                     }
                                 },
                                 class: "custom-select",
