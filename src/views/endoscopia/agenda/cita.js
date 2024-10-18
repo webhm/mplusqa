@@ -45,7 +45,7 @@ class Cita {
         $('[data-toggle="tooltip"]').tooltip("hide");
         let modal = $("#modalCalendarEvent");
         modal.modal("show");
-        modal.on('hidden.bs.modal', function() {
+        modal.on('hidden.bs.modal', function () {
             Cita.data = null;
         });
         m.redraw();
@@ -69,7 +69,7 @@ class Cita {
         $('[data-toggle="tooltip"]').tooltip("hide");
         let modal = $("#modalCalendarEvent");
         modal.modal("show");
-        modal.on('hidden.bs.modal', function() {
+        modal.on('hidden.bs.modal', function () {
             Cita.data = null;
         });
         m.redraw();
@@ -182,7 +182,7 @@ class Cita {
         $('[data-toggle="tooltip"]').tooltip("hide");
         let modal = $("#modalUpdateEvent");
         modal.modal("show");
-        modal.on('hidden.bs.modal', function() {
+        modal.on('hidden.bs.modal', function () {
             Cita.data = null;
         });
         m.redraw();
@@ -373,7 +373,7 @@ class Cita {
     static crearCita(startDate, endDate) {
         $('[data-toggle="tooltip"]').tooltip("hide");
         $("#modalCreateEvent").modal("show");
-        $("#modalCreateEvent").on('hidden.bs.modal', function() {
+        $("#modalCreateEvent").on('hidden.bs.modal', function () {
             Cita.data = null;
         });
         Cita.buscarPacientes = false;
@@ -443,7 +443,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Cita.reagendar(Calendario);
@@ -454,7 +454,7 @@ class Cita {
                 Cita.error = res.message;
                 throw res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             $("#modalUpdateEvent").animate({
                 scrollTop: 0
             }, "slow");
@@ -469,6 +469,22 @@ class Cita {
         Cita.agendarCitaHttp(Calendario);
     }
 
+    static copiarDatos(clave, objeto) {
+        // Convertir el objeto a una cadena JSON
+        const objetoJSON = JSON.stringify(objeto);
+        // Almacenar la cadena JSON en el local storage con la clave proporcionada
+        localStorage.setItem(clave, objetoJSON);
+
+    }
+
+    static getCitaCopy(clave = 'citaCopy') {
+        // Obtener la cadena JSON almacenada en el local storage con la clave proporcionada
+        const objetoJSON = localStorage.getItem(clave);
+        // Convertir la cadena JSON de nuevo a un objeto JavaScript
+        const objeto = JSON.parse(objetoJSON);
+        return objeto;
+    }
+
 
     static cancelarHttp(Calendario) {
         Cita.error = null;
@@ -481,7 +497,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Cita.cancelarCita(Calendario);
@@ -492,7 +508,7 @@ class Cita {
                 Cita.error = res.message;
                 throw res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             $("#modalCreateEvent").animate({
                 scrollTop: 0
             }, "slow");
@@ -533,7 +549,7 @@ class Cita {
                 headers: {
                     "Content-Type": "application/json; charset=utf-8"
                 }
-            }).then(function(res) {
+            }).then(function (res) {
                 Cita.loader = false;
                 if (res.status) {
                     console.log(22, 'estoy por aqui');
@@ -547,7 +563,7 @@ class Cita {
                     Cita.error = res.message;
                     throw res.message;
                 }
-            }).catch(function(e) {
+            }).catch(function (e) {
                 $("#modalCreateEvent").animate({
                     scrollTop: 0
                 }, "slow");
@@ -593,7 +609,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 console.log(22, 'estoy por aqui');
@@ -605,7 +621,7 @@ class Cita {
                 Cita.error = res.message;
                 throw res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             $("#modalCreateEvent").animate({
                 scrollTop: 0
             }, "slow");
@@ -624,7 +640,7 @@ class Cita {
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
 
@@ -636,7 +652,7 @@ class Cita {
                 Cita.error = res.message;
                 throw res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             $("#modalCreateEvent").animate({
                 scrollTop: 0
             }, "slow");
@@ -657,7 +673,7 @@ class Cita {
                 "Authorization": localStorage.userToken
 
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Calendario.sendEvent();
@@ -669,7 +685,7 @@ class Cita {
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             Calendario.error = e;
         });
     }
@@ -686,7 +702,7 @@ class Cita {
                 "Authorization": localStorage.userToken
 
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Calendario.sendEvent();
@@ -698,7 +714,7 @@ class Cita {
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             Calendario.error = e;
         });
     }
@@ -715,7 +731,7 @@ class Cita {
                 "Authorization": localStorage.userToken
 
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Calendario.sendEvent();
@@ -727,7 +743,7 @@ class Cita {
             } else {
                 Cita.error = res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             Cita.error = e;
         });
     }
@@ -743,7 +759,7 @@ class Cita {
                 "Authorization": localStorage.userToken
 
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
                 Calendario.sendEvent();
@@ -755,7 +771,7 @@ class Cita {
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             Calendario.error = e;
         });
     }
@@ -771,7 +787,7 @@ class Cita {
                 "Authorization": localStorage.userToken
 
             }
-        }).then(function(res) {
+        }).then(function (res) {
             Cita.loader = false;
 
             if (res.status) {
@@ -783,7 +799,7 @@ class Cita {
             } else {
                 Calendario.error = res.message;
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             Calendario.error = res.message;
         });
     }

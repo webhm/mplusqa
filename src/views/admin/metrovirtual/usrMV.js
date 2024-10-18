@@ -11,6 +11,220 @@ import ErrorMetroplus from "../../../models/Error";
 
 // Administración MV
 
+class NotificacionesService {
+    constructor(canal, estado, usuario, celular, correoElectronico, historialNotificaciones = []) {
+        this.canal = canal;
+        this.estado = estado;
+        this.usuario = usuario;
+        this.celular = celular;
+        this.correoElectronico = correoElectronico;
+        this.historialNotificaciones = historialNotificaciones;
+    }
+
+    // Método estático para guardar la suscripción en el array de suscripciones en local storage
+    static guardarEnLocalStorage(suscripcion) {
+        const suscripciones = NotificacionesService.obtenerTodasDeLocalStorage();
+        const index = suscripciones.findIndex(s => s.canal === suscripcion.canal && s.usuario === suscripcion.usuario);
+
+        if (index !== -1) {
+            // Si la suscripción ya existe, actualizamos su estado y el historial de notificaciones
+            suscripciones[index].estado = suscripcion.estado;
+            suscripciones[index].celular = suscripcion.celular;
+            suscripciones[index].correoElectronico = suscripcion.correoElectronico;
+            suscripciones[index].historialNotificaciones = suscripcion.historialNotificaciones;
+        } else {
+            // Si no existe, la agregamos
+            suscripciones.push(suscripcion);
+        }
+
+        localStorage.setItem('Notificaciones', JSON.stringify(suscripciones));
+    }
+
+    // Método estático para obtener todas las suscripciones desde local storage
+    static obtenerTodasDeLocalStorage() {
+        const suscripcionesJSON = localStorage.getItem('Notificaciones');
+        return suscripcionesJSON ? JSON.parse(suscripcionesJSON) : [];
+    }
+
+    // Método estático para obtener las suscripciones de un usuario específico
+    static obtenerPorUsuario(usuario) {
+        const suscripciones = NotificacionesService.obtenerTodasDeLocalStorage();
+        return suscripciones.filter(suscripcion => suscripcion.usuario === usuario);
+    }
+
+    // Método estático para actualizar el estado de una suscripción específica
+    static actualizarEstado(canal, usuario, nuevoEstado) {
+        const suscripciones = NotificacionesService.obtenerTodasDeLocalStorage();
+        const index = suscripciones.findIndex(s => s.canal === canal && s.usuario === usuario);
+        if (index !== -1) {
+            suscripciones[index].estado = nuevoEstado;
+            localStorage.setItem('Notificaciones', JSON.stringify(suscripciones));
+        }
+    }
+
+    // Método estático para actualizar el usuario de una suscripción específica
+    static actualizarUsuario(canal, usuario, nuevoUsuario) {
+        const suscripciones = NotificacionesService.obtenerTodasDeLocalStorage();
+        const index = suscripciones.findIndex(s => s.canal === canal && s.usuario === usuario);
+        if (index !== -1) {
+            suscripciones[index].usuario = nuevoUsuario;
+            localStorage.setItem('Notificaciones', JSON.stringify(suscripciones));
+        }
+    }
+
+    // Método estático para eliminar una suscripción específica
+    static eliminarSuscripcion(canal, usuario) {
+        let suscripciones = NotificacionesService.obtenerTodasDeLocalStorage();
+        suscripciones = suscripciones.filter(s => !(s.canal === canal && s.usuario === usuario));
+        localStorage.setItem('Notificaciones', JSON.stringify(suscripciones));
+    }
+
+    // Método estático para agregar una notificación al historial de una suscripción específica
+    static agregarNotificacion(canal, usuario, mensaje, fechaHoraEnvio, statusEnvio, celular, correoElectronico) {
+        const suscripciones = NotificacionesService.obtenerTodasDeLocalStorage();
+        const index = suscripciones.findIndex(s => s.canal === canal && s.usuario === usuario);
+        if (index !== -1) {
+            const notificacion = { mensaje, fechaHoraEnvio, statusEnvio, celular, correoElectronico };
+            suscripciones[index].historialNotificaciones.push(notificacion);
+            localStorage.setItem('Notificaciones', JSON.stringify(suscripciones));
+        }
+    }
+
+    // Método estático para obtener el historial de notificaciones de una suscripción específica
+    static obtenerHistorial(canal, usuario) {
+        const suscripciones = NotificacionesService.obtenerTodasDeLocalStorage();
+        const suscripcion = suscripciones.find(s => s.canal === canal && s.usuario === usuario);
+        return suscripcion ? suscripcion.historialNotificaciones : [];
+    }
+}
+
+
+class Suscripcion {
+    constructor(canal, estado, usuario) {
+        this.canal = canal;
+        this.estado = estado;
+        this.usuario = usuario;
+    }
+
+    // Método estático para guardar la suscripción en el array de suscripciones en local storage
+    static guardarEnLocalStorage(suscripcion) {
+        const suscripciones = Suscripcion.obtenerTodasDeLocalStorage();
+        const index = suscripciones.findIndex(s => s.canal === suscripcion.canal && s.usuario === suscripcion.usuario);
+
+        if (index !== -1) {
+            // Si la suscripción ya existe, actualizamos su estado
+            suscripciones[index].estado = suscripcion.estado;
+        } else {
+            // Si no existe, la agregamos
+            suscripciones.push(suscripcion);
+        }
+
+        localStorage.setItem('Whatsapp', JSON.stringify(suscripciones));
+    }
+
+    // Método estático para obtener todas las suscripciones desde local storage
+    static obtenerTodasDeLocalStorage() {
+        const suscripcionesJSON = localStorage.getItem('Whatsapp');
+        return suscripcionesJSON ? JSON.parse(suscripcionesJSON) : [];
+    }
+
+    // Método estático para obtener las suscripciones de un usuario específico
+    static obtenerPorUsuario(usuario) {
+        const suscripciones = Suscripcion.obtenerTodasDeLocalStorage();
+        return suscripciones.filter(suscripcion => suscripcion.usuario === usuario);
+    }
+
+    // Método estático para actualizar el estado de una suscripción específica
+    static actualizarEstado(canal, usuario, nuevoEstado) {
+        const suscripciones = Suscripcion.obtenerTodasDeLocalStorage();
+        const index = suscripciones.findIndex(s => s.canal === canal && s.usuario === usuario);
+        if (index !== -1) {
+            suscripciones[index].estado = nuevoEstado;
+            localStorage.setItem('Whatsapp', JSON.stringify(suscripciones));
+        }
+    }
+
+    // Método estático para actualizar el usuario de una suscripción específica
+    static actualizarUsuario(canal, usuario, nuevoUsuario) {
+        const suscripciones = Suscripcion.obtenerTodasDeLocalStorage();
+        const index = suscripciones.findIndex(s => s.canal === canal && s.usuario === usuario);
+        if (index !== -1) {
+            suscripciones[index].usuario = nuevoUsuario;
+            localStorage.setItem('Whatsapp', JSON.stringify(suscripciones));
+        }
+    }
+
+    // Método estático para eliminar una suscripción específica
+    static eliminarSuscripcion(canal, usuario) {
+        let suscripciones = Suscripcion.obtenerTodasDeLocalStorage();
+        suscripciones = suscripciones.filter(s => !(s.canal === canal && s.usuario === usuario));
+        localStorage.setItem('Whatsapp', JSON.stringify(suscripciones));
+    }
+}
+
+class SuscripcionApp {
+    constructor(canal, estado, usuario) {
+        this.canal = canal;
+        this.estado = estado;
+        this.usuario = usuario;
+    }
+
+    // Método estático para guardar la suscripción en el array de suscripciones en local storage
+    static guardarEnLocalStorage(suscripcion) {
+        const suscripciones = SuscripcionApp.obtenerTodasDeLocalStorage();
+        const index = suscripciones.findIndex(s => s.canal === suscripcion.canal && s.usuario === suscripcion.usuario);
+
+        if (index !== -1) {
+            // Si la suscripción ya existe, actualizamos su estado
+            suscripciones[index].estado = suscripcion.estado;
+        } else {
+            // Si no existe, la agregamos
+            suscripciones.push(suscripcion);
+        }
+
+        localStorage.setItem('App', JSON.stringify(suscripciones));
+    }
+
+    // Método estático para obtener todas las suscripciones desde local storage
+    static obtenerTodasDeLocalStorage() {
+        const suscripcionesJSON = localStorage.getItem('App');
+        return suscripcionesJSON ? JSON.parse(suscripcionesJSON) : [];
+    }
+
+    // Método estático para obtener las suscripciones de un usuario específico
+    static obtenerPorUsuario(usuario) {
+        const suscripciones = SuscripcionApp.obtenerTodasDeLocalStorage();
+        return suscripciones.filter(suscripcion => suscripcion.usuario === usuario);
+    }
+
+    // Método estático para actualizar el estado de una suscripción específica
+    static actualizarEstado(canal, usuario, nuevoEstado) {
+        const suscripciones = SuscripcionApp.obtenerTodasDeLocalStorage();
+        const index = suscripciones.findIndex(s => s.canal === canal && s.usuario === usuario);
+        if (index !== -1) {
+            suscripciones[index].estado = nuevoEstado;
+            localStorage.setItem('App', JSON.stringify(suscripciones));
+        }
+    }
+
+    // Método estático para actualizar el usuario de una suscripción específica
+    static actualizarUsuario(canal, usuario, nuevoUsuario) {
+        const suscripciones = SuscripcionApp.obtenerTodasDeLocalStorage();
+        const index = suscripciones.findIndex(s => s.canal === canal && s.usuario === usuario);
+        if (index !== -1) {
+            suscripciones[index].usuario = nuevoUsuario;
+            localStorage.setItem('App', JSON.stringify(suscripciones));
+        }
+    }
+
+    // Método estático para eliminar una suscripción específica
+    static eliminarSuscripcion(canal, usuario) {
+        let suscripciones = SuscripcionApp.obtenerTodasDeLocalStorage();
+        suscripciones = suscripciones.filter(s => !(s.canal === canal && s.usuario === usuario));
+        localStorage.setItem('App', JSON.stringify(suscripciones));
+    }
+}
+
 class usrMV extends App {
     usuarios = null;
     dataUser = null;
@@ -435,16 +649,15 @@ class usrMV extends App {
                                         m("th", {
                                             style: { "background-color": "#a8bed6" }
                                         },
-                                            "Historial de Actividad:"
+                                            "Celulares:"
                                         ),
                                         m("td[colspan='4']", {
                                             style: { "background-color": "#eaeff5" }
 
                                         },
-                                            m('.d-block', 'Creado: ' + this.dataUser.whencreated),
-                                            m('.d-block', 'Actualizado: ' + this.dataUser.whenchanged),
-                                            m('.d-block', 'Última Contraseña: ' + this.dataUser.pwdlastset),
-                                            m('.d-block', 'Último Acceso: ' + this.dataUser.lastlogontimestamp),
+                                            this.dataUser.data.CELULARES.map((v, i) => {
+                                                return m('p.mg-0.pd-0', v.FIELD)
+                                            })
                                         ),
 
 
@@ -477,21 +690,21 @@ class usrMV extends App {
                                                     )
                                                 ),
                                                 m("li.nav-item",
-                                                    m("a.nav-link[id='home-muestra'][data-toggle='tab'][href='#muestra'][role='tab'][aria-controls='muestra']", {
+                                                    m("a.nav-link[id='home-canales'][data-toggle='tab'][href='#canales'][role='tab'][aria-controls='canales']", {
                                                         style: { "color": "#476ba3" }
                                                     },
                                                         m("i.fas.fa-edit.pd-1.mg-r-2"),
 
-                                                        " NOTIFICACIONES "
+                                                        " CANALES "
                                                     )
                                                 ),
                                                 m("li.nav-item",
-                                                    m("a.nav-link[id='home-recep'][data-toggle='tab'][href='#recep'][role='tab'][aria-controls='recep']", {
+                                                    m("a.nav-link[id='home-nots'][data-toggle='tab'][href='#nots'][role='tab'][aria-controls='nots']", {
                                                         style: { "color": "#476ba3" }
                                                     },
                                                         m("i.fas.fa-edit.pd-1.mg-r-2"),
 
-                                                        " AVISO DE CIRUGÍA "
+                                                        "NOTIFICACIONES "
                                                     )
                                                 ),
 
@@ -509,12 +722,12 @@ class usrMV extends App {
                                             m(".tab-content.bd.bd-gray-300.bd-t-0[id='myTab']", [
                                                 m(".tab-pane.fade[id='home'][role='tabpanel'][aria-labelledby='home-tab']", [
                                                     m("p.mg-0", [
-                                                        m("div.pd-5.tx-semibold", {
+                                                        m("div.pd-10.tx-semibold", {
                                                             style: { "background-color": "#a8bed6" }
                                                         },
                                                             "Preguntas de Seguridad:"
                                                         ),
-                                                        m("div.pd-5", {
+                                                        m("div.pd-10", {
                                                             style: { "background-color": "#eaeff5" }
                                                         },
                                                             (this.dataQsecs !== null && this.dataQsecs.status == true && this.dataRsecs !== null && this.dataRsecs.status == true) ? [
@@ -552,16 +765,17 @@ class usrMV extends App {
                                                                 m(Loader)
                                                             ]
                                                         ),
+                                                       
 
 
                                                     ]),
                                                     m("p.mg-0", [
-                                                        m("div.pd-5.tx-semibold", {
+                                                        m("div.pd-10.tx-semibold", {
                                                             style: { "background-color": "#a8bed6" }
                                                         },
                                                             "Reestablecer Cuenta: *El usuario deberá volver a registrarse despues de esta acción."
                                                         ),
-                                                        m("div.pd-5", {
+                                                        m("div.pd-10", {
                                                             style: { "background-color": "#eaeff5" }
                                                         },
 
@@ -588,43 +802,189 @@ class usrMV extends App {
 
 
                                                 ]),
-                                                m(".tab-pane.fade[id='muestra'][role='tabpanel'][aria-labelledby='home-muestra']", [
-
-                                                ]),
-
-                                                m(".tab-pane.fade[id='recep'][role='tabpanel'][aria-labelledby='home-recep']", [
-
-                                                ]),
-                                                m(".tab-pane.fade[id='comment'][role='tabpanel'][aria-labelledby='home-comment']", [
-                                                    m("p.mg-5", [
-                                                        m("span.badge.badge-light.wd-100p.tx-14",
-                                                            "Observaciones",
+                                                m(".tab-pane.fade[id='canales'][role='tabpanel'][aria-labelledby='home-canales']", [
+                                                    m("p.mg-0", [
+                                                        m("div.pd-10.tx-semibold", {
+                                                            style: { "background-color": "#a8bed6" }
+                                                        },
+                                                            "Canales Registrados:"
                                                         ),
-                                                        m("textarea.form-control.mg-t-5[rows='5'][placeholder='Observaciones']", {
-                                                            //oninput: function (e) { Observaciones.observaciones = e.target.value; },
-                                                            // value: Observaciones.observaciones,
-                                                        }),
-                                                        m("div.mg-0.mg-t-5.text-right", [
+                                                        m("div.pd-10", {
+                                                            style: { "background-color": "#eaeff5" }
+                                                        },
+                                                            m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Canal Whatsapp:"), m("div.input-group", [
+                                                                m("div.custom-control.custom-radio", [
+                                                                    m("input.custom-control-input[type='radio'][id='wSI'][name='ctrlWhatsapp']", {
+                                                                        onclick: (e) => {
 
-                                                            m("button.btn.btn-xs.btn-primary.mg-l-2.tx-semibold[type='button']", {
-                                                                onclick: function () {
 
+                                                                            const miSuscripcion = new Suscripcion("Whatsapp", true, this.idUsr);
+                                                                            Suscripcion.guardarEnLocalStorage(miSuscripcion);
+
+
+
+                                                                        },
+                                                                        checked: (Suscripcion.obtenerPorUsuario(this.idUsr) !== null && Suscripcion.obtenerPorUsuario(this.idUsr)[0].estado == true ? true : false)
+
+
+
+                                                                    }),
+                                                                    m("label.custom-control-label[for='wSI']", "Si"),
+                                                                ]),
+                                                                m("div.custom-control.custom-radio.mg-l-20", [
+                                                                    m("input.custom-control-input[type='radio'][id='wNO'][name='ctrlWhatsapp']", {
+                                                                        onclick: (e) => {
+
+                                                                            Suscripcion.actualizarEstado("Whatsapp", this.idUsr, false);
+
+                                                                        },
+                                                                        checked: (Suscripcion.obtenerPorUsuario(this.idUsr) !== null && Suscripcion.obtenerPorUsuario(this.idUsr)[0].estado == false ? true : false)
+
+
+                                                                    }),
+                                                                    m("label.custom-control-label[for='wNO']", "No"),
+                                                                ]),
+
+                                                            ])),
+                                                            m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Canal App:"), m("div.input-group", [
+                                                                m("div.custom-control.custom-radio", [
+                                                                    m("input.custom-control-input[type='radio'][id='aSI'][name='ctrlApp']", {
+                                                                        onclick: (e) => {
+                                                                            const miSuscripcion = new SuscripcionApp("App", true, this.idUsr);
+                                                                            SuscripcionApp.guardarEnLocalStorage(miSuscripcion);
+                                                                        },
+                                                                        checked: (SuscripcionApp.obtenerPorUsuario(this.idUsr) !== null && SuscripcionApp.obtenerPorUsuario(this.idUsr)[0].estado == true ? true : false)
+                                                                    }),
+                                                                    m("label.custom-control-label[for='aSI']", "Si"),
+                                                                ]),
+                                                                m("div.custom-control.custom-radio.mg-l-20", [
+                                                                    m("input.custom-control-input[type='radio'][id='aNO'][name='ctrlApp']", {
+                                                                        onclick: (e) => {
+
+                                                                            SuscripcionApp.actualizarEstado("App", this.idUsr, false);
+
+                                                                        },
+                                                                        checked: (SuscripcionApp.obtenerPorUsuario(this.idUsr) !== null && SuscripcionApp.obtenerPorUsuario(this.idUsr)[0].estado == false ? true : false)
+
+
+
+
+                                                                    }),
+                                                                    m("label.custom-control-label[for='aNO']", "No"),
+                                                                ]),
+
+                                                            ])),
+                                                        ),
+
+
+                                                    ]),
+                                                    m("p.mg-0", [
+
+                                                        m("div.pd-10", {
+                                                            style: { "background-color": "#eaeff5" }
+                                                        },
+
+                                                            m("p.wd-100p", [
+                                                                m("button.btn.btn-xs.btn-block.btn-primary.tx-semibold.tx-white", {
+                                                                    onclick: () => {
+                                                                        setTimeout(() => {
+                                                                            $.alert('Proceso realizado con éxito.')
+                                                                        }, 1000);
+                                                                    }
                                                                 },
-                                                            }, [
-                                                                m("i.fas.fa-paper-plane.mg-r-5",)
-                                                            ], "Guardar"),
 
+                                                                    " Guardar Cambios "
 
-                                                        ]),
-                                                        m("hr.wd-100p.mg-t-5.mg-b-5"),
-
-                                                    ]),
-                                                    m("p.mg-5", [
-                                                        m("span.badge.badge-light.wd-100p.tx-14",
-                                                            "Historial de Observaciones",
+                                                                )
+                                                            ])
                                                         ),
-                                                        m("table.table.table-sm[id='table-observaciones'][width='100%']")
+
+
                                                     ]),
+                                                ]),
+
+                                                m(".tab-pane.fade[id='nots'][role='tabpanel'][aria-labelledby='home-nots']", [
+                                                    m("p.mg-0", [
+                                                        m("div.pd-10.tx-semibold", {
+                                                            style: { "background-color": "#a8bed6" }
+                                                        },
+                                                            "Notificaciones:"
+                                                        ),
+                                                        m("div.pd-10", {
+                                                            style: { "background-color": "#eaeff5" }
+                                                        },
+                                                            m("div.form-group", m("label.tx-semibold.tx-uppercase.tx-sans.tx-11.tx-medium.tx-spacing-1", "Notificación: Aviso de Cirugía:"), m("div.input-group", [
+                                                                m("div.custom-control.custom-radio", [
+                                                                    m("input.custom-control-input[type='radio'][id='csi'][name='ctrlCirugias']", {
+                                                                        onclick: (e) => {
+
+
+
+                                                                            const suscripcion1 = new NotificacionesService("Cirugias", true, this.idUsr, "0998785402", "mchangcnt@gmail.com");
+                                                                            NotificacionesService.guardarEnLocalStorage(suscripcion1);
+
+
+
+                                                                        },
+                                                                        checked: (NotificacionesService.obtenerPorUsuario(this.idUsr) !== null && NotificacionesService.obtenerPorUsuario(this.idUsr)[0].estado == true ? true : false)
+
+
+
+                                                                    }),
+                                                                    m("label.custom-control-label[for='csi']", "Si"),
+                                                                ]),
+                                                                m("div.custom-control.custom-radio.mg-l-20", [
+                                                                    m("input.custom-control-input[type='radio'][id='cno'][name='ctrlCirugias']", {
+                                                                        onclick: (e) => {
+
+                                                                            NotificacionesService.actualizarEstado("Cirugias", this.idUsr, false);
+
+                                                                        },
+                                                                        checked: (NotificacionesService.obtenerPorUsuario(this.idUsr) !== null && NotificacionesService.obtenerPorUsuario(this.idUsr)[0].estado == false ? true : false)
+
+
+                                                                    }),
+                                                                    m("label.custom-control-label[for='cno']", "No"),
+                                                                ]),
+
+                                                            ])),
+                                                            m("p.mg-0", [
+
+                                                                m("p.wd-100p", " Historial de Notificaciones"),
+                                                                NotificacionesService.obtenerHistorial("Cirugias", this.idUsr).map((v, i) => {
+                                                                    return m('p.mg-0.pd-0', 'Mensaje: ' + v.mensaje + ' Estado: ' + v.statusEnvio + ' Fecha y Hora de Envio: ' + v.fechaHoraEnvio + ' Celular: ' + v.celular + ' E-mail: '+ v.correoElectronico)
+                                                                })
+        
+        
+                                                            ]),
+
+                                                        ),
+
+
+                                                    ]),
+
+                                                    m("p.mg-0.d-none", [
+
+                                                        m("div.pd-10", {
+                                                            style: { "background-color": "#eaeff5" }
+                                                        },
+
+                                                            m("p.wd-100p", [
+                                                                m("button.btn.btn-xs.btn-block.btn-primary.tx-semibold.tx-white", {
+                                                                    onclick: () => {
+                                                                        NotificacionesService.agregarNotificacion("Cirugias", this.idUsr, "Aviso de Cirugía", moment().format('YYYY-MM-DDThh:mm:ss'), "Enviada", "0998785402", "mchangcnt@gmail.com");
+                                                                    }
+                                                                },
+
+                                                                    " Guardar Cambios "
+
+                                                                )
+                                                            ])
+                                                        ),
+
+
+                                                    ]),
+                                                    
                                                 ]),
 
                                             ])

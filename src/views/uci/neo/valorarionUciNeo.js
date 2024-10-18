@@ -412,6 +412,7 @@ class ValoracionUciNeo {
                                                 ValoracionUciNeo.nuevoRegistro.tipo = _value;
                                             }
 
+                                            document.getElementById('valorValoracionPIEL').hidden = true;
                                             document.getElementById('valorValoracionTONO').hidden = true;
                                             document.getElementById('valorValoracionCABEZA').hidden = true;
                                             document.getElementById('valorValoracionABDOMEN').hidden = true;
@@ -429,6 +430,9 @@ class ValoracionUciNeo {
                                             if (ValoracionUciNeo.nuevoRegistro.tipo == 'CORDON UMBILICAL') {
                                                 document.getElementById('valorValoracionCORDONUMBILICAL').hidden = false;
                                             }
+                                            if (ValoracionUciNeo.nuevoRegistro.tipo == 'PIEL') {
+                                                document.getElementById('valorValoracionPIEL').hidden = false;
+                                            }
 
                                         } catch (error) {
 
@@ -444,6 +448,9 @@ class ValoracionUciNeo {
                                     class: "custom-select",
                                     value: (ValoracionUciNeo.nuevoRegistro !== null ? ValoracionUciNeo.nuevoRegistro.tipo : 0),
                                 }, [{
+                                    id: "Piel",
+                                    label: "PIEL"
+                                },{
                                     id: "Tono",
                                     label: "TONO"
                                 },
@@ -738,6 +745,70 @@ class ValoracionUciNeo {
                                 label: "SECRECIONES"
                             }
 
+                            ].map(x =>
+                                m('option[id="' + x.id + '"]', x.label)
+                            )),
+                            m('select.tx-semibold', {
+                                id: 'valorValoracionPIEL',
+                                oncreate: (el) => {
+                                    if (ValoracionUciNeo.nuevoRegistro.tipo == 'PIEL') {
+                                        el.dom.hidden = false;
+                                    } else {
+                                        el.dom.hidden = true;
+                                    }
+
+                                },
+                                onchange: (e) => {
+                                    let _id = e.target.options[e.target.selectedIndex].id;
+                                    let _value = e.target.options[e.target.selectedIndex].value;
+                                    ValoracionUciNeo.nuevoRegistro.valor = _value;
+                                },
+                                onkeypress: (e) => {
+                                    if (e.keyCode == 13) {
+                                        ValoracionUciNeo.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
+                                        ValoracionUciNeo.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
+                                        ValoracionUciNeo.nuevoRegistro.timestamp = moment(PacientesUCI.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY') + ' ' + ValoracionUciNeo.nuevoRegistro.hora;
+                                        if (moment(ValoracionUciNeo.nuevoRegistro.timestamp, "DD-MM-YYYY HH:mm", true).isValid() == false) {
+                                            $.alert(ValoracionUciNeo.nuevoRegistro.timestamp + ' El valor de Hora no tiene el formato HH:mm necesario.');
+                                        } else {
+                                            if (ValoracionUciNeo.nuevoRegistro.editar == null) {
+                                                ValoracionUciNeo.agregarRegistro();
+                                                ValoracionUciNeo.nuevoRegistro.id = ValoracionUciNeo.nuevoRegistro.nro + 'ValoracionFisica';
+                                                FecthUci.registrarSeccion(ValoracionUciNeo.nuevoRegistro);
+                                                ValoracionUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                            } else {
+                                                ValoracionUciNeo.editarRegistro();
+                                                FecthUci.actualizarSeccion(ValoracionUciNeo.nuevoRegistro);
+                                                ValoracionUciNeo.nuevoRegistro = null;
+                                                PacientesUCI.vReloadTable('table-valoracion-uci-neo', ValoracionUciNeo.getRegistros());
+                                            }
+                                        }
+
+                                    }
+                                },
+                                class: "custom-select",
+                                value: (ValoracionUciNeo.nuevoRegistro !== null ? ValoracionUciNeo.nuevoRegistro.valor : 0),
+                            }, [{
+                                id: "Rosada",
+                                label: "ROSADA"
+                            },
+                            {
+                                id: "Pletorica",
+                                label: "PLETÓRICA"
+                            },
+                            {
+                                id: "Palida",
+                                label: "PÁLIDA"
+                            },
+                            {
+                                id: "Cianotica",
+                                label: "CIANÓTICA"
+                            },
+                            {
+                                id: "Icterica",
+                                label: "ICTÉRICA"
+                            }
                             ].map(x =>
                                 m('option[id="' + x.id + '"]', x.label)
                             )),
