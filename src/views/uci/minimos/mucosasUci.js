@@ -405,24 +405,24 @@ class MucosasUciNeo {
                                     class: "custom-select",
                                     value: (MucosasUciNeo.nuevoRegistro !== null ? MucosasUciNeo.nuevoRegistro.tipo : 0),
                                 }, [{
-                                    id: "Rosado",
-                                    label: "Rosado"
+                                    id: "Rosada",
+                                    label: "Rosada"
                                 },
                                 {
-                                    id: "Pletorico",
-                                    label: "Pletórico"
+                                    id: "Pletorica",
+                                    label: "Pletórica"
                                 },
                                 {
-                                    id: "Palido",
-                                    label: "Pálido"
+                                    id: "Palida",
+                                    label: "Pálida"
                                 },
                                 {
-                                    id: "Cianótico",
-                                    label: "Cianótico"
+                                    id: "Cianotica",
+                                    label: "Cianótica"
                                 },
                                 {
-                                    id: "Ictericia",
-                                    label: "Ictericia"
+                                    id: "Icterica",
+                                    label: "Ictérica"
                                 },
                                 ].map(x =>
                                     m('option[id="' + x.id + '"]', x.label)
