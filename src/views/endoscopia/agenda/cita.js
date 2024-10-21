@@ -477,7 +477,7 @@ class Cita {
 
     }
 
-    static getCitaCopy(clave = 'citaCopy') {
+    static getCitaCopy(clave = 'CitaReagenda') {
         // Obtener la cadena JSON almacenada en el local storage con la clave proporcionada
         const objetoJSON = localStorage.getItem(clave);
         // Convertir la cadena JSON de nuevo a un objeto JavaScript
@@ -485,6 +485,35 @@ class Cita {
         return objeto;
     }
 
+    static cancelarHttp_2(Calendario, cita) {
+     
+        m.request({
+            method: "POST",
+            url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/delcall",
+            body: cita,
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        }).then(function (res) {
+           
+            if (res.status) {
+              
+                Cita.cancelarCita_2(Calendario, cita);
+            } else {
+                $("#modalUpdateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.error = res.message;
+                throw res.message;
+            }
+        }).catch(function (e) {
+            $("#modalUpdateEvent").animate({
+                scrollTop: 0
+            }, "slow");
+            Cita.error = e;
+            throw e;
+        });
+    }
 
     static cancelarHttp(Calendario) {
         Cita.error = null;
@@ -579,6 +608,72 @@ class Cita {
 
     }
 
+    static validarCitaHttp_2(calendario) {
+
+        Cita.error = null;
+        Cita.loader = true;
+        Cita.data.idCalendar = calendario.idCalendar;
+        Cita.data.calendarios = [];
+
+        let _agendas = calendario.idCalendar.split(',');
+        for (let i = 0; i < Object.keys(_agendas).length; i++) {
+            for (let a = 0; a < Object.keys(calendario.calendarios).length; a++) {
+                if (_agendas[i] == calendario.calendarios[a].IDCALENDAR) {
+                    Cita.data.calendarios.push(calendario.calendarios[a]);
+                }
+            }
+        }
+
+        if (Cita.data.tipo == 1) {
+
+            m.request({
+                method: "POST",
+                url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/call-validate",
+                body: Cita.data,
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8"
+                }
+            }).then(function (res) {
+               
+                if (res.status) {
+
+                    // Eliminar Cita Anterior
+                    let _purl = 0
+                    if (localStorage.getItem('CitaReagenda') !== null) {
+                        let _cita = Cita.getCitaCopy();
+                        _purl = _cita.id;
+                        Cita.cancelarHttp_2(calendario, _cita);
+                    }
+
+                    console.log(22, 'estoy por aqui');
+                    Cita.agendarCitaHttp_2(calendario);
+                  
+
+                } else {
+                    Cita.loader = false;
+                    $("#modalUpdateEvent").animate({
+                        scrollTop: 0
+                    }, "slow");
+                    Cita.error = res.message;
+                    throw res.message;
+                }
+            }).catch(function (e) {
+                Cita.loader = false;
+                $("#modalUpdateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.error = e;
+                throw e;
+            });
+
+        } else {
+            Cita.agendarCita(calendario);
+        }
+
+
+
+    }
+
     static agendarCitaHttp(calendario) {
 
         Cita.error = null;
@@ -630,6 +725,38 @@ class Cita {
         });
     }
 
+    static agendarCitaHttp_2(calendario) {
+
+        Cita.error = null;
+
+        m.request({
+            method: "POST",
+            url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/call",
+            body: Cita.data,
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        }).then(function (res) {
+            Cita.loader = false;
+            if (res.status) {
+                console.log(22, 'estoy por aqui');
+                Cita.agendarCita_2(calendario);
+            } else {
+                $("#modalUpdateEvent").animate({
+                    scrollTop: 0
+                }, "slow");
+                Cita.error = res.message;
+                throw res.message;
+            }
+        }).catch(function (e) {
+            $("#modalUpdateEvent").animate({
+                scrollTop: 0
+            }, "slow");
+            Cita.error = e;
+            throw e;
+        });
+    }
+
     static agendarReagendarCitaHttp(calendario) {
 
         Cita.loader = true;
@@ -663,6 +790,8 @@ class Cita {
 
     static trackReAgendar(Calendario) {
 
+
+
         Cita.loader = true;
         m.request({
             method: "POST",
@@ -676,9 +805,9 @@ class Cita {
         }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
+
+
                 Calendario.sendEvent();
-
-
                 Calendario.success = "Ahora puede reagendar este Cita.";
                 Calendario.clearAlertCalendar();
                 Calendario.reloadFetchAgenda();
@@ -705,9 +834,9 @@ class Cita {
         }).then(function (res) {
             Cita.loader = false;
             if (res.status) {
+
+                localStorage.removeItem('CitaReagenda');
                 Calendario.sendEvent();
-
-
                 Calendario.success = "El reagendamiento se canceló.";
                 Calendario.clearAlertCalendar();
                 Calendario.reloadFetchAgenda();
@@ -748,6 +877,35 @@ class Cita {
         });
     }
 
+    static agendarCita_2(Calendario) {
+        Cita.loader = true;
+
+        m.request({
+            method: "POST",
+            url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/nueva",
+            body: Cita.data,
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": localStorage.userToken
+
+            }
+        }).then(function (res) {
+            Cita.loader = false;
+            if (res.status) {
+                Calendario.sendEvent();
+
+                Calendario.success = res.message;
+                Calendario.clearAlertCalendar();
+                $("#modalUpdateEvent").modal("hide");
+                Calendario.reloadFetchAgenda();
+            } else {
+                Cita.error = res.message;
+            }
+        }).catch(function (e) {
+            Cita.error = e;
+        });
+    }
+
     static reAgendarCita(Calendario) {
         Cita.loader = true;
         m.request({
@@ -775,6 +933,7 @@ class Cita {
             Calendario.error = e;
         });
     }
+
     static cancelarCita(Calendario) {
         Cita.loader = true;
 
@@ -796,6 +955,30 @@ class Cita {
                 Calendario.clearAlertCalendar();
                 $("#modalCalendarEvent").modal("hide");
                 Calendario.reloadFetchAgenda();
+            } else {
+                Calendario.error = res.message;
+            }
+        }).catch(function (e) {
+            Calendario.error = res.message;
+        });
+    }
+
+    static cancelarCita_2(Calendario, cita) {
+
+        m.request({
+            method: "POST",
+            url: "https://apidate.hospitalmetropolitano.org/v1/date/citas/delete",
+            body: cita,
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": localStorage.userToken
+
+            }
+        }).then(function (res) {
+           
+
+            if (res.status) {
+                localStorage.removeItem('CitaReagenda');
             } else {
                 Calendario.error = res.message;
             }
