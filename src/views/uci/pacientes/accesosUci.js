@@ -659,7 +659,7 @@ class AccesosUci {
                     m("td.tx-14.tx-normal.wd-30p[colspan='3']",
                         (AccesosUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
-                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
+                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY']", {
                                     id: "ifecha" + AccesosUci.nuevoRegistro.id,
                                     oncreate: (el) => {
                                         if (AccesosUci.nuevoRegistro.inicio != undefined) {
@@ -685,8 +685,8 @@ class AccesosUci {
                                                 || AccesosUci.nuevoRegistro.inicio == null
                                             ) {
                                                 $.alert('Acceso, ubicación, tipo e inicio son obligatorios.')
-                                            }else if (moment(AccesosUci.nuevoRegistro.inicio, "DD-MM-YYYY", true).isValid() == false) {
-                                                $.alert(AccesosUci.nuevoRegistro.inicio + ' El valor de Hora no tiene el formato necesario.');
+                                            } else if (moment(AccesosUci.nuevoRegistro.inicio, "DD/MM/YYYY", true).isValid() == false) {
+                                                $.alert(AccesosUci.nuevoRegistro.inicio + ' El valor de Fecha no tiene el formato necesario.');
                                             } else {
                                                 if (AccesosUci.nuevoRegistro.editar == null) {
                                                     AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
@@ -711,7 +711,7 @@ class AccesosUci {
                     m("td.tx-14.tx-normal.wd-30p[colspan='3']",
                         (AccesosUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
-                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
+                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY']", {
                                     id: "rfecha" + AccesosUci.nuevoRegistro.id,
                                     oncreate: (el) => {
                                         if (AccesosUci.nuevoRegistro.retiro != undefined) {
@@ -737,6 +737,8 @@ class AccesosUci {
                                                 || AccesosUci.nuevoRegistro.inicio == null
                                             ) {
                                                 $.alert('Acceso, ubicación, tipo e inicio son obligatorios.')
+                                            } else if (moment(AccesosUci.nuevoRegistro.retiro, "DD/MM/YYYY", true).isValid() == false) {
+                                                $.alert(AccesosUci.nuevoRegistro.retiro + ' El valor de Fecha no tiene el formato necesario.');
                                             } else {
                                                 if (AccesosUci.nuevoRegistro.editar == null) {
                                                     AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
@@ -767,7 +769,7 @@ class AccesosUci {
 
                         (AccesosUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
-                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
+                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY']", {
                                     id: "cfecha" + AccesosUci.nuevoRegistro.id,
                                     oncreate: (el) => {
                                         if (AccesosUci.nuevoRegistro.cambio != undefined) {
@@ -794,6 +796,8 @@ class AccesosUci {
                                                 || AccesosUci.nuevoRegistro.inicio == null
                                             ) {
                                                 $.alert('Acceso, ubicación, tipo e inicio son obligatorios.')
+                                            } else if (moment(AccesosUci.nuevoRegistro.cambio, "DD/MM/YYYY", true).isValid() == false) {
+                                                $.alert(AccesosUci.nuevoRegistro.cambio + ' El valor de Fecha no tiene el formato necesario.');
                                             } else {
                                                 if (AccesosUci.nuevoRegistro.editar == null) {
                                                     AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
@@ -825,7 +829,7 @@ class AccesosUci {
 
                         (AccesosUci.nuevoRegistro !== null ? [
                             m('div.d-flex', [
-                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
+                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY']", {
                                     id: "cufecha" + AccesosUci.nuevoRegistro.id,
                                     oncreate: (el) => {
                                         if (AccesosUci.nuevoRegistro.curacion != undefined) {
@@ -852,6 +856,8 @@ class AccesosUci {
                                                 || AccesosUci.nuevoRegistro.inicio == null
                                             ) {
                                                 $.alert('Acceso, ubicación, tipo e inicio son obligatorios.')
+                                            } else if (moment(AccesosUci.nuevoRegistro.curacion, "DD/MM/YYYY", true).isValid() == false) {
+                                                $.alert(AccesosUci.nuevoRegistro.curacion + ' El valor de Fecha no tiene el formato necesario.');
                                             } else {
                                                 if (AccesosUci.nuevoRegistro.editar == null) {
                                                     AccesosUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;

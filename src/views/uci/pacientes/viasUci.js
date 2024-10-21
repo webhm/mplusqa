@@ -650,7 +650,7 @@ class ViasUci {
                     m("td.tx-14.tx-normal.wd-30p[colspan='3']",
                         (ViasUci.nuevoRegistro !== null ? [
                             m('div', [
-                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
+                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY']", {
                                     id: "ifecha" + ViasUci.nuevoRegistro.id,
                                     oncreate: (el) => {
                                         if (ViasUci.nuevoRegistro.inicio !== undefined) {
@@ -676,7 +676,9 @@ class ViasUci {
                                                 || ViasUci.nuevoRegistro.inicio == null
                                             ) {
                                                 $.alert('Vía, ubicación, tipo e inicio son obligatorios.')
-                                            } else {
+                                            } else if (moment(ViasUci.nuevoRegistro.inicio, "DD/MM/YYYY", true).isValid() == false) {
+                                                $.alert(ViasUci.nuevoRegistro.inicio + ' El valor de Fecha no tiene el formato necesario.');
+                                            }  else {
                                                 if (ViasUci.nuevoRegistro.editar == null) {
                                                     ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
@@ -701,7 +703,7 @@ class ViasUci {
 
                         (ViasUci.nuevoRegistro !== null ? [
                             m('div', [
-                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
+                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY']", {
                                     id: "rfecha" + ViasUci.nuevoRegistro.id,
                                     oncreate: (el) => {
                                         if (ViasUci.nuevoRegistro.retiro !== undefined) {
@@ -727,7 +729,9 @@ class ViasUci {
                                                 || ViasUci.nuevoRegistro.inicio == null
                                             ) {
                                                 $.alert('Vía, ubicación, tipo e inicio son obligatorios.')
-                                            } else {
+                                            } else if (moment(ViasUci.nuevoRegistro.retiro, "DD/MM/YYYY", true).isValid() == false) {
+                                                $.alert(ViasUci.nuevoRegistro.retiro + ' El valor de Fecha no tiene el formato necesario.');
+                                             } else {
                                                 if (ViasUci.nuevoRegistro.editar == null) {
                                                     ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
@@ -756,7 +760,7 @@ class ViasUci {
 
                         (ViasUci.nuevoRegistro !== null ? [
                             m('div', [
-                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
+                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY']", {
                                     id: "cfecha" + ViasUci.nuevoRegistro.id,
                                     oncreate: (el) => {
                                         if (ViasUci.nuevoRegistro.cambio !== undefined) {
@@ -782,7 +786,9 @@ class ViasUci {
                                                 || ViasUci.nuevoRegistro.inicio == null
                                             ) {
                                                 $.alert('Vía, ubicación, tipo e inicio son obligatorios.')
-                                            } else {
+                                            } else if (moment(ViasUci.nuevoRegistro.cambio, "DD/MM/YYYY", true).isValid() == false) {
+                                                $.alert(ViasUci.nuevoRegistro.cambio + ' El valor de Fecha no tiene el formato necesario.');
+                                             } else {
                                                 if (ViasUci.nuevoRegistro.editar == null) {
                                                     ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
@@ -813,7 +819,7 @@ class ViasUci {
 
                         (ViasUci.nuevoRegistro !== null ? [
                             m('div', [
-                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY]", {
+                                m("input.form-control[type='text'][placeholder='DD/MM/YYYY']", {
                                     id: "cufecha" + ViasUci.nuevoRegistro.id,
                                     oncreate: (el) => {
                                         if (ViasUci.nuevoRegistro.curacion !== undefined) {
@@ -839,7 +845,9 @@ class ViasUci {
                                                 || ViasUci.nuevoRegistro.inicio == null
                                             ) {
                                                 $.alert('Vía, ubicación, tipo e inicio son obligatorios.')
-                                            } else {
+                                            } else if (moment(ViasUci.nuevoRegistro.curacion, "DD/MM/YYYY", true).isValid() == false) {
+                                                $.alert(ViasUci.nuevoRegistro.curacion + ' El valor de Fecha no tiene el formato necesario.');
+                                             } else {
                                                 if (ViasUci.nuevoRegistro.editar == null) {
                                                     ViasUci.nuevoRegistro.numeroTurno = PacientesUCI.numeroTurno;
                                                     ViasUci.nuevoRegistro.fechaHoraTurno = PacientesUCI.fechaHoraTurno;
