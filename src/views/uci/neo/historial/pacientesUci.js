@@ -12,7 +12,7 @@ import CultivosUci from "./cultivosUci";
 import CuidadosUci2 from "./cuidadosUci2";
 import MarcapasosUci from "./marcapasos";
 import FecthUci from "./fecthUci";
-import VentilatoriosUci from "./ventilatorios";
+import VentilatoriosNeo from "./ventilatorios";
 import GasesUci from "./gasesUci";
 import OxigenacionUci from "./oxigenacionUci";
 import MedidasUci from "./medidiasUci";
@@ -20,10 +20,14 @@ import GasesMedUci from "./gasesMedUci";
 import ComburTestUci from "./comburTestUci";
 import UlcerasUciPed from "./ulcerasUciPed";
 import PrescripcionesUci from "./prescripcionesUci";
+import TurnosUciHistorial from "./turnosUci";
+import VentilatorioNoInvasivo from "./ventilatorioNoInvasivo";
+import ComburTestNeo from "./comburTestUci";
+import ValoracionUciNeo from "./valorarionUciNeo";
 
 
 // Pacientes UCI
-class PacientesUCIHistorial extends App {
+class PacientesUCINEOHistorial extends App {
 
     static pacientes = null;
     static dataPte = null;
@@ -34,19 +38,22 @@ class PacientesUCIHistorial extends App {
     static fechaHoraTurno = null;
     static idFiltro = 1;
     static fechaHasta = null;
+    static horaHasta = null;
     static fechaDesde = null;
+    static horaDesde = null;
     static fechaBusqueda = null;
+    static busquedaHecha = false;
 
     constructor(_data) {
 
         super();
         App.setTitle("Historial Bitácora U.C.I.");
-        this.view = PacientesUCIHistorial.page;
-        PacientesUCIHistorial.numeroHistoriaClinica = _data.attrs.numeroHistoriaClinica;
-        PacientesUCIHistorial.numeroAtencion = _data.attrs.numeroAtencion;
-        PacientesUCIHistorial.numeroTurno = (_data.attrs.numeroTurno !== undefined ? _data.attrs.numeroTurno : null);
-        PacientesUCIHistorial.usuarioTurno = _data.attrs.usuario;
-        PacientesUCIHistorial.validarAtencion();
+        this.view = PacientesUCINEOHistorial.page;
+        PacientesUCINEOHistorial.numeroHistoriaClinica = _data.attrs.numeroHistoriaClinica;
+        PacientesUCINEOHistorial.numeroAtencion = _data.attrs.numeroAtencion;
+        PacientesUCINEOHistorial.numeroTurno = (_data.attrs.numeroTurno !== undefined ? _data.attrs.numeroTurno : null);
+        PacientesUCINEOHistorial.usuarioTurno = _data.attrs.usuario;
+        PacientesUCINEOHistorial.validarAtencion();
 
     }
 
@@ -58,59 +65,61 @@ class PacientesUCIHistorial extends App {
 
     static validarAtencion() {
 
-        FecthUci.validarAtencionHistorial();
+        // FecthUci.validarAtencionHistorial();
+
+
     }
 
     static extraerFechaHoraTurnoVigente() {
         let turnos = TurnosUci.getTurnos();
         let lastTurno = turnos[turnos.length - 1];
-        PacientesUCIHistorial.fechaHoraTurno = lastTurno.fechaHoraTurno;
+        PacientesUCINEOHistorial.fechaHoraTurno = lastTurno.fechaHoraTurno;
     }
 
     static loadSecs() {
 
-        CuidadosUci2.registros = PacientesUCIHistorial.parseSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options));
-        // PacientesUCIHistorial.setTurnoSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options))
+        CuidadosUci2.registros = PacientesUCINEOHistorial.parseSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options));
+        // PacientesUCINEOHistorial.setTurnoSeccionCuidadosGenerales(Array.from(document.getElementById('sec_CuidadosGenerales').options))
 
-        CateterUci.registros = PacientesUCIHistorial.parseSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
-        // PacientesUCIHistorial.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
+        //  CateterUci.registros = PacientesUCINEOHistorial.parseSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
+        //  PacientesUCINEOHistorial.setTurnoSeccionCateter(Array.from(document.getElementById('sec_Cateter').options));
 
-        VentilacionUci.registros = PacientesUCIHistorial.parseSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
-        // PacientesUCIHistorial.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
+        // VentilacionUci.registros = PacientesUCINEOHistorial.parseSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
+        // PacientesUCINEOHistorial.setTurnoSeccionVentilacion(Array.from(document.getElementById('sec_Ventilacion').options));
 
-        HemodialisisUci.registros = PacientesUCIHistorial.parseSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
-        //  PacientesUCIHistorial.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
+        //HemodialisisUci.registros = PacientesUCINEOHistorial.parseSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
+        //PacientesUCINEOHistorial.setTurnoSeccionHemodialisis(Array.from(document.getElementById('sec_Hemodialisis').options));
 
-        MarcapasosUci.registros = PacientesUCIHistorial.parseSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
-        //  PacientesUCIHistorial.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
+        MarcapasosUci.registros = PacientesUCINEOHistorial.parseSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
+        //  PacientesUCINEOHistorial.setTurnoSeccionMarcapasos(Array.from(document.getElementById('sec_Marcapasos').options));
 
-        VentilatoriosUci.allRegistros = PacientesUCIHistorial.parseSeccionVentilatorios_AllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
-        // PacientesUCIHistorial.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
-        VentilatoriosUci.registros = PacientesUCIHistorial.parseSeccionVentilatorios_v2(Array.from(document.getElementById('sec_Ventilatorios').options));
+        //VentilatoriosNeo.allRegistros = PacientesUCINEOHistorial.parseSeccionVentilatorios_AllRegistros(Array.from(document.getElementById('sec_Ventilatorios').options));
+        // PacientesUCINEOHistorial.setTurnoSeccionVentilatorios(Array.from(document.getElementById('sec_Ventilatorios').options));
+        // VentilatoriosNeo.registros = PacientesUCINEOHistorial.parseSeccionVentilatorios_v2(Array.from(document.getElementById('sec_Ventilatorios').options));
 
-        GasesUci.allRegistros = PacientesUCIHistorial.parseSeccionGases_AllRegistros(Array.from(document.getElementById('sec_Gases').options));
-        // PacientesUCIHistorial.setTurnoSeccionGases(Array.from(document.getElementById('sec_Gases').options));
-        GasesUci.registros = PacientesUCIHistorial.parseSeccionGases_v2(Array.from(document.getElementById('sec_Gases').options));
+        // GasesUci.allRegistros = PacientesUCINEOHistorial.parseSeccionGases_AllRegistros(Array.from(document.getElementById('sec_Gases').options));
+        // PacientesUCINEOHistorial.setTurnoSeccionGases(Array.from(document.getElementById('sec_Gases').options));
+        // GasesUci.registros = PacientesUCINEOHistorial.parseSeccionGases_v2(Array.from(document.getElementById('sec_Gases').options));
 
-        OxigenacionUci.registros = PacientesUCIHistorial.parseSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
-        // PacientesUCIHistorial.setTurnoSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
+        // OxigenacionUci.registros = PacientesUCINEOHistorial.parseSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
+        // PacientesUCINEOHistorial.setTurnoSeccionOxigenacion(Array.from(document.getElementById('sec_Oxigenacion').options));
 
-        MedidasUci.allRegistros = PacientesUCIHistorial.parseSeccionMedidas_AllRegistros(Array.from(document.getElementById('sec_Medidas').options));
-        //PacientesUCIHistorial.setTurnoSeccionMedidas(Array.from(document.getElementById('sec_Medidas').options));
-        MedidasUci.registros = PacientesUCIHistorial.parseSeccionMedidas_v2(Array.from(document.getElementById('sec_Medidas').options));
+        //  MedidasUci.allRegistros = PacientesUCINEOHistorial.parseSeccionMedidas_AllRegistros(Array.from(document.getElementById('sec_Medidas').options));
+        //PacientesUCINEOHistorial.setTurnoSeccionMedidas(Array.from(document.getElementById('sec_Medidas').options));
+        // MedidasUci.registros = PacientesUCINEOHistorial.parseSeccionMedidas_v2(Array.from(document.getElementById('sec_Medidas').options));
 
-        ComburTestUci.allRegistros = PacientesUCIHistorial.parseSeccionComburTest_AllRegistros(Array.from(document.getElementById('sec_ComburTest').options));
-        //PacientesUCIHistorial.setTurnoSeccionComburTest(Array.from(document.getElementById('sec_ComburTest').options));
-        ComburTestUci.registros = PacientesUCIHistorial.parseSeccionComburTest_v2(Array.from(document.getElementById('sec_ComburTest').options));
+        // ComburTestUci.allRegistros = PacientesUCINEOHistorial.parseSeccionComburTest_AllRegistros(Array.from(document.getElementById('sec_ComburTest').options));
+        //PacientesUCINEOHistorial.setTurnoSeccionComburTest(Array.from(document.getElementById('sec_ComburTest').options));
+        // ComburTestUci.registros = PacientesUCINEOHistorial.parseSeccionComburTest_v2(Array.from(document.getElementById('sec_ComburTest').options));
 
-        GasesMedUci.allRegistros = PacientesUCIHistorial.parseSeccionGasesMed_AllRegistros(Array.from(document.getElementById('sec_GasesMed').options));
-        // PacientesUCIHistorial.setTurnoSeccionGasesMed(Array.from(document.getElementById('sec_GasesMed').options));
-        GasesMedUci.registros = PacientesUCIHistorial.parseSeccionGasesMed_v2(Array.from(document.getElementById('sec_GasesMed').options));
+        // GasesMedUci.allRegistros = PacientesUCINEOHistorial.parseSeccionGasesMed_AllRegistros(Array.from(document.getElementById('sec_GasesMed').options));
+        // PacientesUCINEOHistorial.setTurnoSeccionGasesMed(Array.from(document.getElementById('sec_GasesMed').options));
+        //  GasesMedUci.registros = PacientesUCINEOHistorial.parseSeccionGasesMed_v2(Array.from(document.getElementById('sec_GasesMed').options));
 
-        PrescripcionesUci.allRegistros = PacientesUCIHistorial.parseSeccionPrescripcionesUci_AllRegistros(Array.from(document.getElementById('sec_PrescripcionesUci').options));
-        PrescripcionesUci.registros = PacientesUCIHistorial.parseSeccionPrescripcionesUci_v2(Array.from(document.getElementById('sec_PrescripcionesUci').options));
+        //  PrescripcionesUci.allRegistros = PacientesUCINEOHistorial.parseSeccionPrescripcionesUci_AllRegistros(Array.from(document.getElementById('sec_PrescripcionesUci').options));
+        //  PrescripcionesUci.registros = PacientesUCINEOHistorial.parseSeccionPrescripcionesUci_v2(Array.from(document.getElementById('sec_PrescripcionesUci').options));
 
-        PacientesUCIHistorial.showSecciones();
+        PacientesUCINEOHistorial.showSecciones();
     }
 
     static resetSecs() {
@@ -136,8 +145,8 @@ class PacientesUCIHistorial extends App {
 
         OxigenacionUci.show = false;
 
-        VentilatoriosUci.show = false;
-        VentilatoriosUci.destroyTable();
+        VentilatoriosNeo.show = false;
+        VentilatoriosNeo.destroyTable();
 
         PrescripcionesUci.show = false;
         PrescripcionesUci.destroyTable();
@@ -148,42 +157,17 @@ class PacientesUCIHistorial extends App {
 
     static showSecciones() {
 
-        PacientesUCIHistorial.extraerFechaHoraTurnoVigente();
+        PacientesUCINEOHistorial.extraerFechaHoraTurnoVigente();
 
-        // CuidadosUci2.show = true;
+        // UlcerasUciPed.registros = PacientesUCINEOHistorial.parseAllSeccion('UlcerasPed');
 
-        //ViasUci.show = true;
-        ViasUci.registros = PacientesUCIHistorial.parseSeccion(Array.from(document.getElementById('sec_Vias').options));
+        ValoracionUciNeo.registros = PacientesUCINEOHistorial.parseAllSeccion('ValoracionFisicaNeo');
 
-        // AccesosUci.show = true;
-        AccesosUci.registros = PacientesUCIHistorial.parseSeccion(Array.from(document.getElementById('sec_Accesos').options));
+        VentilatorioNoInvasivo.registros = PacientesUCINEOHistorial.parseAllSeccion('Oxigenacion');
 
-        // CateterUci.show = true;
+        ComburTestNeo.registros = PacientesUCINEOHistorial.parseAllSeccion('ComburTest');
 
-        // VentilacionUci.show = true;
-
-        //  HemodialisisUci.show = true;
-
-        //  CultivosUci.show = true;
-        CultivosUci.registros = PacientesUCIHistorial.parseSeccion(Array.from(document.getElementById('sec_Cultivos').options));
-
-        // MarcapasosUci.show = true;
-
-        // GasesUci.show = true;
-
-        //  OxigenacionUci.show = true;
-
-        //   VentilatoriosUci.show = true;
-
-        //   MedidasUci.show = true;
-
-        //  ComburTestUci.show = true;
-
-        //  GasesMedUci.show = true;
-
-        // Pediatrica y Neo
-        //  UlcerasUciPed.show = true;
-        UlcerasUciPed.registros = PacientesUCIHistorial.parseAllSeccion('UlcerasPed');
+        VentilatoriosNeo.registros = PacientesUCINEOHistorial.parseAllSeccion('Ventilatorios');
 
 
 
@@ -191,6 +175,272 @@ class PacientesUCIHistorial extends App {
 
     }
 
+    static arqTableTurnos() {
+        return {
+            data: null,
+            dom: 'ltp',
+            language: {
+                searchPlaceholder: "Buscar...",
+                sSearch: "",
+                lengthMenu: "Mostrar _MENU_ registros por página",
+                sProcessing: "Procesando...",
+                sZeroRecords: "Todavía no tienes resultados disponibles.",
+                sEmptyTable: "Ningún dato disponible en esta tabla",
+                sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+                sInfoPostFix: "",
+                sUrl: "",
+                sInfoThousands: ",",
+                sLoadingRecords: "Cargando...",
+                oPaginate: {
+                    sFirst: "Primero",
+                    sLast: "Último",
+                    sNext: "Siguiente",
+                    sPrevious: "Anterior",
+                },
+                oAria: {
+                    sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+                    sSortDescending: ": Activar para ordenar la columna de manera descendente",
+                },
+            },
+            cache: false,
+            orden: false,
+            destroy: true,
+            // pageLength: 3,
+            columns: [{
+                    title: "Tipo: ",
+                },
+                {
+                    title: "Fecha:",
+                },
+                {
+                    title: "Hora:",
+                },
+                {
+                    title: "Usuario:",
+                },
+                {
+                    title: "Paciente:",
+                },
+
+                {
+                    title: "Especialidad:",
+                },
+                {
+                    title: "Status:",
+                },
+
+                {
+                    title: "Asume:",
+                },
+                {
+                    title: "Cancela:",
+                },
+
+            ],
+            aoColumnDefs: [{
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+
+
+
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center', [
+                                        m("button.btn-xs.btn-block.tx-semibold.tx-15[type='button']", {
+                                                class: (PacientesUCINEOHistorial.fechaHoraTurno == oData.fechaHoraTurno && oData.gestion == 1 ? 'bg-warning' : 'bg-light')
+                                            },
+                                            (oData.numeroTurno == 1 ? 'AM' : ''),
+                                            (oData.numeroTurno == 2 ? 'PM' : ''),
+                                            (oData.numeroTurno == 3 ? 'HS' : ''),
+                                        ),
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    width: '5%',
+                    visible: true,
+                    aTargets: [0],
+                    orderable: false,
+                },
+                {
+
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m("input.form-control.tx-13.tx-semibold[type='text'][placeholder='DD/MM/YYYY']", {
+                                        id: 'fechaTurno',
+                                        disabled: true,
+                                        oncreate: (el) => {
+                                            if (oData.fechaTurno !== undefined) {
+                                                el.dom.value = moment(oData.fechaTurno, 'DD-MM-YYYY').format('DD/MM/YYYY');
+                                            }
+
+                                        },
+                                    }),
+                                ]
+                            }
+                        });
+                    },
+                    width: '15%',
+                    visible: true,
+                    aTargets: [1],
+                    orderable: false,
+
+                },
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+
+
+                        let _d = true;
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+
+                                    m("div.input-group", [
+                                        m("input.form-control.tx-13.tx-semibold[type='text'][placeholder='HH:mm]", {
+                                            id: 'horaTurno',
+                                            disabled: 'disabled',
+                                            oncreate: (el) => {
+                                                if (oData.horaTurno !== undefined) {
+                                                    el.dom.value = oData.horaTurno;
+                                                }
+
+                                            },
+
+                                        }),
+
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    width: '15%',
+                    visible: true,
+                    aTargets: [2],
+                    orderable: false,
+
+                },
+                {
+
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m("input.form-control.tx-13.tx-semibold[type='text']", {
+                                        disabled: 'disabled',
+                                        oncreate: (el) => {
+                                            if (oData.usuarioTurno !== undefined) {
+                                                el.dom.value = oData.usuarioTurno;
+                                            }
+                                        },
+                                    }),
+                                ]
+                            }
+                        });
+                    },
+                    width: '15%',
+                    visible: true,
+                    aTargets: [3],
+                    orderable: false,
+
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.paciente;
+                    },
+                    visible: false,
+                    aTargets: [4],
+                    orderable: false,
+                },
+                {
+                    mRender: function(data, type, full) {
+                        return full.especialidad;
+                    },
+                    visible: false,
+                    aTargets: [5],
+                    orderable: false,
+
+
+                },
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.text-center', [
+                                        m("button.btn-xs.btn-block.tx-semibold.tx-13[type='button']", {
+                                                class: (oData.status == 1 ? 'bg-warning' : (oData.status == 3 ? 'bg-light' : 'bg-success')),
+                                            },
+                                            (oData.status == 1 ? 'Turno Abierto' : ''),
+                                            (oData.status == 2 ? 'Turno Cerrado' : ''),
+                                            (oData.status == 3 ? 'Turno Cancelado' : ''),
+                                        ),
+
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    width: '10%',
+                    visible: true,
+                    aTargets: [6],
+                    orderable: false,
+                },
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.tx-12', [
+                                        m('div.d-inline', (oData.cancela != null ? '' : m.trust(oData.asume)))
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    width: '10%',
+                    visible: true,
+                    aTargets: [7],
+                    orderable: false,
+                },
+                {
+                    fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+
+                        return m.mount(nTd, {
+                            view: () => {
+                                return [
+                                    m('div.tx-12', [
+                                        m('div.d-inline', m.trust(oData.cancela))
+
+                                    ])
+
+                                ]
+                            }
+                        });
+                    },
+                    width: '10%',
+                    visible: true,
+                    aTargets: [8],
+                    orderable: false,
+                },
+
+
+            ],
+            fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+
+            },
+        };
+    }
 
     static parseAllSeccion(idSeccion) {
         let res = [];
@@ -232,7 +482,7 @@ class PacientesUCIHistorial extends App {
                                 style: { "background-color": "#CCCCFF", }
                             }, [
                                 m("th[scope='col'][colspan='12']",
-                                    "Registro de Turnos:"
+                                    "Historial de Turnos:"
                                 ),
 
                             ])
@@ -244,17 +494,22 @@ class PacientesUCIHistorial extends App {
                             m("tr.bd.bd-2.text-right", {
                                 style: { "border-color": "#5173a1" }
                             }, [
-                                m("td.wd-10p[colspan='6']"),
 
-                                m("td[colspan='6']",
-                                    m("input.form-control.d-inline.tx-semibold.tx-14.mg-r-2.wd-15p[type='text'][placeholder='DD/MM/YYYY']", {
-                                        id: "fechaBusqueda",
+                                m("td.d-flex.justify-content-end[colspan='12']",
+                                    m("span.mg-5", 'Desde:'),
+                                    m("input.form-control.d-inline.tx-semibold.tx-14.mg-r-2.wd-5p[type='text'][placeholder='DD/MM/YYYY']", {
+                                        id: "fechaDesde",
                                         class: "form-control tx-semibold tx-14 wd-15p",
-                                        type: "text",
+
                                         oncreate: (el) => {
 
+                                            // el.dom.value = moment().format('DD-MM-YYYY');
+                                            el.dom.value = '21-10-2024';
+                                            PacientesUCINEOHistorial.fechaDesde = el.dom.value;
+
+
                                             setTimeout(() => {
-                                                new Cleave("#fechaBusqueda", {
+                                                new Cleave("#fechaDesde", {
                                                     date: true,
                                                     datePattern: ["d", "m", "Y"]
                                                 });
@@ -262,19 +517,124 @@ class PacientesUCIHistorial extends App {
                                         },
                                         oninput: (e) => {
                                             setTimeout(() => {
-                                                PacientesUCIHistorial.fechaBusqueda = (e.target.value.length !== 0 ? e.target.value : null);
-                                                console.log(77, PacientesUCIHistorial.fechaBusqueda)
+                                                PacientesUCINEOHistorial.fechaDesde = (e.target.value.length !== 0 ? e.target.value : null);
                                             }, 50);
                                         },
+                                    }),
+                                    m("input.form-control.tx-13.tx-semibold.wd-10p[type='text'][placeholder='HH:mm']", {
+                                        id: 'horaDesde',
+                                        disabled: 'disabled',
+
+                                        oncreate: (el) => {
+
+                                            el.dom.value = '08:00';
+
+                                            PacientesUCINEOHistorial.horaDesde = el.dom.value;
+
+                                            setTimeout(() => {
+                                                new Cleave("#horaDesde", {
+                                                    time: true,
+                                                    timePattern: ['h', 'm']
+                                                });
+                                            }, 50);
+                                        },
+                                        oninput: (e) => {
+                                            setTimeout(() => {
+                                                PacientesUCINEOHistorial.horaDesde = (e.target.value.length !== 0 ? e.target.value : null);
+                                            }, 50);
+                                        },
+
+                                    }),
+                                    m("span.mg-5", 'Hasta:'),
+                                    m("input.form-control.d-inline.tx-semibold.tx-14.mg-r-2.wd-10p[type='text'][placeholder='DD/MM/YYYY']", {
+                                        id: "fechaHasta",
+                                        class: "form-control tx-semibold tx-14 wd-15p",
+
+                                        oncreate: (el) => {
+
+                                            //el.dom.value = moment().add(1, 'days').format('DD-MM-YYYY');
+                                            el.dom.value = '22-10-2024';
+                                            PacientesUCINEOHistorial.fechaHasta = el.dom.value;
+
+                                            setTimeout(() => {
+                                                new Cleave("#fechaHasta", {
+                                                    date: true,
+                                                    datePattern: ["d", "m", "Y"]
+                                                });
+                                            }, 50);
+                                        },
+                                        oninput: (e) => {
+                                            setTimeout(() => {
+
+                                                PacientesUCINEOHistorial.fechaHasta = (e.target.value.length !== 0 ? e.target.value : null);
+
+
+
+                                            }, 50);
+                                        },
+
+                                    }),
+                                    m("input.form-control.tx-13.tx-semibold.wd-10p[type='text'][placeholder='HH:mm']", {
+                                        id: 'horaHasta',
+                                        disabled: 'disabled',
+
+                                        oncreate: (el) => {
+
+                                            el.dom.value = '07:59';
+
+                                            PacientesUCINEOHistorial.horaHasta = el.dom.value;
+
+
+                                            setTimeout(() => {
+                                                new Cleave("#horaHasta", {
+                                                    time: true,
+                                                    timePattern: ['h', 'm']
+                                                });
+                                            }, 50);
+                                        },
+                                        oninput: (e) => {
+                                            setTimeout(() => {
+
+
+
+                                                PacientesUCINEOHistorial.horaHasta = (e.target.value.length !== 0 ? e.target.value : null);
+                                            }, 50);
+                                        },
+
                                     }),
                                     m("button.btn.btn-xs.btn-light.tx-semibold.tx-14.mg-r-2.wd-10p[type='button']", {
                                         onclick: () => {
 
-                                            if (PacientesUCIHistorial.fechaBusqueda !== null) {
-                                                let fecha = moment(PacientesUCIHistorial.fechaBusqueda, 'DD/MM/YYYY').format('DD-MM-YYYY');
-                                                console.log(666, fecha)
-                                                FecthUci.loadSeccionesHistorial(fecha)
+                                            if (PacientesUCINEOHistorial.busquedaHecha == false) {
+                                                let start = moment(PacientesUCINEOHistorial.fechaDesde, "DD-MM-YYYY");
+                                                let end = moment(PacientesUCINEOHistorial.fechaHasta, "DD-MM-YYYY");
+
+
+
+                                                //Difference in number of days
+                                                console.log(99, moment.duration(start.diff(end)).asDays())
+
+                                                if (moment.duration(start.diff(end)).asDays() != -1) {
+                                                    $.alert('Error de formato o no se puede seleccionar más de 24 horas.');
+                                                } else {
+                                                    if (PacientesUCINEOHistorial.fechaDesde !== null) {
+                                                        let fechaDesde = moment(PacientesUCINEOHistorial.fechaDesde, 'DD/MM/YYYY').format('DD-MM-YYYY');
+                                                        let fechaHasta = moment(PacientesUCINEOHistorial.fechaHasta, 'DD/MM/YYYY').format('DD-MM-YYYY');
+                                                        PacientesUCINEOHistorial.fechaDesde = fechaDesde;
+                                                        PacientesUCINEOHistorial.fechaHasta = fechaHasta;
+                                                        PacientesUCINEOHistorial.busquedaHecha = true;
+                                                        FecthUci.validarAtencionHistorial();
+                                                    }
+
+                                                }
+                                            } else {
+                                                alert('Recargue esta página para una nueva consulta.');
+                                                window.location.reload();
                                             }
+
+
+
+
 
 
 
@@ -282,11 +642,10 @@ class PacientesUCIHistorial extends App {
                                     }, "Buscar"),
                                     m("button.btn.btn-xs.btn-primary.tx-semibold.tx-14.mg-r-2.wd-15p[type='button']", {
                                         onclick: () => {
-                                            m.route.set('/uci/pacientes/', {
-                                                numeroHistoriaClinica: PacientesUCIHistorial.numeroHistoriaClinica,
-                                                numeroAtencion: PacientesUCIHistorial.numeroAtencion,
-                                                usuario: PacientesUCIHistorial.usuarioTurno
-
+                                            m.route.set('/uci/pacientes/neo/', {
+                                                numeroHistoriaClinica: PacientesUCINEOHistorial.numeroHistoriaClinica,
+                                                numeroAtencion: PacientesUCINEOHistorial.numeroAtencion,
+                                                usuario: PacientesUCINEOHistorial.usuarioTurno
                                             })
 
 
@@ -299,41 +658,46 @@ class PacientesUCIHistorial extends App {
 
                             ]),
 
-                            m('br')
+                            m("tr", [
+                                m("td[colspan='12']", [
+                                    (TurnosUciHistorial.getTurnos().length != 0 ? [PacientesUCINEOHistorial.vTable('table-turnos', TurnosUciHistorial.getTurnos(), PacientesUCINEOHistorial.arqTableTurnos())] : [])
+
+                                ])
+                            ]),
+                            m('br'),
+
 
                         ]),
+
                         // Cuidados Generales
                         m(CuidadosUci2),
                         // Vias
-                        m(ViasUci),
+                        // m(ViasUci),
                         // Accesos
-                        m(AccesosUci),
+                        //m(AccesosUci),
                         // Cateter
-                        m(CateterUci),
+                        // m(CateterUci),
                         // Manejo de Ventilzacion
-                        m(VentilacionUci),
+                        //m(VentilacionUci),
                         // Hemodialisis
-                        m(HemodialisisUci),
+                        //m(HemodialisisUci),
                         // Cultivos
-                        m(CultivosUci),
+                        // m(CultivosUci),
                         // Marcapasos
                         m(MarcapasosUci),
                         // Ventilatorios
-                        m(VentilatoriosUci),
-                        // Gasometrias / Horas
-                        m(GasesUci),
-                        // Oxigenación
-                        m(OxigenacionUci),
-                        // MedidasUci
-                        m(MedidasUci),
+                        m(VentilatoriosNeo),
+                        // Ventilatorios
+                        m(VentilatorioNoInvasivo),
                         // ComburTest
-                        m(ComburTestUci),
-                        // GasesMedUci
-                        m(GasesMedUci),
-                        // UlcerasUciPed
-                        m(UlcerasUciPed),
-                        // Prescripciones Uci
-                        m(PrescripcionesUci),
+                        m(ComburTestNeo),
+                        // ValoracionUciNeo
+                        m(ValoracionUciNeo),
+
+
+
+
+
 
                     ])
                 ])
@@ -361,7 +725,7 @@ class PacientesUCIHistorial extends App {
             });
         });
 
-        result = res.sort((a, b) => b.nro - a.nro);
+        result = res.sort((a, b) => b.numeroTurno - a.numeroTurno);
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -386,7 +750,7 @@ class PacientesUCIHistorial extends App {
             });
         });
 
-        result = res.sort((a, b) => b.nro - a.nro);
+        result = res.sort((a, b) => b.numeroTurno - a.numeroTurno);
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -430,7 +794,8 @@ class PacientesUCIHistorial extends App {
             });
         });
 
-        result = res.sort((a, b) => b.nro - a.nro);
+        result = res.sort((a, b) => b.numeroTurno - a.numeroTurno);
+
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -455,7 +820,8 @@ class PacientesUCIHistorial extends App {
             });
         });
 
-        result = res.sort((a, b) => b.nro - a.nro);
+        result = res.sort((a, b) => b.numeroTurno - a.numeroTurno);
+
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -481,7 +847,8 @@ class PacientesUCIHistorial extends App {
             });
         });
 
-        result = res.sort((a, b) => b.nro - a.nro);
+        result = res.sort((a, b) => b.numeroTurno - a.numeroTurno);
+
         // Quitar duplicados
         resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
@@ -501,7 +868,7 @@ class PacientesUCIHistorial extends App {
         options.map((option) => {
             FecthUci.dataHistorial.filter((obj) => {
                 let _obj = JSON.parse(obj.DATASECCION);
-                if (_obj.id === option.id) {
+                if (_obj.id === option.id && _obj.tipoBit == undefined) {
                     res.push(_obj);
                 }
             });
@@ -609,7 +976,7 @@ class PacientesUCIHistorial extends App {
         });
 
         if (res.length == 0) {
-            res = VentilatoriosUci.allRegistros;
+            res = VentilatoriosNeo.allRegistros;
         }
 
         result = res.sort((a, b) => b.nro - a.nro);
@@ -620,6 +987,8 @@ class PacientesUCIHistorial extends App {
         resultId = resultNro.filter(o => hash[o.id] ? false : hash[o.id] = true);
         // Ordenar desc
         _arr = resultId.sort((a, b) => a.orden - b.orden);
+
+        console.log(335566, _arr)
 
 
         // Establecer Columnas
@@ -634,12 +1003,13 @@ class PacientesUCIHistorial extends App {
         let PresionBalonTuboOrotraqueal = 0;
         let NivelTuboOrotraqueal = 0;
         let VolumenFugas = 0;
-        let ETCO2 = 0;
+
         let FIO2 = 0;
         let TiempoInspiratorio = 0;
         let RelacionInspiracionEspiracion = 0;
         let ResistenciaInspiratoria = 0;
         let ComplianceEstatica = 0;
+        let ComplianceDinamica = 0;
         let FRPT = 0;
         let FRV = 0;
         let VolumenMinutoEspiradoPaciente = 0;
@@ -647,6 +1017,7 @@ class PacientesUCIHistorial extends App {
         let VolumenTidalEspiradoPaciente = 0;
         let VolumenTidalEspiradoMaquina = 0;
         let PresionSoporte = 0;
+        let PorcentajeVolumenMinuto = 0;
         let AutoPeep = 0;
         let PEEP = 0;
         let PresionMedia = 0;
@@ -686,9 +1057,7 @@ class PacientesUCIHistorial extends App {
             if (col.id == 'VolumenFugas') {
                 VolumenFugas++;
             }
-            if (col.id == 'ETCO2') {
-                ETCO2++;
-            }
+
             if (col.id == 'FIO2') {
                 FIO2++;
             }
@@ -700,6 +1069,9 @@ class PacientesUCIHistorial extends App {
             }
             if (col.id == 'ResistenciaInspiratoria') {
                 ResistenciaInspiratoria++;
+            }
+            if (col.id == 'ComplianceDinamica') {
+                ComplianceDinamica++;
             }
             if (col.id == 'ComplianceEstatica') {
                 ComplianceEstatica++;
@@ -725,6 +1097,9 @@ class PacientesUCIHistorial extends App {
             if (col.id == 'PresionSoporte') {
                 PresionSoporte++;
             }
+            if (col.id == 'PorcentajeVolumenMinuto') {
+                PorcentajeVolumenMinuto++;
+            }
             if (col.id == 'AutoPeep') {
                 AutoPeep++;
             }
@@ -739,7 +1114,7 @@ class PacientesUCIHistorial extends App {
             }
         });
 
-        columnas = [VolumenAltaFrecuencia, ModoVentilatorio, PresionInspiratoria, DCO2, AmplitudDO2, Flujo, PresionMediaVia, Hercios, PresionBalonTuboOrotraqueal, NivelTuboOrotraqueal, VolumenFugas, ETCO2, FIO2, TiempoInspiratorio, RelacionInspiracionEspiracion, ResistenciaInspiratoria, ComplianceEstatica, FRPT, FRV, VolumenMinutoEspiradoPaciente, VolumenMinutoEspiradoMaquina, VolumenTidalEspiradoPaciente, VolumenTidalEspiradoMaquina, PresionSoporte, AutoPeep, PEEP, PresionMedia, PresionPico];
+        columnas = [VolumenAltaFrecuencia, ModoVentilatorio, PresionInspiratoria, DCO2, AmplitudDO2, Flujo, PresionMediaVia, Hercios, PresionBalonTuboOrotraqueal, NivelTuboOrotraqueal, VolumenFugas, FIO2, TiempoInspiratorio, RelacionInspiracionEspiracion, ResistenciaInspiratoria, ComplianceEstatica, ComplianceDinamica, FRPT, FRV, VolumenMinutoEspiradoPaciente, VolumenMinutoEspiradoMaquina, VolumenTidalEspiradoPaciente, VolumenTidalEspiradoMaquina, PresionSoporte, PorcentajeVolumenMinuto, AutoPeep, PEEP, PresionMedia, PresionPico];
 
         resultNro.map((col, i) => {
             let fila = {};
@@ -989,28 +1364,7 @@ class PacientesUCIHistorial extends App {
                     });
                 }
             }
-            if (col.id == 'ETCO2') {
-                fila.id = col.id;
-                fila.idObj = [];
-                fila.idObj.push(i);
 
-                // Verificar si existe
-                let f = [];
-                f = filas.filter(v => v.id == col.id);
-
-                if (f.length == 0) {
-                    filas.push(fila);
-                    valores.push(fila);
-                }
-
-                if (f.length > 0) {
-                    valores.map((v, _i) => {
-                        if (v.id == col.id) {
-                            valores[_i]['idObj'].push(i);
-                        }
-                    });
-                }
-            }
             if (col.id == 'FIO2') {
                 fila.id = col.id;
                 fila.idObj = [];
@@ -1099,7 +1453,30 @@ class PacientesUCIHistorial extends App {
                     });
                 }
             }
+
             if (col.id == 'ComplianceEstatica') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
+            if (col.id == 'ComplianceDinamica') {
                 fila.id = col.id;
                 fila.idObj = [];
                 fila.idObj.push(i);
@@ -1275,6 +1652,28 @@ class PacientesUCIHistorial extends App {
                     });
                 }
             }
+            if (col.id == 'PorcentajeVolumenMinuto') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
             if (col.id == 'AutoPeep') {
                 fila.id = col.id;
                 fila.idObj = [];
@@ -1368,8 +1767,8 @@ class PacientesUCIHistorial extends App {
 
 
 
-        VentilatoriosUci.sColumns = [];
-        VentilatoriosUci.sColumns = [{
+        VentilatoriosNeo.sColumns = [];
+        VentilatoriosNeo.sColumns = [{
                 title: "Turno: ",
             },
             {
@@ -1392,17 +1791,17 @@ class PacientesUCIHistorial extends App {
         }
 
         for (let index = 0; index < orderCol[0]; index++) {
-            VentilatoriosUci.sColumns.push({
-                title: "Parámetro:",
-            });
-            VentilatoriosUci.sColumns.push({
+            VentilatoriosNeo.sColumns.push({
                 title: "Hora:",
+            });
+            VentilatoriosNeo.sColumns.push({
+                title: "Valor:",
             });
         }
 
 
-        VentilatoriosUci.sRows = [];
-        VentilatoriosUci.sRows = [{
+        VentilatoriosNeo.sRows = [];
+        VentilatoriosNeo.sRows = [{
                 mRender: function(data, type, full) {
                     return full.fechaHoraTurno;
                 },
@@ -1426,7 +1825,7 @@ class PacientesUCIHistorial extends App {
                             return [
                                 m('div.text-center.pd-5', [
                                     m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCIHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                            class: (PacientesUCINEOHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
                                         },
                                         (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
                                         (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
@@ -1458,48 +1857,8 @@ class PacientesUCIHistorial extends App {
 
         // Ordenar Filas
         for (let index = 0; index < orderCol[0]; index++) {
-            VentilatoriosUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div.text-center.pd-l-0.pd-r-0', {
 
-                                    onclick: (e) => {
-                                        e.preventDefault();
-                                    },
-
-
-                                    oncreate: (el) => {
-                                        valores.filter((v, i) => {
-
-                                            if (v.id == oData.id) {
-                                                let _i = v.idObj[index];
-
-                                                if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].condicion !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].condicion;
-                                                    } else {
-                                                        el.dom.innerHTML = '';
-                                                    }
-                                                } else {
-                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                                                }
-                                            }
-                                        })
-                                    }
-
-                                }, [])
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: null,
-                orderable: true,
-
-            });
-            VentilatoriosUci.sRows.push({
+            VentilatoriosNeo.sRows.push({
                 fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
                         view: () => {
@@ -1519,9 +1878,52 @@ class PacientesUCIHistorial extends App {
 
                                                 if (resultNro[_i] !== undefined) {
                                                     if (resultNro[_i].hora !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].hora;
+                                                        el.dom.innerHTML = (resultNro[_i].condicion == undefined ? '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>' : resultNro[_i].hora);
+
                                                     } else {
-                                                        el.dom.innerHTML = '';
+                                                        el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                    }
+                                                } else {
+                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                }
+                                            }
+                                        })
+                                    }
+
+                                }, [])
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: null,
+                orderable: true,
+
+            });
+            VentilatoriosNeo.sRows.push({
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div.text-center.pd-l-0.pd-r-0', {
+
+                                    onclick: (e) => {
+                                        e.preventDefault();
+                                    },
+
+
+                                    oncreate: (el) => {
+                                        valores.filter((v, i) => {
+
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+
+                                                if (resultNro[_i] !== undefined) {
+                                                    if (resultNro[_i].condicion !== null) {
+                                                        el.dom.innerHTML = (resultNro[_i].condicion == undefined ? '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>' : resultNro[_i].condicion);
+
+                                                    } else {
+                                                        el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
                                                     }
                                                 } else {
                                                     el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
@@ -1541,11 +1943,12 @@ class PacientesUCIHistorial extends App {
 
             });
 
+
         }
 
 
-        VentilatoriosUci.sRows.map((c, i) => {
-            VentilatoriosUci.sRows[i].aTargets = [i];
+        VentilatoriosNeo.sRows.map((c, i) => {
+            VentilatoriosNeo.sRows[i].aTargets = [i];
         })
 
 
@@ -1614,6 +2017,7 @@ class PacientesUCIHistorial extends App {
         _arr = resultId.sort((a, b) => a.orden - b.orden);
 
         // Establecer Columnas
+        let GasometriaVenosa = 0;
         let PH = 0;
         let PaCO2 = 0;
         let PaO2 = 0;
@@ -1630,6 +2034,9 @@ class PacientesUCIHistorial extends App {
 
 
         resultNro.map((col, i) => {
+            if (col.id == 'GasometriaVenosa') {
+                GasometriaVenosa++;
+            }
             if (col.id == 'PH') {
                 PH++;
             }
@@ -1675,10 +2082,34 @@ class PacientesUCIHistorial extends App {
 
         });
 
-        columnas = [PH, PaCO2, PaO2, HCO3, TC02, ExcesoBase, FiO2, PaO2FiO2, SaO2, IndiceOxigenacion, Lactato, Na, K];
+        columnas = [GasometriaVenosa, PH, PaCO2, PaO2, HCO3, TC02, ExcesoBase, FiO2, PaO2FiO2, SaO2, IndiceOxigenacion, Lactato, Na, K];
 
         resultNro.map((col, i) => {
             let fila = {};
+            if (col.id == 'GasometriaVenosa') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+
+
+            }
             if (col.id == 'PH') {
                 fila.id = col.id;
                 fila.idObj = [];
@@ -1999,7 +2430,7 @@ class PacientesUCIHistorial extends App {
                 title: "Hora:",
             });
             GasesUci.sColumns.push({
-                title: "Valores:",
+                title: "Valor:",
             });
         }
 
@@ -2032,7 +2463,7 @@ class PacientesUCIHistorial extends App {
                             return [
                                 m('div.text-center.pd-5', [
                                     m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCIHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                            class: (PacientesUCINEOHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
                                         },
                                         (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
                                         (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
@@ -2236,6 +2667,7 @@ class PacientesUCIHistorial extends App {
         let PresionVenosaCentral = 0;
         let PresionVenosaCentralAuricula = 0;
         let Biss = 0;
+        let Contrapulsacion = 0;
 
 
         resultNro.map((col, i) => {
@@ -2290,9 +2722,12 @@ class PacientesUCIHistorial extends App {
             if (col.id == 'Biss') {
                 Biss++;
             }
+            if (col.id == 'Contrapulsacion') {
+                Contrapulsacion++;
+            }
         });
 
-        columnas = [GastoCardiaco, IndiceCardiaco, VolumenSistolico, PresionCapilarPulmonar, IndiceResistenciaVascularSistemicaIndexada, ResistenciaVascularSistemica, IndiceResistenciaVascularPulmonarIndexada, PresionCuna, PresionArteriaPulmonar, TransporteArterialOxigeno, ConcentracionOxigeno, PresionPerfusionCerebral, PresionIntraCraneal, PresionIntraAbdominal, PresionVenosaCentral, PresionVenosaCentralAuricula, Biss];
+        columnas = [GastoCardiaco, IndiceCardiaco, VolumenSistolico, PresionCapilarPulmonar, IndiceResistenciaVascularSistemicaIndexada, ResistenciaVascularSistemica, IndiceResistenciaVascularPulmonarIndexada, PresionCuna, PresionArteriaPulmonar, TransporteArterialOxigeno, ConcentracionOxigeno, PresionPerfusionCerebral, PresionIntraCraneal, PresionIntraAbdominal, PresionVenosaCentral, PresionVenosaCentralAuricula, Biss, Contrapulsacion];
 
         resultNro.map((col, i) => {
             let fila = {};
@@ -2674,6 +3109,28 @@ class PacientesUCIHistorial extends App {
                     });
                 }
             }
+            if (col.id == 'Contrapulsacion') {
+                fila.id = col.id;
+                fila.idObj = [];
+                fila.idObj.push(i);
+
+                // Verificar si existe
+                let f = [];
+                f = filas.filter(v => v.id == col.id);
+
+                if (f.length == 0) {
+                    filas.push(fila);
+                    valores.push(fila);
+                }
+
+                if (f.length > 0) {
+                    valores.map((v, _i) => {
+                        if (v.id == col.id) {
+                            valores[_i]['idObj'].push(i);
+                        }
+                    });
+                }
+            }
 
 
         });
@@ -2703,10 +3160,10 @@ class PacientesUCIHistorial extends App {
 
         for (let index = 0; index < orderCol[0]; index++) {
             MedidasUci.sColumns.push({
-                title: "Valor:",
+                title: "Hora:",
             });
             MedidasUci.sColumns.push({
-                title: "Hora:",
+                title: "Valor:",
             });
         }
 
@@ -2739,7 +3196,7 @@ class PacientesUCIHistorial extends App {
                             return [
                                 m('div.text-center.pd-5', [
                                     m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCIHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                            class: (PacientesUCINEOHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
                                         },
                                         (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
                                         (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
@@ -2782,6 +3239,50 @@ class PacientesUCIHistorial extends App {
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
+
+            MedidasUci.sRows.push({
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+
+                                    onclick: (e) => {
+                                        e.preventDefault();
+                                    },
+
+
+                                    oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
+                                        valores.filter((v, i) => {
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                if (resultNro[_i] !== undefined) {
+                                                    if (resultNro[_i].hora !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].hora;
+                                                        el.dom.id = "txtMedidasHora" + resultNro[_i].nro;
+                                                    } else {
+                                                        el.dom.id = "txtMedidasHora" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                    }
+                                                } else {
+                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                }
+                                            }
+                                        })
+                                    }
+
+                                }, []),
+
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: null,
+                orderable: true,
+            });
             MedidasUci.sRows.push({
                 fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
@@ -2832,49 +3333,6 @@ class PacientesUCIHistorial extends App {
                 orderable: true,
 
             });
-            MedidasUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-
-                                    onclick: (e) => {
-                                        e.preventDefault();
-                                    },
-
-
-                                    oncreate: (el) => {
-                                        el.dom.className = "text-center pd-l-0 pd-r-0";
-
-                                        valores.filter((v, i) => {
-                                            if (v.id == oData.id) {
-                                                let _i = v.idObj[index];
-                                                if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].hora !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].hora;
-                                                        el.dom.id = "txtMedidasHora" + resultNro[_i].nro;
-                                                    } else {
-                                                        el.dom.id = "txtMedidasHora" + resultNro[_i].nro;
-                                                        el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                                                    }
-                                                } else {
-                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                                                }
-                                            }
-                                        })
-                                    }
-
-                                }, []),
-
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: null,
-                orderable: true,
-            });
         }
 
         MedidasUci.sRows.push({
@@ -2920,7 +3378,7 @@ class PacientesUCIHistorial extends App {
         options.map((option) => {
             FecthUci.dataHistorial.filter((obj) => {
                 let _obj = JSON.parse(obj.DATASECCION);
-                if (_obj.id === option.id) {
+                if (_obj.id === option.id && obj.SECCION == 'ComburTest') {
                     res.push(_obj);
                 }
             });
@@ -2929,6 +3387,8 @@ class PacientesUCIHistorial extends App {
         if (res.length == 0) {
             res = ComburTestUci.allRegistros;
         }
+
+        console.log(33, ComburTestUci.allRegistros)
 
         result = res.sort((a, b) => b.nro - a.nro);
 
@@ -3241,10 +3701,10 @@ class PacientesUCIHistorial extends App {
 
         for (let index = 0; index < orderCol[0]; index++) {
             ComburTestUci.sColumns.push({
-                title: "Valor:",
+                title: "Hora:",
             });
             ComburTestUci.sColumns.push({
-                title: "Hora:",
+                title: "Valor:",
             });
         }
 
@@ -3277,7 +3737,7 @@ class PacientesUCIHistorial extends App {
                             return [
                                 m('div.text-center.pd-5', [
                                     m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCIHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                            class: (PacientesUCINEOHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
                                         },
                                         (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
                                         (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
@@ -3320,6 +3780,50 @@ class PacientesUCIHistorial extends App {
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
+
+            ComburTestUci.sRows.push({
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+
+                                    onclick: (e) => {
+                                        e.preventDefault();
+                                    },
+
+
+                                    oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
+                                        valores.filter((v, i) => {
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                if (resultNro[_i] !== undefined) {
+                                                    if (resultNro[_i].hora !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].hora;
+                                                        el.dom.id = "txtComburHora" + resultNro[_i].nro;
+                                                    } else {
+                                                        el.dom.id = "txtComburHora" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                    }
+                                                } else {
+                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                }
+                                            }
+                                        })
+                                    }
+
+                                }, []),
+
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: null,
+                orderable: true,
+            });
             ComburTestUci.sRows.push({
                 fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
@@ -3364,49 +3868,6 @@ class PacientesUCIHistorial extends App {
                 aTargets: null,
                 orderable: true,
 
-            });
-            ComburTestUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-
-                                    onclick: (e) => {
-                                        e.preventDefault();
-                                    },
-
-
-                                    oncreate: (el) => {
-                                        el.dom.className = "text-center pd-l-0 pd-r-0";
-
-                                        valores.filter((v, i) => {
-                                            if (v.id == oData.id) {
-                                                let _i = v.idObj[index];
-                                                if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].hora !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].hora;
-                                                        el.dom.id = "txtComburHora" + resultNro[_i].nro;
-                                                    } else {
-                                                        el.dom.id = "txtComburHora" + resultNro[_i].nro;
-                                                        el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                                                    }
-                                                } else {
-                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                                                }
-                                            }
-                                        })
-                                    }
-
-                                }, []),
-
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: null,
-                orderable: true,
             });
         }
 
@@ -3587,10 +4048,10 @@ class PacientesUCIHistorial extends App {
 
         for (let index = 0; index < orderCol[0]; index++) {
             GasesMedUci.sColumns.push({
-                title: "Valor:",
+                title: "Hora:",
             });
             GasesMedUci.sColumns.push({
-                title: "Hora:",
+                title: "Valor:",
             });
         }
 
@@ -3623,7 +4084,7 @@ class PacientesUCIHistorial extends App {
                             return [
                                 m('div.text-center.pd-5', [
                                     m("button.btn-xs.btn-block.tx-semibold[type='button']", {
-                                            class: (PacientesUCIHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
+                                            class: (PacientesUCINEOHistorial.fechaHoraTurno == oData.fechaHoraTurno ? 'bg-warning' : 'bg-light')
                                         },
                                         (oData.numeroTurno == 1 ? 'AM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
                                         (oData.numeroTurno == 2 ? 'PM' + ': ' + moment(oData.fechaHoraTurno, 'DD-MM-YYYY HH:mm').format('DD/MM/YYYY HH:mm') : ''),
@@ -3666,6 +4127,50 @@ class PacientesUCIHistorial extends App {
 
         // 'data-orden'ar Filas
         for (let index = 0; index < orderCol[0]; index++) {
+
+            GasesMedUci.sRows.push({
+                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
+                    return m.mount(nTd, {
+                        view: () => {
+                            return [
+                                m('div', {
+
+                                    onclick: (e) => {
+                                        e.preventDefault();
+                                    },
+
+
+                                    oncreate: (el) => {
+                                        el.dom.className = "text-center pd-l-0 pd-r-0";
+
+                                        valores.filter((v, i) => {
+                                            if (v.id == oData.id) {
+                                                let _i = v.idObj[index];
+                                                if (resultNro[_i] !== undefined) {
+                                                    if (resultNro[_i].hora !== null) {
+                                                        el.dom.innerHTML = resultNro[_i].hora;
+                                                        el.dom.id = "txtGasesMedHora" + resultNro[_i].nro;
+                                                    } else {
+                                                        el.dom.id = "txtGasesMedHora" + resultNro[_i].nro;
+                                                        el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                    }
+                                                } else {
+                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
+                                                }
+                                            }
+                                        })
+                                    }
+
+                                }, []),
+
+                            ]
+                        }
+                    });
+                },
+                visible: true,
+                aTargets: null,
+                orderable: true,
+            });
             GasesMedUci.sRows.push({
                 fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
                     return m.mount(nTd, {
@@ -3710,49 +4215,6 @@ class PacientesUCIHistorial extends App {
                 aTargets: null,
                 orderable: true,
 
-            });
-            GasesMedUci.sRows.push({
-                fnCreatedCell: function(nTd, sData, oData, iRow, iCol) {
-                    return m.mount(nTd, {
-                        view: () => {
-                            return [
-                                m('div', {
-
-                                    onclick: (e) => {
-                                        e.preventDefault();
-                                    },
-
-
-                                    oncreate: (el) => {
-                                        el.dom.className = "text-center pd-l-0 pd-r-0";
-
-                                        valores.filter((v, i) => {
-                                            if (v.id == oData.id) {
-                                                let _i = v.idObj[index];
-                                                if (resultNro[_i] !== undefined) {
-                                                    if (resultNro[_i].hora !== null) {
-                                                        el.dom.innerHTML = resultNro[_i].hora;
-                                                        el.dom.id = "txtGasesMedHora" + resultNro[_i].nro;
-                                                    } else {
-                                                        el.dom.id = "txtGasesMedHora" + resultNro[_i].nro;
-                                                        el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                                                    }
-                                                } else {
-                                                    el.dom.innerHTML = '<div class="text-center pd-l-0 pd-r-0"><hr style="border-color:#001737;"/></div>';
-                                                }
-                                            }
-                                        })
-                                    }
-
-                                }, []),
-
-                            ]
-                        }
-                    });
-                },
-                visible: true,
-                aTargets: null,
-                orderable: true,
             });
         }
 
@@ -3817,7 +4279,7 @@ class PacientesUCIHistorial extends App {
         options.map((option) => {
             FecthUci.dataHistorial.filter((obj) => {
                 let _obj = JSON.parse(obj.DATASECCION);
-                if (_obj.id === option.id) {
+                if (_obj.id === option.id && obj.SECCION == 'ComburTest') {
                     res.push(_obj);
                 }
             });
@@ -3879,28 +4341,29 @@ class PacientesUCIHistorial extends App {
     }
 
     static parseSeccionCuidadosGenerales(options) {
-        let res = [];
-        let result = [];
-        let resultId = [];
-        let _arr = [];
         let hash = {};
+        let res2 = [];
 
-        options.map((option) => {
-            FecthUci.dataHistorial.filter((obj) => {
-                let _obj = JSON.parse(obj.DATASECCION);
-                if (_obj.id === option.id) {
-                    res.push(_obj);
-                }
-            });
+        let res = FecthUci.dataHistorial.filter(obj => obj.SECCION === "CuidadosGenerales");
+
+        let result = res.sort((a, b) => b.NRO - a.NRO);
+
+        // Quitar duplicados
+        let resultId = result.filter(o => hash[o.IDSECCION] ? false : hash[o.IDSECCION] = true);
+
+        // Ordenar desc
+        let _arr = resultId.sort((a, b) => a.NRO - b.NRO);
+
+
+        console.log(3344, _arr)
+
+        _arr.filter((obj) => {
+            let _obj = JSON.parse(obj.DATASECCION);
+            res2.push(_obj);
         });
 
-        result = res.sort((a, b) => b.nro - a.nro);
-        // Quitar duplicados
-        resultId = result.filter(o => hash[o.id] ? false : hash[o.id] = true);
-        // Ordenar desc
-        _arr = resultId.sort((a, b) => a.nro - b.nro);
 
-        return _arr;
+        return res2;
     }
 
     static parseSeccion(options) {
@@ -3927,6 +4390,30 @@ class PacientesUCIHistorial extends App {
         return _arr;
     }
 
+    static parseSeccionAccesos(options) {
+        let res = [];
+        let result = [];
+        let _arr = [];
+        let hash = {};
+
+
+        options.map((option) => {
+            FecthUci.dataHistorial.filter((obj) => {
+                let _obj = JSON.parse(obj.DATASECCION);
+                if (_obj.seccion == 'Accesos') {
+                    res.push(_obj);
+                }
+            });
+        });
+
+        // Quitar duplicados
+        result = res.filter(o => hash[o.nro] ? false : hash[o.nro] = true);
+
+        // Ordenar desc
+        _arr = result.sort((a, b) => a.nro - b.nro);
+        return _arr;
+    }
+
     static setTurnoSeccionCuidadosGenerales(_options) {
 
         let res = [];
@@ -3938,7 +4425,7 @@ class PacientesUCIHistorial extends App {
         /*
 
         if (CuidadosUci2.registros.length > 0) {
-            let registros = CuidadosUci2.registros.filter(_v => _v.fechaHoraTurno == PacientesUCIHistorial.fechaHoraTurno);
+            let registros = CuidadosUci2.registros.filter(_v => _v.fechaHoraTurno == PacientesUCINEOHistorial.fechaHoraTurno);
             if (registros.length == 0) {
                 copiar = true;
             }
@@ -3953,8 +4440,8 @@ class PacientesUCIHistorial extends App {
                     CuidadosUci2.iniciarRegistro();
                     CuidadosUci2.nuevoRegistro.id = option.id;
                     CuidadosUci2.nuevoRegistro.cuidado = option.value;
-                    CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCIHistorial.numeroTurno;
-                    CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCIHistorial.fechaHoraTurno;
+                    CuidadosUci2.nuevoRegistro.numeroTurno = PacientesUCINEOHistorial.numeroTurno;
+                    CuidadosUci2.nuevoRegistro.fechaHoraTurno = PacientesUCINEOHistorial.fechaHoraTurno;
                     res.push(CuidadosUci2.nuevoRegistro);
                     CuidadosUci2.nuevoRegistro = null;
                 }
@@ -3984,7 +4471,7 @@ class PacientesUCIHistorial extends App {
         /*
 
         if (CateterUci.registros.length > 0) {
-            let registros = CateterUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCIHistorial.fechaHoraTurno);
+            let registros = CateterUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCINEOHistorial.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -3998,8 +4485,8 @@ class PacientesUCIHistorial extends App {
                     CateterUci.iniciarRegistro();
                     CateterUci.nuevoRegistro.id = option.id;
                     CateterUci.nuevoRegistro.cateter = option.value;
-                    CateterUci.nuevoRegistro.numeroTurno = PacientesUCIHistorial.numeroTurno;
-                    CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCIHistorial.fechaHoraTurno;
+                    CateterUci.nuevoRegistro.numeroTurno = PacientesUCINEOHistorial.numeroTurno;
+                    CateterUci.nuevoRegistro.fechaHoraTurno = PacientesUCINEOHistorial.fechaHoraTurno;
                     res.push(CateterUci.nuevoRegistro);
                     CateterUci.nuevoRegistro = null;
                 }
@@ -4034,7 +4521,7 @@ class PacientesUCIHistorial extends App {
         /*
 
         if (VentilacionUci.registros.length > 0) {
-            let registros = VentilacionUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCIHistorial.fechaHoraTurno);
+            let registros = VentilacionUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCINEOHistorial.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -4048,8 +4535,8 @@ class PacientesUCIHistorial extends App {
                     VentilacionUci.iniciarRegistro();
                     VentilacionUci.nuevoRegistro.id = option.id;
                     VentilacionUci.nuevoRegistro.ventilacion = option.value;
-                    VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCIHistorial.numeroTurno;
-                    VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCIHistorial.fechaHoraTurno;
+                    VentilacionUci.nuevoRegistro.numeroTurno = PacientesUCINEOHistorial.numeroTurno;
+                    VentilacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCINEOHistorial.fechaHoraTurno;
                     res.push(VentilacionUci.nuevoRegistro);
                     VentilacionUci.nuevoRegistro = null;
                 }
@@ -4084,7 +4571,7 @@ class PacientesUCIHistorial extends App {
         /*
 
         if (HemodialisisUci.registros.length > 0) {
-            let registros = HemodialisisUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCIHistorial.fechaHoraTurno);
+            let registros = HemodialisisUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCINEOHistorial.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -4098,8 +4585,8 @@ class PacientesUCIHistorial extends App {
                     HemodialisisUci.iniciarRegistro();
                     HemodialisisUci.nuevoRegistro.id = option.id;
                     HemodialisisUci.nuevoRegistro.hemo = option.value;
-                    HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCIHistorial.numeroTurno;
-                    HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCIHistorial.fechaHoraTurno;
+                    HemodialisisUci.nuevoRegistro.numeroTurno = PacientesUCINEOHistorial.numeroTurno;
+                    HemodialisisUci.nuevoRegistro.fechaHoraTurno = PacientesUCINEOHistorial.fechaHoraTurno;
                     res.push(HemodialisisUci.nuevoRegistro);
                     HemodialisisUci.nuevoRegistro = null;
                 }
@@ -4134,7 +4621,7 @@ class PacientesUCIHistorial extends App {
         /*
 
         if (MarcapasosUci.registros.length > 0) {
-            let registros = MarcapasosUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCIHistorial.fechaHoraTurno);
+            let registros = MarcapasosUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCINEOHistorial.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -4147,8 +4634,8 @@ class PacientesUCIHistorial extends App {
                     MarcapasosUci.iniciarRegistro();
                     MarcapasosUci.nuevoRegistro.id = option.id;
                     MarcapasosUci.nuevoRegistro.hora = option.value;
-                    MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCIHistorial.numeroTurno;
-                    MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCIHistorial.fechaHoraTurno;
+                    MarcapasosUci.nuevoRegistro.numeroTurno = PacientesUCINEOHistorial.numeroTurno;
+                    MarcapasosUci.nuevoRegistro.fechaHoraTurno = PacientesUCINEOHistorial.fechaHoraTurno;
                     res.push(MarcapasosUci.nuevoRegistro);
                     MarcapasosUci.nuevoRegistro = null;
                 }
@@ -4183,7 +4670,7 @@ class PacientesUCIHistorial extends App {
         /*
 
         if (OxigenacionUci.registros.length > 0) {
-            let registros = OxigenacionUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCIHistorial.fechaHoraTurno);
+            let registros = OxigenacionUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCINEOHistorial.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -4197,8 +4684,8 @@ class PacientesUCIHistorial extends App {
                     OxigenacionUci.iniciarRegistro();
                     OxigenacionUci.nuevoRegistro.id = option.id;
                     OxigenacionUci.nuevoRegistro.oxi = option.value;
-                    OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCIHistorial.numeroTurno;
-                    OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCIHistorial.fechaHoraTurno;
+                    OxigenacionUci.nuevoRegistro.numeroTurno = PacientesUCINEOHistorial.numeroTurno;
+                    OxigenacionUci.nuevoRegistro.fechaHoraTurno = PacientesUCINEOHistorial.fechaHoraTurno;
                     res.push(OxigenacionUci.nuevoRegistro);
                     OxigenacionUci.nuevoRegistro = null;
                 }
@@ -4226,14 +4713,14 @@ class PacientesUCIHistorial extends App {
         let res = [];
         let crear = false;
 
-        if (VentilatoriosUci.allRegistros.length == 0) {
+        if (VentilatoriosNeo.allRegistros.length == 0) {
             crear = true;
         }
 
         /*
 
-        if (VentilatoriosUci.registros.length > 0) {
-            let registros = VentilatoriosUci.registros.filter(_v => _v.fechaHoraTurno == PacientesUCIHistorial.fechaHoraTurno);
+        if (VentilatoriosNeo.registros.length > 0) {
+            let registros = VentilatoriosNeo.registros.filter(_v => _v.fechaHoraTurno == PacientesUCINEOHistorial.fechaHoraTurno);
             if (registros.length == 0) {
                 crear = true;
             }
@@ -4246,26 +4733,26 @@ class PacientesUCIHistorial extends App {
         if (crear) {
             _options.map((option) => {
                 if (option.value != 0) {
-                    VentilatoriosUci.iniciarRegistro();
-                    VentilatoriosUci.nuevoRegistro.id = option.id;
-                    VentilatoriosUci.nuevoRegistro.orden = option.getAttribute('orden');
-                    VentilatoriosUci.nuevoRegistro.ventilatorio = option.value;
-                    VentilatoriosUci.nuevoRegistro.numeroTurno = PacientesUCIHistorial.numeroTurno;
-                    VentilatoriosUci.nuevoRegistro.fechaHoraTurno = PacientesUCIHistorial.fechaHoraTurno;
-                    res.push(VentilatoriosUci.nuevoRegistro);
-                    VentilatoriosUci.nuevoRegistro = null;
+                    VentilatoriosNeo.iniciarRegistro();
+                    VentilatoriosNeo.nuevoRegistro.id = option.id;
+                    VentilatoriosNeo.nuevoRegistro.orden = option.getAttribute('orden');
+                    VentilatoriosNeo.nuevoRegistro.ventilatorio = option.value;
+                    VentilatoriosNeo.nuevoRegistro.numeroTurno = PacientesUCINEOHistorial.numeroTurno;
+                    VentilatoriosNeo.nuevoRegistro.fechaHoraTurno = PacientesUCINEOHistorial.fechaHoraTurno;
+                    res.push(VentilatoriosNeo.nuevoRegistro);
+                    VentilatoriosNeo.nuevoRegistro = null;
                 }
             });
 
-            VentilatoriosUci.allRegistros.push.apply(VentilatoriosUci.allRegistros, res);
+            VentilatoriosNeo.allRegistros.push.apply(VentilatoriosNeo.allRegistros, res);
 
             // Asignar Nro
-            VentilatoriosUci.allRegistros.map((_v, _i) => {
-                VentilatoriosUci.allRegistros[_i].nro = (_i + 1);
+            VentilatoriosNeo.allRegistros.map((_v, _i) => {
+                VentilatoriosNeo.allRegistros[_i].nro = (_i + 1);
             });
 
 
-            FecthUci.registrarAllSeccion(VentilatoriosUci.allRegistros);
+            FecthUci.registrarAllSeccion(VentilatoriosNeo.allRegistros);
 
         }
 
@@ -4286,10 +4773,10 @@ class PacientesUCIHistorial extends App {
 
     static page() {
         return [
-            PacientesUCIHistorial.vMain()
+            PacientesUCINEOHistorial.vMain()
         ];
     }
 }
 
 
-export default PacientesUCIHistorial;
+export default PacientesUCINEOHistorial;

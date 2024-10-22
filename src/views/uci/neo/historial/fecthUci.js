@@ -25,12 +25,14 @@ class FecthUci {
                 paciente: 'PACIENTE PRUEBA MV',
                 especialidad: 'MEDICINA INTERNA',
                 status: parseInt(_v.STATUS),
+                asume: (_v.USUARIO_ASUME != null ? 'Usuario: ' + _v.USUARIO_ASUME + '<br/>Fecha: ' + _v.FECHA_ASUME + '<br/>Comentario: ' + _v.COMENTARIO : ''),
+                cancela: (_v.USUARIO_CANCELA != null ? 'Usuario: ' + _v.USUARIO_CANCELA + '<br/>Fecha: ' + _v.FECHA_CANCELA + '<br/>Comentario: ' + _v.COMENTARIO_CANCELA : ''),
                 gestion: 0,
             });
             TurnosUciHistorial.turnos.push(TurnosUciHistorial.nuevoTurno);
         });
 
-        return TurnosUciHistorial.turnos;
+        return TurnosUciHistorial.turnos.sort((a, b) => a.numeroTurno - b.numeroTurno);
 
     }
 
@@ -207,6 +209,7 @@ class FecthUci {
             }
         }).then(function(res) {
             // El resultado
+            return 1;
 
         }).catch(function(e) {
 
@@ -274,7 +277,7 @@ class FecthUci {
                 PacientesUCIHistorial.numeroAtencion = res.data.numeroAtencion;
                 PacientesUCIHistorial.numeroTurno = res.data.numeroTurno;
 
-                m.route.set("/uci/pacientes/", {
+                m.route.set("/uci/pacientes/neo/historial/", {
                     numeroHistoriaClinica: res.data.numeroHistoriaClinica,
                     numeroAtencion: res.data.numeroAtencion,
                     usuario: PacientesUCIHistorial.usuarioTurno,
@@ -308,7 +311,7 @@ class FecthUci {
 
         return m.request({
             method: "GET",
-            url: _url + "/turnos-abiertos",
+            url: _url + "/turnos-historial",
             params: {
                 numeroHistoriaClinica: PacientesUCIHistorial.numeroHistoriaClinica,
                 numeroAtencion: PacientesUCIHistorial.numeroAtencion,
@@ -324,19 +327,25 @@ class FecthUci {
                 PacientesUCIHistorial.numeroAtencion = res.data.numeroAtencion;
                 PacientesUCIHistorial.numeroTurno = res.data.numeroTurno;
 
-                m.route.set("/uci/pacientes/historial", {
+                m.route.set("/uci/pacientes/neo/historial/", {
                     numeroHistoriaClinica: res.data.numeroHistoriaClinica,
                     numeroAtencion: res.data.numeroAtencion,
                     usuario: PacientesUCIHistorial.usuarioTurno,
                     numeroTurno: res.data.numeroTurno
                 });
 
-                if (res.data.dataTurnos.length > 0) {
-                    TurnosUciHistorial.turnos = FecthUci.setTurnos(res.data.dataTurnos);
-                    //PacientesUCIHistorial.vReloadTable('table-turnos', TurnosUciHistorial.getTurnos());
+                let turnos = res.data.dataTurnos.filter(v =>
+                    moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() >= moment(PacientesUCIHistorial.fechaDesde + ' ' + PacientesUCIHistorial.horaDesde, 'DD-MM-YYYY HH:mm').unix() &&
+                    moment(moment(v.FECHA, 'DD-MM-YYYY HH:mm').format('DD-MM-YYYY HH:mm'), 'DD-MM-YYYY HH:mm').unix() <= moment(PacientesUCIHistorial.fechaHasta + ' ' + PacientesUCIHistorial.horaHasta, 'DD-MM-YYYY HH:mm').unix() &&
+                    v.TIPO_BIT == 'UCINEO');
+
+
+                if (turnos.length > 0) {
+                    TurnosUciHistorial.turnos = FecthUci.setTurnos(turnos);
+                    PacientesUCIHistorial.vReloadTable('table-turnos', TurnosUciHistorial.getTurnos().sort((a, b) => a.numeroTurno - b.numeroTurno));
                 }
 
-                //  FecthUci.loadSeccionesHistorial();
+                FecthUci.loadSeccionesHistorial(PacientesUCIHistorial.fechaDesde, PacientesUCIHistorial.horaHasta, PacientesUCIHistorial.fechaHasta, PacientesUCIHistorial.horaHasta);
 
             }
 
@@ -376,7 +385,8 @@ class FecthUci {
         });
     }
 
-    static loadSeccionesHistorial(fechaBusqueda) {
+    static loadSeccionesHistorial(fechaDesde, horaDesde, fechaHasta, horaHasta) {
+
 
         PacientesUCIHistorial.resetSecs();
 
@@ -392,7 +402,7 @@ class FecthUci {
             url: _url + "/detalle-all-secciones",
             params: {
                 numeroAtencion: PacientesUCIHistorial.numeroAtencion,
-                fechaBusqueda: fechaBusqueda,
+                fechaBusqueda: fechaDesde,
             },
             headers: {
                 "Content-Type": "application/json; charset=utf-8"
@@ -400,12 +410,35 @@ class FecthUci {
         }).then(function(res) {
 
             if (res.data.length == 0) {
-                alert('No existe información en la fecha ingresada.');
+                $.alert('No existe información en la fecha ingresada.');
             } else {
-                FecthUci.dataHistorial = res.data;
+
+                // Filtrar las secciones de hoy
+                let seccionesHoy = res.data.filter(v => {
+                    const fechaSeccion = moment(v.FECHA, 'DD-MM-YYYY HH:mm').unix();
+                    const fechaInicio = moment(`${fechaDesde} ${horaDesde}`, 'DD-MM-YYYY HH:mm').unix();
+                    const fechaFin = moment(`${fechaHasta} ${horaHasta}`, 'DD-MM-YYYY HH:mm').unix();
+                    const tipoBitUndefined = JSON.parse(v.DATASECCION).tipoBit === 'UCINEO';
+
+                    return v.ATENCION === PacientesUCIHistorial.numeroAtencion &&
+                        fechaSeccion >= fechaInicio &&
+                        fechaSeccion <= fechaFin &&
+                        tipoBitUndefined;
+                });
+
+                // Filtrar los turnos que coinciden con las secciones de hoy
+                let _res = TurnosUciHistorial.turnos.flatMap(turno =>
+                    seccionesHoy.filter(seccion => turno.fechaHoraTurno === seccion.FECHA)
+                );
+
+                // Aplanar el array resultante
+                let t = _res;
+
+                console.info('dataHistorial', t)
+
+                FecthUci.dataHistorial = t;
                 PacientesUCIHistorial.loadSecs();
 
-                console.log(res)
             }
 
 

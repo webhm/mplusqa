@@ -36,6 +36,7 @@ import BitacoraUCI from "../views/uci/v2/bitacora";
 import CalendarComponent from "../views/uci/pacientes/calendar";
 import UciCalednar from "../views/uci/pacientes/calendar";
 import UciCalendar from "../views/uci/pacientes/calendar";
+import PacientesUCINEOHistorial from "../views/uci/neo/historial/pacientesUci";
 
 // Routes here
 const Routes = {
@@ -53,6 +54,7 @@ const Routes = {
     "/uci/bitacora": BitacoraUCI,
     "/uci/pacientes": PacientesUCI,
     "/uci/pacientes/neo": PacientesUCINEO,
+    "/uci/pacientes/neo/historial": PacientesUCINEOHistorial,
     "/uci/pacientes/intermedios": PacientesUCIINTERMEDIOS,
     "/uci/pacientes/minimos": PacientesUCIMINIMOS,
     "/uci/pacientes/historial": PacientesUCIHistorial,
