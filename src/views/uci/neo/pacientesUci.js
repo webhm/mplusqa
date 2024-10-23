@@ -209,14 +209,8 @@ class PacientesUCI extends App {
                             m('br')
 
                         ]),
-
-
                         // Cuidados Generales
                         m(CuidadosUci2),
-
-                        // Accesos
-                        //  m(AccesosUci),
-
                         // Marcapasos
                         m(MarcapasosUci),
                         // Ventilatorios
@@ -225,11 +219,8 @@ class PacientesUCI extends App {
                         m(VentilatorioNoInvasivo),
                         // ComburTest
                         m(ComburTestNeo),
-                        // UlcerasUciPed
-                        // m(UlcerasUciPed),
                         // ValoracionUciNeo
                         m(ValoracionUciNeo),
-
                     ]),
                     m('div.ht-100'),
                 ])

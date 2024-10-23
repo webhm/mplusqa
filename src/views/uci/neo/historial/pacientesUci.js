@@ -503,8 +503,8 @@ class PacientesUCINEOHistorial extends App {
 
                                         oncreate: (el) => {
 
-                                            // el.dom.value = moment().format('DD-MM-YYYY');
-                                            el.dom.value = '21-10-2024';
+                                            el.dom.value = moment().format('DD-MM-YYYY');
+                                            //el.dom.value = '22-10-2024';
                                             PacientesUCINEOHistorial.fechaDesde = el.dom.value;
 
 
@@ -552,8 +552,8 @@ class PacientesUCINEOHistorial extends App {
 
                                         oncreate: (el) => {
 
-                                            //el.dom.value = moment().add(1, 'days').format('DD-MM-YYYY');
-                                            el.dom.value = '22-10-2024';
+                                            el.dom.value = moment().add(1, 'days').format('DD-MM-YYYY');
+                                            //el.dom.value = '23-10-2024';
                                             PacientesUCINEOHistorial.fechaHasta = el.dom.value;
 
                                             setTimeout(() => {
@@ -608,8 +608,6 @@ class PacientesUCINEOHistorial extends App {
                                             if (PacientesUCINEOHistorial.busquedaHecha == false) {
                                                 let start = moment(PacientesUCINEOHistorial.fechaDesde, "DD-MM-YYYY");
                                                 let end = moment(PacientesUCINEOHistorial.fechaHasta, "DD-MM-YYYY");
-
-
 
                                                 //Difference in number of days
                                                 console.log(99, moment.duration(start.diff(end)).asDays())
